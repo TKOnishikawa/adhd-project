@@ -1,0 +1,120 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <style>
+      @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;700&amp;display=swap');
+      .title { font-family: 'Noto Sans JP', sans-serif; font-size: 20px; font-weight: 700; fill: #f59e0b; }
+      .subtitle { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; fill: #9ca3af; }
+      .stage-label { font-family: 'Noto Sans JP', sans-serif; font-size: 15px; font-weight: 700; fill: #ffffff; }
+      .technique { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; fill: #d1d5db; }
+      .phase-num { font-family: 'Noto Sans JP', sans-serif; font-size: 11px; font-weight: 700; fill: #101018; }
+      .center-text { font-family: 'Noto Sans JP', sans-serif; font-size: 13px; font-weight: 700; fill: #f59e0b; }
+      .center-sub { font-family: 'Noto Sans JP', sans-serif; font-size: 10px; fill: #9ca3af; }
+      .arrow-text { font-family: 'Noto Sans JP', sans-serif; font-size: 9px; fill: #6b7280; }
+    </style>
+    <!-- Glow filter for stage circles -->
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- Arrow marker -->
+    <marker id="arrowhead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#f59e0b" opacity="0.5"/>
+    </marker>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#101018" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="38" text-anchor="middle" class="title">Theme G: セルフコーチング実践ロードマップ</text>
+  <text x="400" y="56" text-anchor="middle" class="subtitle">自己理解から成長へ - 循環的プロセス</text>
+
+  <!-- Circular path (ellipse guide) -->
+  <ellipse cx="400" cy="280" rx="240" ry="170" fill="none" stroke="#f59e0b" stroke-width="1.5" stroke-dasharray="6 4" opacity="0.2"/>
+
+  <!-- Directional arrows along the circular path -->
+  <!-- Arrow: 自己理解 → 受容 (top-right arc) -->
+  <path d="M 530 135 Q 610 175 635 240" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.35" marker-end="url(#arrowhead)"/>
+  <!-- Arrow: 受容 → 実践 (right-bottom arc) -->
+  <path d="M 625 320 Q 600 400 520 430" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.35" marker-end="url(#arrowhead)"/>
+  <!-- Arrow: 実践 → 振り返り (bottom-left arc) -->
+  <path d="M 340 445 Q 240 420 185 350" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.35" marker-end="url(#arrowhead)"/>
+  <!-- Arrow: 振り返り → 成長 (left-top arc) -->
+  <path d="M 175 230 Q 195 155 280 120" fill="none" stroke="#f59e0b" stroke-width="1.5" opacity="0.35" marker-end="url(#arrowhead)"/>
+  <!-- Arrow: 成長 → 自己理解 (feedback - dashed) -->
+  <path d="M 420 100 Q 400 80 380 100" fill="none" stroke="#f59e0b" stroke-width="1" opacity="0.25" stroke-dasharray="3 3" marker-end="url(#arrowhead)"/>
+
+  <!-- Center element -->
+  <circle cx="400" cy="280" r="55" fill="#181824" stroke="#f59e0b" stroke-width="2" opacity="0.9"/>
+  <text x="400" y="272" text-anchor="middle" class="center-text">セルフ</text>
+  <text x="400" y="290" text-anchor="middle" class="center-text">コーチング</text>
+  <text x="400" y="308" text-anchor="middle" class="center-sub">循環的プロセス</text>
+
+  <!-- ===== Stage 1: 自己理解 (Top) ===== -->
+  <g transform="translate(400, 105)">
+    <!-- Phase number badge -->
+    <circle cx="0" cy="0" r="36" fill="#222234" stroke="#f59e0b" stroke-width="2.5" filter="url(#glow)"/>
+    <circle cx="-24" cy="-24" r="11" fill="#f59e0b"/>
+    <text x="-24" y="-20" text-anchor="middle" class="phase-num">1</text>
+    <text x="0" y="4" text-anchor="middle" class="stage-label">自己理解</text>
+    <!-- Techniques -->
+    <text x="0" y="55" text-anchor="middle" class="technique">当事者研究</text>
+    <text x="0" y="68" text-anchor="middle" class="technique">自己特性の言語化</text>
+    <text x="0" y="81" text-anchor="middle" class="technique">セルフモニタリング</text>
+  </g>
+
+  <!-- ===== Stage 2: 受容 (Right) ===== -->
+  <g transform="translate(635, 275)">
+    <circle cx="0" cy="0" r="36" fill="#222234" stroke="#f59e0b" stroke-width="2.5" filter="url(#glow)"/>
+    <circle cx="-24" cy="-24" r="11" fill="#f59e0b"/>
+    <text x="-24" y="-20" text-anchor="middle" class="phase-num">2</text>
+    <text x="0" y="4" text-anchor="middle" class="stage-label">受容</text>
+    <!-- Techniques -->
+    <text x="0" y="55" text-anchor="middle" class="technique">セルフコンパッション</text>
+    <text x="0" y="68" text-anchor="middle" class="technique">マインドフルネス(MAPs)</text>
+    <text x="0" y="81" text-anchor="middle" class="technique">自己批判の書き換え</text>
+  </g>
+
+  <!-- ===== Stage 3: 実践 (Bottom) ===== -->
+  <g transform="translate(400, 445)">
+    <circle cx="0" cy="0" r="36" fill="#222234" stroke="#f59e0b" stroke-width="2.5" filter="url(#glow)"/>
+    <circle cx="-24" cy="-24" r="11" fill="#f59e0b"/>
+    <text x="-24" y="-20" text-anchor="middle" class="phase-num">3</text>
+    <text x="0" y="4" text-anchor="middle" class="stage-label">実践</text>
+    <!-- Techniques -->
+    <text x="0" y="-60" text-anchor="middle" class="technique">メタ認知戦略</text>
+    <text x="0" y="-47" text-anchor="middle" class="technique">ジャーナリング</text>
+    <text x="0" y="-34" text-anchor="middle" class="technique">ピアサポート</text>
+  </g>
+
+  <!-- ===== Stage 4: 振り返り (Left) ===== -->
+  <g transform="translate(165, 275)">
+    <circle cx="0" cy="0" r="36" fill="#222234" stroke="#f59e0b" stroke-width="2.5" filter="url(#glow)"/>
+    <circle cx="-24" cy="-24" r="11" fill="#f59e0b"/>
+    <text x="-24" y="-20" text-anchor="middle" class="phase-num">4</text>
+    <text x="0" y="4" text-anchor="middle" class="stage-label">振り返り</text>
+    <!-- Techniques -->
+    <text x="0" y="55" text-anchor="middle" class="technique">効果測定</text>
+    <text x="0" y="68" text-anchor="middle" class="technique">トリセツ更新</text>
+    <text x="0" y="81" text-anchor="middle" class="technique">学びの共有</text>
+  </g>
+
+  <!-- ===== Stage 5: 成長 (Top-Left, completing the cycle) ===== -->
+  <g transform="translate(220, 130)">
+    <circle cx="0" cy="0" r="36" fill="#222234" stroke="#f59e0b" stroke-width="2.5" filter="url(#glow)"/>
+    <circle cx="-24" cy="-24" r="11" fill="#f59e0b"/>
+    <text x="-24" y="-20" text-anchor="middle" class="phase-num">5</text>
+    <text x="0" y="4" text-anchor="middle" class="stage-label">成長</text>
+    <!-- Techniques -->
+    <text x="0" y="55" text-anchor="middle" class="technique">自己アドボカシー</text>
+    <text x="0" y="68" text-anchor="middle" class="technique">成長マインドセット</text>
+    <text x="0" y="81" text-anchor="middle" class="technique">バディシステム</text>
+  </g>
+
+  <!-- Footer -->
+  <line x1="60" y1="478" x2="740" y2="478" stroke="#333" stroke-width="0.5"/>
+  <text x="400" y="494" text-anchor="middle" class="subtitle">Theme G: セルフコーチング | ADHD Coaching Method Research 2026</text>
+</svg>

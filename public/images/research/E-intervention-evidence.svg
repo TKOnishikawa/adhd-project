@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="pyramidGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f472b6" stop-opacity="0.9"/>
+      <stop offset="100%" stop-color="#f472b6" stop-opacity="0.3"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <filter id="shadow">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="800" height="500" fill="#101018" rx="8"/>
+
+  <!-- Title -->
+  <text x="400" y="38" text-anchor="middle" fill="#f472b6" font-family="'Noto Sans JP', sans-serif" font-size="18" font-weight="bold" filter="url(#glow)">介入エビデンス階層（Evidence Hierarchy）</text>
+  <text x="400" y="58" text-anchor="middle" fill="#888" font-family="'Noto Sans JP', sans-serif" font-size="11">Theme E: ADHDコーチングの科学的根拠</text>
+
+  <!-- Pyramid structure - 5 layers -->
+  <!-- Layer 1 (top): RCT -->
+  <polygon points="400,85 340,155 460,155" fill="#f472b6" opacity="0.95" filter="url(#shadow)"/>
+  <text x="400" y="132" text-anchor="middle" fill="#101018" font-family="'Noto Sans JP', sans-serif" font-size="11" font-weight="bold">RCT</text>
+  <text x="400" y="148" text-anchor="middle" fill="#101018" font-family="'Noto Sans JP', sans-serif" font-size="9">（コーチング）</text>
+
+  <!-- Layer 2: Meta-analysis / CBT -->
+  <polygon points="340,160 290,230 510,230 460,160" fill="#f472b6" opacity="0.75" filter="url(#shadow)"/>
+  <text x="400" y="192" text-anchor="middle" fill="#101018" font-family="'Noto Sans JP', sans-serif" font-size="12" font-weight="bold">メタアナリシス</text>
+  <text x="400" y="210" text-anchor="middle" fill="#101018" font-family="'Noto Sans JP', sans-serif" font-size="10">（CBT・薬物療法）</text>
+
+  <!-- Layer 3: Quasi-experimental -->
+  <polygon points="290,235 240,305 560,305 510,235" fill="#f472b6" opacity="0.55" filter="url(#shadow)"/>
+  <text x="400" y="268" text-anchor="middle" fill="#fff" font-family="'Noto Sans JP', sans-serif" font-size="12" font-weight="bold">準実験・前後比較</text>
+  <text x="400" y="286" text-anchor="middle" fill="#ddd" font-family="'Noto Sans JP', sans-serif" font-size="10">（コーチング多数・ボディダブリング）</text>
+
+  <!-- Layer 4: Case studies -->
+  <polygon points="240,310 190,380 610,380 560,310" fill="#f472b6" opacity="0.35" filter="url(#shadow)"/>
+  <text x="400" y="343" text-anchor="middle" fill="#fff" font-family="'Noto Sans JP', sans-serif" font-size="12" font-weight="bold">事例研究</text>
+  <text x="400" y="361" text-anchor="middle" fill="#ccc" font-family="'Noto Sans JP', sans-serif" font-size="10">（安藤ら 2020、強みベース、AIコーチング）</text>
+
+  <!-- Layer 5 (bottom): Expert opinion -->
+  <polygon points="190,385 140,455 660,455 610,385" fill="#f472b6" opacity="0.2" filter="url(#shadow)"/>
+  <text x="400" y="418" text-anchor="middle" fill="#fff" font-family="'Noto Sans JP', sans-serif" font-size="12" font-weight="bold">専門家意見・実践知</text>
+  <text x="400" y="436" text-anchor="middle" fill="#aaa" font-family="'Noto Sans JP', sans-serif" font-size="10">（テクノロジーツール、環境設計、アカウンタビリティ）</text>
+
+  <!-- Left annotations -->
+  <!-- Arrow line from Layer 1 -->
+  <line x1="335" y1="120" x2="175" y2="100" stroke="#f472b6" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+  <rect x="18" y="80" width="160" height="55" rx="6" fill="#181824" stroke="#f472b6" stroke-width="1" opacity="0.9"/>
+  <text x="98" y="98" text-anchor="middle" fill="#f472b6" font-family="'Noto Sans JP', sans-serif" font-size="10" font-weight="bold">Prevatt &amp; Yelland 2015</text>
+  <text x="98" y="113" text-anchor="middle" fill="#ccc" font-family="'Noto Sans JP', sans-serif" font-size="9">148名・8週間</text>
+  <text x="98" y="128" text-anchor="middle" fill="#fff" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">d = 0.89（時間管理）</text>
+
+  <!-- Arrow line from Layer 2 -->
+  <line x1="290" y1="200" x2="175" y2="195" stroke="#f472b6" stroke-width="1" stroke-dasharray="4,3" opacity="0.6"/>
+  <rect x="18" y="160" width="160" height="55" rx="6" fill="#181824" stroke="#f472b6" stroke-width="1" opacity="0.8"/>
+  <text x="98" y="178" text-anchor="middle" fill="#f472b6" font-family="'Noto Sans JP', sans-serif" font-size="10" font-weight="bold">Ahmann et al. 2018</text>
+  <text x="98" y="193" text-anchor="middle" fill="#ccc" font-family="'Noto Sans JP', sans-serif" font-size="9">19研究レビュー</text>
+  <text x="98" y="208" text-anchor="middle" fill="#fff" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">17/19 が改善報告</text>
+
+  <!-- Right annotations -->
+  <!-- Arrow line from Layer 1 top-right -->
+  <line x1="465" y1="120" x2="625" y2="100" stroke="#f472b6" stroke-width="1" stroke-dasharray="4,3" opacity="0.7"/>
+  <rect x="622" y="80" width="160" height="55" rx="6" fill="#181824" stroke="#f472b6" stroke-width="1" opacity="0.9"/>
+  <text x="702" y="98" text-anchor="middle" fill="#f472b6" font-family="'Noto Sans JP', sans-serif" font-size="10" font-weight="bold">薬物療法</text>
+  <text x="702" y="113" text-anchor="middle" fill="#ccc" font-family="'Noto Sans JP', sans-serif" font-size="9">多数のRCT・メタ分析</text>
+  <text x="702" y="128" text-anchor="middle" fill="#fff" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">有効率 70%</text>
+
+  <!-- Arrow line from Layer 3 -->
+  <line x1="560" y1="270" x2="625" y2="190" stroke="#f472b6" stroke-width="1" stroke-dasharray="4,3" opacity="0.5"/>
+  <rect x="622" y="160" width="160" height="55" rx="6" fill="#181824" stroke="#f472b6" stroke-width="1" opacity="0.7"/>
+  <text x="702" y="178" text-anchor="middle" fill="#f472b6" font-family="'Noto Sans JP', sans-serif" font-size="10" font-weight="bold">強み研究 2025</text>
+  <text x="702" y="193" text-anchor="middle" fill="#ccc" font-family="'Noto Sans JP', sans-serif" font-size="9">Psychological Medicine</text>
+  <text x="702" y="208" text-anchor="middle" fill="#fff" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="bold">10の強み特定</text>
+
+  <!-- Vertical label: エビデンスの強さ -->
+  <text x="15" y="290" text-anchor="middle" fill="#666" font-family="'Noto Sans JP', sans-serif" font-size="10" transform="rotate(-90, 15, 290)" letter-spacing="3">エビデンスの強さ</text>
+  <!-- Arrow for vertical axis -->
+  <line x1="25" y1="440" x2="25" y2="100" stroke="#666" stroke-width="1.5" marker-end="url(#arrowHead)"/>
+  <defs>
+    <marker id="arrowHead" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto">
+      <polygon points="0 0, 8 3, 0 6" fill="#666"/>
+    </marker>
+  </defs>
+
+  <!-- Bottom note -->
+  <text x="400" y="480" text-anchor="middle" fill="#555" font-family="'Noto Sans JP', sans-serif" font-size="9">※ ピラミッド上部ほど方法論的に厳密だが、研究数が少ない。下部ほど実践知が豊富だが科学的検証が不十分。</text>
+</svg>
