@@ -1,0 +1,49 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCollection } from 'astro:content';
+import { noteTypeConfig } from '../../data/taxonomy';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('notes');
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.md$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const base = import.meta.env.BASE_URL;
+const noteCfg = noteTypeConfig[entry.data.noteType as keyof typeof noteTypeConfig];
+---
+
+<ArticleLayout
+  title={entry.data.title}
+  date={entry.data.date}
+  tags={entry.data.tags}
+  backHref={base}
+  backLabel="Home"
+>
+  {noteCfg && (
+    <div class="note-type-bar" style={`border-color: ${noteCfg.color}`}>
+      <span style={`color: ${noteCfg.color}`}>{noteCfg.icon} {noteCfg.label}</span>
+    </div>
+  )}
+
+  <Content />
+</ArticleLayout>
+
+<style>
+  .note-type-bar {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 16px;
+    background: var(--bg-surface);
+    border: 1px solid;
+    border-radius: 8px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+</style>

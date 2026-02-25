@@ -1,0 +1,57 @@
+---
+import { getCollection } from 'astro:content';
+import { themeIds } from '../data/themes';
+
+const research = await getCollection('research', ({ data }) => !data.draft);
+const meetings = await getCollection('meetings', ({ data }) => !data.draft);
+const references = await getCollection('references', ({ data }) => !data.draft);
+const notes = await getCollection('notes', ({ data }) => !data.draft);
+
+const stats = [
+  { num: themeIds.length, label: 'テーマ', color: 'blue' },
+  { num: research.length, label: 'リサーチ', color: 'green' },
+  { num: meetings.length, label: '議事録', color: 'amber' },
+  { num: references.length + notes.length, label: '参照・ノート', color: 'purple' },
+];
+---
+
+<div class="kpi-grid">
+  {stats.map((s) => (
+    <div class="kpi-card">
+      <div class={`kpi-num ${s.color}`}>{s.num}</div>
+      <div class="kpi-label">{s.label}</div>
+    </div>
+  ))}
+</div>
+
+<style>
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+  }
+  .kpi-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    text-align: center;
+  }
+  .kpi-num {
+    font-family: var(--font-mono);
+    font-size: 28px;
+    font-weight: 600;
+  }
+  .kpi-num.blue { color: var(--blue); }
+  .kpi-num.green { color: var(--green); }
+  .kpi-num.amber { color: var(--amber); }
+  .kpi-num.purple { color: var(--purple); }
+  .kpi-label {
+    font-size: 11px;
+    color: var(--text-dim);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-top: 4px;
+  }
+</style>

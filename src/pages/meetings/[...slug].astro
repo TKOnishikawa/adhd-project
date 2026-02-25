@@ -1,0 +1,95 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('meetings');
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.md$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const base = import.meta.env.BASE_URL;
+---
+
+<ArticleLayout
+  title={entry.data.title}
+  date={entry.data.date}
+  tags={entry.data.tags}
+  backHref={base}
+  backLabel="Home"
+>
+  {entry.data.participants.length > 0 && (
+    <div class="meta-bar">
+      <span class="meta-label">参加者:</span>
+      {entry.data.participants.join(', ')}
+      {entry.data.duration && (
+        <span class="meta-sep">|</span>
+      )}
+      {entry.data.duration && (
+        <span>{entry.data.duration}</span>
+      )}
+    </div>
+  )}
+
+  <Content />
+
+  {entry.data.nextActions && entry.data.nextActions.length > 0 && (
+    <div class="next-actions">
+      <h3>Next Actions</h3>
+      <ul>
+        {entry.data.nextActions.map((action: string) => (
+          <li>{action}</li>
+        ))}
+      </ul>
+    </div>
+  )}
+</ArticleLayout>
+
+<style>
+  .meta-bar {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .meta-label {
+    font-weight: 700;
+    color: var(--cyan);
+    margin-right: 8px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .meta-sep {
+    margin: 0 8px;
+    color: var(--text-muted);
+  }
+
+  .next-actions {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+    margin-top: 32px;
+  }
+
+  .next-actions h3 {
+    color: var(--green);
+    margin-top: 0;
+    margin-bottom: 12px;
+  }
+
+  .next-actions li {
+    font-size: 14px;
+    margin-bottom: 8px;
+  }
+</style>

@@ -1,0 +1,64 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('research');
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.md$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const base = import.meta.env.BASE_URL;
+---
+
+<ArticleLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  date={entry.data.date}
+  themeId={entry.data.themeId}
+  maturity={entry.data.maturity}
+  tags={entry.data.tags}
+  updated={entry.data.updated}
+  backHref={`${base}themes/${entry.data.themeId}/`}
+  backLabel={`Theme ${entry.data.themeId}`}
+>
+  {entry.data.keyResearchers && entry.data.keyResearchers.length > 0 && (
+    <div class="researchers-bar">
+      <span class="researchers-label">Key Researchers:</span>
+      {entry.data.keyResearchers.join(' / ')}
+    </div>
+  )}
+
+  <Content />
+
+  {entry.data.coachingImplications && (
+    <div class="coaching">
+      <Fragment set:html={entry.data.coachingImplications} />
+    </div>
+  )}
+</ArticleLayout>
+
+<style>
+  .researchers-bar {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 32px;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+
+  .researchers-label {
+    font-weight: 700;
+    color: var(--cyan);
+    margin-right: 8px;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+</style>

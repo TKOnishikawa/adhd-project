@@ -1,0 +1,82 @@
+---
+import BaseLayout from './BaseLayout.astro';
+import '../styles/article.css';
+import { themes } from '../data/themes';
+import { maturityConfig } from '../data/taxonomy';
+
+interface Props {
+  title: string;
+  description?: string;
+  date: Date;
+  themeId?: string;
+  maturity?: string;
+  tags?: string[];
+  updated?: Date;
+  backHref?: string;
+  backLabel?: string;
+}
+
+const {
+  title,
+  description,
+  date,
+  themeId,
+  maturity = 'published',
+  tags = [],
+  updated,
+  backHref,
+  backLabel = 'Back',
+} = Astro.props;
+
+const base = import.meta.env.BASE_URL;
+const theme = themeId ? themes[themeId as keyof typeof themes] : null;
+const mat = maturityConfig[maturity as keyof typeof maturityConfig];
+const formattedDate = date.toISOString().slice(0, 10);
+const formattedUpdated = updated?.toISOString().slice(0, 10);
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="progress-bar" id="progress-bar"></div>
+
+  {backHref && (
+    <a href={backHref} class="back-link">&larr; {backLabel}</a>
+  )}
+
+  <header class="article-header">
+    {theme && (
+      <div class="category-badge" style={`color: ${theme.color}`}>
+        {theme.icon} {theme.label}
+      </div>
+    )}
+    <h1>{title}</h1>
+    <div class="article-meta">
+      <span class="mono">{formattedDate}</span>
+      {formattedUpdated && <span class="mono">Updated: {formattedUpdated}</span>}
+      {mat && (
+        <span class={`maturity-badge ${maturity}`}>{mat.label}</span>
+      )}
+    </div>
+    {tags.length > 0 && (
+      <div class="article-tags">
+        {tags.map((tag: string) => (
+          <a href={`${base}tags/${tag}/`} class="tag">{tag}</a>
+        ))}
+      </div>
+    )}
+  </header>
+
+  <div class="article-body">
+    <slot />
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  const bar = document.getElementById('progress-bar');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      bar.style.width = pct + '%';
+    });
+  }
+</script>

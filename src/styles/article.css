@@ -1,0 +1,305 @@
+/* ===========================
+   Article-specific styles
+   =========================== */
+
+/* Progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 0%;
+  height: 3px;
+  background: var(--grad-hero);
+  z-index: 1000;
+  transition: width 0.1s;
+}
+
+/* Article header */
+.article-header {
+  padding: 60px 0 40px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 40px;
+}
+
+.article-header .category-badge {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+}
+
+.article-header h1 {
+  font-size: 36px;
+  margin-bottom: 16px;
+}
+
+.article-meta {
+  display: flex;
+  gap: 20px;
+  color: var(--text-dim);
+  font-size: 13px;
+  flex-wrap: wrap;
+}
+
+.article-meta .mono {
+  font-family: var(--font-mono);
+}
+
+/* Article body */
+.article-body {
+  max-width: var(--content-width);
+}
+
+/* Section eyebrow */
+.section-eyebrow {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+/* KPI cards */
+.kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 20px 0;
+}
+
+.kpi-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  text-align: center;
+}
+
+.kpi-num {
+  font-family: var(--font-mono);
+  font-size: 28px;
+  font-weight: 600;
+}
+
+.kpi-num.blue { color: var(--blue); }
+.kpi-num.green { color: var(--green); }
+.kpi-num.amber { color: var(--amber); }
+.kpi-num.red { color: var(--red); }
+
+.kpi-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin-top: 4px;
+}
+
+/* Warning/Pitfall callout */
+.pitfall {
+  background: rgba(239, 68, 68, 0.08);
+  border-left: 3px solid var(--red);
+  padding: 16px 20px;
+  margin: 16px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+}
+
+.pitfall::before {
+  content: '\26A0\FE0F  Pitfall';
+  display: block;
+  font-weight: 700;
+  color: var(--red);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+/* Tip callout */
+.tip {
+  background: rgba(74, 125, 255, 0.08);
+  border-left: 3px solid var(--blue);
+  padding: 16px 20px;
+  margin: 16px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+}
+
+.tip::before {
+  content: '\1F4A1  Insight';
+  display: block;
+  font-weight: 700;
+  color: var(--blue);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+/* Coaching callout (ADHD-specific) */
+.coaching {
+  background: rgba(52, 211, 153, 0.08);
+  border-left: 3px solid var(--green);
+  padding: 16px 20px;
+  margin: 16px 0;
+  border-radius: 0 8px 8px 0;
+  font-size: 14px;
+}
+
+.coaching::before {
+  content: '\1F3AF  Coaching Implication';
+  display: block;
+  font-weight: 700;
+  color: var(--green);
+  font-size: 12px;
+  letter-spacing: 1px;
+  margin-bottom: 8px;
+}
+
+/* Resource links */
+.resource-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0;
+}
+
+.resource-links a {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 16px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  font-size: 13px;
+  color: var(--cyan);
+  transition: all 0.15s;
+}
+
+.resource-links a:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-sm);
+}
+
+/* Checklist section */
+.checklist {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 20px 0;
+}
+
+.checklist h4 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: var(--green);
+}
+
+.checklist label {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  cursor: pointer;
+  font-size: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.checklist label:last-child {
+  border-bottom: none;
+}
+
+/* Tags in article */
+.article-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.article-tags .tag {
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--text-dim);
+}
+
+/* Back to top / portal */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--text-dim);
+  padding: 8px 0;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: var(--cyan);
+}
+
+/* Table of Contents */
+.toc {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  margin: 24px 0;
+}
+
+.toc h4 {
+  margin: 0 0 12px;
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.toc ol {
+  padding-left: 20px;
+  margin: 0;
+}
+
+.toc li {
+  margin-bottom: 6px;
+  font-size: 14px;
+}
+
+.toc a {
+  color: var(--text-dim);
+}
+
+.toc a:hover {
+  color: var(--cyan);
+}
+
+/* Maturity badge */
+.maturity-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: 4px;
+}
+
+.maturity-badge.seed { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
+.maturity-badge.memo { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+.maturity-badge.draft { background: rgba(34, 211, 238, 0.15); color: var(--cyan); }
+.maturity-badge.published { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+
+/* Responsive */
+@media (max-width: 768px) {
+  .article-header h1 {
+    font-size: 24px;
+  }
+  .kpi-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  .article-meta {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

@@ -1,0 +1,174 @@
+---
+// Pagefind Search Component — McKinsey Dark Theme
+---
+
+<section class="search-section">
+  <div class="section-eyebrow" style="color: var(--purple);">Search</div>
+  <h2 class="search-title">コンテンツ検索</h2>
+  <div class="search-wrapper">
+    <div id="search"></div>
+  </div>
+</section>
+
+<style is:global>
+  /* Pagefind UI — Dark Theme Overrides */
+  :root {
+    --pagefind-ui-scale: 0.9;
+    --pagefind-ui-primary: #22d3ee;
+    --pagefind-ui-text: #eaeaf2;
+    --pagefind-ui-background: #101018;
+    --pagefind-ui-border: rgba(255, 255, 255, 0.06);
+    --pagefind-ui-tag: #181824;
+    --pagefind-ui-border-width: 1px;
+    --pagefind-ui-border-radius: 12px;
+    --pagefind-ui-image-border-radius: 8px;
+    --pagefind-ui-image-box-ratio: 0;
+    --pagefind-ui-font: 'Noto Sans JP', 'Inter', system-ui, sans-serif;
+  }
+
+  .search-wrapper {
+    max-width: 700px;
+    margin: 0 auto 32px;
+  }
+
+  .pagefind-ui__search-input {
+    background: var(--bg-surface) !important;
+    border: 1px solid var(--border) !important;
+    color: var(--text) !important;
+    font-family: var(--font-sans) !important;
+    font-size: 14px !important;
+    padding: 12px 16px !important;
+    border-radius: 12px !important;
+    transition: border-color 0.15s !important;
+  }
+
+  .pagefind-ui__search-input:focus {
+    border-color: var(--cyan) !important;
+    outline: none !important;
+    box-shadow: 0 0 0 3px rgba(34, 211, 238, 0.1) !important;
+  }
+
+  .pagefind-ui__search-input::placeholder {
+    color: var(--text-muted) !important;
+  }
+
+  .pagefind-ui__search-clear {
+    color: var(--text-muted) !important;
+    background: none !important;
+  }
+
+  .pagefind-ui__result {
+    border-top: 1px solid var(--border) !important;
+    padding: 16px 0 !important;
+  }
+
+  .pagefind-ui__result-link {
+    color: var(--cyan) !important;
+    font-weight: 600 !important;
+  }
+
+  .pagefind-ui__result-link:hover {
+    color: var(--blue) !important;
+  }
+
+  .pagefind-ui__result-excerpt {
+    color: var(--text-dim) !important;
+    font-size: 13px !important;
+  }
+
+  mark.pagefind-ui__result-highlight {
+    background: rgba(34, 211, 238, 0.15) !important;
+    color: var(--cyan) !important;
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  .pagefind-ui__result-title {
+    font-weight: 700 !important;
+  }
+
+  .pagefind-ui__result-nested {
+    border-left: 2px solid var(--border) !important;
+  }
+
+  .pagefind-ui__message {
+    color: var(--text-muted) !important;
+    font-size: 13px !important;
+  }
+
+  .pagefind-ui__button {
+    background: var(--bg-raised) !important;
+    color: var(--text-dim) !important;
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    font-family: var(--font-sans) !important;
+  }
+
+  .pagefind-ui__button:hover {
+    border-color: var(--cyan) !important;
+    color: var(--cyan) !important;
+  }
+
+  .pagefind-ui__drawer {
+    gap: 0 !important;
+  }
+
+  .pagefind-ui__filter-panel {
+    border: 1px solid var(--border) !important;
+    border-radius: 8px !important;
+    background: var(--bg-surface) !important;
+    padding: 12px !important;
+  }
+
+  .pagefind-ui__filter-name {
+    color: var(--text-dim) !important;
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    letter-spacing: 1px !important;
+    text-transform: uppercase !important;
+  }
+
+  .pagefind-ui__filter-value {
+    color: var(--text) !important;
+    font-size: 13px !important;
+  }
+</style>
+
+<style>
+  .search-section {
+    margin-bottom: 64px;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .search-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+</style>
+
+<link href="/adhd-project/pagefind/pagefind-ui.css" rel="stylesheet" />
+<script is:inline>
+  window.addEventListener('DOMContentLoaded', function() {
+    var script = document.createElement('script');
+    script.src = '/adhd-project/pagefind/pagefind-ui.js';
+    script.onload = function() {
+      new PagefindUI({
+        element: '#search',
+        showSubResults: true,
+        showImages: false,
+        translations: {
+          placeholder: 'リサーチ・議事録・ノートを検索...',
+          zero_results: '「[SEARCH_TERM]」に一致する結果がありません',
+        },
+      });
+    };
+    document.head.appendChild(script);
+  });
+</script>

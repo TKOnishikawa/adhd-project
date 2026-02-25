@@ -1,0 +1,133 @@
+---
+import type { ThemeId } from '../data/themes';
+import { themes } from '../data/themes';
+import { getCollection } from 'astro:content';
+
+interface Props {
+  id: ThemeId;
+}
+
+const { id } = Astro.props;
+const theme = themes[id];
+const base = import.meta.env.BASE_URL;
+
+// Count research articles for this theme
+const allResearch = await getCollection('research', ({ data }) => !data.draft);
+const themeResearch = allResearch.filter((r) => r.data.themeId === id);
+const publishedCount = themeResearch.filter((r) => r.data.maturity === 'published').length;
+const totalCount = themeResearch.length;
+
+// Determine progress status
+const hasContent = totalCount > 0;
+const allPublished = hasContent && publishedCount === totalCount;
+---
+
+<a href={`${base}themes/${id}/`} class="theme-card" style={`--theme-color: ${theme.color}`}>
+  <div class="theme-icon">{theme.icon}</div>
+  <div class="theme-id">{id}</div>
+  <div class="theme-label">{theme.label}</div>
+  <div class="theme-progress">
+    {hasContent ? (
+      <div class="progress-dots">
+        {themeResearch.map((_, i) => (
+          <span class={`dot ${i < publishedCount ? 'filled' : ''}`} />
+        ))}
+      </div>
+    ) : (
+      <span class="status-empty">未着手</span>
+    )}
+  </div>
+  {allPublished && hasContent && (
+    <div class="status-done">Done</div>
+  )}
+</a>
+
+<style>
+  .theme-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 20px 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.2s;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .theme-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: var(--theme-color);
+    opacity: 0.6;
+  }
+
+  .theme-card:hover {
+    border-color: var(--theme-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .theme-icon {
+    font-size: 28px;
+  }
+
+  .theme-id {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--theme-color);
+    letter-spacing: 1px;
+  }
+
+  .theme-label {
+    font-size: 13px;
+    font-weight: 600;
+    text-align: center;
+  }
+
+  .theme-progress {
+    margin-top: 4px;
+  }
+
+  .progress-dots {
+    display: flex;
+    gap: 4px;
+  }
+
+  .dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+  }
+
+  .dot.filled {
+    background: var(--theme-color);
+    border-color: var(--theme-color);
+  }
+
+  .status-empty {
+    font-size: 10px;
+    color: var(--text-muted);
+    letter-spacing: 1px;
+  }
+
+  .status-done {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: var(--green);
+    margin-top: 2px;
+  }
+</style>

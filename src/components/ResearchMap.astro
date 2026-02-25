@@ -1,0 +1,106 @@
+---
+import ThemeCard from './ThemeCard.astro';
+import type { ThemeId } from '../data/themes';
+import { themes, themeIds } from '../data/themes';
+
+// Grid layout: 4 rows × 3 columns
+// Row 1:       [_] [A] [_]
+// Row 2:       [B] [F] [C]
+// Row 3:       [D] [_] [E]
+// Row 4:       [_] [G] [H]
+const grid: (ThemeId | null)[][] = [
+  [null, 'A', null],
+  ['B',  'F', 'C'],
+  ['D',  null, 'E'],
+  [null, 'G',  'H'],
+];
+---
+
+<section class="research-map">
+  <div class="section-eyebrow" style="color: var(--blue);">Research Map</div>
+  <h2 class="map-title">テーマ体系 A–H</h2>
+  <p class="map-desc">各テーマをクリックすると、リサーチ記事・関連コンテンツの詳細に遷移します。</p>
+
+  <div class="map-grid">
+    {grid.map((row) =>
+      row.map((cell) =>
+        cell ? (
+          <div class={`grid-cell cell-${cell}`}>
+            <ThemeCard id={cell} />
+          </div>
+        ) : (
+          <div class="grid-cell empty" />
+        )
+      )
+    )}
+  </div>
+
+  <!-- Dependency lines (CSS-only indicators) -->
+  <div class="dependency-legend">
+    <span class="legend-item">
+      <span class="legend-arrow">→</span> 前提テーマの知識が推奨
+    </span>
+  </div>
+</section>
+
+<style>
+  .research-map {
+    margin-bottom: 64px;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .map-title {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  .map-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 32px;
+  }
+
+  .map-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .grid-cell {
+    min-height: 120px;
+  }
+
+  .grid-cell.empty {
+    /* Invisible placeholder */
+  }
+
+  .dependency-legend {
+    text-align: center;
+    margin-top: 24px;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+
+  .legend-arrow {
+    color: var(--cyan);
+    font-weight: 700;
+  }
+
+  @media (max-width: 600px) {
+    .map-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    .grid-cell.empty {
+      display: none;
+    }
+  }
+</style>

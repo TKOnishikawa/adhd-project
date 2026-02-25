@@ -1,0 +1,272 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { themes, themeIds, getDependents } from '../../data/themes';
+import { contentTypeConfig, maturityConfig } from '../../data/taxonomy';
+import { getCollection } from 'astro:content';
+import type { ThemeId } from '../../data/themes';
+
+export function getStaticPaths() {
+  return themeIds.map((id) => ({ params: { id } }));
+}
+
+const { id } = Astro.params as { id: ThemeId };
+const theme = themes[id];
+const base = import.meta.env.BASE_URL;
+
+// Gather related content
+const research = (await getCollection('research', ({ data }) => !data.draft && data.themeId === id))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const meetings = (await getCollection('meetings', ({ data }) => !data.draft && data.relatedThemes?.includes(id)))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const references = (await getCollection('references', ({ data }) => !data.draft && data.relatedThemes?.includes(id)))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft && data.relatedThemes?.includes(id)))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Dependencies
+const prereqs = theme.prerequisites.map((pid) => ({ id: pid, ...themes[pid] }));
+const dependents = getDependents(id).map((did) => ({ id: did, ...themes[did] }));
+---
+
+<BaseLayout title={`${theme.icon} ${theme.label}`} description={theme.description}>
+  <a href={base} class="back-link">&larr; Home</a>
+
+  <header class="theme-header" style={`--theme-color: ${theme.color}`}>
+    <div class="theme-icon-large">{theme.icon}</div>
+    <div class="theme-id-badge mono">{id}</div>
+    <h1>{theme.label}</h1>
+    <p class="theme-desc">{theme.description}</p>
+  </header>
+
+  <!-- Dependencies -->
+  {(prereqs.length > 0 || dependents.length > 0) && (
+    <section class="deps-section">
+      {prereqs.length > 0 && (
+        <div class="dep-group">
+          <span class="dep-label">前提テーマ:</span>
+          {prereqs.map((p) => (
+            <a href={`${base}themes/${p.id}/`} class="dep-chip" style={`border-color: ${p.color}; color: ${p.color}`}>
+              {p.icon} {p.id}
+            </a>
+          ))}
+        </div>
+      )}
+      {dependents.length > 0 && (
+        <div class="dep-group">
+          <span class="dep-label">次のテーマ:</span>
+          {dependents.map((d) => (
+            <a href={`${base}themes/${d.id}/`} class="dep-chip" style={`border-color: ${d.color}; color: ${d.color}`}>
+              {d.icon} {d.id}
+            </a>
+          ))}
+        </div>
+      )}
+    </section>
+  )}
+
+  <!-- Research articles -->
+  <section class="content-section">
+    <h2>{contentTypeConfig.research.icon} リサーチ記事 ({research.length})</h2>
+    {research.length > 0 ? (
+      <div class="content-list">
+        {research.map((r) => {
+          const mat = maturityConfig[r.data.maturity as keyof typeof maturityConfig];
+          return (
+            <a href={`${base}research/${r.id.replace(/\.md$/, '')}/`} class="content-item">
+              <span class="mono item-date">{r.data.date.toISOString().slice(0, 10)}</span>
+              <span class="item-title">{r.data.title}</span>
+              {mat && <span class={`maturity-badge ${r.data.maturity}`}>{mat.label}</span>}
+            </a>
+          );
+        })}
+      </div>
+    ) : (
+      <p class="empty-msg">まだリサーチ記事がありません</p>
+    )}
+  </section>
+
+  <!-- Meetings -->
+  <section class="content-section">
+    <h2>{contentTypeConfig.meeting.icon} 関連議事録 ({meetings.length})</h2>
+    {meetings.length > 0 ? (
+      <div class="content-list">
+        {meetings.map((m) => (
+          <a href={`${base}meetings/${m.id.replace(/\.md$/, '')}/`} class="content-item">
+            <span class="mono item-date">{m.data.date.toISOString().slice(0, 10)}</span>
+            <span class="item-title">{m.data.title}</span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-msg">関連する議事録はまだありません</p>
+    )}
+  </section>
+
+  <!-- References -->
+  <section class="content-section">
+    <h2>{contentTypeConfig.reference.icon} 関連参照 ({references.length})</h2>
+    {references.length > 0 ? (
+      <div class="content-list">
+        {references.map((r) => (
+          <a href={`${base}references/${r.id.replace(/\.md$/, '')}/`} class="content-item">
+            <span class="mono item-date">{r.data.date.toISOString().slice(0, 10)}</span>
+            <span class="item-title">{r.data.title}</span>
+          </a>
+        ))}
+      </div>
+    ) : (
+      <p class="empty-msg">関連する参照資料はまだありません</p>
+    )}
+  </section>
+
+  <!-- Notes -->
+  {notes.length > 0 && (
+    <section class="content-section">
+      <h2>{contentTypeConfig.note.icon} 関連ノート ({notes.length})</h2>
+      <div class="content-list">
+        {notes.map((n) => (
+          <a href={`${base}notes/${n.id.replace(/\.md$/, '')}/`} class="content-item">
+            <span class="mono item-date">{n.data.date.toISOString().slice(0, 10)}</span>
+            <span class="item-title">{n.data.title}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 8px 0;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--cyan); }
+
+  .theme-header {
+    text-align: center;
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+
+  .theme-icon-large { font-size: 48px; margin-bottom: 8px; }
+
+  .theme-id-badge {
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--theme-color);
+    letter-spacing: 2px;
+    margin-bottom: 8px;
+  }
+
+  .theme-header h1 { margin-bottom: 8px; }
+  .theme-desc { color: var(--text-dim); font-size: 15px; }
+
+  .deps-section {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    margin-bottom: 40px;
+    padding: 16px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+  }
+
+  .dep-group {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .dep-label {
+    font-size: 12px;
+    color: var(--text-dim);
+    font-weight: 600;
+  }
+
+  .dep-chip {
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 12px;
+    border: 1px solid;
+    border-radius: 20px;
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+
+  .dep-chip:hover {
+    background: rgba(255, 255, 255, 0.04);
+  }
+
+  .content-section { margin-bottom: 40px; }
+  .content-section h2 { margin-top: 0; margin-bottom: 16px; font-size: 20px; }
+
+  .content-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .content-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    text-decoration: none;
+    color: var(--text);
+    transition: all 0.15s;
+  }
+
+  .content-item:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-raised);
+  }
+
+  .item-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    min-width: 90px;
+  }
+
+  .item-title {
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .maturity-badge {
+    display: inline-flex;
+    align-items: center;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 4px;
+    margin-left: auto;
+  }
+
+  .maturity-badge.seed { background: rgba(245, 158, 11, 0.15); color: var(--amber); }
+  .maturity-badge.memo { background: rgba(167, 139, 250, 0.15); color: var(--purple); }
+  .maturity-badge.draft { background: rgba(34, 211, 238, 0.15); color: var(--cyan); }
+  .maturity-badge.published { background: rgba(52, 211, 153, 0.15); color: var(--green); }
+
+  .empty-msg {
+    color: var(--text-muted);
+    font-size: 14px;
+    padding: 16px;
+    text-align: center;
+  }
+</style>

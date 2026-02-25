@@ -1,0 +1,116 @@
+---
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'ADHDコーチング事業 リサーチ & プロジェクトハブ' } = Astro.props;
+const base = import.meta.env.BASE_URL;
+---
+
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content={description} />
+  <title>{title} | ADHD Coaching Project</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;900&family=Noto+Sans+JP:wght@400;500;600;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet" />
+</head>
+<body>
+  <nav class="nav">
+    <div class="container nav-inner">
+      <a href={base} class="nav-brand">
+        <span class="nav-icon">🧠</span>
+        <span class="nav-title">ADHD Project</span>
+      </a>
+      <div class="nav-links">
+        <a href={base}>Home</a>
+        <a href={`${base}tags/`}>Tags</a>
+      </div>
+    </div>
+  </nav>
+
+  <main class="container main-content">
+    <slot />
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <p>ADHD Coaching Project &mdash; Research & Knowledge Hub</p>
+    </div>
+  </footer>
+</body>
+</html>
+
+<style>
+  .nav {
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    background: rgba(8, 8, 13, 0.85);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    height: var(--nav-height);
+    display: flex;
+    align-items: center;
+  }
+
+  .nav-inner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .nav-brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: var(--text);
+    font-weight: 700;
+    font-size: 16px;
+  }
+
+  .nav-brand:hover {
+    color: var(--cyan);
+  }
+
+  .nav-icon {
+    font-size: 20px;
+  }
+
+  .nav-links {
+    display: flex;
+    gap: 20px;
+  }
+
+  .nav-links a {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-dim);
+    letter-spacing: 0.5px;
+  }
+
+  .nav-links a:hover {
+    color: var(--cyan);
+  }
+
+  .main-content {
+    padding-top: 40px;
+    padding-bottom: 80px;
+    min-height: calc(100vh - var(--nav-height) - 80px);
+  }
+
+  .footer {
+    border-top: 1px solid var(--border);
+    padding: 24px 0;
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 12px;
+  }
+</style>

@@ -1,0 +1,78 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ResearchMap from '../components/ResearchMap.astro';
+import StatsCards from '../components/StatsCards.astro';
+import ActivityTimeline from '../components/ActivityTimeline.astro';
+import Search from '../components/Search.astro';
+---
+
+<BaseLayout title="Home">
+  <!-- Hero -->
+  <header class="hero">
+    <div class="badge">ADHD COACHING PROJECT</div>
+    <h1>
+      <span class="text-gradient">ADHDコーチング事業</span><br />
+      リサーチ & プロジェクトハブ
+    </h1>
+    <p class="hero-desc">
+      ADHDの特性理解からコーチングメソッド設計まで、学術リサーチ・議事録・参照資料を体系的に管理するナレッジベース。
+    </p>
+  </header>
+
+  <!-- Section 1: Research Map -->
+  <ResearchMap />
+
+  <!-- Section 2: Dashboard -->
+  <section class="dashboard">
+    <div class="section-eyebrow" style="color: var(--green);">Dashboard</div>
+    <h2 class="dash-title">プロジェクト概況</h2>
+    <StatsCards />
+    <ActivityTimeline />
+  </section>
+
+  <!-- Section 3: Search -->
+  <Search />
+</BaseLayout>
+
+<style>
+  .hero {
+    text-align: center;
+    padding: 40px 0 64px;
+  }
+
+  .hero h1 {
+    font-size: 36px;
+    margin: 16px 0;
+    line-height: 1.4;
+  }
+
+  .hero-desc {
+    color: var(--text-dim);
+    font-size: 15px;
+    max-width: 560px;
+    margin: 0 auto;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .dash-title {
+    margin-top: 0;
+    margin-bottom: 20px;
+  }
+
+  .dashboard {
+    margin-bottom: 64px;
+  }
+
+  @media (max-width: 600px) {
+    .hero h1 {
+      font-size: 24px;
+    }
+  }
+</style>
