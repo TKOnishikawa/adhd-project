@@ -24,26 +24,26 @@ const items: TimelineItem[] = [
     date: r.data.updated ?? r.data.date,
     type: 'research' as const,
     title: r.data.title,
-    href: `${base}research/${r.id.replace(/\.md$/, '')}/`,
+    href: `${base}/research/${r.id.replace(/\.md$/, '')}/`,
     meta: themes[r.data.themeId as keyof typeof themes]?.label,
   })),
   ...meetings.map((m) => ({
     date: m.data.date,
     type: 'meeting' as const,
     title: m.data.title,
-    href: `${base}meetings/${m.id.replace(/\.md$/, '')}/`,
+    href: `${base}/meetings/${m.id.replace(/\.md$/, '')}/`,
   })),
   ...references.map((r) => ({
     date: r.data.date,
     type: 'reference' as const,
     title: r.data.title,
-    href: `${base}references/${r.id.replace(/\.md$/, '')}/`,
+    href: `${base}/references/${r.id.replace(/\.md$/, '')}/`,
   })),
   ...notes.map((n) => ({
     date: n.data.date,
     type: 'note' as const,
     title: n.data.title,
-    href: `${base}notes/${n.id.replace(/\.md$/, '')}/`,
+    href: `${base}/notes/${n.id.replace(/\.md$/, '')}/`,
   })),
 ];
 

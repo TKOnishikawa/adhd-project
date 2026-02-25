@@ -23,7 +23,7 @@ const base = import.meta.env.BASE_URL;
   maturity={entry.data.maturity}
   tags={entry.data.tags}
   updated={entry.data.updated}
-  backHref={`${base}themes/${entry.data.themeId}/`}
+  backHref={`${base}/themes/${entry.data.themeId}/`}
   backLabel={`Theme ${entry.data.themeId}`}
 >
   {entry.data.keyResearchers && entry.data.keyResearchers.length > 0 && (

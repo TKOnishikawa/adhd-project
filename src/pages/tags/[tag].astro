@@ -30,7 +30,7 @@ const research = (await getCollection('research', ({ data }) => !data.draft && d
     date: r.data.date,
     type: 'research' as const,
     title: r.data.title,
-    href: `${base}research/${r.id.replace(/\.md$/, '')}/`,
+    href: `${base}/research/${r.id.replace(/\.md$/, '')}/`,
   }));
 
 const meetings = (await getCollection('meetings', ({ data }) => !data.draft && data.tags.includes(tag)))
@@ -38,7 +38,7 @@ const meetings = (await getCollection('meetings', ({ data }) => !data.draft && d
     date: m.data.date,
     type: 'meeting' as const,
     title: m.data.title,
-    href: `${base}meetings/${m.id.replace(/\.md$/, '')}/`,
+    href: `${base}/meetings/${m.id.replace(/\.md$/, '')}/`,
   }));
 
 const references = (await getCollection('references', ({ data }) => !data.draft && data.tags.includes(tag)))
@@ -46,7 +46,7 @@ const references = (await getCollection('references', ({ data }) => !data.draft 
     date: r.data.date,
     type: 'reference' as const,
     title: r.data.title,
-    href: `${base}references/${r.id.replace(/\.md$/, '')}/`,
+    href: `${base}/references/${r.id.replace(/\.md$/, '')}/`,
   }));
 
 const notes = (await getCollection('notes', ({ data }) => !data.draft && data.tags.includes(tag)))
@@ -54,7 +54,7 @@ const notes = (await getCollection('notes', ({ data }) => !data.draft && data.ta
     date: n.data.date,
     type: 'note' as const,
     title: n.data.title,
-    href: `${base}notes/${n.id.replace(/\.md$/, '')}/`,
+    href: `${base}/notes/${n.id.replace(/\.md$/, '')}/`,
   }));
 
 const all = [...research, ...meetings, ...references, ...notes]

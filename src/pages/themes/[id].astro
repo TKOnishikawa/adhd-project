@@ -48,7 +48,7 @@ const dependents = getDependents(id).map((did) => ({ id: did, ...themes[did] }))
         <div class="dep-group">
           <span class="dep-label">前提テーマ:</span>
           {prereqs.map((p) => (
-            <a href={`${base}themes/${p.id}/`} class="dep-chip" style={`border-color: ${p.color}; color: ${p.color}`}>
+            <a href={`${base}/themes/${p.id}/`} class="dep-chip" style={`border-color: ${p.color}; color: ${p.color}`}>
               {p.icon} {p.id}
             </a>
           ))}
@@ -58,7 +58,7 @@ const dependents = getDependents(id).map((did) => ({ id: did, ...themes[did] }))
         <div class="dep-group">
           <span class="dep-label">次のテーマ:</span>
           {dependents.map((d) => (
-            <a href={`${base}themes/${d.id}/`} class="dep-chip" style={`border-color: ${d.color}; color: ${d.color}`}>
+            <a href={`${base}/themes/${d.id}/`} class="dep-chip" style={`border-color: ${d.color}; color: ${d.color}`}>
               {d.icon} {d.id}
             </a>
           ))}
@@ -75,7 +75,7 @@ const dependents = getDependents(id).map((did) => ({ id: did, ...themes[did] }))
         {research.map((r) => {
           const mat = maturityConfig[r.data.maturity as keyof typeof maturityConfig];
           return (
-            <a href={`${base}research/${r.id.replace(/\.md$/, '')}/`} class="content-item">
+            <a href={`${base}/research/${r.id.replace(/\.md$/, '')}/`} class="content-item">
               <span class="mono item-date">{r.data.date.toISOString().slice(0, 10)}</span>
               <span class="item-title">{r.data.title}</span>
               {mat && <span class={`maturity-badge ${r.data.maturity}`}>{mat.label}</span>}
@@ -94,7 +94,7 @@ const dependents = getDependents(id).map((did) => ({ id: did, ...themes[did] }))
     {meetings.length > 0 ? (
       <div class="content-list">
         {meetings.map((m) => (
-          <a href={`${base}meetings/${m.id.replace(/\.md$/, '')}/`} class="content-item">
+          <a href={`${base}/meetings/${m.id.replace(/\.md$/, '')}/`} class="content-item">
             <span class="mono item-date">{m.data.date.toISOString().slice(0, 10)}</span>
             <span class="item-title">{m.data.title}</span>
           </a>
@@ -111,7 +111,7 @@ const dependents = getDependents(id).map((did) => ({ id: did, ...themes[did] }))
     {references.length > 0 ? (
       <div class="content-list">
         {references.map((r) => (
-          <a href={`${base}references/${r.id.replace(/\.md$/, '')}/`} class="content-item">
+          <a href={`${base}/references/${r.id.replace(/\.md$/, '')}/`} class="content-item">
             <span class="mono item-date">{r.data.date.toISOString().slice(0, 10)}</span>
             <span class="item-title">{r.data.title}</span>
           </a>
@@ -128,7 +128,7 @@ const dependents = getDependents(id).map((did) => ({ id: did, ...themes[did] }))
       <h2>{contentTypeConfig.note.icon} 関連ノート ({notes.length})</h2>
       <div class="content-list">
         {notes.map((n) => (
-          <a href={`${base}notes/${n.id.replace(/\.md$/, '')}/`} class="content-item">
+          <a href={`${base}/notes/${n.id.replace(/\.md$/, '')}/`} class="content-item">
             <span class="mono item-date">{n.data.date.toISOString().slice(0, 10)}</span>
             <span class="item-title">{n.data.title}</span>
           </a>

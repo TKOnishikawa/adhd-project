@@ -59,7 +59,7 @@ const formattedUpdated = updated?.toISOString().slice(0, 10);
     {tags.length > 0 && (
       <div class="article-tags">
         {tags.map((tag: string) => (
-          <a href={`${base}tags/${tag}/`} class="tag">{tag}</a>
+          <a href={`${base}/tags/${tag}/`} class="tag">{tag}</a>
         ))}
       </div>
     )}
