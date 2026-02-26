@@ -1,0 +1,122 @@
+---
+import { getCollection } from 'astro:content';
+import { themes } from '../data/themes';
+import { maturityConfig } from '../data/taxonomy';
+import type { ThemeId } from '../data/themes';
+
+const base = import.meta.env.BASE_URL;
+const research = (await getCollection('research', ({ data }) => !data.draft))
+  .sort((a, b) => a.data.themeId.localeCompare(b.data.themeId));
+---
+
+<section class="research-list">
+  <div class="section-eyebrow" style="color: var(--green);">Research Articles</div>
+  <div class="list-header">
+    <h2 class="list-title">リサーチ記事</h2>
+    <a href={`${base}/research/`} class="view-all">全一覧 &rarr;</a>
+  </div>
+
+  <div class="article-list">
+    {research.map((r) => {
+      const theme = themes[r.data.themeId as ThemeId];
+      const mat = maturityConfig[r.data.maturity as keyof typeof maturityConfig];
+      return (
+        <a href={`${base}/research/${r.id.replace(/\.md$/, '')}/`}
+           class="article-item"
+           style={`--theme-color: ${theme.color}`}>
+          <div class="article-bar" />
+          <span class="article-id mono" style={`color: ${theme.color}`}>{r.data.themeId}</span>
+          <span class="article-title">{r.data.title}</span>
+          <span class="article-date mono">{r.data.date.toISOString().slice(0, 10)}</span>
+        </a>
+      );
+    })}
+  </div>
+</section>
+
+<style>
+  .research-list {
+    margin-bottom: 64px;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .list-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .list-title {
+    margin: 0;
+  }
+
+  .view-all {
+    font-size: 13px;
+    color: var(--text-dim);
+    transition: color 0.15s;
+  }
+  .view-all:hover { color: var(--cyan); }
+
+  .article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .article-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .article-item:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-raised);
+  }
+
+  .article-bar {
+    width: 3px;
+    height: 20px;
+    border-radius: 2px;
+    background: var(--theme-color);
+    flex-shrink: 0;
+  }
+
+  .article-id {
+    font-size: 14px;
+    font-weight: 700;
+    min-width: 16px;
+    flex-shrink: 0;
+  }
+
+  .article-title {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .article-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  @media (max-width: 600px) {
+    .article-item { flex-wrap: wrap; gap: 8px; }
+    .article-date { display: none; }
+  }
+</style>

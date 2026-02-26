@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { themes, themeIds } from '../../data/themes';
+import { maturityConfig } from '../../data/taxonomy';
+import type { ThemeId } from '../../data/themes';
+
+const base = import.meta.env.BASE_URL;
+const research = await getCollection('research', ({ data }) => !data.draft);
+
+// Group by theme
+const grouped = themeIds.map((id) => ({
+  id,
+  theme: themes[id],
+  articles: research
+    .filter((r) => r.data.themeId === id)
+    .sort((a, b) => a.data.date.getTime() - b.data.date.getTime()),
+})).filter((g) => g.articles.length > 0);
+---
+
+<BaseLayout title="リサーチ一覧">
+  <a href={base} class="back-link">&larr; ホーム</a>
+
+  <header class="page-header">
+    <div class="badge">RESEARCH</div>
+    <h1>リサーチ記事</h1>
+    <p class="page-desc">全{research.length}本のリサーチ記事。テーマ別に整理。</p>
+  </header>
+
+  {grouped.map((group) => (
+    <section class="theme-group">
+      <div class="group-header">
+        <a href={`${base}/themes/${group.id}/`} class="group-link" style={`--theme-color: ${group.theme.color}`}>
+          <span class="group-icon">{group.theme.icon}</span>
+          <span class="group-id mono" style={`color: ${group.theme.color}`}>{group.id}</span>
+          <span class="group-label">{group.theme.label}</span>
+        </a>
+        <span class="group-count">{group.articles.length}</span>
+      </div>
+      <div class="article-list">
+        {group.articles.map((r) => {
+          const mat = maturityConfig[r.data.maturity as keyof typeof maturityConfig];
+          return (
+            <a href={`${base}/research/${r.id.replace(/\.md$/, '')}/`} class="article-row">
+              <span class="article-date mono">{r.data.date.toISOString().slice(0, 10)}</span>
+              <span class="article-title">{r.data.title}</span>
+              {mat && <span class={`maturity-badge ${r.data.maturity}`}>{mat.label}</span>}
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  ))}
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 8px 0;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--cyan); }
+
+  .page-header {
+    text-align: center;
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .page-header h1 { margin: 12px 0 8px; }
+  .page-desc { color: var(--text-muted); font-size: 14px; }
+
+  .theme-group {
+    margin-bottom: 32px;
+  }
+
+  .group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .group-link {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text);
+    text-decoration: none;
+    transition: color 0.15s;
+  }
+  .group-link:hover { color: var(--theme-color); }
+
+  .group-icon { font-size: 20px; }
+  .group-id { font-size: 14px; font-weight: 700; }
+  .group-label { font-size: 15px; font-weight: 600; }
+  .group-count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .article-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .article-row:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-raised);
+  }
+
+  .article-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    min-width: 90px;
+  }
+  .article-title {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .maturity-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+  .maturity-badge.published { color: var(--green); background: rgba(52, 211, 153, 0.1); }
+  .maturity-badge.draft { color: var(--cyan); background: rgba(34, 211, 238, 0.1); }
+  .maturity-badge.memo { color: var(--purple); background: rgba(167, 139, 250, 0.1); }
+  .maturity-badge.seed { color: var(--amber); background: rgba(245, 158, 11, 0.1); }
+
+  @media (max-width: 600px) {
+    .article-row { flex-wrap: wrap; gap: 8px; }
+    .article-date { min-width: auto; }
+  }
+</style>

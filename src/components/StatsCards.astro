@@ -7,20 +7,22 @@ const meetings = await getCollection('meetings', ({ data }) => !data.draft);
 const references = await getCollection('references', ({ data }) => !data.draft);
 const notes = await getCollection('notes', ({ data }) => !data.draft);
 
+const base = import.meta.env.BASE_URL;
+
 const stats = [
-  { num: themeIds.length, label: 'テーマ', color: 'blue' },
-  { num: research.length, label: 'リサーチ', color: 'green' },
-  { num: meetings.length, label: '議事録', color: 'amber' },
-  { num: references.length + notes.length, label: '参照・ノート', color: 'purple' },
+  { num: themeIds.length, label: 'テーマ', color: 'blue', href: `${base}/` },
+  { num: research.length, label: 'リサーチ', color: 'green', href: `${base}/research/` },
+  { num: meetings.length, label: '議事録', color: 'amber', href: `${base}/meetings/` },
+  { num: references.length + notes.length, label: '参照・ノート', color: 'purple', href: `${base}/tags/` },
 ];
 ---
 
 <div class="kpi-grid">
   {stats.map((s) => (
-    <div class="kpi-card">
+    <a href={s.href} class="kpi-card">
       <div class={`kpi-num ${s.color}`}>{s.num}</div>
       <div class="kpi-label">{s.label}</div>
-    </div>
+    </a>
   ))}
 </div>
 
@@ -37,6 +39,13 @@ const stats = [
     border-radius: 12px;
     padding: 20px;
     text-align: center;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.15s;
+  }
+  .kpi-card:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-raised);
   }
   .kpi-num {
     font-family: var(--font-mono);

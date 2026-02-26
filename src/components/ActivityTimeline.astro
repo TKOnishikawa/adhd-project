@@ -70,6 +70,9 @@ const sorted = items.sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0
         );
       })}
     </div>
+    <div class="timeline-footer">
+      <a href="#search" class="see-all">検索で全件表示 &rarr;</a>
+    </div>
   </section>
 )}
 
@@ -137,6 +140,18 @@ const sorted = items.sort((a, b) => b.date.getTime() - a.date.getTime()).slice(0
     color: var(--text-muted);
     margin-left: 8px;
   }
+
+  .timeline-footer {
+    text-align: center;
+    margin-top: 12px;
+  }
+
+  .see-all {
+    font-size: 13px;
+    color: var(--text-dim);
+    transition: color 0.15s;
+  }
+  .see-all:hover { color: var(--cyan); }
 
   @media (max-width: 600px) {
     .timeline-item {

@@ -1,7 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
-import ResearchMap from '../components/ResearchMap.astro';
 import StatsCards from '../components/StatsCards.astro';
+import ResearchList from '../components/ResearchList.astro';
+import MeetingsPreview from '../components/MeetingsPreview.astro';
+import ResearchMap from '../components/ResearchMap.astro';
 import ActivityTimeline from '../components/ActivityTimeline.astro';
 import Search from '../components/Search.astro';
 ---
@@ -19,18 +21,27 @@ import Search from '../components/Search.astro';
     </p>
   </header>
 
-  <!-- Section 1: Research Map -->
-  <ResearchMap />
+  <!-- Section 1: Stats -->
+  <StatsCards />
 
-  <!-- Section 2: Dashboard -->
-  <section class="dashboard">
-    <div class="section-eyebrow" style="color: var(--green);">Dashboard</div>
-    <h2 class="dash-title">プロジェクト概況</h2>
-    <StatsCards />
-    <ActivityTimeline />
+  <!-- Section 2: Research Articles (1-click access) -->
+  <ResearchList />
+
+  <!-- Section 3: Meetings Preview -->
+  <MeetingsPreview />
+
+  <!-- Section 4: Learning Roadmap -->
+  <section class="roadmap-section">
+    <div class="section-eyebrow" style="color: var(--purple);">Learning Roadmap</div>
+    <h2 class="roadmap-title">学習ロードマップ</h2>
+    <p class="roadmap-desc">テーマ間の依存関係と推奨学習順序。各テーマから関連リサーチ・議事録を参照できます。</p>
+    <ResearchMap />
   </section>
 
-  <!-- Section 3: Search -->
+  <!-- Section 5: Recent Activity -->
+  <ActivityTimeline />
+
+  <!-- Section 6: Search -->
   <Search />
 </BaseLayout>
 
@@ -61,13 +72,19 @@ import Search from '../components/Search.astro';
     margin-bottom: 8px;
   }
 
-  .dash-title {
-    margin-top: 0;
-    margin-bottom: 20px;
+  .roadmap-section {
+    margin-bottom: 64px;
   }
 
-  .dashboard {
-    margin-bottom: 64px;
+  .roadmap-title {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  .roadmap-desc {
+    color: var(--text-dim);
+    font-size: 14px;
+    margin-bottom: 20px;
   }
 
   @media (max-width: 600px) {

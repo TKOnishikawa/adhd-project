@@ -19,8 +19,8 @@ const base = import.meta.env.BASE_URL;
   title={entry.data.title}
   date={entry.data.date}
   tags={entry.data.tags}
-  backHref={base}
-  backLabel="Home"
+  backHref={`${base}/meetings/`}
+  backLabel="議事録一覧"
 >
   {entry.data.participants.length > 0 && (
     <div class="meta-bar">

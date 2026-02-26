@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+
+const research = await getCollection('research', ({ data }) => !data.draft);
+const meetings = await getCollection('meetings', ({ data }) => !data.draft);
+const references = await getCollection('references', ({ data }) => !data.draft);
+const notes = await getCollection('notes', ({ data }) => !data.draft);
+
+// Count tags across all collections
+const tagCounts = new Map<string, number>();
+[...research, ...meetings, ...references, ...notes].forEach((entry) => {
+  entry.data.tags?.forEach((t: string) => {
+    tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
+  });
+});
+
+const sortedTags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]);
+---
+
+<BaseLayout title="タグ一覧">
+  <a href={base} class="back-link">&larr; ホーム</a>
+
+  <header class="page-header">
+    <div class="badge">TAGS</div>
+    <h1>タグ一覧</h1>
+    <p class="page-desc">{sortedTags.length}個のタグ</p>
+  </header>
+
+  <div class="tag-cloud">
+    {sortedTags.map(([tag, count]) => (
+      <a href={`${base}/tags/${tag}/`} class="tag-pill">
+        <span class="tag-name">{tag}</span>
+        <span class="tag-count">{count}</span>
+      </a>
+    ))}
+  </div>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 8px 0;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--cyan); }
+
+  .page-header {
+    text-align: center;
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .page-header h1 { margin: 12px 0 8px; }
+  .page-desc { color: var(--text-muted); font-size: 14px; }
+
+  .tag-cloud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    justify-content: center;
+  }
+
+  .tag-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 8px 14px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    color: var(--text);
+    text-decoration: none;
+    font-size: 13px;
+    transition: all 0.15s;
+  }
+  .tag-pill:hover {
+    border-color: var(--cyan);
+    color: var(--cyan);
+    background: var(--bg-raised);
+  }
+
+  .tag-count {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--text-muted);
+    background: var(--bg-raised);
+    padding: 1px 6px;
+    border-radius: 8px;
+  }
+</style>

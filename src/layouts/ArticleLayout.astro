@@ -43,10 +43,10 @@ const formattedUpdated = updated?.toISOString().slice(0, 10);
   )}
 
   <header class="article-header">
-    {theme && (
-      <div class="category-badge" style={`color: ${theme.color}`}>
+    {theme && themeId && (
+      <a href={`${base}/themes/${themeId}/`} class="category-badge" style={`color: ${theme.color}`}>
         {theme.icon} {theme.label}
-      </div>
+      </a>
     )}
     <h1>{title}</h1>
     <div class="article-meta">

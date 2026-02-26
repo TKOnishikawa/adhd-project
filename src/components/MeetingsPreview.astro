@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+const meetings = (await getCollection('meetings', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
+---
+
+<section class="meetings-preview">
+  <div class="section-eyebrow" style="color: var(--amber);">Meetings</div>
+  <div class="preview-header">
+    <h2 class="preview-title">議事録</h2>
+    <a href={`${base}/meetings/`} class="view-all">全一覧 &rarr;</a>
+  </div>
+
+  {meetings.length > 0 ? (
+    <div class="meeting-list">
+      {meetings.map((m) => (
+        <a href={`${base}/meetings/${m.id.replace(/\.md$/, '')}/`} class="meeting-item">
+          <span class="meeting-date mono">{m.data.date.toISOString().slice(0, 10)}</span>
+          <span class="meeting-title">{m.data.title}</span>
+          {m.data.nextActions && m.data.nextActions.length > 0 && (
+            <span class="actions-badge">{m.data.nextActions.length} actions</span>
+          )}
+        </a>
+      ))}
+    </div>
+  ) : (
+    <div class="empty-msg">
+      <p>議事録はまだありません。<a href={`${base}/meetings/`}>一覧ページへ</a></p>
+    </div>
+  )}
+</section>
+
+<style>
+  .meetings-preview {
+    margin-bottom: 64px;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .preview-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+
+  .preview-title {
+    margin: 0;
+  }
+
+  .view-all {
+    font-size: 13px;
+    color: var(--text-dim);
+    transition: color 0.15s;
+  }
+  .view-all:hover { color: var(--cyan); }
+
+  .meeting-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .meeting-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .meeting-item:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-raised);
+  }
+
+  .meeting-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 90px;
+  }
+
+  .meeting-title {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .actions-badge {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--green);
+    background: rgba(52, 211, 153, 0.1);
+    padding: 2px 8px;
+    border-radius: 8px;
+    white-space: nowrap;
+  }
+
+  .empty-msg {
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--bg-surface);
+    border-radius: 12px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .empty-msg a { color: var(--cyan); }
+
+  @media (max-width: 600px) {
+    .meeting-item { flex-wrap: wrap; gap: 8px; }
+    .meeting-date { min-width: auto; }
+  }
+</style>
