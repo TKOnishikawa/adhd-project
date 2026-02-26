@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADHD x キャリスピ2.0 — サービス設計論点整理</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-base:    #08080d;
+  --bg-surface: #101018;
+  --bg-raised:  #181824;
+  --bg-top:     #222234;
+  --border:       rgba(255,255,255,0.06);
+  --border-focus: rgba(255,255,255,0.12);
+  --text:       #eaeaf2;
+  --text-dim:   #9898ae;
+  --text-muted: #58586e;
+  --blue:   #4a7dff;
+  --cyan:   #22d3ee;
+  --green:  #34d399;
+  --amber:  #f59e0b;
+  --red:    #ef4444;
+  --purple: #a78bfa;
+  --pink:   #f472b6;
+  --grad-hero:    linear-gradient(135deg, #4a7dff 0%, #22d3ee 100%);
+  --grad-success: linear-gradient(135deg, #34d399 0%, #22d3ee 100%);
+  --grad-warn:    linear-gradient(135deg, #ef4444 0%, #f59e0b 100%);
+  --grad-vision:  linear-gradient(135deg, #a78bfa 0%, #f472b6 100%);
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.4);
+  --shadow-md: 0 4px 16px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.6);
+}
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Noto Sans JP', -apple-system, sans-serif;
+  background: var(--bg-base);
+  color: var(--text);
+  line-height: 1.8;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+.container { max-width: 1080px; margin: 0 auto; padding: 0 28px; }
+.headline { font-family: 'Playfair Display', Georgia, serif; font-weight: 900; letter-spacing: -0.02em; }
+.mono { font-family: 'JetBrains Mono', monospace; font-weight: 600; }
+
+/* ── Layout ── */
+.page-layout { display: flex; gap: 32px; align-items: flex-start; }
+.main-content { flex: 1; min-width: 0; }
+
+/* ── Sticky TOC (desktop) ── */
+.toc-sidebar {
+  position: sticky; top: 24px;
+  width: 220px; flex-shrink: 0;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 16px;
+  max-height: calc(100vh - 48px);
+  overflow-y: auto;
+}
+.toc-sidebar h3 { font-size: 11px; font-weight: 700; letter-spacing: 2px; text-transform: uppercase; color: var(--text-muted); margin-bottom: 10px; }
+.toc-sidebar a {
+  display: block; font-size: 12px; color: var(--text-dim);
+  text-decoration: none; padding: 4px 0; line-height: 1.5;
+  transition: color 0.15s;
+}
+.toc-sidebar a:hover { color: var(--cyan); }
+.toc-sidebar .toc-num { color: var(--text-muted); margin-right: 4px; font-family: 'JetBrains Mono', monospace; font-size: 11px; }
+@media (max-width: 900px) {
+  .toc-sidebar { display: none; }
+  .page-layout { flex-direction: column; }
+}
+
+/* ── Sections ── */
+.section { padding: 56px 0 40px; border-bottom: 1px solid var(--border); }
+.section:last-of-type { border-bottom: none; }
+.section-eyebrow { font-size: 12px; font-weight: 700; letter-spacing: 3.5px; text-transform: uppercase; margin-bottom: 10px; }
+.action-title { font-size: 24px; font-weight: 700; line-height: 1.5; margin-bottom: 10px; color: var(--text); }
+.section-lead { font-size: 15px; color: var(--text-dim); margin-bottom: 28px; max-width: 740px; line-height: 1.9; }
+
+/* ── Hero ── */
+.hero { padding: 72px 0 20px; text-align: center; position: relative; }
+.hero::before {
+  content: ''; position: absolute; top: -80px; left: 50%; transform: translateX(-50%);
+  width: 800px; height: 800px;
+  background: radial-gradient(circle, rgba(74,125,255,0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+.hero-badge {
+  display: inline-block; padding: 5px 14px;
+  border: 1px solid rgba(74,125,255,0.25); border-radius: 20px;
+  font-size: 12px; font-weight: 700; color: var(--blue);
+  letter-spacing: 2.5px; text-transform: uppercase;
+  margin-bottom: 18px; background: rgba(74,125,255,0.04);
+}
+.hero h1 {
+  font-size: 36px; font-weight: 900; line-height: 1.4; margin-bottom: 14px;
+  background: var(--grad-hero); -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+}
+.hero-sub { font-size: 15px; color: var(--text-dim); max-width: 640px; margin: 0 auto 28px; line-height: 1.9; }
+.hero-meta { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; font-size: 13px; color: var(--text-muted); }
+
+/* ── KPI ── */
+.kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin: 28px 0 20px; }
+@media (max-width: 768px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+.kpi-card {
+  background: var(--bg-surface); border-radius: 12px; padding: 22px 16px; text-align: center;
+  box-shadow: var(--shadow-sm); border: 1px solid var(--border); transition: transform 0.15s;
+}
+.kpi-card:hover { transform: translateY(-2px); box-shadow: var(--shadow-md); }
+.kpi-num { font-family: 'JetBrains Mono', monospace; font-size: 36px; font-weight: 600; margin-bottom: 4px; }
+.kpi-num.warn   { background: var(--grad-warn);    -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.kpi-num.good   { background: var(--grad-success); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.kpi-num.blue   { background: var(--grad-hero);    -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.kpi-num.vision { background: var(--grad-vision);  -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.kpi-label { font-size: 13px; color: var(--text-dim); font-weight: 500; line-height: 1.6; }
+
+/* ── So What ── */
+.sowhat {
+  background: rgba(239,68,68,0.03); border-left: 4px solid var(--red);
+  border-radius: 0 10px 10px 0; padding: 18px 22px; margin: 24px 0; box-shadow: var(--shadow-sm);
+}
+.sowhat-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--red); margin-bottom: 6px; }
+.sowhat p { font-size: 15px; line-height: 1.9; color: var(--text-dim); }
+.sowhat strong { color: #f87171; }
+
+/* ── Insight (green variant) ── */
+.insight {
+  background: rgba(52,211,153,0.03); border-left: 4px solid var(--green);
+  border-radius: 0 10px 10px 0; padding: 18px 22px; margin: 24px 0; box-shadow: var(--shadow-sm);
+}
+.insight-label { font-size: 11px; font-weight: 700; letter-spacing: 2.5px; text-transform: uppercase; color: var(--green); margin-bottom: 6px; }
+.insight p { font-size: 15px; line-height: 1.9; color: var(--text-dim); }
+.insight strong { color: var(--green); }
+
+/* ── Evidence Badge ── */
+.ev-badge {
+  display: inline-block; font-size: 10px; font-weight: 700; letter-spacing: 1px;
+  padding: 2px 7px; border-radius: 3px; vertical-align: middle; margin-left: 4px;
+}
+.ev-badge.rct  { background: rgba(52,211,153,0.12); color: var(--green); }
+.ev-badge.meta { background: rgba(74,125,255,0.12); color: var(--blue); }
+.ev-badge.pilot { background: rgba(245,158,11,0.12); color: var(--amber); }
+.ev-badge.expert { background: rgba(167,139,250,0.12); color: var(--purple); }
+.ev-badge.theory { background: rgba(255,255,255,0.05); color: var(--text-muted); }
+
+/* ── Tables ── */
+.data-tbl {
+  width: 100%; border-collapse: separate; border-spacing: 0;
+  border-radius: 10px; overflow: hidden; border: 1px solid var(--border); margin: 20px 0; font-size: 14px;
+}
+.data-tbl thead th {
+  background: var(--bg-raised); padding: 12px 16px; font-size: 12px; font-weight: 700;
+  text-align: left; letter-spacing: 1px; text-transform: uppercase; color: var(--text-muted);
+  border-bottom: 1px solid var(--border);
+}
+.data-tbl tbody td {
+  padding: 12px 16px; border-bottom: 1px solid var(--border); vertical-align: top; background: var(--bg-surface);
+}
+.data-tbl tbody tr:last-child td { border-bottom: none; }
+.data-tbl .t-name { font-weight: 600; color: var(--text); }
+.data-tbl .t-good { color: var(--green); font-weight: 500; }
+.data-tbl .t-warn { color: var(--amber); font-weight: 500; }
+.data-tbl .t-bad  { color: var(--red); font-weight: 500; }
+.data-tbl .t-dim  { color: var(--text-muted); }
+
+/* ── Compat cells ── */
+.compat-perfect { background: rgba(52,211,153,0.08); color: var(--green); font-weight: 700; text-align: center; }
+.compat-good    { background: rgba(52,211,153,0.04); color: #6ee7b7; text-align: center; }
+.compat-modify  { background: rgba(245,158,11,0.06); color: var(--amber); text-align: center; }
+.compat-rebuild { background: rgba(239,68,68,0.06); color: #f87171; text-align: center; }
+.compat-new     { background: rgba(167,139,250,0.06); color: var(--purple); font-weight: 600; text-align: center; }
+
+/* ── CR Grid ── */
+.cr-grid { display: flex; flex-direction: column; gap: 10px; margin: 20px 0; }
+.cr-row { display: grid; grid-template-columns: 1fr 48px 1fr; align-items: center; gap: 0; }
+@media (max-width: 700px) { .cr-row { grid-template-columns: 1fr; gap: 4px; } .cr-arrow { display: none; } }
+.cr-challenge {
+  background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.15);
+  border-radius: 10px; padding: 14px 18px; font-size: 14px; color: var(--text); line-height: 1.6;
+}
+.cr-arrow { text-align: center; font-family: 'JetBrains Mono', monospace; font-size: 20px; color: var(--cyan); position: relative; }
+.cr-arrow::before {
+  content: ''; position: absolute; top: 50%; left: 4px; right: 4px; height: 2px;
+  background: linear-gradient(90deg, rgba(239,68,68,0.3) 0%, var(--cyan) 100%);
+  transform: translateY(-50%); z-index: 0;
+}
+.cr-arrow span { position: relative; z-index: 1; background: var(--bg-base); padding: 0 4px; }
+.cr-response {
+  background: rgba(34,211,238,0.04); border: 1px solid rgba(34,211,238,0.15);
+  border-radius: 10px; padding: 14px 18px; font-size: 14px; color: var(--text); line-height: 1.6;
+}
+.cr-tier-label {
+  font-size: 13px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 8px 16px; border-radius: 6px; margin: 16px 0 8px;
+}
+.cr-tier-label.proven  { color: var(--green); background: rgba(52,211,153,0.08); border-left: 3px solid var(--green); }
+.cr-tier-label.planned { color: var(--purple); background: rgba(167,139,250,0.08); border-left: 3px solid var(--purple); }
+.cr-tier-label.explore { color: var(--amber); background: rgba(245,158,11,0.08); border-left: 3px solid var(--amber); }
+
+/* ── Cards ── */
+.success-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin: 20px 0; }
+@media (max-width: 900px) { .success-grid { grid-template-columns: 1fr; } }
+.success-card {
+  background: var(--bg-surface); border: 1px solid rgba(52,211,153,0.18);
+  border-radius: 12px; padding: 24px; position: relative; box-shadow: var(--shadow-sm);
+}
+.success-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: var(--grad-success); border-radius: 12px 12px 0 0; }
+.sc-badge { display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--green); background: rgba(52,211,153,0.08); padding: 3px 10px; border-radius: 4px; margin-bottom: 10px; }
+.success-card h4 { font-size: 17px; font-weight: 700; margin-bottom: 8px; }
+.success-card p { font-size: 14px; color: var(--text-dim); line-height: 1.8; }
+
+.issue-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 20px 0; }
+@media (max-width: 700px) { .issue-grid { grid-template-columns: 1fr; } }
+.issue-card {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 22px; border-left: 4px solid; box-shadow: var(--shadow-sm);
+}
+.issue-card.critical { border-left-color: var(--red); }
+.issue-card.high     { border-left-color: var(--amber); }
+.issue-card.medium   { border-left-color: var(--blue); }
+.issue-severity {
+  font-size: 11px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 3px; display: inline-block; margin-bottom: 8px;
+}
+.issue-card.critical .issue-severity { background: rgba(239,68,68,0.12); color: var(--red); }
+.issue-card.high .issue-severity     { background: rgba(245,158,11,0.12); color: var(--amber); }
+.issue-card.medium .issue-severity   { background: rgba(74,125,255,0.12); color: var(--blue); }
+.issue-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.issue-card p  { font-size: 14px; color: var(--text-dim); line-height: 1.8; }
+
+/* ── Phase Cards ── */
+.phase-card {
+  background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 12px; padding: 24px; margin-bottom: 14px; box-shadow: var(--shadow-sm);
+}
+.phase-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 6px; }
+.phase-card .phase-policy {
+  font-size: 14px; color: var(--cyan); font-weight: 600; margin-bottom: 8px;
+  padding: 6px 12px; background: rgba(34,211,238,0.04); border-radius: 6px; display: inline-block;
+}
+.phase-card > p { font-size: 14px; color: var(--text-dim); margin-bottom: 14px; line-height: 1.8; }
+.phase-items { display: flex; flex-direction: column; gap: 5px; }
+.phase-item {
+  font-size: 13px; color: var(--text-dim); padding: 6px 12px;
+  background: var(--bg-raised); border-radius: 6px; border: 1px solid var(--border);
+  display: flex; align-items: flex-start; gap: 8px; line-height: 1.6;
+}
+.pi-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; margin-top: 7px; }
+.pi-dot.done { background: var(--green); }
+.pi-dot.wip  { background: var(--cyan); }
+.pi-dot.plan { background: var(--text-muted); }
+.pi-dot.risk { background: var(--red); }
+
+.phase-gate { font-size: 13px; padding: 8px 14px; border-radius: 8px; margin-top: 10px; line-height: 1.6; }
+.phase-gate.gate     { background: rgba(52,211,153,0.04); border: 1px solid rgba(52,211,153,0.15); color: var(--green); }
+.phase-gate.risk     { background: rgba(239,68,68,0.04); border: 1px solid rgba(239,68,68,0.15); color: #f87171; }
+.phase-gate.question { background: rgba(74,125,255,0.04); border: 1px solid rgba(74,125,255,0.15); color: var(--blue); }
+
+/* ── Shift Cards ── */
+.shift-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(310px, 1fr)); gap: 14px; margin: 20px 0; }
+.shift-card { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px; box-shadow: var(--shadow-sm); }
+.shift-num { font-family: 'JetBrains Mono', monospace; font-size: 24px; font-weight: 600; background: var(--grad-success); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 4px; }
+.shift-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 8px; }
+.shift-before, .shift-after { font-size: 13px; padding: 7px 11px; border-radius: 7px; margin-bottom: 5px; line-height: 1.6; }
+.shift-before { background: rgba(239,68,68,0.05); border-left: 3px solid var(--red); color: #f87171; }
+.shift-after  { background: rgba(34,211,238,0.05); border-left: 3px solid var(--cyan); color: var(--cyan); }
+
+/* ── Breakpoint Accordion ── */
+details.bp-item { margin-bottom: 8px; }
+details.bp-item summary {
+  cursor: pointer; display: flex; align-items: center; gap: 12px;
+  padding: 14px 18px; background: var(--bg-surface); border: 1px solid var(--border);
+  border-radius: 10px; font-size: 15px; font-weight: 600; color: var(--text);
+  list-style: none; transition: all 0.15s;
+}
+details.bp-item summary::-webkit-details-marker { display: none; }
+details.bp-item summary::before {
+  content: '\25B6'; font-size: 10px; color: var(--text-muted); transition: transform 0.2s;
+}
+details.bp-item[open] summary::before { transform: rotate(90deg); }
+details.bp-item[open] summary { border-color: var(--border-focus); background: var(--bg-raised); border-radius: 10px 10px 0 0; }
+.bp-content {
+  padding: 18px 22px; background: var(--bg-surface); border: 1px solid var(--border);
+  border-top: none; border-radius: 0 0 10px 10px; font-size: 14px; line-height: 1.8; color: var(--text-dim);
+}
+.bp-content h5 { font-size: 13px; font-weight: 700; color: var(--cyan); margin: 14px 0 6px; letter-spacing: 1px; text-transform: uppercase; }
+.bp-content h5:first-child { margin-top: 0; }
+.bp-content ul { padding-left: 20px; margin: 6px 0; }
+.bp-content li { margin-bottom: 4px; }
+.bp-tag { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 4px; margin-right: 4px; font-weight: 600; }
+.bp-tag.a { background: rgba(239,68,68,0.10); color: #f87171; }
+.bp-tag.b { background: rgba(74,125,255,0.10); color: var(--blue); }
+.bp-tag.c { background: rgba(52,211,153,0.10); color: var(--green); }
+.bp-tag.d { background: rgba(245,158,11,0.10); color: var(--amber); }
+.bp-tag.e { background: rgba(167,139,250,0.10); color: var(--purple); }
+.bp-tag.f { background: rgba(244,114,182,0.10); color: var(--pink); }
+.bp-tag.g { background: rgba(34,211,238,0.10); color: var(--cyan); }
+.bp-tag.h { background: rgba(255,255,255,0.08); color: var(--text-dim); }
+
+/* ── Discussion Cards ── */
+.disc-card {
+  background: var(--bg-surface); border: 1px solid rgba(244,114,182,0.15);
+  border-radius: 12px; padding: 22px; margin-bottom: 12px; box-shadow: var(--shadow-sm);
+}
+.disc-num { font-size: 12px; font-weight: 700; color: var(--pink); margin-bottom: 6px; }
+.disc-card h4 { font-size: 16px; font-weight: 700; margin-bottom: 6px; }
+.disc-card > p { font-size: 14px; color: var(--text-dim); margin-bottom: 10px; line-height: 1.8; }
+.disc-opts { display: flex; flex-wrap: wrap; gap: 6px; }
+.disc-opt { font-size: 12px; padding: 4px 10px; border-radius: 5px; border: 1px solid var(--border); background: var(--bg-raised); color: var(--text-dim); }
+.disc-opt.rec { border-color: rgba(34,211,238,0.35); background: rgba(34,211,238,0.06); color: var(--cyan); }
+
+/* ── Vision Card ── */
+.vision-card {
+  background: linear-gradient(135deg, rgba(74,125,255,0.04) 0%, rgba(167,139,250,0.04) 100%);
+  border: 1px solid rgba(167,139,250,0.18); border-radius: 12px; padding: 24px; text-align: center; margin-top: 16px;
+}
+.vision-card h3 { font-size: 18px; font-weight: 700; margin-bottom: 10px; background: var(--grad-vision); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+.vision-card p { font-size: 14px; color: var(--text-dim); margin-bottom: 12px; }
+.vision-items { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.vision-item { padding: 8px 16px; border-radius: 8px; background: var(--bg-surface); border: 1px solid var(--border); font-size: 13px; color: var(--text-dim); }
+
+/* ── Footer ── */
+.footer { text-align: center; padding: 40px 0 28px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 40px; }
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- HERO                                       -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="hero">
+  <div class="hero-badge">Strategic Service Design</div>
+  <h1>ADHD x キャリスピ2.0<br>サービス設計論点整理</h1>
+  <p class="hero-sub">8テーマのADHDリサーチ成果を統合し、既存キャリスピ2.0プログラムをADHD特化サービスへ進化させるための設計論点を網羅的に整理する。</p>
+  <div class="hero-meta">
+    <span>omoshiku Inc.</span>
+    <span>|</span>
+    <span>2026-02-26</span>
+    <span>|</span>
+    <span>Research Themes A-H 統合</span>
+  </div>
+</div>
+
+<div class="page-layout">
+
+<!-- ── TOC Sidebar ── -->
+<nav class="toc-sidebar">
+  <h3>Contents</h3>
+  <a href="#sec1"><span class="toc-num">01</span> Executive Summary</a>
+  <a href="#sec2"><span class="toc-num">02</span> AS-IS分析</a>
+  <a href="#sec3"><span class="toc-num">03</span> 12 Breakpoints</a>
+  <a href="#sec4"><span class="toc-num">04</span> 適合度マトリクス</a>
+  <a href="#sec5"><span class="toc-num">05</span> 課題→対応マップ</a>
+  <a href="#sec6"><span class="toc-num">06</span> 新プログラム設計</a>
+  <a href="#sec7"><span class="toc-num">07</span> 運動・ウェルネス</a>
+  <a href="#sec8"><span class="toc-num">08</span> EFスキャフォールディング</a>
+  <a href="#sec9"><span class="toc-num">09</span> コミュニティ設計</a>
+  <a href="#sec10"><span class="toc-num">10</span> テクノロジー</a>
+  <a href="#sec11"><span class="toc-num">11</span> タイプ別設計</a>
+  <a href="#sec12"><span class="toc-num">12</span> ロードマップ</a>
+</nav>
+
+<div class="main-content">
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 1: EXECUTIVE SUMMARY                   -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec1">
+  <div class="section-eyebrow" style="color: var(--blue);">01 &mdash; Executive Summary</div>
+  <div class="action-title">キャリスピ2.0の70%は流用可能。残り30%が勝負を分ける。</div>
+  <p class="section-lead">日本にはADHD専門コーチングサービスが事実上ゼロである。キャリスピ2.0は100日間コホートモデル・GOAL方法論・コミュニティ構造という強力な基盤を持つが、ADHD脳の神経科学的特性に対する設計が欠落している。8テーマのリサーチが示すエビデンスを注入することで、世界水準のサービスへ進化させる道筋が見える。</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-num warn">0人</div>
+      <div class="kpi-label">日本のADHD<br>専門コーチ</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num blue">2.5-5%</div>
+      <div class="kpi-label">成人ADHD<br>有病率（世界）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num good">d=0.89</div>
+      <div class="kpi-label">CBT効果量<br>（Safren, JAMA）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision">89.5%</div>
+      <div class="kpi-label">コーチング研究<br>改善報告率</div>
+    </div>
+  </div>
+
+  <div class="success-grid">
+    <div class="success-card">
+      <div class="sc-badge">市場機会</div>
+      <h4>価格帯ギャップ</h4>
+      <p>公的支援（無料）と高額個別（2-5万円/月）の間、<strong>月額0.8-1.5万円帯</strong>に有料かつ質の高いサービスが存在しない。キャリスピ2.0のグループモデルならこの帯に参入可能。</p>
+    </div>
+    <div class="success-card">
+      <div class="sc-badge">強み</div>
+      <h4>キャリスピ2.0の資産</h4>
+      <p>100日コホート、6人チーム、GOAL/VISION方法論、12 DAY講義体系、Slackコミュニティ。<strong>外部構造化と社会的圧力</strong>はADHD支援で最も有効な要素そのもの。</p>
+    </div>
+    <div class="success-card">
+      <div class="sc-badge">変革規模</div>
+      <h4>30%の再設計が必要</h4>
+      <p>運動・ウェルネス（現VIP限定→全員必須化）、EFスキャフォールディング（新規構築）、講義設計原則（チャンク化・マルチモーダル化）、タイプ別分岐の4領域が核。</p>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">ツッコミ</div>
+    <p><strong>「コーチングスクール」のままでは、ADHDの人は3週目で脱落する。</strong>現キャリスピ2.0は「意志力で継続」を暗黙の前提にしている。ADHD脳はそこが壊れている。継続の仕組み自体を設計しなければ、どれだけ良い講義をしても意味がない。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 2: AS-IS ANALYSIS                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec2">
+  <div class="section-eyebrow" style="color: var(--amber);">02 &mdash; AS-IS Analysis</div>
+  <div class="action-title">キャリスピ2.0の構造を正確に理解する</div>
+  <p class="section-lead">100日間・12 DAY講義 + 4パーソナル + 12グループセッション。6人チーム×Slackコミュニティ。価格帯58万〜100万円。GOAL/VISION方法論を中核に据えた変革プログラム。</p>
+
+  <table class="data-tbl">
+    <thead><tr><th>要素</th><th>現状仕様</th><th>ADHD観点の評価</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">プログラム期間</td><td>100日間（約3.5ヶ月）</td><td class="t-good">適切。ADHDの習慣形成に66日必要（Lally et al.）</td></tr>
+      <tr><td class="t-name">講義（12 DAY）</td><td>各2時間・週1回・土曜</td><td class="t-warn">2時間連続は長い。チャンク化が必要</td></tr>
+      <tr><td class="t-name">パーソナル（4回）</td><td>キックオフ→自己理解→GOAL設定→決断</td><td class="t-good">個別化の基盤として有効</td></tr>
+      <tr><td class="t-name">グループ（12回）</td><td>60分・チーム制・進捗共有</td><td class="t-good">外部構造化+社会的圧力=ADHD最適</td></tr>
+      <tr><td class="t-name">チーム構成</td><td>6人/チーム</td><td class="t-warn">ADHD同士では4人が上限（過刺激防止）</td></tr>
+      <tr><td class="t-name">Slack設計</td><td>12+チャンネル・宣言ワーク</td><td class="t-bad">情報過多。チャンネル整理+非同期優先が必要</td></tr>
+      <tr><td class="t-name">GOAL方法論</td><td>定性→定量→VISION</td><td class="t-warn">時間盲目性への対策なし。GOAL粒度が粗い</td></tr>
+      <tr><td class="t-name">6step戦術</td><td>Problem→Fact→What→GOAL→Plan→Action</td><td class="t-good">EF外部化ツールとして使える</td></tr>
+      <tr><td class="t-name">運動・ウェルネス</td><td>VIP限定REBOOST（2日集中）</td><td class="t-bad">全プラン必須化すべき。習慣化の設計なし</td></tr>
+      <tr><td class="t-name">価格帯</td><td>58万〜100万円（税込）</td><td class="t-warn">ADHDはファイナンス管理困難。分割設計要</td></tr>
+    </tbody>
+  </table>
+
+  <div class="issue-grid">
+    <div class="issue-card critical">
+      <div class="issue-severity">Critical</div>
+      <h4>実行機能支援ゼロ</h4>
+      <p>アクションプラン設定はあるが、ADHD脳が「わかっているのにできない」問題への対策がない。Implementation Intentions (d=0.65) のような科学的手法が不在。</p>
+    </div>
+    <div class="issue-card critical">
+      <div class="issue-severity">Critical</div>
+      <h4>ウェルネスがVIP限定</h4>
+      <p>運動は有酸素20-30分でEF改善のエビデンスあり（Theme A）。ADHD向けでは最もROIの高い介入。VIP限定ではなく全プラン必須。</p>
+    </div>
+    <div class="issue-card high">
+      <div class="issue-severity">High</div>
+      <h4>時間盲目性への未対応</h4>
+      <p>Sonuga-Barke三経路モデルの第3経路「時間処理障害」。GOAL設定で「1年後/半年後/100日後」は抽象度が高すぎる。週次・日次への分解が必要。</p>
+    </div>
+    <div class="issue-card high">
+      <div class="issue-severity">High</div>
+      <h4>講義が2時間連続</h4>
+      <p>ADHD脳の集中持続は15-25分。2時間講義は離脱リスク大。30分×3チャンク（講義+ワーク+振返り）+ 休憩 が推奨。</p>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">ツッコミ</div>
+    <p><strong>キャリスピ2.0は「普通の人」向けに最適化されている。</strong>マインドセット→自己理解→GOAL→決断→実行の流れは素晴らしいが、「決断したのに実行できない」「GOALを忘れる」「講義に集中できない」という<strong>ADHD固有の壁</strong>に対する設計が抜け落ちている。骨格は使える。肉付けを変える必要がある。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 3: 12 BREAKPOINTS                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec3">
+  <div class="section-eyebrow" style="color: var(--cyan);">03 &mdash; 12 Breakpoint Analysis</div>
+  <div class="action-title">DAY別 × リサーチ対照：どこに何を注入するか</div>
+  <p class="section-lead">キャリスピ2.0の12 DAY講義それぞれについて、ADHDリサーチからの示唆と必要なチューニングをマッピングする。</p>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag d">Theme D</span><span class="bp-tag g">Theme G</span> DAY1: マインドセット</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>課題の共有、目標設定、プログラムへのコミットメント醸成</p>
+      <h5>ADHDリサーチからの示唆</h5>
+      <ul>
+        <li><strong>自己受容がすべての前提</strong>: ACTベースの心理的柔軟性 <span class="ev-badge rct">RCT d=0.47-0.62</span></li>
+        <li>セルフコンパッション（Neff, 2003）: ADHD当事者は自己批判が有意に強い → まず「自分を責めない」マインドセットから</li>
+        <li>リミティングビリーフの前に「ADHDの脳の仕組み」理解が必要（Theme B神経科学）</li>
+        <li>「怠け」ではなく「脳の特性」というフレーミングの科学的根拠を提示</li>
+      </ul>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>DAY1冒頭にADHD神経科学ミニ講義（15分）: ドーパミン仮説、時間盲目性、DMN干渉を平易に</li>
+        <li>「失敗＝データ」の当事者研究マインドセット導入（Theme G）</li>
+        <li>セルフコンパッション・ブレイクの実践ワーク（3ステップ: マインドフルネス→共通の人間性→自己へのやさしさ）</li>
+        <li>参加者全員で「ADHD自己マニュアル」の作成開始を宣言</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag d">Theme D</span><span class="bp-tag f">Theme F</span> DAY2: リミティングビリーフ</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>自己制限的信念の認識と書き換え</p>
+      <h5>ADHDリサーチからの示唆</h5>
+      <ul>
+        <li>Safren CBTの「ADHD特有の認知歪み」5パターン: 全か無か思考、比較と過一般化、破局的思考、ポジティブ否認、すべき思考 <span class="ev-badge rct">RCT d=0.89</span></li>
+        <li>内面化された恥（Theme F）: 「怠け者」「努力不足」のレッテルが長年蓄積</li>
+        <li>RSD（拒絶感受性不快症）: 臨床的に~99%が経験（Dodson, 2022）→ 他者評価への過敏性</li>
+      </ul>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>Safrenモデルの思考記録を導入: 自動思考→根拠検証→代替思考</li>
+        <li>ADHD特有の5認知歪みを明示的に教える</li>
+        <li>RSDへの3ステップ対処法: 認識(「これはRSD」)→リフレーム(3つの代替解釈)→リカバリー(事前設定のクールダウン)</li>
+        <li>「強みの裏返し」ワーク: 弱みだと思っていた特性を強みとして再発見（Theme C弁証法的アプローチ）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag c">Theme C</span><span class="bp-tag f">Theme F</span> DAY3-4: 自己理解</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>動詞の経歴（赤字=夢中/青字=苦痛）、自己欲求/自己能力/自己機能の三層分析</p>
+      <h5>ADHDリサーチからの示唆</h5>
+      <ul>
+        <li>「動詞の経歴」はADHD向けに<strong>極めて有効</strong>: 興味駆動型神経系（Dodson）の4トリガー（Interest, Novelty, Challenge, Urgency）で赤字を分析できる</li>
+        <li>ハイパーフォーカスの科学的理解（Theme C）: フロー状態との違いを明確に</li>
+        <li>2E（Gifted × ADHD）の可能性スクリーニング</li>
+        <li>ポジティブ特性モデル: 創造性、ハイパーフォーカス、エネルギー、勇気、レジリエンス（Theme C）</li>
+      </ul>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>「赤字」を4トリガー（Interest/Novelty/Challenge/Urgency）で分類する追加ワーク</li>
+        <li>ハイパーフォーカスマッピング: いつ・何に・どのくらいの時間没頭するか→パターン分析</li>
+        <li>「環境フィットモデル」の導入: 特性が強みになる環境 vs 弱みになる環境を区分</li>
+        <li>「スーパーパワー叙述」の回避: 強み活用は重要だが「ADHD=ギフト」の過度な物語に依存しない</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag b">Theme B</span><span class="bp-tag d">Theme D</span> DAY5-6: GOAL設定</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>定性GOAL→定量GOAL→VISION。1年後/半年後/100日後の3段階。コンフォートゾーン、エフィカシー。</p>
+      <h5>ADHDリサーチからの示唆</h5>
+      <ul>
+        <li><strong>時間盲目性</strong>（Sonuga-Barke第3経路）: 「1年後の自分」は抽象的すぎてADHD脳には届かない <span class="ev-badge rct">RCT</span></li>
+        <li>遅延割引（Theme B）: 将来報酬を急峻に割り引く → 長期GOALのモチベーション維持困難</li>
+        <li>SDT（自己決定理論）: 自律性・有能感・関係性の3要素（Deci & Ryan）が満たされないとGOALは形骸化 <span class="ev-badge rct">RCT</span></li>
+      </ul>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>100日後GOALを<strong>週次マイルストーン14本</strong>に分解するステップ追加</li>
+        <li>各マイルストーンに「即時報酬」を設計（ごほうび設計ワーク）</li>
+        <li>タイムタイマーを使った「時間の可視化」体験ワーク</li>
+        <li>GOALの「温度チェック」: 週次で「このGOALにワクワクしているか」を0-10で自己評価</li>
+        <li>SDTチェック: 設定したGOALが自律性/有能感/関係性を満たすか検証</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag d">Theme D</span><span class="bp-tag f">Theme F</span> DAY7: 決断</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>ペイン&プレジャー分析。価値の高い決断の3条件（緊張感/後戻り不可/測定可能）。</p>
+      <h5>ADHDリサーチからの示唆</h5>
+      <ul>
+        <li>ADHDの衝動性は「決断」フェーズでは味方になりうる（Theme C: 起業家精神、リスク許容）</li>
+        <li>ただし「後戻り不可」の基準はADHD向けに要調整: 衝動的決断と本質的決断の区別が必要</li>
+        <li>感情調節困難（Theme F）: ペイン側に過剰反応するリスク</li>
+      </ul>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>「48時間ルール」: 重要決断は48時間のクールダウン後に再確認（衝動性対策）</li>
+        <li>ペイン&プレジャーのADHD版: 「過去パターン」に「ADHD特性がどう影響したか」列を追加</li>
+        <li>決断を「行動の設計」として捉え直す: 何を決めるか + どう実行を保証するか（Implementation Intentions連携）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag d">Theme D</span><span class="bp-tag e">Theme E</span><span class="bp-tag b">Theme B</span> DAY8: アクションプラン</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>GOALからの逆算、フォーカス領域の設定。</p>
+      <h5>ADHDリサーチからの示唆</h5>
+      <ul>
+        <li><strong>Implementation Intentions</strong>: 「いつ・どこで・何を」の具体化 <span class="ev-badge meta">Meta d=0.65 (94研究)</span></li>
+        <li>「100%コントロール可能なAP」はADHDに最適: 環境設計原則（Theme B）と一致</li>
+        <li>Safren CBTモジュール1: 組織化&計画（タスクリスト、カレンダー、優先順位付け）<span class="ev-badge rct">RCT d=0.89</span></li>
+        <li>ベビーステップ: 5分で終わる最小単位まで分解（Theme E）</li>
+      </ul>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>全APをImplementation Intentions形式に変換: 「月曜朝9時、自宅デスクで、Xを15分やる」</li>
+        <li>AP設定時に「障害予測」を組み込む: 「もしYが起きたら、Zをする」（Coping Planning）</li>
+        <li>ツール連携: Todoist/Notion等にAPを即座に登録する実践ワーク</li>
+        <li>「初動の仕組み化」: 最初の5分を自動化する環境設計（前夜準備、アラーム連鎖等）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag d">Theme D</span><span class="bp-tag g">Theme G</span> DAY9: 戦術の6ステップ</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>Problem→Fact→What→GOAL→Plan→Action の6step。</p>
+      <h5>ADHDリサーチからの示唆</h5>
+      <ul>
+        <li>6stepは<strong>メタ認知の外部化ツール</strong>として極めて有効（Theme G: メタ認知戦略）</li>
+        <li>Solanto et al. (2010) のメタ認知療法が示す効果と構造的に一致 <span class="ev-badge rct">RCT</span></li>
+        <li>ABC分析（先行事象→行動→結果）のフレームワークと互換性高い</li>
+      </ul>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>6stepシートをADHD版にカスタマイズ: 各ステップの記入欄を小さく、チェックボックス形式に</li>
+        <li>「Fact」ステップでADHD特性の影響を切り分ける列を追加</li>
+        <li>紙+デジタルの両方で使える設計（ADHD脳は「物理的に触れるもの」の方が定着しやすい場合あり）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag g">Theme G</span><span class="bp-tag e">Theme E</span> DAY10: GOOD & MORE</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>何がうまくいったか？ これからの人生どうするか？</p>
+      <h5>ADHDリサーチからの示唆</h5>
+      <ul>
+        <li><strong>ポジティブフィードバックが先</strong>: ADHD当事者は失敗体験の蓄積で自己評価が低い</li>
+        <li>「GOOD」を先に深掘りすることは<strong>エビデンス整合的</strong>（Theme G: セルフコンパッション）</li>
+        <li>当事者研究（Tojisha-kenkyu）: 「失敗＝データ」のフレーミング（Theme G）</li>
+      </ul>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>GOOD:MORE比率を3:1に設定（現状は同等比率）</li>
+        <li>「成功の証拠ノート」の継続: 毎日1つ以上の「できたこと」を記録</li>
+        <li>MOREの分析に「Do（仕組み）vs Be（マインド）」の区分は維持（ADHD向けにDoを優先）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag g">Theme G</span> DAY11: 振り返り & GOAL更新</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>100日間の振り返り、GOAL更新。</p>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>「ADHD自己マニュアル」の完成版レビュー: DAY1から作り続けたマニュアルを仕上げ</li>
+        <li>ゼロベースでのGOAL再設定ではなく「強みベースの拡張」として設計</li>
+        <li>卒業後の「自己コーチング5フェーズ」ロードマップの提示（Theme G: 自己理解→受容→実践→振返り→成長）</li>
+        <li>ピアサポートの継続方法の設計（バディシステム卒業後版）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="bp-item">
+    <summary><span class="bp-tag e">Theme E</span><span class="bp-tag h">Theme H</span> DAY12: 卒業式</summary>
+    <div class="bp-content">
+      <h5>現状の内容</h5>
+      <p>GOAL宣言、MVP/表彰式、GOALへの貢献提案、リファラル。</p>
+      <h5>チューニング提案</h5>
+      <ul>
+        <li>「セルフアドボカシー」宣言の追加: 自己理解に基づく合理的配慮の依頼方法を実践（Theme G）</li>
+        <li>卒業後サポート: アドバンスコースのADHD特化版（月次チェックイン + ツール運用サポート）</li>
+        <li>ピアメンター制度: 卒業生が次期生のメンターに（コミュニティの自走化）</li>
+      </ul>
+    </div>
+  </details>
+
+  <div class="insight">
+    <div class="insight-label">Insight</div>
+    <p><strong>既存の12 DAYフレームワークの「骨格」は残す。</strong>各DAYに15-30分のADHD特化ワークを「注入」し、講義形式を30分×3チャンクに再構成する。これにより既存コンテンツ資産を最大限活用しつつ、ADHD脳に最適化できる。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 4: COMPATIBILITY MATRIX                -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec4">
+  <div class="section-eyebrow" style="color: var(--green);">04 &mdash; Compatibility Matrix</div>
+  <div class="action-title">キャリスピ2.0の各要素 × ADHD適合度</div>
+  <p class="section-lead">◎ そのまま流用 / ○ 軽微修正 / △ 大幅改修 / × 新規構築 で分類。</p>
+
+  <table class="data-tbl">
+    <thead><tr><th>要素</th><th>適合度</th><th>理由</th><th>対応テーマ</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">100日間コホート</td><td class="compat-perfect">◎</td><td>外部構造化としてADHD最適</td><td>D, E</td></tr>
+      <tr><td class="t-name">6人チーム制</td><td class="compat-modify">△</td><td>4人に縮小推奨（過刺激防止）</td><td>F, G</td></tr>
+      <tr><td class="t-name">パーソナルセッション4回</td><td class="compat-good">○</td><td>ADHD特化の質問リスト追加</td><td>A, C, E</td></tr>
+      <tr><td class="t-name">グループセッション12回</td><td class="compat-perfect">◎</td><td>アカウンタビリティ構造として最適</td><td>E, G</td></tr>
+      <tr><td class="t-name">Slackコミュニティ</td><td class="compat-modify">△</td><td>チャンネル整理、非同期優先化</td><td>F, G</td></tr>
+      <tr><td class="t-name">GOAL/VISION方法論</td><td class="compat-modify">△</td><td>週次マイルストーン分解＋即時報酬設計追加</td><td>B, D</td></tr>
+      <tr><td class="t-name">動詞の経歴ワーク</td><td class="compat-perfect">◎</td><td>4トリガー分析を追加するだけで最強</td><td>B, C</td></tr>
+      <tr><td class="t-name">ペイン&プレジャー</td><td class="compat-good">○</td><td>ADHD特性の影響列を追加</td><td>B, D</td></tr>
+      <tr><td class="t-name">6stepフレーム</td><td class="compat-good">○</td><td>チェックボックス形式にADHD最適化</td><td>D, G</td></tr>
+      <tr><td class="t-name">エフィカシー宣言</td><td class="compat-good">○</td><td>ADHDの自己効力感低下に直接アプローチ</td><td>D, F</td></tr>
+      <tr><td class="t-name">講義形式（2時間連続）</td><td class="compat-rebuild">×</td><td>30分×3チャンクに再構成必須</td><td>B</td></tr>
+      <tr><td class="t-name">運動プログラム</td><td class="compat-new">★新規</td><td>現状VIP限定→全プラン週次必須化</td><td>A, B</td></tr>
+      <tr><td class="t-name">EFスキャフォールディング</td><td class="compat-new">★新規</td><td>Implementation Intentions等の科学的手法</td><td>B, D, E</td></tr>
+      <tr><td class="t-name">マインドフルネスプログラム</td><td class="compat-new">★新規</td><td>MAPs (d=0.5-0.8) の8週プログラム統合</td><td>G</td></tr>
+      <tr><td class="t-name">タイプ別サービス分岐</td><td class="compat-new">★新規</td><td>不注意優勢/混合/多動優勢で異なるアプローチ</td><td>A</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sowhat">
+    <div class="sowhat-label">ツッコミ</div>
+    <p><strong>「◎そのまま流用」が4個もあるのは朗報。</strong>特に動詞の経歴ワーク + 6step + 100日コホート + グループセッションはADHD向けにほぼそのまま使える。問題は「×新規構築」の4個 — ここが差別化の核であり、最も投資対効果の高い開発領域。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 5: CHALLENGE → RESPONSE MAP            -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec5">
+  <div class="section-eyebrow" style="color: var(--cyan);">05 &mdash; Challenge &rarr; Response Map</div>
+  <div class="action-title">ADHDの核心課題に対するサービス設計要素</div>
+  <p class="section-lead">ADHD脳の5大課題と、それぞれに対応するエビデンスベースの介入策。</p>
+
+  <div class="cr-grid">
+    <div class="cr-tier-label proven">Tier 1: RCTで効果実証済み</div>
+
+    <div class="cr-row">
+      <div class="cr-challenge"><strong>実行機能障害</strong><br>「わかっているのにできない」。計画→実行の橋渡しが壊れている。<br><small style="color:var(--text-muted)">Theme B: Barkley行動抑制モデル</small></div>
+      <div class="cr-arrow"><span>&rarr;</span></div>
+      <div class="cr-response"><strong>Implementation Intentions</strong> <span class="ev-badge meta">d=0.65</span><br>「いつ・どこで・何を」の具体化 + Coping Planning（障害予測）。94研究メタアナリシスで効果実証。<br><strong>+ Safren CBT モジュール1</strong> <span class="ev-badge rct">d=0.89</span><br>組織化&計画スキルトレーニング</div>
+    </div>
+
+    <div class="cr-row">
+      <div class="cr-challenge"><strong>感情調節困難</strong><br>「隠れた第4の中核症状」(Barkley, 2010)。PFC抑制機能不全 → 扁桃体シグナル制御不能。<br><small style="color:var(--text-muted)">Theme F: 感情の「音量調節」の故障</small></div>
+      <div class="cr-arrow"><span>&rarr;</span></div>
+      <div class="cr-response"><strong>ACT（受容コミットメント療法）</strong> <span class="ev-badge rct">d=0.47-0.62</span><br>感情を排除せず「受容」し、価値に基づく行動を選択。<br><strong>+ MAPs マインドフルネス</strong> <span class="ev-badge pilot">d=0.5-0.8</span><br>UCLA 8週プログラム。注意の不注意改善に中〜大効果。</div>
+    </div>
+
+    <div class="cr-tier-label planned">Tier 2: 予備的エビデンスあり</div>
+
+    <div class="cr-row">
+      <div class="cr-challenge"><strong>報酬系の偏り</strong><br>遅延割引が急峻 → 長期報酬に動機づけられない。トニックドーパミン低下 → 退屈で機能停止。<br><small style="color:var(--text-muted)">Theme B: DAT密度高 → 再取込み過剰</small></div>
+      <div class="cr-arrow"><span>&rarr;</span></div>
+      <div class="cr-response"><strong>即時報酬設計</strong><br>ゲーミフィケーション（Habitica的ポイント/XP）、週次マイルストーン達成報酬、「ごほうび設計ワーク」。<br><strong>+ 興味駆動型エンゲージメント</strong><br>Dodsonの4トリガー（Interest, Novelty, Challenge, Urgency）を講義設計に埋込。</div>
+    </div>
+
+    <div class="cr-row">
+      <div class="cr-challenge"><strong>時間盲目性</strong><br>Sonuga-Barke三経路モデルの第3経路。「1時間」と「3時間」の区別がつかない。<br><small style="color:var(--text-muted)">Theme B: 小脳回路の時間処理障害</small></div>
+      <div class="cr-arrow"><span>&rarr;</span></div>
+      <div class="cr-response"><strong>時間の可視化</strong><br>タイムタイマー（物理的残り時間表示）、アナログ時計優先、バッファタイム文化。<br><strong>+ Time Horizon Training</strong><br>遠い未来GOALを「今日」に接続するメソッド：100日→14週→今週→今日のカスケード分解。</div>
+    </div>
+
+    <div class="cr-tier-label explore">Tier 3: 理論的根拠あり（検証中）</div>
+
+    <div class="cr-row">
+      <div class="cr-challenge"><strong>注意の変動性</strong><br>DMNの過剰活性 → タスク中に無関係な思考が侵入。退屈なタスクで機能停止。<br><small style="color:var(--text-muted)">Theme B: Norman et al. (2022) N>2600</small></div>
+      <div class="cr-arrow"><span>&rarr;</span></div>
+      <div class="cr-response"><strong>ボディダブリング</strong><br>社会的圧力+NE調整+DMN抑制+外部ペースメーカー。Focusmate等で仮想的にも実現可能。<br><strong>+ 環境設計</strong><br>物理空間（ノイズキャンセリング、視覚的ミニマリズム）+デジタル空間（通知OFF、SNS隔離）の最適化。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 6: NEW PROGRAM ARCHITECTURE            -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec6">
+  <div class="section-eyebrow" style="color: var(--purple);">06 &mdash; New Program Architecture</div>
+  <div class="action-title">12 DAY → 16 DAYへの拡張案</div>
+  <p class="section-lead">既存12 DAYに4つのADHD特化DAYを追加。講義形式を30分×3チャンクに統一。</p>
+
+  <div class="shift-grid">
+    <div class="shift-card">
+      <div class="shift-num">+DAY 0</div>
+      <h4>ADHD脳の科学</h4>
+      <div class="shift-before">Before: プレ講義2回でセットアップのみ</div>
+      <div class="shift-after">After: 神経科学ミニ講義 + 「ADHD自己マニュアル」開始 + コミュニティルール設定</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+DAY 4.5</div>
+      <h4>EF &amp; ツール実装</h4>
+      <div class="shift-before">Before: 自己理解からいきなりGOAL設定</div>
+      <div class="shift-after">After: Implementation Intentions実践 + タスク管理ツール導入 + 環境設計ワーク</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+DAY 8.5</div>
+      <h4>ウェルネス統合</h4>
+      <div class="shift-before">Before: VIP限定REBOOST（2日集中・分離型）</div>
+      <div class="shift-after">After: 運動処方 + マインドフルネス + 睡眠衛生の週間ルーティン構築</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+DAY 10.5</div>
+      <h4>強み統合 &amp; セルフアドボカシー</h4>
+      <div class="shift-before">Before: GOOD&MOREで終了</div>
+      <div class="shift-after">After: 強みの戦略的活用法 + 合理的配慮の依頼スキル + 職場環境最適化</div>
+    </div>
+  </div>
+
+  <h4 style="margin: 24px 0 12px; font-size: 16px;">講義設計原則（全DAY共通）</h4>
+  <table class="data-tbl">
+    <thead><tr><th>原則</th><th>仕様</th><th>根拠</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">チャンク化</td><td>30分×3ブロック（講義+体験ワーク+振返り）</td><td>ADHD集中持続15-25分 (Theme B)</td></tr>
+      <tr><td class="t-name">マルチモーダル</td><td>視覚・聴覚・身体運動を毎ブロックに混在</td><td>DMN干渉抑制に感覚刺激切替が有効</td></tr>
+      <tr><td class="t-name">動き組込み</td><td>5分の身体活動を2回/DAY（開始時・中間）</td><td>有酸素運動の即時EF改善効果</td></tr>
+      <tr><td class="t-name">即時フィードバック</td><td>各ブロック終了時にクイックチェックイン</td><td>報酬系の即時性要求 (Theme B)</td></tr>
+      <tr><td class="t-name">選択の提供</td><td>ワーク内容を2-3オプションから自己選択</td><td>SDT自律性の充足 (Theme D)</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <div class="insight-label">Insight</div>
+    <p><strong>16 DAYへの拡張は「追加4日」ではなく「既存12日の間に4日を挿入」。</strong>これによりDAY間の密度が下がり、ADHD脳がアクションプランを実行する「消化期間」が確保される。詰め込みすぎない設計こそがADHD向けの最大の配慮。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 7: EXERCISE & WELLNESS                 -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec7">
+  <div class="section-eyebrow" style="color: var(--green);">07 &mdash; Exercise &amp; Wellness Integration</div>
+  <div class="action-title">運動は薬と同等の効果を持つ「もう一つの処方箋」</div>
+  <p class="section-lead">有酸素運動20-30分でEF改善のエビデンスは堅固。BDNF増加、ドーパミン調節、睡眠改善を通じてADHD症状全般に波及効果。</p>
+
+  <div class="kpi-grid" style="grid-template-columns: repeat(3, 1fr);">
+    <div class="kpi-card">
+      <div class="kpi-num good">20-30分</div>
+      <div class="kpi-label">有酸素運動で<br>EF改善</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num blue">50-75%</div>
+      <div class="kpi-label">ADHD成人の<br>睡眠障害率</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision">d=0.5-0.8</div>
+      <div class="kpi-label">MAPs<br>マインドフルネス</div>
+    </div>
+  </div>
+
+  <h4 style="margin: 24px 0 12px; font-size: 16px;">週間ウェルネスプログラム（案）</h4>
+  <table class="data-tbl">
+    <thead><tr><th>曜日</th><th>運動</th><th>マインドフルネス</th><th>睡眠衛生</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">月</td><td>有酸素30分（ウォーキング/ジョギング）</td><td>MAPs 5分（呼吸注意）</td><td>就寝90分前スクリーンOFF</td></tr>
+      <tr><td class="t-name">火</td><td>休息 or 軽ストレッチ</td><td>MAPs 5分（ボディスキャン）</td><td>同上</td></tr>
+      <tr><td class="t-name">水</td><td>有酸素30分</td><td>MAPs 10分（思考ラベリング）</td><td>同上</td></tr>
+      <tr><td class="t-name">木</td><td>休息 or 軽ストレッチ</td><td>MAPs 5分（呼吸注意）</td><td>同上</td></tr>
+      <tr><td class="t-name">金</td><td>有酸素30分</td><td>MAPs 10分（注意切替練習）</td><td>同上</td></tr>
+      <tr><td class="t-name">土</td><td><strong>DAY講義内の身体活動</strong></td><td>講義内ワーク</td><td>講義後リカバリー</td></tr>
+      <tr><td class="t-name">日</td><td>自由運動 or 休息</td><td>マインドフルモーメント3回</td><td>翌週準備</td></tr>
+    </tbody>
+  </table>
+
+  <div class="disc-card">
+    <div class="disc-num">設計判断ポイント</div>
+    <h4>運動の実装方法</h4>
+    <p>コーチが運動処方まで担うか、アプリ連携でセルフモニタリングに委ねるか。</p>
+    <div class="disc-opts">
+      <div class="disc-opt rec">アプリ連携 + 週次報告（コーチはモニタリング）</div>
+      <div class="disc-opt">コーチ主導の運動セッション（コスト増）</div>
+      <div class="disc-opt">完全セルフ（脱落リスク高）</div>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">ツッコミ</div>
+    <p><strong>REBOOSTを2日間の「イベント」に留めている現状は、科学的に見てもったいない。</strong>運動の効果は「継続」で発現する。週3回×30分の有酸素運動を100日間続ければ、ADHD症状の改善効果は薬物療法に匹敵しうる。これをサービスの基本設計に組み込むべき。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 8: EF SCAFFOLDING                      -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec8">
+  <div class="section-eyebrow" style="color: var(--blue);">08 &mdash; Executive Function Scaffolding</div>
+  <div class="action-title">「わかっているのにできない」を仕組みで解決する</div>
+  <p class="section-lead">ADHDサービスの差別化の核。Implementation Intentions、外部化ツール、環境設計、バディシステムの4層構造。</p>
+
+  <table class="data-tbl">
+    <thead><tr><th>層</th><th>介入</th><th>エビデンス</th><th>実装方法</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="t-name">Layer 1<br>環境設計</td>
+        <td>ナッジ理論 + ABC分析<br>デフォルト変更、努力削減/増加</td>
+        <td>ナッジ: 一般的に高エビデンス<br>ABC: CBT基盤 <span class="ev-badge rct">RCT</span></td>
+        <td>「環境設計チェックリスト」: 物理空間+デジタル空間の最適化を初週に実施</td>
+      </tr>
+      <tr>
+        <td class="t-name">Layer 2<br>行動自動化</td>
+        <td>Implementation Intentions<br>+ 習慣形成科学</td>
+        <td><span class="ev-badge meta">d=0.65 (94研究)</span><br>Gollwitzer & Sheeran, 2006</td>
+        <td>全アクションプランを「When-Then」形式に変換。Coping Planningで障害予測。</td>
+      </tr>
+      <tr>
+        <td class="t-name">Layer 3<br>モチベーション</td>
+        <td>SDT（自己決定理論）<br>即時報酬設計</td>
+        <td>SDT: <span class="ev-badge rct">RCT</span><br>遅延割引: Theme B</td>
+        <td>GOALの自律性チェック。週次マイルストーンに報酬を紐付け。</td>
+      </tr>
+      <tr>
+        <td class="t-name">Layer 4<br>認知・感情</td>
+        <td>CBT Safren + ACT<br>メタ認知療法</td>
+        <td>CBT: <span class="ev-badge rct">d=0.89</span><br>ACT: <span class="ev-badge rct">d=0.47-0.62</span></td>
+        <td>認知歪みの認識。価値に基づく行動選択。思考記録の習慣化。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4 style="margin: 24px 0 12px; font-size: 16px;">外部化ツールスタック</h4>
+  <div class="success-grid">
+    <div class="success-card">
+      <div class="sc-badge">タスク管理</div>
+      <h4>Todoist / TickTick</h4>
+      <p>Implementation Intentions形式のタスク登録。日時トリガー設定。週次コーチレビュー。</p>
+    </div>
+    <div class="success-card">
+      <div class="sc-badge">時間管理</div>
+      <h4>タイムタイマー + カレンダー</h4>
+      <p>物理的残り時間表示。タイムブロッキング。バッファタイム文化。</p>
+    </div>
+    <div class="success-card">
+      <div class="sc-badge">習慣追跡</div>
+      <h4>Habitica / Streaks</h4>
+      <p>ゲーミフィケーション要素で継続動機。運動・マインドフルネスのストリーク。</p>
+    </div>
+  </div>
+
+  <h4 style="margin: 24px 0 12px; font-size: 16px;">バディシステム</h4>
+  <p style="font-size: 14px; color: var(--text-dim); line-height: 1.8; margin-bottom: 16px;">チーム内で2人1組のバディを組み、週次で相互チェックイン。ボディダブリングの仕組み化。</p>
+
+  <table class="data-tbl">
+    <thead><tr><th>仕組み</th><th>頻度</th><th>メカニズム</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">朝のチェックイン</td><td>毎朝5分（テキスト）</td><td>社会的圧力による活性化</td></tr>
+      <tr><td class="t-name">週次バディMTG</td><td>週1回・15分</td><td>アカウンタビリティ + 外部ペースメーカー</td></tr>
+      <tr><td class="t-name">ボディダブリング</td><td>必要時（予約制）</td><td>DMN抑制 + NE調整</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 9: COMMUNITY DESIGN                    -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec9">
+  <div class="section-eyebrow" style="color: var(--pink);">09 &mdash; Community Design</div>
+  <div class="action-title">ADHD脳に優しいコミュニティ空間を設計する</div>
+  <p class="section-lead">既存のSlack設計は健常者向けに最適化されている。情報過多を防ぎ、衝動性を活かし、非同期優先で設計し直す。</p>
+
+  <div class="shift-grid">
+    <div class="shift-card">
+      <div class="shift-num">01</div>
+      <h4>チャンネル構造の簡素化</h4>
+      <div class="shift-before">Before: 12+チャンネル（分類過多）</div>
+      <div class="shift-after">After: 6チャンネルに統合（#全体 / #チーム / #宣言 / #つぶやき / #運営 / #質問）</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">02</div>
+      <h4>「つぶやきチャンネル」新設</h4>
+      <div class="shift-before">Before: 宣言チャンネルのみ（衝動性の受け皿なし）</div>
+      <div class="shift-after">After: 思いついたことを即投稿OK。ADHDの衝動性を「発想の泉」として活用。無返信OK。</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">03</div>
+      <h4>非同期コミュニケーション優先</h4>
+      <div class="shift-before">Before: リアルタイムのSlackスレッドが主体</div>
+      <div class="shift-after">After: 48時間以内の返信推奨。即レスのプレッシャーを除去。RSD配慮。</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">04</div>
+      <h4>チーム人数の縮小</h4>
+      <div class="shift-before">Before: 6人/チーム</div>
+      <div class="shift-after">After: 4人/チーム（過刺激防止 + 全員が発言できる安全な空間確保）</div>
+    </div>
+  </div>
+
+  <div class="disc-card">
+    <div class="disc-num">設計判断ポイント</div>
+    <h4>コミュニティの公開範囲</h4>
+    <p>ADHDの当事者であることを開示した空間か、非開示でもOKな空間か。</p>
+    <div class="disc-opts">
+      <div class="disc-opt rec">ADHD特化を明示（同質性が安心感と共感を生む）</div>
+      <div class="disc-opt">ADHD傾向を含む多様性コミュニティ（グレーゾーン包摂）</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 10: TECHNOLOGY                         -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec10">
+  <div class="section-eyebrow" style="color: var(--blue);">10 &mdash; Technology &amp; Tools</div>
+  <div class="action-title">テクノロジーはADHD脳の「外部メモリ」になる</div>
+  <p class="section-lead">ツールの導入だけでなく、ツールの習慣化支援までをサービスに含める。</p>
+
+  <table class="data-tbl">
+    <thead><tr><th>カテゴリ</th><th>推奨ツール</th><th>用途</th><th>エビデンス</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">タスク管理</td><td>Todoist / TickTick</td><td>Implementation Intentions形式のタスク</td><td><span class="ev-badge theory">Practice</span></td></tr>
+      <tr><td class="t-name">時間管理</td><td>Time Timer / Forest</td><td>時間盲目性の可視化</td><td><span class="ev-badge theory">Practice</span></td></tr>
+      <tr><td class="t-name">習慣追跡</td><td>Habitica / Streaks</td><td>運動・瞑想の継続動機</td><td><span class="ev-badge theory">Practice</span></td></tr>
+      <tr><td class="t-name">マインドフルネス</td><td>Headspace / Calm</td><td>MAPs補完（セッション間の自主練習）</td><td><span class="ev-badge pilot">Pilot</span></td></tr>
+      <tr><td class="t-name">仮想ボディダブリング</td><td>Focusmate / Flow Club</td><td>タスク実行時の社会的圧力</td><td><span class="ev-badge theory">Practice</span></td></tr>
+      <tr><td class="t-name">ADHD特化アプリ</td><td>Tiimo / Inflow</td><td>ビジュアルプランナー / CBTプログラム</td><td><span class="ev-badge pilot">Pilot</span></td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <div class="insight-label">将来構想</div>
+    <p><strong>AIコーチングアシスタント</strong>: セッション間のマイクロインタベンション。行動ログのパターン分析→個別最適化された提案。Sincrolab Adults等のRCTが進行中。中期的にはサービスの差別化要因として最重要。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 11: TYPE-SPECIFIC DESIGN               -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec11">
+  <div class="section-eyebrow" style="color: var(--amber);">11 &mdash; Type-Specific Service Design</div>
+  <div class="action-title">ADHD-I / ADHD-C / ADHD-HI で最適アプローチは異なる</div>
+  <p class="section-lead">DSM-5-TRの3プレゼンテーション（不注意優勢/混合/多動衝動優勢）に対応したサービス分岐の設計。</p>
+
+  <table class="data-tbl">
+    <thead><tr><th>タイプ</th><th>有病率</th><th>主な困難</th><th>最適アプローチ</th><th>グループ設計</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="t-name">ADHD-I<br>（不注意優勢）</td>
+        <td>20-30%</td>
+        <td>注意維持困難、組織化不全、「静かな」つまずき、女性に多い</td>
+        <td>外部構造化（チェックリスト、ルーティン、ノイズキャンセリング）</td>
+        <td>少人数（3-4人）。発言の場を意識的に確保。</td>
+      </tr>
+      <tr>
+        <td class="t-name">ADHD-C<br>（混合）</td>
+        <td>50-70%</td>
+        <td>構造化 + 衝動制御の両方。最も機能障害が大きい</td>
+        <td>構造化 + エネルギー管理 + 衝動制御。フルスペック対応。</td>
+        <td>メインストリーム。チーム構成のベース。</td>
+      </tr>
+      <tr>
+        <td class="t-name">ADHD-HI<br>（多動衝動優勢）</td>
+        <td>5-10%</td>
+        <td>行動抑制困難、エネルギー過剰、リスク行動</td>
+        <td>エネルギーの建設的リダイレクト。起業家精神の活用。</td>
+        <td>行動的な活動を多く含むセッション。</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="disc-card">
+    <div class="disc-num">設計判断ポイント</div>
+    <h4>グループ編成: 混合 vs タイプ別</h4>
+    <p>タイプの違いがグループダイナミクスに与える影響。不注意優勢が多動優勢に圧倒されるリスク。</p>
+    <div class="disc-opts">
+      <div class="disc-opt rec">初期は混合 + タイプ別サブセッション（月1回）</div>
+      <div class="disc-opt">完全タイプ別チーム編成（運用コスト高）</div>
+      <div class="disc-opt">混合のみ（多様性のメリットを重視）</div>
+    </div>
+  </div>
+
+  <div class="disc-card">
+    <div class="disc-num">設計判断ポイント</div>
+    <h4>併存症（不安・うつ）への対応ライン</h4>
+    <p>ADHD成人の~50%に不安障害、20-40%にうつ病が併存。コーチングの範疇を超えるケースの取扱い。</p>
+    <div class="disc-opts">
+      <div class="disc-opt rec">初回スクリーニング + 医療機関紹介基準の明確化</div>
+      <div class="disc-opt">臨床心理士との連携体制構築</div>
+      <div class="disc-opt">重度は受入れず（サービス範囲の限定）</div>
+    </div>
+  </div>
+
+  <div class="disc-card">
+    <div class="disc-num">設計判断ポイント</div>
+    <h4>女性専用コホートの設置</h4>
+    <p>ADHD女性は「マスキング」が深い（Quinn & Madhoo, 2014）。診断比率M:F = 1.5:1だが実態はほぼ同率。月経周期による症状変動も。</p>
+    <div class="disc-opts">
+      <div class="disc-opt rec">希望制で女性専用チーム選択可（現キャリスピ2.0と同様）</div>
+      <div class="disc-opt">女性専用コホート（独立運営）</div>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">ツッコミ</div>
+    <p><strong>「ADHDを一括りにしたサービス」は、結局誰にも最適化されていない。</strong>初期はコスト的に全タイプ混合でスタートせざるを得ないが、スケールした時点でタイプ別分岐は必須。特に不注意優勢（女性に多い、静かな困難）への配慮は差別化要因になりうる。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
+<!-- SEC 12: ROADMAP                            -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="sec12">
+  <div class="section-eyebrow" style="color: var(--purple);">12 &mdash; Strengths Integration &amp; Roadmap</div>
+  <div class="action-title">強みを全プログラムに織り込み、3フェーズで実装する</div>
+  <p class="section-lead">ADHD固有の強み（創造性、ハイパーフォーカス、エネルギー、起業家精神、レジリエンス）を弱みの補完ではなく、プログラムの中核に据える。</p>
+
+  <h4 style="margin: 16px 0 12px; font-size: 16px;">5つの強みをプログラムに統合する原則</h4>
+  <table class="data-tbl">
+    <thead><tr><th>強み</th><th>エビデンスレベル</th><th>プログラム内での活用</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">創造性・発散的思考</td><td><span class="ev-badge pilot">Medium-High</span> White & Shah, 2006/2011</td><td>ブレインストーミングセッション、ビジネスアイデア創出ワーク、6stepの「What」で発散的思考を活用</td></tr>
+      <tr><td class="t-name">ハイパーフォーカス</td><td><span class="ev-badge pilot">Medium</span> Ashinoff & Abu-Akel, 2021</td><td>「ハイパーフォーカスマッピング」で発動条件を同定→GOALに戦略的に紐付け。クールダウン機構の設計。</td></tr>
+      <tr><td class="t-name">エネルギー・行動力</td><td><span class="ev-badge expert">Medium</span></td><td>エネルギーのリダイレクト設計。「まず動く」をプログラム原則に。アクションプランの初動を重視。</td></tr>
+      <tr><td class="t-name">起業家精神</td><td><span class="ev-badge rct">High</span> Wiklund et al., 2016/2018</td><td>GOAL設定で起業・副業・新規事業を選択肢に。成長期の「維持」課題にはEFスキャフォールディングで対応。</td></tr>
+      <tr><td class="t-name">レジリエンス</td><td><span class="ev-badge expert">Medium</span></td><td>失敗体験の棚卸し→「だから強い」というナラティブ再構築。GOOD&MOREで毎回回復力を強化。</td></tr>
+    </tbody>
+  </table>
+
+  <h4 style="margin: 32px 0 16px; font-size: 20px; font-weight: 700;">優先実装ロードマップ</h4>
+
+  <div class="phase-card" style="border-top: 3px solid var(--green);">
+    <h3>Phase 1 &mdash; 即時（0-3ヶ月）</h3>
+    <div class="phase-policy">既存コンテンツの最小改修で最大効果</div>
+    <p>キャリスピ2.0の骨格を維持しつつ、講義形式の変更と必須ワークの追加でADHD対応を開始する。</p>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot done"></span>講義を30分×3チャンクに再構成</div>
+      <div class="phase-item"><span class="pi-dot done"></span>全DAYにADHD神経科学のコンテキスト追加（15分/DAY）</div>
+      <div class="phase-item"><span class="pi-dot done"></span>Implementation Intentions形式のAP設定を標準化</div>
+      <div class="phase-item"><span class="pi-dot done"></span>運動プログラム: VIP限定→全プラン必須化（週3回×30分）</div>
+      <div class="phase-item"><span class="pi-dot wip"></span>バディシステム導入（チーム内2人1組）</div>
+      <div class="phase-item"><span class="pi-dot wip"></span>Slackチャンネル再設計（12→6チャンネル）</div>
+    </div>
+    <div class="phase-gate gate">Gate: 1期目の100日完走率 > 80%（現キャリスピ2.0比較）</div>
+  </div>
+
+  <div class="phase-card" style="border-top: 3px solid var(--cyan);">
+    <h3>Phase 2 &mdash; 短期（3-6ヶ月）</h3>
+    <div class="phase-policy">EFツール統合 + コミュニティの深化</div>
+    <p>外部化ツールのサービス統合と、MAPs8週プログラムの組み込み。</p>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot plan"></span>新DAY4つの追加（16 DAY化）: ADHD脳の科学、EF&ツール、ウェルネス、強み&アドボカシー</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>MAPs 8週マインドフルネスプログラムの統合</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>ツールスタック導入: Todoist/TickTick + タイムタイマー + Habitica</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>コーチ向けADHD専門トレーニング（Safren CBT + ACT基礎）</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>初回スクリーニング基準の策定（併存症対応ライン）</div>
+    </div>
+    <div class="phase-gate gate">Gate: NPS > 40、ADHD症状改善の自己報告 > 60%</div>
+    <div class="phase-gate risk">Risk: コーチのADHD専門スキル不足。外部専門家の招聘コスト。</div>
+  </div>
+
+  <div class="phase-card" style="border-top: 3px solid var(--purple);">
+    <h3>Phase 3 &mdash; 中期（6-12ヶ月）</h3>
+    <div class="phase-policy">差別化の深化 + テクノロジー投資</div>
+    <p>タイプ別サービス分岐とAIコーチングアシスタントの導入。</p>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot plan"></span>タイプ別サブセッション（不注意優勢 / 混合 / 多動衝動優勢）月1回</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>女性専用チーム選択制の正式化</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>AIコーチングアシスタント（セッション間マイクロインタベンション）のPoC</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>行動ログ→パターン分析→個別最適化のデータパイプライン</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>ADHD専門コーチ認定プログラムの設計開始</div>
+      <div class="phase-item"><span class="pi-dot plan"></span>卒業生ピアメンター制度の構築</div>
+    </div>
+    <div class="phase-gate question">Open Question: AIアシスタントの開発 vs 外部SaaS連携 vs 既存RCTプロジェクトとの提携</div>
+  </div>
+
+  <div class="vision-card">
+    <h3>日本初のエビデンスベースADHD専門コーチングスクール</h3>
+    <p>ADHD専門コーチ0人の日本で、科学的根拠に基づくサービスを構築し、「ADHDの強みを活かして人生を変える」プラットフォームを確立する。</p>
+    <div class="vision-items">
+      <div class="vision-item">成人ADHD 2.5-5%</div>
+      <div class="vision-item">CBT d=0.89</div>
+      <div class="vision-item">コーチング改善率89.5%</div>
+      <div class="vision-item">ADDCA認証日本人: 0人</div>
+      <div class="vision-item">市場ギャップ: 月0.8-1.5万円帯</div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /page-layout -->
+
+<!-- ── Footer ── -->
+<div class="footer">
+  omoshiku Inc. &mdash; ADHD x キャリスピ2.0 サービス設計論点整理<br>
+  <span>Generated: 2026-02-26 | Research Themes A-H 統合 | McKinsey Quality Framework</span>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
