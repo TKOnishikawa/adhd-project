@@ -290,6 +290,30 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
   <a href="#ext-db"><span class="toc-num">E1</span> DB拡張（+6テーブル）</a>
   <a href="#ext-api"><span class="toc-num">E2</span> Edge Functions拡張</a>
   <a href="#ext-chain"><span class="toc-num">E3</span> プロンプトチェイン</a>
+  <div class="toc-part">P0改善（v1.0必須）</div>
+  <a href="#s12-1"><span class="toc-num">12.1</span> 過集中ブレイカー</a>
+  <a href="#s12-2"><span class="toc-num">12.2</span> 時間の感覚的可視化</a>
+  <a href="#s12-3"><span class="toc-num">12.3</span> 段階的カレンダーアラート</a>
+  <a href="#s12-4"><span class="toc-num">12.4</span> 離脱→復帰ループ</a>
+  <a href="#s12-5"><span class="toc-num">12.5</span> 段階的機能アンロック</a>
+  <div class="toc-part">UI/UX改善</div>
+  <a href="#s13-1"><span class="toc-num">13.1</span> タスク完了マルチ報酬</a>
+  <a href="#s13-2"><span class="toc-num">13.2</span> Progress Ring</a>
+  <a href="#s13-3"><span class="toc-num">13.3</span> ワンスワイプ・チェックイン</a>
+  <a href="#s13-4"><span class="toc-num">13.4</span> オンボーディング</a>
+  <a href="#s13-5"><span class="toc-num">13.5</span> Zen Mode</a>
+  <a href="#s13-6"><span class="toc-num">13.6</span> タスク遷移の儀式</a>
+  <div class="toc-part">ゲーミフィケーション</div>
+  <a href="#s14-1"><span class="toc-num">14.1</span> XP/レベル基盤</a>
+  <a href="#s14-2"><span class="toc-num">14.2</span> 変動報酬エンジン</a>
+  <a href="#s14-3"><span class="toc-num">14.3</span> バッジシステム</a>
+  <a href="#s14-4"><span class="toc-num">14.4</span> フェーズインジケーター</a>
+  <div class="toc-part">追加改善（82→90）</div>
+  <a href="#s15-1"><span class="toc-num">15.1</span> Curiosity Engine</a>
+  <a href="#s15-2"><span class="toc-num">15.2</span> ウィジェット設計</a>
+  <a href="#s15-3"><span class="toc-num">15.3</span> Feature Auto-Hibernate</a>
+  <a href="#s15-4"><span class="toc-num">15.4</span> A/Bテスト</a>
+  <a href="#s15-5"><span class="toc-num">15.5</span> アプリ外リーチ</a>
   <div class="toc-part">付録</div>
   <a href="#appA"><span class="toc-num">A</span> カラーパレット</a>
   <a href="#appB"><span class="toc-num">B</span> TypeScript型定義</a>
@@ -1995,10 +2019,615 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
   </div>
 </div>
 
+<!-- ═══════════════════════ PART: P0 IMPROVEMENTS ═══════════════════════ -->
+<div class="part-divider"><span class="part-badge f">P0改善（v1.0必須）</span></div>
+
+<!-- Section 12.1: Hyperfocus Breaker -->
+<div class="section" id="s12-1">
+  <div class="section-eyebrow" style="color:var(--red)">12.1 — 過集中ブレイカー</div>
+  <h2 class="action-title">Focus Mode 3段階強制介入</h2>
+  <p class="section-lead">ADHD脳は過集中中に通常通知を認知できない。タイマー終了時に段階的にエスカレーションし、「通知チャネル問題」を根本解決する。</p>
+
+  <div class="layer-stack">
+    <div class="layer" style="border-left:3px solid var(--green)">
+      <span class="layer-badge l3">Level 1 — +0秒</span>
+      <h4 style="margin-top:8px">通常通知</h4>
+      <p>プッシュ通知 + バイブレーション1回（iOS: <code>.success</code> / Android: <code>CONFIRM</code>）+ 画面上部バナー表示</p>
+    </div>
+    <div class="layer" style="border-left:3px solid var(--amber)">
+      <span class="layer-badge l5">Level 2 — +30秒</span>
+      <h4 style="margin-top:8px">画面暗転 + AI音声</h4>
+      <p>画面を50%暗転（CSS overlay）+ バイブレーション3連続（500ms間隔）+ AI音声「おーい、タイマー終わったで」+ 暗転画面上にテキスト表示</p>
+    </div>
+    <div class="layer" style="border-left:3px solid var(--red)">
+      <span class="layer-badge l6">Level 3 — +90秒</span>
+      <h4 style="margin-top:8px">画面ロック + 全画面メッセージ</h4>
+      <p>画面をぼかし（<code>backdrop-filter: blur(8px)</code>）+ オーバーレイロック + 全画面メッセージ</p>
+      <div class="wireframe">
+「{duration}分経ったで。次の予定まであと{X}分。
+ 今のタスク、区切りええとこか？」
+
+ [あと5分だけ]  →  5分延長タイマー、ログに記録
+ [切り上げる]    →  完了フロー（トランジション画面へ）
+ [延長する]      →  理由入力モーダル → ログに記録</div>
+    </div>
+  </div>
+
+  <div class="code-block">
+<span class="code-label">DBスキーマ追加（focus_sessions テーブル）</span>
+<span class="sql-kw">ALTER TABLE</span> <span class="sql-tbl">public.focus_sessions</span> <span class="sql-kw">ADD COLUMN</span>
+  breaker_level    <span class="sql-type">SMALLINT</span> <span class="sql-kw">DEFAULT</span> <span class="num">0</span>,           <span class="sql-cm">-- 到達した最大介入レベル (0-3)</span>
+  breaker_response <span class="sql-type">TEXT</span>,                       <span class="sql-cm">-- 'acknowledged_l1' | 'acknowledged_l2' | 'extend_5min' | 'done' | 'extend_custom'</span>
+  breaker_extend_reason <span class="sql-type">TEXT</span>,                  <span class="sql-cm">-- 延長理由（Level 3で「延長する」選択時）</span>
+  breaker_responded_at  <span class="sql-type">TIMESTAMPTZ</span>;            <span class="sql-cm">-- 応答した時刻</span></div>
+
+  <div class="note">
+    <div class="note-label">実装ノート</div>
+    <p>Level間の遅延（30秒、90秒）はユーザー設定で調整可能。<code>prefers-reduced-motion</code> 有効時は暗転を即座切替（アニメーションなし）。週次レビューでbreaker_level=3到達頻度を「過集中パターン」として分析。</p>
+  </div>
+</div>
+
+<!-- Section 12.2: Time Visualization -->
+<div class="section" id="s12-2">
+  <div class="section-eyebrow" style="color:var(--red)">12.2 — 時間の感覚的可視化</div>
+  <h2 class="action-title">Focus Mode背景色グラデーション</h2>
+  <p class="section-lead">「数字ではなく色で時間を感じさせる」— 残り時間に応じて背景色が段階的に変化。ADHDのTime Blindnessを感覚的に補う。</p>
+
+  <table class="tbl">
+    <thead><tr><th>残り時間</th><th>背景色</th><th>CSSクラス</th><th>効果</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">90-60分</td><td><span style="color:#4a7dff">■</span> 深い青</td><td class="mono" style="font-size:11px">.focus-bg-phase-calm</td><td>落ち着き</td></tr>
+      <tr><td class="t-name">60-30分</td><td><span style="color:#a78bfa">■</span> 紫</td><td class="mono" style="font-size:11px">.focus-bg-phase-aware</td><td>意識喚起</td></tr>
+      <tr><td class="t-name">30-15分</td><td><span style="color:#f59e0b">■</span> オレンジ</td><td class="mono" style="font-size:11px">.focus-bg-phase-urgent</td><td>切迫感</td></tr>
+      <tr><td class="t-name">15-0分</td><td><span style="color:#ef4444">■</span> 赤 + パルス</td><td class="mono" style="font-size:11px">.focus-bg-phase-critical</td><td>即時注意</td></tr>
+    </tbody>
+  </table>
+
+  <div class="code-block">
+<span class="code-label">CSS — パルスアニメーション（残15分以下）</span>
+<span class="kw">@keyframes</span> <span class="fn">time-pulse</span> {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.85; }
+}
+.<span class="fn">focus-bg-phase-critical</span> {
+  animation: <span class="fn">time-pulse</span> <span class="num">2s</span> ease-in-out infinite;
+}
+
+<span class="cm">/* prefers-reduced-motion: パルス無効、色遷移のみ */</span></div>
+
+  <div class="insight">
+    <div class="insight-label">ゲージ表示</div>
+    <p>Focus Mode画面下部に「次の会議まで ████████░░ 80%」のゲージを常時表示。ゲージが減るに従って色が変化（緑→黄→赤）。カレンダー未連携時は非表示。</p>
+  </div>
+</div>
+
+<!-- Section 12.3: Staged Calendar Alerts -->
+<div class="section" id="s12-3">
+  <div class="section-eyebrow" style="color:var(--red)">12.3 — 段階的カレンダーアラート</div>
+  <h2 class="action-title">4段階カウントダウン</h2>
+  <p class="section-lead">ADHDの時間感覚は「今」と「今じゃない」の2区分。段階的アラートで「今じゃない」を「もうすぐ今」に変換する。</p>
+
+  <table class="tbl">
+    <thead><tr><th>タイミング</th><th>通知レベル</th><th>内容</th><th>UI</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">T-60分</td><td class="t-blue">ソフト</td><td>「1時間後にMTG。今のタスクをあと{X}分で区切ると余裕があるで」</td><td>画面端にうっすら表示、3秒で消滅</td></tr>
+      <tr><td class="t-name">T-30分</td><td class="t-cyan">中</td><td>「30分後にMTG。準備することある？」+ 準備チェックリスト自動生成</td><td>トースト通知、タップで詳細</td></tr>
+      <tr><td class="t-name">T-15分</td><td class="t-warn">強</td><td>「15分後にMTG。今のタスクを保存して、切り替え準備や」</td><td>バナー通知 + バイブレーション</td></tr>
+      <tr><td class="t-name">T-5分</td><td class="t-bad">全画面</td><td>「5分後にMTG開始。デスク離れる？資料開いた？」</td><td>全画面オーバーレイ（Focus中断）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <div class="note-label">設定</div>
+    <p>ユーザーが「この会議は通知不要」を設定可能。通知無視パターンを学習し、個人に最適なタイミングに自動調整。Edge Function <code>calendar-sync</code> の拡張で実装。</p>
+  </div>
+</div>
+
+<!-- Section 12.4: Return Loop -->
+<div class="section" id="s12-4">
+  <div class="section-eyebrow" style="color:var(--red)">12.4 — 離脱→復帰ループ</div>
+  <h2 class="action-title">「久しぶりモード」</h2>
+  <p class="section-lead">ADHD当事者の80%が1ヶ月以内にアプリを離脱する。「離脱→復帰」のループ設計こそがADHDアプリの生命線。</p>
+
+  <div class="wireframe">
+<div class="wire-label">久しぶりモード画面（3日以上未使用時）</div>
+┌──────────────────────────┐
+│                          │
+│  おかえり。              │
+│  何があっても、           │
+│  ここはあんたの味方や。   │
+│                          │
+│  [今日だけに集中する ▶]   │
+│                          │
+└──────────────────────────┘
+
+挙動:
+ ✓ 過去の未達タスク/未達習慣を非表示
+ ✓ インボックスの溜まったアイテムを自動アーカイブ
+ ✓ チェックイン不要（いきなりFocusカード）
+ ✓ 復帰ボーナス: +20 XP「戻ってきたこと自体がすごい」</div>
+
+  <div class="code-block">
+<span class="code-label">DBスキーマ追加（profiles テーブル）</span>
+<span class="sql-kw">ALTER TABLE</span> <span class="sql-tbl">public.profiles</span> <span class="sql-kw">ADD COLUMN</span>
+  last_active_at <span class="sql-type">TIMESTAMPTZ</span> <span class="sql-kw">DEFAULT</span> <span class="fn">now</span>(),    <span class="sql-cm">-- 最後のアクティブ日時</span>
+  comeback_count <span class="sql-type">INTEGER</span> <span class="sql-kw">DEFAULT</span> <span class="num">0</span>;            <span class="sql-cm">-- 復帰回数（バッジ用）</span></div>
+</div>
+
+<!-- Section 12.5: Staged Unlock -->
+<div class="section" id="s12-5">
+  <div class="section-eyebrow" style="color:var(--red)">12.5 — 段階的機能アンロック</div>
+  <h2 class="action-title">レディネスベースの段階解放</h2>
+  <p class="section-lead">v1.1以降の機能を一度に解放せず、ユーザーの習熟度に応じて段階的に提案。「アンロック」を意識させず、自然な提案として。</p>
+
+  <table class="tbl">
+    <thead><tr><th>タイミング</th><th>解放される機能</th><th>条件</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">Day 0</td><td>Today + Chat（2画面）</td><td>初回起動</td></tr>
+      <tr><td class="t-name">Week 2</td><td>習慣チェッカー</td><td>7日中5日以上アプリ使用</td></tr>
+      <tr><td class="t-name">Month 2</td><td>振り返り（Weekly Review）</td><td>習慣チェッカーを2週間以上使用</td></tr>
+      <tr><td class="t-name">Month 3</td><td>ゴール設定</td><td>振り返りを2回以上実施</td></tr>
+      <tr><td class="t-name">任意</td><td>GTDインボックス</td><td>AIが提案 or 設定から手動解放</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sowhat">
+    <div class="sowhat-label">設計原則</div>
+    <p>どのタイミングでも「まだいい」が選べる。Noを選んでも後から解放可能。ゲーミフィケーション的な「ロック解除！」演出はしない（未完了感→ストレス回避）。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PART: UI/UX IMPROVEMENTS ═══════════════════════ -->
+<div class="part-divider"><span class="part-badge b">UI/UX改善</span></div>
+
+<!-- Section 13.1: Multi-Reward -->
+<div class="section" id="s13-1">
+  <div class="section-eyebrow" style="color:var(--green)">13.1 — タスク完了マルチ報酬</div>
+  <h2 class="action-title">0.3秒同時発火リワード</h2>
+  <p class="section-lead">タスク完了は「最大の報酬チャンス」。ハプティック+ビジュアル+サウンド+XP+AI一言を0.3秒以内に全部同時発火する。</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <span class="card-badge purple">ハプティック</span>
+      <h4>ダブルタップ振動</h4>
+      <p>iOS: <code>UIImpactFeedbackGenerator(.success)</code><br>Android: <code>VibrationEffect.EFFECT_CLICK</code></p>
+    </div>
+    <div class="card">
+      <span class="card-badge green">ビジュアル</span>
+      <h4>カード緑フラッシュ + ✓ポップ</h4>
+      <p><code>scale(1.05)→scale(1)</code> + background flash（200ms）</p>
+    </div>
+    <div class="card">
+      <span class="card-badge cyan">サウンド</span>
+      <h4>控えめな「ポン♪」</h4>
+      <p>Web Audio API、50ms以内に再生開始。設定で消音可。</p>
+    </div>
+    <div class="card">
+      <span class="card-badge blue">XPフロート</span>
+      <h4>「+{xp} XP」浮上→消滅</h4>
+      <p><code>translateY(-20px)</code> + opacity 0→1→0（300ms）</p>
+    </div>
+    <div class="card">
+      <span class="card-badge amber">AI一言</span>
+      <h4>20パターン以上ローテ</h4>
+      <p>「ナイスや！」「やるやん」「一歩前進やで」「ええ感じ！」…</p>
+    </div>
+  </div>
+
+  <h3 style="font-size:16px;margin:24px 0 12px">フェーズ別XP配分</h3>
+  <table class="tbl">
+    <thead><tr><th>ドーパミンフェーズ</th><th>XP</th><th>AI一言例</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">🔥 Ignite（点火）</td><td class="mono">+8</td><td>「ええスタートや！」</td></tr>
+      <tr><td class="t-name">🚀 Accelerate（加速）</td><td class="mono">+12</td><td>「乗ってきたな」</td></tr>
+      <tr><td class="t-name">⚡ Sustain（維持）</td><td class="mono">+15</td><td>「粘り強いやん」</td></tr>
+      <tr><td class="t-name">🔄 Switch（切替）</td><td class="mono">+5</td><td>「切り替え上手やな」</td></tr>
+      <tr><td class="t-name">🌿 Recover（回復）</td><td class="mono">+3</td><td>「ちゃんと休んだの偉い」</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <div class="note-label">特別演出</div>
+    <p>1日の初回完了: ミニ紙吹雪（パーティクル10個、0.5秒で消滅）。1日5タスク完了: 「今日5つ片付けたで！」+ バッジ進捗。低エネルギー日（1-3）: XP 1.5倍「しんどい日にやったのは偉い」。<strong>報酬が作業を中断してはいけない</strong>。</p>
+  </div>
+</div>
+
+<!-- Section 13.2: Progress Ring -->
+<div class="section" id="s13-2">
+  <div class="section-eyebrow" style="color:var(--green)">13.2 — Today Progress Ring</div>
+  <h2 class="action-title">ホーム画面の「進捗の手触り」</h2>
+  <p class="section-lead">「今日どれくらい頑張ったか」を数字ではなく円形プログレスで感覚的に可視化する。</p>
+
+  <div class="wireframe">
+<div class="wire-label">Today Progress Ring</div>
+┌─────────────────────────────┐
+│  ☀️ おはよう、{name}さん     │
+│                             │
+│      ╭──────╮              │
+│     │ 3 done │  ← 円形プログレス（完了率で円が埋まる）
+│      ╰──────╯              │
+│    +36 XP today             │
+│                             │
+│  [今これに集中 ▶]           │
+└─────────────────────────────┘
+
+色遷移:
+  0-30%  → 薄い青（まだこれから）
+  30-70% → シアン→緑（いい感じ）
+  70-100%→ 緑→ゴールド（素晴らしい）
+  100%   → パルス＋ゴールド化 + AI「今日の分、全部やりきったで！」
+
+※「未完了タスク数」は表示しない（罪悪感トリガー回避）
+  「3/7」ではなく「3 done」だけ表示</div>
+</div>
+
+<!-- Section 13.3: One-Swipe Checkin -->
+<div class="section" id="s13-3">
+  <div class="section-eyebrow" style="color:var(--green)">13.3 — ワンスワイプ・チェックイン</div>
+  <h2 class="action-title">チェックインを「3秒の儀式」に</h2>
+  <p class="section-lead">毎朝の儀式が事務的すぎる。スワイプ or 一言で完了する体験へ。</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0">
+    <div class="card" style="border-left:3px solid var(--cyan)">
+      <span class="card-badge cyan">Option A</span>
+      <h4>ワンスワイプ</h4>
+      <p>画面全体が1枚の「気分カード」<br>↑スワイプ: 「今日は行けそう！」(7-10)<br>→スワイプ: 「まあまあ」(4-6)<br>↓スワイプ: 「しんどい」(1-3)<br>「もっと詳しく」で従来入力</p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--purple)">
+      <span class="card-badge purple">Option B</span>
+      <h4>一言チェックイン</h4>
+      <p>「今の気分を一言で：」テキスト入力<br>→ AIがNLP解析で自動推定<br>→ 「"ちょっと眠い"やな。エネルギー4、で合ってる？」<br>→ ワンタップ確認</p>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">共通</div>
+    <p>完了時に「おはよう報酬」<strong>+5 XP</strong>。毎日の最初のアクションを報酬化。</p>
+  </div>
+</div>
+
+<!-- Section 13.4: Onboarding -->
+<div class="section" id="s13-4">
+  <div class="section-eyebrow" style="color:var(--green)">13.4 — オンボーディングフロー</div>
+  <h2 class="action-title">「2分で価値を感じる」体験</h2>
+  <p class="section-lead">ADHD当事者の離脱はDay 1-3に集中。「これは自分のためのアプリだ」と感じさせるDay 0体験。MY OSの2分ルール適用。</p>
+
+  <table class="tbl">
+    <thead><tr><th>ステップ</th><th>時間</th><th>内容</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">Step 0</td><td class="mono">0秒</td><td>「ようこそ。ワシはガネーシャ。あんたのADHD脳の味方や」+ バランスホイールアニメーション</td></tr>
+      <tr><td class="t-name">Step 1</td><td class="mono">30秒</td><td>「頭の中にあることを1つだけ教えて」→ AI即座分類 + ドーパミンスコア表示</td></tr>
+      <tr><td class="t-name">Step 2</td><td class="mono">60秒</td><td>「5分だけ試してみいひん？」→ Focus Mode体験（5分版）→ 報酬演出</td></tr>
+      <tr><td class="t-name">Step 3</td><td class="mono">90秒</td><td>4スイッチ簡易診断（4択×2問=8秒）→ 「あんたは"興味×新規性"タイプやな」</td></tr>
+      <tr><td class="t-good">完了</td><td class="mono">120秒</td><td>ホーム画面到着。最初のタスクがFocusカードに。「設定は後でええ」</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <div class="note-label">注意</div>
+    <p>全ステップにスキップボタン（ただし5秒後に表示）。2回目以降の起動では表示しない。</p>
+  </div>
+</div>
+
+<!-- Section 13.5: Zen Mode -->
+<div class="section" id="s13-5">
+  <div class="section-eyebrow" style="color:var(--green)">13.5 — Zen Mode（禅モード）</div>
+  <h2 class="action-title">認知負荷の「最後の砦」</h2>
+  <p class="section-lead">ホーム画面右上に「🧘」ボタン。タップで全情報ブロック非表示、1タスクだけの空間に。CSSのdisplay切替のみで実装（ロジック不要）。</p>
+
+  <div class="wireframe">
+<div class="wire-label">Zen Mode画面</div>
+┌──────────────────┐
+│                    │
+│                    │
+│   📝 企画書を書く   │
+│                    │
+│     [始める ▶]      │
+│                    │
+│                    │
+└──────────────────┘
+
+- BottomNav非表示
+- 「始める」タップでFocus Mode直行
+- 戻るには「🧘」再タップ or スワイプジェスチャー
+- AIが低エネルギー検出時に「禅モードにする？」と提案</div>
+</div>
+
+<!-- Section 13.6: Task Transition Ritual -->
+<div class="section" id="s13-6">
+  <div class="section-eyebrow" style="color:var(--green)">13.6 — タスク遷移の「儀式」設計</div>
+  <h2 class="action-title">30秒トランジション</h2>
+  <p class="section-lead">タスク完了→即座に次のタスク表示はADHD脳に厳しい。30秒の「切替の儀式」を挿入し、タスク遷移の実行機能を物理的に支援する。</p>
+
+  <div class="flow-diagram">
+<div class="flow-label">タスク遷移フロー</div>
+<span class="flow-step">タスク完了</span>
+  <span class="flow-arrow">↓</span>
+<span class="flow-step">30秒トランジション画面</span>
+  <span class="flow-service">① 3回深呼吸ガイド（吸って…止めて…吐いて…）</span>
+  <span class="flow-service">② 完了タスクへのAI一言コメント</span>
+  <span class="flow-service">③ 水を飲む/立ち上がるプロンプト</span>
+  <span class="flow-arrow">↓</span> <span class="flow-note">※ 30秒後</span>
+<span class="flow-step">「次のベストタスク」カード登場</span>
+  <span class="flow-note">※ 「スキップ」ボタンは10秒後に表示（最初10秒は強制）</span></div>
+</div>
+
+<!-- ═══════════════════════ PART: GAMIFICATION ═══════════════════════ -->
+<div class="part-divider"><span class="part-badge d">ゲーミフィケーション</span></div>
+
+<!-- Section 14.1: XP/Level -->
+<div class="section" id="s14-1">
+  <div class="section-eyebrow" style="color:var(--purple)">14.1 — XP/レベル基盤</div>
+  <h2 class="action-title">報酬系の土台</h2>
+  <p class="section-lead">リサーチでは「XPとレベルが効く」と結論づけながら、仕様に落ちていなかったDBスキーマを追加。XPは「スパイス」であって「メインディッシュ」ではない。</p>
+
+  <div class="code-block">
+<span class="code-label">DBスキーマ追加</span>
+<span class="sql-cm">-- profiles テーブルに追加:</span>
+<span class="sql-kw">ALTER TABLE</span> <span class="sql-tbl">public.profiles</span> <span class="sql-kw">ADD COLUMN</span>
+  total_xp      <span class="sql-type">INTEGER</span> <span class="sql-kw">NOT NULL DEFAULT</span> <span class="num">0</span>,
+  current_level  <span class="sql-type">INTEGER</span> <span class="sql-kw">NOT NULL DEFAULT</span> <span class="num">1</span>;
+
+<span class="sql-cm">-- achievements テーブル（新規）:</span>
+<span class="sql-kw">CREATE TABLE</span> <span class="sql-tbl">public.achievements</span> (
+  id               <span class="sql-type">UUID</span> <span class="sql-kw">PRIMARY KEY DEFAULT</span> <span class="fn">gen_random_uuid</span>(),
+  user_id          <span class="sql-type">UUID</span> <span class="sql-kw">NOT NULL REFERENCES</span> <span class="sql-tbl">public.profiles</span>(id) <span class="sql-kw">ON DELETE CASCADE</span>,
+  achievement_type <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,
+  unlocked_at      <span class="sql-type">TIMESTAMPTZ</span> <span class="sql-kw">NOT NULL DEFAULT</span> <span class="fn">now</span>(),
+  rarity           <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL DEFAULT</span> <span class="sql-str">'common'</span>,
+  metadata         <span class="sql-type">JSONB</span> <span class="sql-kw">DEFAULT</span> <span class="sql-str">'{}'</span>::jsonb,
+  <span class="sql-kw">UNIQUE</span>(user_id, achievement_type)
+);
+
+<span class="sql-kw">ALTER TABLE</span> <span class="sql-tbl">public.achievements</span> <span class="sql-kw">ENABLE ROW LEVEL SECURITY</span>;
+
+<span class="sql-cm">-- task_completions テーブルに追加:</span>
+<span class="sql-kw">ALTER TABLE</span> <span class="sql-tbl">public.task_completions</span> <span class="sql-kw">ADD COLUMN</span>
+  xp_earned     <span class="sql-type">INTEGER</span> <span class="sql-kw">DEFAULT</span> <span class="num">0</span>,
+  xp_bonus_type <span class="sql-type">TEXT</span>;    <span class="sql-cm">-- 'normal' | 'low_energy_bonus' | 'variable_2x' | 'variable_5x'</span></div>
+
+  <div class="note">
+    <div class="note-label">レベル計算</div>
+    <p>Level = floor(total_xp / 100) + 1。レベルアップ時はトースト通知のみ（大げさにしない）。XP表示はホーム画面の「+{xp} XP」フロートのみ。レベルは設定画面に表示。</p>
+  </div>
+</div>
+
+<!-- Section 14.2: Variable Reward -->
+<div class="section" id="s14-2">
+  <div class="section-eyebrow" style="color:var(--purple)">14.2 — 変動報酬エンジン</div>
+  <h2 class="action-title">予測不能な報酬でドーパミンを活性化</h2>
+  <p class="section-lead">ADHD脳のドーパミン報酬系は「予測不能な報酬」で最も活性化する。基本報酬＋確率ボーナスで「小さなサプライズ」を作る。</p>
+
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0">
+    <div class="kpi-card">
+      <div class="kpi-num good" style="font-size:28px">94.5%</div>
+      <div class="kpi-label">通常: base_xp</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num blue" style="font-size:28px">5%</div>
+      <div class="kpi-label">×2ボーナス<br>「ラッキー！」演出</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision" style="font-size:28px">0.5%</div>
+      <div class="kpi-label">×5ボーナス<br>「大当たり！」演出</div>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">確率調整ルール</div>
+    <p>3日以上ボーナスなし→確率2倍（ドライスペル防止）。低エネルギー日（1-3）→ボーナス確率2倍。base_xp自体も低エネルギー日は1.5倍。<strong>課金でボーナス確率UPは絶対にしない</strong>。</p>
+  </div>
+</div>
+
+<!-- Section 14.3: Badge System -->
+<div class="section" id="s14-3">
+  <div class="section-eyebrow" style="color:var(--purple)">14.3 — バッジシステム</div>
+  <h2 class="action-title">4系統×5段階（上限20個）</h2>
+  <p class="section-lead">行動の多様性を報酬するバッジコレクション。ロックされたバッジは「シルエット」表示、取れなかったバッジに「✗」はつけない。</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0">
+    <div class="card" style="border-top:3px solid var(--red)">
+      <span class="card-badge red">🔥 集中マスター（Focus系）</span>
+      <div style="font-size:12px;color:var(--text-dim);line-height:1.8;margin-top:8px">
+        <strong>Lv1</strong> 最初の一歩 — 初めてのFocus完了<br>
+        <strong>Lv2</strong> 集中の味を知る — 累計10h集中<br>
+        <strong>Lv3</strong> デイリーファイター — 1日3タスク×5日<br>
+        <strong>Lv4</strong> 過集中マスター — ブレイカー応答×10<br>
+        <strong>Lv5</strong> 集中の達人 — 累計100h集中
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--cyan)">
+      <span class="card-badge cyan">🌀 自己理解の達人（Balance系）</span>
+      <div style="font-size:12px;color:var(--text-dim);line-height:1.8;margin-top:8px">
+        <strong>Lv1</strong> 自分を見つめる — 初ホイール記入<br>
+        <strong>Lv2</strong> 継続の力 — 4ドメイン週次×4週<br>
+        <strong>Lv3</strong> 感情の理解者 — Emergency応答×5<br>
+        <strong>Lv4</strong> 全方位の意識 — 全8ドメイン≧5<br>
+        <strong>Lv5</strong> 成長の証 — 変化率3ヶ月で+20%
+      </div>
+    </div>
+    <div class="card" style="border-top:3px solid var(--amber);opacity:0.6">
+      <span class="card-badge amber">🎯 習慣の錬金術師（Habit系）</span>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:8px">v1.1以降で解放</p>
+    </div>
+    <div class="card" style="border-top:3px solid var(--purple);opacity:0.6">
+      <span class="card-badge purple">🤝 つながりの力（Social系）</span>
+      <p style="font-size:11px;color:var(--text-muted);margin-top:8px">v1.2以降で解放</p>
+    </div>
+  </div>
+</div>
+
+<!-- Section 14.4: Phase Indicator -->
+<div class="section" id="s14-4">
+  <div class="section-eyebrow" style="color:var(--purple)">14.4 — ドーパミンフェーズUIインジケーター</div>
+  <h2 class="action-title">色でリズムを体感する</h2>
+  <p class="section-lead">DBにはdopamine_phaseが存在するがUIに一切表示されていない。Focus Modeのタイマー周囲の色変化で「今どのフェーズにいるか」を体感させる。</p>
+
+  <table class="tbl">
+    <thead><tr><th>フェーズ</th><th>タイマー枠の色</th><th>挙動</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">🔥 Ignite（点火）</td><td><span style="color:#ef4444">■</span> 赤 #ef4444</td><td>パルスアニメーション</td></tr>
+      <tr><td class="t-name">🚀 Accelerate（加速）</td><td><span style="color:#22d3ee">■</span> シアン #22d3ee</td><td>安定発光</td></tr>
+      <tr><td class="t-name">⚡ Sustain（維持）</td><td><span style="color:#4a7dff">■</span> 青 #4a7dff</td><td>安定発光</td></tr>
+      <tr><td class="t-name">🔄 Switch（切替）</td><td><span style="color:#f59e0b">■</span> アンバー #f59e0b</td><td>点滅</td></tr>
+      <tr><td class="t-name">🌿 Recover（回復）</td><td><span style="color:#34d399">■</span> 緑 #34d399</td><td>フェードイン/アウト</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <div class="note-label">設計方針</div>
+    <p>フェーズ名は直接表示しない（色の変化で体感）。ユーザーが自分のリズムを「色で覚える」→ 自己理解が進む。AIが「今Sustainやから、もう少し粘れるで」と声がけ（オプション）。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PART: 82→90 IMPROVEMENTS ═══════════════════════ -->
+<div class="part-divider"><span class="part-badge e">追加改善（82→90）</span></div>
+
+<!-- Section 15.1: Curiosity Engine -->
+<div class="section" id="s15-1">
+  <div class="section-eyebrow" style="color:var(--amber)">15.1 — Curiosity Engine</div>
+  <h2 class="action-title">好奇心エンジン</h2>
+  <p class="section-lead">AIがユーザーの過去データから「意外なつながり」を毎日1つ生成。データが溜まるほどインサイトが深くなる→使い続ける理由が時間とともに強化。</p>
+
+  <div class="flow-diagram">
+<div class="flow-label">Edge Function: generate-daily-insight</div>
+<span class="flow-step">トリガー: 毎朝チェックイン時 or ホーム画面表示（1日1回）</span>
+<span class="flow-note">前提: 2週間以上のデータが存在</span>
+  <span class="flow-arrow">↓</span>
+<span class="flow-service">① 過去14日分のタスク完了/エネルギーログ/Focus Session取得</span>
+  <span class="flow-arrow">↓</span>
+<span class="flow-service">② RAG検索で類似パターンを30日前まで遡及</span>
+  <span class="flow-arrow">↓</span>
+<span class="flow-service">③ Claude Haiku で「意外なつながり」を1つ生成</span>
+  <span class="flow-arrow">↓</span>
+<span class="flow-step">ホーム画面に「💡 今日の気づき」カード</span>
+<span class="flow-note">タップで詳細、スワイプで消去。同じインサイトは2度出さない。</span></div>
+
+  <div class="insight">
+    <div class="insight-label">なぜこれが効くか</div>
+    <p>「自分について新しい発見がある」体験はアプリ自体の新規性に依存しない。データが溜まるほどインサイトが深くなる→<strong>使い続ける理由が時間とともに強化される</strong>。「新しいアプリに飛びつく→飽きる」パターンへの根本的な解毒剤。</p>
+  </div>
+</div>
+
+<!-- Section 15.2: Widget Design -->
+<div class="section" id="s15-2">
+  <div class="section-eyebrow" style="color:var(--amber)">15.2 — ウィジェット設計</div>
+  <h2 class="action-title">ゼロオープン・エンゲージメント</h2>
+  <p class="section-lead">「アプリの存在を忘れた」離脱パターンへの直接対策。ホーム画面にウィジェットがあれば、スマホを見るたびに無意識にアプリの存在が視野に入る。</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0">
+    <div class="wireframe">
+<div class="wire-label">小サイズ（2×2）</div>
+┌────────────┐
+│ 今日: 3 done │
+│ 🔥 次: 企画書 │
+└────────────┘</div>
+    <div class="wireframe">
+<div class="wire-label">中サイズ（4×2）</div>
+┌──────────────────────┐
+│ ☀️ エネルギー: ████░░ 7 │
+│ 🔥 次: 企画書 ▶         │
+│ 💡 朝型のほうが23%…     │
+│ Today: ◉◉◉○○○○ 3/7     │
+└──────────────────────┘</div>
+  </div>
+
+  <div class="note">
+    <div class="note-label">実装</div>
+    <p>Capacitor Community Widget Plugin使用。ウィジェットタップ→アプリ起動→対応画面に直行。v1.0.5ターゲット。</p>
+  </div>
+</div>
+
+<!-- Section 15.3: Auto-Hibernate -->
+<div class="section" id="s15-3">
+  <div class="section-eyebrow" style="color:var(--amber)">15.3 — Feature Auto-Hibernate</div>
+  <h2 class="action-title">機能の自動冬眠</h2>
+  <p class="section-lead">ユーザーが30日間使わなかった機能を自動的にナビから非表示。見えるのは「今のユーザーが実際に使うもの」だけ。</p>
+
+  <div class="code-block">
+<span class="code-label">DBスキーマ — feature_states テーブル</span>
+<span class="sql-kw">CREATE TABLE</span> <span class="sql-tbl">public.feature_states</span> (
+  id            <span class="sql-type">UUID</span> <span class="sql-kw">PRIMARY KEY DEFAULT</span> <span class="fn">gen_random_uuid</span>(),
+  user_id       <span class="sql-type">UUID</span> <span class="sql-kw">NOT NULL REFERENCES</span> <span class="sql-tbl">public.profiles</span>(id) <span class="sql-kw">ON DELETE CASCADE</span>,
+  feature_key   <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,         <span class="sql-cm">-- 'habits' | 'goals' | 'inbox' | 'review'</span>
+  state         <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL DEFAULT</span> <span class="sql-str">'locked'</span>, <span class="sql-cm">-- 'locked' | 'active' | 'hibernated'</span>
+  unlocked_at   <span class="sql-type">TIMESTAMPTZ</span>,
+  last_used_at  <span class="sql-type">TIMESTAMPTZ</span>,
+  hibernated_at <span class="sql-type">TIMESTAMPTZ</span>,
+  <span class="sql-kw">UNIQUE</span>(user_id, feature_key)
+);
+
+<span class="sql-kw">ALTER TABLE</span> <span class="sql-tbl">public.feature_states</span> <span class="sql-kw">ENABLE ROW LEVEL SECURITY</span>;
+<span class="sql-kw">CREATE POLICY</span> <span class="sql-str">"Users can manage own feature states"</span>
+  <span class="sql-kw">ON</span> <span class="sql-tbl">public.feature_states</span> <span class="sql-kw">FOR ALL USING</span> (<span class="fn">auth.uid</span>() = user_id);</div>
+</div>
+
+<!-- Section 15.4: A/B Test -->
+<div class="section" id="s15-4">
+  <div class="section-eyebrow" style="color:var(--amber)">15.4 — A/Bテストフレームワーク</div>
+  <h2 class="action-title">N=1 → N=多 への移行基盤</h2>
+  <p class="section-lead">「根拠がない」批判に対して「データで検証中」と答えるための基盤。v1.0でDB設計だけ入れ、β期間で実験開始。</p>
+
+  <div class="code-block">
+<span class="code-label">DBスキーマ — ab_experiments テーブル</span>
+<span class="sql-kw">CREATE TABLE</span> <span class="sql-tbl">public.ab_experiments</span> (
+  id              <span class="sql-type">UUID</span> <span class="sql-kw">PRIMARY KEY DEFAULT</span> <span class="fn">gen_random_uuid</span>(),
+  experiment_name <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,
+  variant         <span class="sql-type">TEXT</span> <span class="sql-kw">NOT NULL</span>,              <span class="sql-cm">-- 'control' | 'treatment_a' | 'treatment_b'</span>
+  user_id         <span class="sql-type">UUID</span> <span class="sql-kw">NOT NULL REFERENCES</span> <span class="sql-tbl">public.profiles</span>(id) <span class="sql-kw">ON DELETE CASCADE</span>,
+  assigned_at     <span class="sql-type">TIMESTAMPTZ</span> <span class="sql-kw">NOT NULL DEFAULT</span> <span class="fn">now</span>(),
+  outcome_metric  <span class="sql-type">JSONB</span>,
+  <span class="sql-kw">UNIQUE</span>(user_id, experiment_name)
+);
+
+<span class="sql-kw">ALTER TABLE</span> <span class="sql-tbl">public.ab_experiments</span> <span class="sql-kw">ENABLE ROW LEVEL SECURITY</span>;</div>
+
+  <h3 style="font-size:16px;margin:24px 0 12px">初期実験案（v1.0 β期間中）</h3>
+  <table class="tbl">
+    <thead><tr><th>#</th><th>実験名</th><th>Control</th><th>Treatment</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td class="t-name">dopamine_weights</td><td>固定重み</td><td>適応的重み（2週間学習後）</td></tr>
+      <tr><td class="mono">2</td><td class="t-name">task_reward</td><td>XPフロートのみ</td><td>マルチ報酬（ハプティック+ビジュアル+サウンド+XP+AI一言）</td></tr>
+      <tr><td class="mono">3</td><td class="t-name">checkin_mode</td><td>3項目入力</td><td>ワンスワイプ</td></tr>
+      <tr><td class="mono">4</td><td class="t-name">streak_display</td><td>連続日数</td><td>頻度ベース（7日中N日）</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Section 15.5: App-External Reach -->
+<div class="section" id="s15-5">
+  <div class="section-eyebrow" style="color:var(--amber)">15.5 — アプリ外リーチ</div>
+  <h2 class="action-title">Push通知を超える接点</h2>
+  <p class="section-lead">アプリを開かなくなった人に、アプリ内の仕組みは届かない。アプリ外の接点を作る。</p>
+
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0">
+    <div class="card" style="border-left:3px solid var(--cyan)">
+      <span class="card-badge cyan">週次メールダイジェスト</span>
+      <h4>Edge Function: send-weekly-digest</h4>
+      <p style="font-size:12px;line-height:1.8">
+        件名: 「今週のあんた、こんな感じやったで」<br>
+        内容: 完了タスク数 + インサイト1つ + ディープリンク<br>
+        配信: Resend API経由<br>
+        2週間開封なし→月次に自動変更
+      </p>
+    </div>
+    <div class="card" style="border-left:3px solid var(--green)">
+      <span class="card-badge green">カレンダーリマインド</span>
+      <h4>calendar-sync Edge Function拡張</h4>
+      <p style="font-size:12px;line-height:1.8">
+        Google Calendarに「ガネーシャタイム ☕」を自動挿入<br>
+        アプリ通知を切っていてもカレンダー通知で到達<br>
+        ディープリンクでアプリ直接起動<br>
+        ユーザーが明示的にON/OFFできる
+      </p>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
 <div class="footer">
-  <p>才能解放AIコーチ — Technical Specification v1.1</p>
-  <p>omoshiku Inc. | 2026-02-27 | <a href="sainou-coach-proposal.html">&larr; 企画書に戻る</a></p>
+  <p>才能解放AIコーチ — Technical Specification v1.1 + 評価レポート反映</p>
+  <p>omoshiku Inc. | 2026-02-28 | <a href="sainou-coach-proposal.html">&larr; 企画書に戻る</a> | <a href="sainou-coach-evaluation.html">評価レポート &rarr;</a></p>
 </div>
 
 </div><!-- main-content -->
