@@ -25,7 +25,7 @@
 | 2c. MVP設計 | ✅ 完了 | [MVP設計書](https://tkonishikawa.github.io/adhd-project/adhd-mvp-design.html) |
 | 3. ドキュメント棚卸し | ✅ 完了 | [準備マップ](https://tkonishikawa.github.io/adhd-project/adhd-doc-inventory.html) |
 | 4. インフラ構築 | ✅ 完了 | Driveフォルダ34個（omoshiku_drive_utils.py FOLDERS参照） |
-| 5. ドキュメント構築 | ✅ Tier 1完了 | Tier 1 全47件 → omoshiku Drive _templates/ 配下にGoogle Docs配置済み |
+| 5. ドキュメント構築 | ✅ 全84件完了 | Tier 1-3 全84件 → omoshiku Drive 配下にGoogle Docs配置済み |
 
 ## 重要な意思決定ログ
 
@@ -64,7 +64,7 @@
 - `scripts/omoshiku_drive_utils.py` — Drive APIユーティリティ（FOLDERS定数にADHDフォルダID群）
 - `output/adhd_drive_folder_ids.json` — フォルダIDバックアップ
 
-## ドキュメント構築の進捗（Tier 1: 47件）
+## ドキュメント構築の進捗（全84件 — 全Tier完了）
 
 ### カテゴリA: 法務・契約（6件）— ✅ 完了（Drive: _templates/legal/）
 - [x] A1: サービス利用規約
@@ -116,6 +116,57 @@
 - [x] F6: 週次ミーティングアジェンダ
 - [x] F7: バディペアリングガイド
 - [x] F8: 修了判定基準
+
+### カテゴリG: グループセッション（6件）— ✅ 完了（Drive: _templates/group/）
+- [x] G1: グループセッション1-6 ファシリテーションカード
+- [x] G2: ADHD向けファシリテーション原則シート
+- [x] G3: グラウンドルール
+- [x] G4: ボディダブリング運営マニュアル
+- [x] G5: 週次振返りテンプレート（非同期）
+- [x] G6: バディ組替え基準・手順（W7）
+
+### カテゴリH: セルフマニュアルテンプレート（8件）— ✅ 完了（Drive: _templates/）
+- [x] H1: Ch1 脳のプロファイル
+- [x] H2: Ch2 トリガーマップ
+- [x] H3: Ch3 環境設計図
+- [x] H4: Ch4 If-Thenプレイブック
+- [x] H5: Ch5 時間設計
+- [x] H6: Ch6 サポート設計
+- [x] H7: Ch7 強みインベントリ
+- [x] H8: Ch8 運用マニュアル
+
+### カテゴリI: アセスメント・効果測定（6件）— ✅ 完了（Drive: _templates/assessment/）
+- [x] I1: 時間管理スキル尺度（Pre/Post）
+- [x] I2: 自己効力感尺度（GSE）
+- [x] I3: QOL尺度（ADHD Impact Module）
+- [x] I4: セルフコンパッション尺度（SCS短縮版）
+- [x] I5: 週次パルスチェック（5問）
+- [x] I6: NPS + 定性フィードバック
+
+### カテゴリJ: マーケティング（7件）— ✅ 完了（Drive: _templates/marketing/）
+- [x] J1: サービス紹介LP構成案
+- [x] J2: 無料ボディダブリング告知テンプレ
+- [x] J3: SNSコンテンツカレンダー
+- [x] J4: 無料ウェビナースライド構成案
+- [x] J5: ファウンディングメンバー募集ページ構成案
+- [x] J6: Discordコミュニティ運営ガイドライン
+- [x] J7: メール/DMテンプレート集
+
+### カテゴリK: 卒業・アフターフォロー（4件）— ✅ 完了（Drive: alumni/）
+- [x] K1: 卒業証書テンプレート
+- [x] K2: 卒業生コミュニティガイド
+- [x] K3: 卒業生メンター制度要綱
+- [x] K4: 3ヶ月フォローアップ調査
+
+### カテゴリL: イテレーション（3件）— ✅ 完了（Drive: cohort_1/analysis/）
+- [x] L1: Cohort振返りテンプレート
+- [x] L2: 価格改定判断基準書
+- [x] L3: 3人目採用トリガーチェックリスト
+
+### カテゴリM: 創業者・アドバイザー（3件）— ✅ 完了（Drive: founder/）
+- [x] M1: 創業者間合意書
+- [x] M2: ADHD創業者リスク管理プロトコル
+- [x] M3: アドバイザー契約書
 
 ## 技術スタック
 
