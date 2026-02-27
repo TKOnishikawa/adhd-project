@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ADHD特化コーチング — ドキュメント準備マップ</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-base:#08080d;--bg-surface:#101018;--bg-raised:#181824;--bg-top:#222234;
+  --border:rgba(255,255,255,0.06);--border-focus:rgba(255,255,255,0.12);
+  --text:#eaeaf2;--text-dim:#9898ae;--text-muted:#58586e;
+  --blue:#4a7dff;--cyan:#22d3ee;--green:#34d399;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;--pink:#f472b6;
+  --grad-hero:linear-gradient(135deg,#4a7dff 0%,#22d3ee 100%);
+  --grad-success:linear-gradient(135deg,#34d399 0%,#22d3ee 100%);
+  --grad-warn:linear-gradient(135deg,#ef4444 0%,#f59e0b 100%);
+  --grad-vision:linear-gradient(135deg,#a78bfa 0%,#f472b6 100%);
+  --grad-mvp:linear-gradient(135deg,#f59e0b 0%,#ef4444 100%);
+  --grad-doc:linear-gradient(135deg,#22d3ee 0%,#4a7dff 100%);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.4);--shadow-md:0 4px 16px rgba(0,0,0,0.5);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',-apple-system,sans-serif;background:var(--bg-base);color:var(--text);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+.mono{font-family:'JetBrains Mono',monospace;font-weight:600}
+
+/* Layout */
+.page-layout{display:flex;gap:32px;align-items:flex-start}
+.main-content{flex:1;min-width:0}
+
+/* TOC */
+.toc-sidebar{position:sticky;top:24px;width:260px;flex-shrink:0;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:16px;max-height:calc(100vh - 48px);overflow-y:auto}
+.toc-sidebar h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:3px 0;line-height:1.4;transition:color .15s}
+.toc-sidebar a:hover{color:var(--cyan)}
+.toc-sidebar .toc-num{color:var(--text-muted);margin-right:4px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.toc-sidebar .toc-tier{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;margin-bottom:4px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-sidebar .toc-tier:first-child{border-top:none;margin-top:0;padding-top:0}
+@media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
+
+/* Sections */
+.section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px}
+.action-title{font-size:22px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
+.section-lead{font-size:14px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
+
+/* Tier divider */
+.tier-divider{padding:32px 0 8px;text-align:center}
+.tier-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.tier-badge.t1{border-color:var(--red);color:var(--red)}
+.tier-badge.t2{border-color:var(--amber);color:var(--amber)}
+.tier-badge.t3{border-color:var(--text-muted);color:var(--text-muted)}
+
+/* Hero */
+.hero{padding:72px 0 20px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(34,211,238,0.06) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-block;padding:5px 14px;border:1px solid rgba(34,211,238,0.3);border-radius:20px;font-size:12px;font-weight:700;color:var(--cyan);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;background:rgba(34,211,238,0.04)}
+.hero h1{font-size:32px;font-weight:900;line-height:1.4;margin-bottom:14px;background:var(--grad-doc);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--text-dim);max-width:640px;margin:0 auto 28px;line-height:1.9}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--text-muted)}
+.hero-link{display:inline-block;margin-top:16px;padding:8px 20px;border:1px solid rgba(34,211,238,0.3);border-radius:8px;color:var(--cyan);text-decoration:none;font-size:13px;font-weight:600;transition:all .15s}
+.hero-link:hover{background:rgba(34,211,238,0.06);border-color:rgba(34,211,238,0.5)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 20px}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi-card{background:var(--bg-surface);border-radius:12px;padding:20px 14px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:transform .15s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-num{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:600;margin-bottom:4px}
+.kpi-num.warn{background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.good{background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.blue{background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.vision{background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-label{font-size:12px;color:var(--text-dim);font-weight:500;line-height:1.5}
+
+/* Tables */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:18px 0;font-size:13px}
+.tbl thead th{background:var(--bg-raised);padding:10px 14px;font-size:11px;font-weight:700;text-align:left;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;background:var(--bg-surface)}
+.tbl tbody tr:last-child td{border-bottom:none}
+.t-name{font-weight:600;color:var(--text)}
+.t-good{color:var(--green);font-weight:500}
+.t-warn{color:var(--amber);font-weight:500}
+.t-bad{color:var(--red);font-weight:500}
+
+/* Callouts */
+.sowhat{background:rgba(239,68,68,0.03);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.sowhat-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.sowhat p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.sowhat strong{color:#f87171}
+.insight{background:rgba(52,211,153,0.03);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.insight-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.insight p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.insight strong{color:var(--green)}
+.note{background:rgba(74,125,255,0.03);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.note-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.note p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.note strong{color:var(--blue)}
+
+/* Progress bar */
+.progress-bar{background:var(--bg-raised);border-radius:10px;height:10px;margin:8px 0;overflow:hidden}
+.progress-fill{height:100%;border-radius:10px;transition:width .4s}
+.progress-fill.t1{background:var(--grad-warn);width:56%}
+.progress-fill.t2{background:linear-gradient(90deg,var(--amber),var(--cyan));width:32%}
+.progress-fill.t3{background:linear-gradient(90deg,var(--text-muted),var(--purple));width:12%}
+
+/* Doc card grid */
+.doc-grid{display:grid;grid-template-columns:1fr;gap:8px;margin:18px 0}
+.doc-row{display:grid;grid-template-columns:44px 1fr 120px 100px;gap:12px;align-items:center;padding:10px 16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;font-size:13px;transition:all .15s}
+.doc-row:hover{border-color:var(--border-focus);background:var(--bg-raised)}
+@media(max-width:768px){.doc-row{grid-template-columns:44px 1fr;gap:8px}.doc-row .doc-format,.doc-row .doc-owner{display:none}}
+.doc-id{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--text-muted)}
+.doc-title{font-weight:600;color:var(--text)}
+.doc-desc{font-size:12px;color:var(--text-dim);margin-top:2px}
+.doc-format{font-size:11px;color:var(--text-dim);text-align:center}
+.doc-owner{font-size:11px;font-weight:600;text-align:center;padding:3px 8px;border-radius:4px}
+.doc-owner.coach{background:rgba(52,211,153,0.08);color:var(--green)}
+.doc-owner.eng{background:rgba(34,211,238,0.08);color:var(--cyan)}
+.doc-owner.both{background:rgba(167,139,250,0.08);color:var(--purple)}
+
+/* Category header */
+.cat-header{display:flex;align-items:center;gap:12px;margin:28px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--border)}
+.cat-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0}
+.cat-icon.legal{background:rgba(239,68,68,0.08)}
+.cat-icon.screen{background:rgba(74,125,255,0.08)}
+.cat-icon.onboard{background:rgba(52,211,153,0.08)}
+.cat-icon.lecture{background:rgba(34,211,238,0.08)}
+.cat-icon.personal{background:rgba(167,139,250,0.08)}
+.cat-icon.ops{background:rgba(245,158,11,0.08)}
+.cat-icon.group{background:rgba(244,114,182,0.08)}
+.cat-icon.manual{background:rgba(74,125,255,0.08)}
+.cat-icon.assess{background:rgba(52,211,153,0.08)}
+.cat-icon.mktg{background:rgba(245,158,11,0.08)}
+.cat-icon.grad{background:rgba(167,139,250,0.08)}
+.cat-icon.iter{background:rgba(34,211,238,0.08)}
+.cat-icon.founder{background:rgba(239,68,68,0.08)}
+.cat-title{font-size:16px;font-weight:700}
+.cat-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);margin-left:auto}
+
+/* Roadmap timeline */
+.rm-timeline{position:relative;margin:24px 0;padding-left:24px}
+.rm-timeline::before{content:'';position:absolute;left:8px;top:0;bottom:0;width:2px;background:var(--border)}
+.rm-phase{position:relative;margin-bottom:20px}
+.rm-dot{position:absolute;left:-20px;top:6px;width:12px;height:12px;border-radius:50%;border:2px solid}
+.rm-dot.t1{border-color:var(--red);background:rgba(239,68,68,0.2)}
+.rm-dot.t2{border-color:var(--amber);background:rgba(245,158,11,0.2)}
+.rm-dot.t3{border-color:var(--text-muted);background:rgba(88,88,110,0.2)}
+.rm-label{font-size:12px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.rm-desc{font-size:13px;color:var(--text-dim);line-height:1.8}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0 28px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+.footer a{color:var(--cyan);text-decoration:none}
+.footer a:hover{text-decoration:underline}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-badge">Document Preparation Map</div>
+  <h1>サービス提供ドキュメント<br>準備マップ</h1>
+  <p class="hero-sub">ADHD特化コーチング MVPパイロット（100日・6-8名）の<br>サービス提供に必要な全84件のドキュメントを3階層で整理</p>
+  <div class="hero-meta">
+    <span><span class="mono" style="color:var(--red)">47</span> Tier 1 必須</span>
+    <span><span class="mono" style="color:var(--amber)">27</span> Tier 2 順次整備</span>
+    <span><span class="mono" style="color:var(--text-muted)">10</span> Tier 3 完了後</span>
+  </div>
+  <a href="adhd-mvp-design.html" class="hero-link">&larr; MVP設計書を見る</a>
+</div>
+
+<!-- ===== KPI OVERVIEW ===== -->
+<div class="kpi-grid">
+  <div class="kpi-card">
+    <div class="kpi-num warn">84</div>
+    <div class="kpi-label">全ドキュメント数</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-num good">13</div>
+    <div class="kpi-label">カテゴリ</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-num blue">12w</div>
+    <div class="kpi-label">プレローンチ期間</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kpi-num vision">2</div>
+    <div class="kpi-label">担当者数</div>
+  </div>
+</div>
+
+<!-- ===== PAGE LAYOUT ===== -->
+<div class="page-layout">
+
+<!-- TOC -->
+<nav class="toc-sidebar">
+  <h3>Contents</h3>
+  <div class="toc-tier">Overview</div>
+  <a href="#summary"><span class="toc-num">00</span> 全体サマリー</a>
+  <a href="#roadmap"><span class="toc-num">01</span> 準備ロードマップ</a>
+  <div class="toc-tier">Tier 1 — 必須</div>
+  <a href="#a-legal"><span class="toc-num">A</span> 法務・契約</a>
+  <a href="#b-screen"><span class="toc-num">B</span> スクリーニング</a>
+  <a href="#c-onboard"><span class="toc-num">C</span> オンボーディング</a>
+  <a href="#d-lecture"><span class="toc-num">D</span> DAY講義</a>
+  <a href="#e-personal"><span class="toc-num">E</span> パーソナルセッション</a>
+  <a href="#f-ops"><span class="toc-num">F</span> 運営</a>
+  <div class="toc-tier">Tier 2 — 順次整備</div>
+  <a href="#g-group"><span class="toc-num">G</span> グループセッション</a>
+  <a href="#h-manual"><span class="toc-num">H</span> セルフマニュアル</a>
+  <a href="#i-assess"><span class="toc-num">I</span> アセスメント</a>
+  <a href="#j-mktg"><span class="toc-num">J</span> マーケティング</a>
+  <div class="toc-tier">Tier 3 — 完了後</div>
+  <a href="#k-grad"><span class="toc-num">K</span> 卒業・アフター</a>
+  <a href="#l-iter"><span class="toc-num">L</span> イテレーション</a>
+  <a href="#m-founder"><span class="toc-num">M</span> 創業者・アドバイザー</a>
+</nav>
+
+<!-- MAIN -->
+<div class="main-content">
+
+<!-- ===== Sec 00: SUMMARY ===== -->
+<div class="section" id="summary">
+  <div class="section-eyebrow" style="color:var(--cyan)">Section 00</div>
+  <div class="action-title">全体サマリー — 3階層 × 13カテゴリ</div>
+  <p class="section-lead">
+    MVP設計書から導出された全84件のドキュメントを、<strong>着手時期</strong>と<strong>担当者</strong>で整理。
+    Tier 1（47件）をプレローンチ12週で完成させることがCohort 1開始の前提条件。
+  </p>
+
+  <table class="tbl">
+    <thead>
+      <tr><th>Tier</th><th>カテゴリ</th><th>件数</th><th>着手時期</th><th>比率</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><span class="t-bad">Tier 1</span></td>
+        <td>A 法務 / B スクリーニング / C オンボーディング / D DAY講義 / E パーソナル / F 運営</td>
+        <td class="mono">47</td>
+        <td>プレローンチ12週</td>
+        <td class="mono">56%</td>
+      </tr>
+      <tr>
+        <td><span class="t-warn">Tier 2</span></td>
+        <td>G グループ / H セルフマニュアル / I アセスメント / J マーケティング</td>
+        <td class="mono">27</td>
+        <td>Cohort 1期間中</td>
+        <td class="mono">32%</td>
+      </tr>
+      <tr>
+        <td><span style="color:var(--text-muted);font-weight:500">Tier 3</span></td>
+        <td>K 卒業 / L イテレーション / M 創業者</td>
+        <td class="mono">10</td>
+        <td>Cohort 1完了後</td>
+        <td class="mono">12%</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div style="margin:20px 0">
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span style="font-size:12px;color:var(--red);font-weight:700;width:50px">Tier 1</span>
+      <div class="progress-bar" style="flex:1"><div class="progress-fill t1"></div></div>
+      <span class="mono" style="font-size:12px;color:var(--text-muted)">47</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+      <span style="font-size:12px;color:var(--amber);font-weight:700;width:50px">Tier 2</span>
+      <div class="progress-bar" style="flex:1"><div class="progress-fill t2"></div></div>
+      <span class="mono" style="font-size:12px;color:var(--text-muted)">27</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <span style="font-size:12px;color:var(--text-muted);font-weight:700;width:50px">Tier 3</span>
+      <div class="progress-bar" style="flex:1"><div class="progress-fill t3"></div></div>
+      <span class="mono" style="font-size:12px;color:var(--text-muted)">10</span>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">So What</div>
+    <p><strong>84件は多く見えるが、Tier 1の47件のうち16件はDAY講義の教材セット（8DAY×スライド+ノート）。</strong>実質的に「ゼロから設計が必要」な文書は約25件。残りはテンプレートの適用やツール開発（スクリーニングWebフォーム等）で対応できる。</p>
+  </div>
+</div>
+
+<!-- ===== Sec 01: ROADMAP ===== -->
+<div class="section" id="roadmap">
+  <div class="section-eyebrow" style="color:var(--cyan)">Section 01</div>
+  <div class="action-title">準備ロードマップ — プレローンチ12週の配分</div>
+  <p class="section-lead">
+    プレローンチ12週をPhase 1-3に分割し、Tier 1の47件を段階的に準備。
+    Coach（緑）とEngineer（シアン）の分担を明確化。
+  </p>
+
+  <div class="rm-timeline">
+    <div class="rm-phase">
+      <div class="rm-dot t1"></div>
+      <div class="rm-label" style="color:var(--red)">Phase 1 — 基盤構築（W1-4）</div>
+      <div class="rm-desc">
+        <strong style="color:var(--green)">Coach:</strong> A1-A4 法務文書ドラフト / B4 インテーク面談シート / E1-E5 セッション台本ドラフト<br>
+        <strong style="color:var(--cyan)">Engineer:</strong> B1-B3 スクリーニングWebフォーム構築 / F1-F2 運営チェックリスト / A5 特商法表記<br>
+        <strong style="color:var(--purple)">共同:</strong> A6 医療機関リスト作成 / B5-B6 除外基準・通知テンプレート
+      </div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-dot t1"></div>
+      <div class="rm-label" style="color:var(--red)">Phase 2 — コンテンツ開発（W5-8）</div>
+      <div class="rm-desc">
+        <strong style="color:var(--green)">Coach:</strong> D1-D16 DAY講義スライド＋ファシリテーターノート（8DAY分）<br>
+        <strong style="color:var(--cyan)">Engineer:</strong> C1-C3 オンボーディングガイド / F4-F5 トラッキング＆アラート設計<br>
+        <strong style="color:var(--purple)">共同:</strong> C4 バディシステム説明書 / C6 緊急連絡先カード
+      </div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-dot t1"></div>
+      <div class="rm-label" style="color:var(--red)">Phase 3 — 受入準備（W9-12）</div>
+      <div class="rm-desc">
+        <strong style="color:var(--green)">Coach:</strong> 講義リハーサル / セッション台本最終化 / A3 個人情報保護方針最終化<br>
+        <strong style="color:var(--cyan)">Engineer:</strong> C5 プレアセスメントフォーム構築 / ツール統合テスト<br>
+        <strong style="color:var(--purple)">共同:</strong> F3 コンティンジェンシープラン / F6-F8 ファウンダー運営ルール
+      </div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-dot t2"></div>
+      <div class="rm-label" style="color:var(--amber)">Phase 4 — 走りながら整備（Cohort 1期間中）</div>
+      <div class="rm-desc">
+        G グループセッション資料 / H セルフマニュアルテンプレート / I 効果測定尺度 / J マーケティング素材<br>
+        <span style="font-size:12px;color:var(--text-muted)">※ Cohort 1の実体験を反映しながら順次整備</span>
+      </div>
+    </div>
+    <div class="rm-phase">
+      <div class="rm-dot t3"></div>
+      <div class="rm-label" style="color:var(--text-muted)">Phase 5 — 振返りと制度化（Cohort 1完了後）</div>
+      <div class="rm-desc">
+        K 卒業・アフターフォロー / L イテレーション文書 / M 創業者間合意の見直し<br>
+        <span style="font-size:12px;color:var(--text-muted)">※ Cohort 1の検証結果に基づき策定</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">Key Insight</div>
+    <p><strong>Coach = コンテンツ（講義・セッション台本）、Engineer = ツール＆仕組み（Webフォーム・ダッシュボード・ガイド類）</strong>で明確に分担。法務・安全管理は共同作業。この分担がプレローンチ12週の負荷を均等化する。</p>
+  </div>
+</div>
+
+<!-- =============================================== -->
+<!-- TIER 1 -->
+<!-- =============================================== -->
+<div class="tier-divider"><span class="tier-badge t1">Tier 1 — Cohort 1開始前に必須（47件）</span></div>
+
+<!-- ===== A: Legal ===== -->
+<div class="section" id="a-legal">
+  <div class="section-eyebrow" style="color:var(--red)">Category A</div>
+  <div class="action-title">法務・契約</div>
+  <p class="section-lead">サービス提供の法的基盤。コーチングと医療の境界を明確にし、参加者と提供者双方を保護する。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon legal">&#9878;</div>
+    <div class="cat-title">法務・契約</div>
+    <div class="cat-count">6 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">A1</div><div><div class="doc-title">サービス利用規約</div><div class="doc-desc">料金・返金ポリシー・免責事項・知的財産権・解約条件</div></div><div class="doc-format">PDF</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">A2</div><div><div class="doc-title">コーチング同意書（スコープ合意書）</div><div class="doc-desc">「コーチングは治療ではない」明示、守秘義務、緊急連絡先、録画同意</div></div><div class="doc-format">PDF（署名付）</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">A3</div><div><div class="doc-title">個人情報保護方針</div><div class="doc-desc">収集データ項目・利用目的・保存期間・第三者提供・Supabaseデータ管理</div></div><div class="doc-format">Web / PDF</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">A4</div><div><div class="doc-title">エスカレーション同意書</div><div class="doc-desc">PHQ-9≥15 / GAD-7≥15で医療機関紹介する旨の事前合意</div></div><div class="doc-format">PDF（署名付）</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">A5</div><div><div class="doc-title">特定商取引法に基づく表記</div><div class="doc-desc">オンラインサービス販売に法的に必須（事業者名・住所・返品規約）</div></div><div class="doc-format">Web</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">A6</div><div><div class="doc-title">医療機関紹介先リスト</div><div class="doc-desc">精神科・心療内科3-5件（オンライン対応含む）、紹介基準つき</div></div><div class="doc-format">内部管理</div><div class="doc-owner both">共同</div></div>
+  </div>
+</div>
+
+<!-- ===== B: Screening ===== -->
+<div class="section" id="b-screen">
+  <div class="section-eyebrow" style="color:var(--blue)">Category B</div>
+  <div class="action-title">スクリーニング・インテーク</div>
+  <p class="section-lead">参加者の安全を担保するゲート。自動採点Webフォームとして構築し、結果をダッシュボードに統合。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon screen">&#128269;</div>
+    <div class="cat-title">スクリーニング・インテーク</div>
+    <div class="cat-count">6 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">B1</div><div><div class="doc-title">ASRS-v1.1 スクリーニングフォーム</div><div class="doc-desc">6問版・自動採点ロジック付き・ADHD傾向の確認用</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">B2</div><div><div class="doc-title">PHQ-9（うつ症状スクリーニング）</div><div class="doc-desc">9問+自動スコアリング / カットオフ≥15で除外・紹介トリガー</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">B3</div><div><div class="doc-title">GAD-7（不安症状スクリーニング）</div><div class="doc-desc">7問+自動スコアリング / カットオフ≥15で除外・紹介トリガー</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">B4</div><div><div class="doc-title">インテーク面談シート</div><div class="doc-desc">生活状況・困り事・目標・服薬状況・通院歴・強みの自己認知</div></div><div class="doc-format">構造化テンプレート</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">B5</div><div><div class="doc-title">除外基準チェックリスト</div><div class="doc-desc">自傷リスク・重度併存症・active substance abuse・他プログラム並行</div></div><div class="doc-format">内部管理</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">B6</div><div><div class="doc-title">スクリーニング結果通知テンプレート</div><div class="doc-desc">合格 / 不合格 / 保留の3パターン（RSD配慮した文面設計）</div></div><div class="doc-format">メールテンプレ</div><div class="doc-owner both">共同</div></div>
+  </div>
+
+  <div class="note">
+    <div class="note-label">技術メモ</div>
+    <p>B1-B3はClaude Codeで<strong>自動採点Webフォーム</strong>として一括構築可能。Supabaseに結果保存→ダッシュボードで一覧管理。スクリーニング結果に基づくB6の自動送信も検討。</p>
+  </div>
+</div>
+
+<!-- ===== C: Onboarding ===== -->
+<div class="section" id="c-onboard">
+  <div class="section-eyebrow" style="color:var(--green)">Category C</div>
+  <div class="action-title">オンボーディング</div>
+  <p class="section-lead">合格者が100日間をスムーズに始めるためのガイド一式。ADHD特性を考慮し、情報を段階的に提供。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon onboard">&#128640;</div>
+    <div class="cat-title">オンボーディング</div>
+    <div class="cat-count">6 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">C1</div><div><div class="doc-title">ウェルカムガイド</div><div class="doc-desc">100日の全体像・週次リズム（月/水/金）・ツール導入手順・FAQ</div></div><div class="doc-format">PDF / Web</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">C2</div><div><div class="doc-title">Discord セットアップガイド</div><div class="doc-desc">参加方法・4チャンネル（#全体/#バディ/#つぶやき/#質問）・RSD配慮ルール</div></div><div class="doc-format">PDF</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">C3</div><div><div class="doc-title">テクニカルセットアップガイド</div><div class="doc-desc">Zoom / Calendly / セルフマニュアルビルダーのアクセス方法</div></div><div class="doc-format">PDF</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">C4</div><div><div class="doc-title">バディシステム説明書</div><div class="doc-desc">バディの役割・連絡頻度ガイドライン・W7組替えルール</div></div><div class="doc-format">PDF</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">C5</div><div><div class="doc-title">プレアセスメント（ベースライン測定）</div><div class="doc-desc">時間管理スキル・自己効力感・QOL・セルフコンパッション（Pre/Post比較用）</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">C6</div><div><div class="doc-title">緊急連絡先カード</div><div class="doc-desc">Coach / Engineer連絡先・営業時間・緊急時フロー（いのちの電話等も記載）</div></div><div class="doc-format">PDF</div><div class="doc-owner both">共同</div></div>
+  </div>
+</div>
+
+<!-- ===== D: DAY Lectures ===== -->
+<div class="section" id="d-lecture">
+  <div class="section-eyebrow" style="color:var(--cyan)">Category D</div>
+  <div class="action-title">DAY講義教材（8DAY × 2種 = 16件）</div>
+  <p class="section-lead">各DAY60分（心理教育15分 + ワーク25分 + グループ議論15分 + 課題5分）。全コンテンツ独自開発、リサーチA-Hのエビデンスが基盤。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon lecture">&#128218;</div>
+    <div class="cat-title">DAY講義</div>
+    <div class="cat-count">16 docs</div>
+  </div>
+
+  <table class="tbl">
+    <thead>
+      <tr><th>DAY</th><th>テーマ</th><th>スライドデック</th><th>ファシリテーターノート</th><th>効果量</th><th>マニュアル章</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">1</td><td class="t-name">ADHD脳のOS</td>
+        <td>メタ認知モニタリング教材</td><td>進行台本・ワーク指示・時間配分</td>
+        <td><span style="color:var(--green)">d=0.5-0.7</span></td><td>Ch1: 脳のプロファイル</td>
+      </tr>
+      <tr>
+        <td class="mono">2</td><td class="t-name">トリガーとパターン</td>
+        <td>ABC分析ワークシート</td><td>Safren CBT介入ガイド</td>
+        <td><span style="color:var(--green)">d=0.89</span></td><td>Ch2: トリガーマップ</td>
+      </tr>
+      <tr>
+        <td class="mono">3</td><td class="t-name">環境デザイン</td>
+        <td>ナッジ理論カード</td><td>環境監査チェックリスト</td>
+        <td><span style="color:var(--green)">d=0.5+</span></td><td>Ch3: 環境設計図</td>
+      </tr>
+      <tr>
+        <td class="mono">4</td><td class="t-name">If-Then自動操縦</td>
+        <td>Implementation Intentionsテンプレ</td><td>94研究メタ分析引用元</td>
+        <td><span style="color:var(--green)">d=0.65</span></td><td>Ch4: If-Thenプレイブック</td>
+      </tr>
+      <tr>
+        <td class="mono">5</td><td class="t-name">時間アーキテクチャ</td>
+        <td>時間管理ツールキット</td><td>タイムブロッキング実践ガイド</td>
+        <td><span style="color:var(--green)">d=0.89</span></td><td>Ch5: 時間設計</td>
+      </tr>
+      <tr>
+        <td class="mono">6</td><td class="t-name">証人の力</td>
+        <td>ボディダブリング設計シート</td><td>SDT理論解説・ファシリ注意点</td>
+        <td><span style="color:var(--green)">d=0.5-0.8</span></td><td>Ch6: サポート設計</td>
+      </tr>
+      <tr>
+        <td class="mono">7</td><td class="t-name">強みは本物</td>
+        <td>強みインベントリワーク</td><td>セルフコンパッション誘導スクリプト</td>
+        <td><span style="color:var(--green)">d=0.4-0.6</span></td><td>Ch7: 強みインベントリ</td>
+      </tr>
+      <tr>
+        <td class="mono">8</td><td class="t-name">セルフマニュアル完成</td>
+        <td>統合ワークシート</td><td>当事者研究ファシリテーション</td>
+        <td><span style="color:var(--text-muted)">—</span></td><td>Ch8: 運用マニュアル</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== E: Personal Sessions ===== -->
+<div class="section" id="e-personal">
+  <div class="section-eyebrow" style="color:var(--purple)">Category E</div>
+  <div class="action-title">パーソナルセッション台本</div>
+  <p class="section-lead">5回/人のパーソナルセッション。Coach 3回 + Engineer 2回の分担。構造化された台本で品質を担保。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon personal">&#128172;</div>
+    <div class="cat-title">パーソナルセッション</div>
+    <div class="cat-count">5 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">E1</div><div><div class="doc-title">P1: アセスメントセッション</div><div class="doc-desc">初回面談構造・ADHD歴聴取・目標設定・セルフマニュアルの方向性</div></div><div class="doc-format">台本</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">E2</div><div><div class="doc-title">P2: ツールセットアップ</div><div class="doc-desc">セルフマニュアルビルダー導入・デジタル環境構築・ナッジBot設定</div></div><div class="doc-format">台本</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">E3</div><div><div class="doc-title">P3: 中間振返り</div><div class="doc-desc">W7チェックポイント・パルスチェック推移確認・軌道修正・バディ組替え相談</div></div><div class="doc-format">台本</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">E4</div><div><div class="doc-title">P4: データレビュー</div><div class="doc-desc">パルスチェック推移分析・行動データ振返り・ツール活用度チェック</div></div><div class="doc-format">台本</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">E5</div><div><div class="doc-title">P5: 卒業・移行計画</div><div class="doc-desc">セルフマニュアル最終レビュー・卒業後の自走計画・アフターサポート案内</div></div><div class="doc-format">台本</div><div class="doc-owner coach">Coach</div></div>
+  </div>
+</div>
+
+<!-- ===== F: Operations ===== -->
+<div class="section" id="f-ops">
+  <div class="section-eyebrow" style="color:var(--amber)">Category F</div>
+  <div class="action-title">運営</div>
+  <p class="section-lead">2人で持続可能に回すための運営基盤。ADHD創業者特有のリスク管理を含む。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon ops">&#9881;</div>
+    <div class="cat-title">運営</div>
+    <div class="cat-count">8 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">F1</div><div><div class="doc-title">週次運営チェックリスト</div><div class="doc-desc">月ボディダブリング / 水DAY講義 / 金振返りの各準備項目一覧</div></div><div class="doc-format">チェックリスト</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">F2</div><div><div class="doc-title">Coach / Engineer 役割分担表</div><div class="doc-desc">Coach ~13h/週、Engineer ~15h/週の詳細タスク一覧と境界</div></div><div class="doc-format">スプレッドシート</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">F3</div><div><div class="doc-title">片方不在時コンティンジェンシープラン</div><div class="doc-desc">代替進行パターン・最低限カバー範囲・参加者への通知テンプレート</div></div><div class="doc-format">マニュアル</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">F4</div><div><div class="doc-title">参加者進捗トラッキングシート</div><div class="doc-desc">出席 / パルスチェック / セルフマニュアル進捗 / アラート基準</div></div><div class="doc-format">スプレッドシート</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">F5</div><div><div class="doc-title">3日間未活動アラート対応手順</div><div class="doc-desc">Discord未投稿 → DM → 電話のエスカレーション手順</div></div><div class="doc-format">フローチャート</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">F6</div><div><div class="doc-title">ファウンダー週次同期アジェンダ</div><div class="doc-desc">創業者2人のバーンアウト予防チェック・次週タスク確認</div></div><div class="doc-format">テンプレート</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">F7</div><div><div class="doc-title">外部アドバイザー月次報告テンプレ</div><div class="doc-desc">月1hミーティング用：進捗・課題・相談事項</div></div><div class="doc-format">テンプレート</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">F8</div><div><div class="doc-title">ツール開発時間キャップルール</div><div class="doc-desc">週4h上限・スコープクリープ防止・判断基準</div></div><div class="doc-format">ルールシート</div><div class="doc-owner eng">Engineer</div></div>
+  </div>
+</div>
+
+<!-- =============================================== -->
+<!-- TIER 2 -->
+<!-- =============================================== -->
+<div class="tier-divider"><span class="tier-badge t2">Tier 2 — Cohort 1期間中に順次整備（27件）</span></div>
+
+<!-- ===== G: Group Sessions ===== -->
+<div class="section" id="g-group">
+  <div class="section-eyebrow" style="color:var(--pink)">Category G</div>
+  <div class="action-title">グループセッション</div>
+  <p class="section-lead">75分×6回のグループセッション運営資料。1グループ運営なので柔軟に調整可能。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon group">&#128101;</div>
+    <div class="cat-title">グループセッション</div>
+    <div class="cat-count">6 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">G1</div><div><div class="doc-title">グループセッション1-6 ファシリテーションカード</div><div class="doc-desc">75分×6回の進行表・アイスブレイク・議題・ワーク内容</div></div><div class="doc-format">カード（6枚）</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">G2</div><div><div class="doc-title">ADHD向けファシリテーション原則シート</div><div class="doc-desc">構造明示・時間可視化・マルチモーダル対応・沈黙の扱い方</div></div><div class="doc-format">A4シート</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">G3</div><div><div class="doc-title">グラウンドルール</div><div class="doc-desc">守秘義務・発言順・RSD配慮・「パスOK」ルール</div></div><div class="doc-format">PDF</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">G4</div><div><div class="doc-title">ボディダブリング運営マニュアル</div><div class="doc-desc">毎週月曜のDiscord / Zoom運営手順・参加者誘導フロー</div></div><div class="doc-format">マニュアル</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">G5</div><div><div class="doc-title">週次振返りテンプレート（非同期）</div><div class="doc-desc">金曜のDiscord投稿フォーマット（3行テンプレ）</div></div><div class="doc-format">テンプレート</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">G6</div><div><div class="doc-title">バディ組替え基準・手順（W7）</div><div class="doc-desc">マッチング基準・通知文面・新鮮さの維持</div></div><div class="doc-format">手順書</div><div class="doc-owner both">共同</div></div>
+  </div>
+</div>
+
+<!-- ===== H: Self Manual ===== -->
+<div class="section" id="h-manual">
+  <div class="section-eyebrow" style="color:var(--blue)">Category H</div>
+  <div class="action-title">セルフマニュアルテンプレート</div>
+  <p class="section-lead">MVPの中核プロダクト。8章をDAY進行に合わせて段階的に構築。テンプレート駆動、PDF書出し可能。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon manual">&#128214;</div>
+    <div class="cat-title">セルフマニュアル</div>
+    <div class="cat-count">8 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">H1</div><div><div class="doc-title">Ch1: 脳のプロファイル</div><div class="doc-desc">DAY1対応 — ADHD特性の自己理解マップ・メタ認知チェックリスト</div></div><div class="doc-format">Webテンプレ</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">H2</div><div><div class="doc-title">Ch2: トリガーマップ</div><div class="doc-desc">DAY2対応 — ABC分析結果・パターン記録テンプレート</div></div><div class="doc-format">Webテンプレ</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">H3</div><div><div class="doc-title">Ch3: 環境設計図</div><div class="doc-desc">DAY3対応 — 物理 / デジタル環境の最適化計画シート</div></div><div class="doc-format">Webテンプレ</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">H4</div><div><div class="doc-title">Ch4: If-Thenプレイブック</div><div class="doc-desc">DAY4対応 — 実行意図のライブラリ（場面→行動テンプレ）</div></div><div class="doc-format">Webテンプレ</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">H5</div><div><div class="doc-title">Ch5: 時間設計</div><div class="doc-desc">DAY5対応 — 週間テンプレート・タイムブロック・ルーティンビルダー</div></div><div class="doc-format">Webテンプレ</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">H6</div><div><div class="doc-title">Ch6: サポート設計</div><div class="doc-desc">DAY6対応 — 支援ネットワーク・ボディダブリング計画</div></div><div class="doc-format">Webテンプレ</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">H7</div><div><div class="doc-title">Ch7: 強みインベントリ</div><div class="doc-desc">DAY7対応 — 強み活用戦略・エピソードバンク</div></div><div class="doc-format">Webテンプレ</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">H8</div><div><div class="doc-title">Ch8: 運用マニュアル</div><div class="doc-desc">DAY8対応 — 卒業後の自走ルーティン・セルフモニタリング計画</div></div><div class="doc-format">Webテンプレ</div><div class="doc-owner eng">Engineer</div></div>
+  </div>
+
+  <div class="note">
+    <div class="note-label">技術メモ</div>
+    <p>H1-H8は<strong>セルフマニュアルビルダー（Web App）</strong>のテンプレートとして実装。Astro or Next.js + Supabase。DAY進行に合わせてロック解除→段階的に入力→最終的にPDF書出し。</p>
+  </div>
+</div>
+
+<!-- ===== I: Assessment ===== -->
+<div class="section" id="i-assess">
+  <div class="section-eyebrow" style="color:var(--green)">Category I</div>
+  <div class="action-title">アセスメント・効果測定</div>
+  <p class="section-lead">エビデンスベースの効果測定。Pre/Post比較で介入効果を定量化。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon assess">&#128200;</div>
+    <div class="cat-title">アセスメント・効果測定</div>
+    <div class="cat-count">6 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">I1</div><div><div class="doc-title">時間管理スキル尺度（Pre/Post）</div><div class="doc-desc">Safren CBTベース / d=0.89の効果検証用</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">I2</div><div><div class="doc-title">自己効力感尺度（GSE等）</div><div class="doc-desc">Bandura理論ベース / Pre-Post比較</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">I3</div><div><div class="doc-title">QOL尺度（ADHD Impact Module等）</div><div class="doc-desc">d=0.84報告あり / 生活全般への影響測定</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">I4</div><div><div class="doc-title">セルフコンパッション尺度（SCS短縮版）</div><div class="doc-desc">d=0.4-0.6 / DAY7「強みは本物」の効果検証</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">I5</div><div><div class="doc-title">週次パルスチェック（5問）</div><div class="doc-desc">自作 / 毎週金曜 / ナッジBotリマインド / 傾向ダッシュボード連携</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">I6</div><div><div class="doc-title">NPS + 定性フィードバック</div><div class="doc-desc">W7中間 / W14最終 / 推薦意向+自由記述</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner both">共同</div></div>
+  </div>
+</div>
+
+<!-- ===== J: Marketing ===== -->
+<div class="section" id="j-mktg">
+  <div class="section-eyebrow" style="color:var(--amber)">Category J</div>
+  <div class="action-title">マーケティング</div>
+  <p class="section-lead">¥0マーケティング戦略の実行資料。「当事者2人が作った」ストーリーを軸にファネルを構築。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon mktg">&#128227;</div>
+    <div class="cat-title">マーケティング</div>
+    <div class="cat-count">7 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">J1</div><div><div class="doc-title">サービス紹介LP</div><div class="doc-desc">「ADHDの当事者2人が作った、当事者のためのプログラム」をウェッジに</div></div><div class="doc-format">Web</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">J2</div><div><div class="doc-title">無料ボディダブリング告知テンプレ</div><div class="doc-desc">トロイの木馬戦略の入口 / SNS投稿+Discord案内</div></div><div class="doc-format">テンプレート</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">J3</div><div><div class="doc-title">SNSコンテンツカレンダー</div><div class="doc-desc">心理教育（信頼）/ 当事者体験（共感）/ 実践ツール（価値実証）の3本柱</div></div><div class="doc-format">スプレッドシート</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">J4</div><div><div class="doc-title">無料ウェビナースライド</div><div class="doc-desc">ファネル中盤 / 30分のミニ心理教育+Q&amp;A</div></div><div class="doc-format">スライド</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">J5</div><div><div class="doc-title">ファウンディングメンバー募集ページ</div><div class="doc-desc">限定割引・特典明示・先行アクセス特典</div></div><div class="doc-format">Web</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">J6</div><div><div class="doc-title">Discordコミュニティ運営ガイドライン</div><div class="doc-desc">無料コミュニティの運営ルール・モデレーション基準</div></div><div class="doc-format">マニュアル</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">J7</div><div><div class="doc-title">メール / DMテンプレート集</div><div class="doc-desc">問合せ→面談→申込→入金確認の各段階テンプレート</div></div><div class="doc-format">テンプレート</div><div class="doc-owner both">共同</div></div>
+  </div>
+</div>
+
+<!-- =============================================== -->
+<!-- TIER 3 -->
+<!-- =============================================== -->
+<div class="tier-divider"><span class="tier-badge t3">Tier 3 — Cohort 1完了後に整備（10件）</span></div>
+
+<!-- ===== K: Graduation ===== -->
+<div class="section" id="k-grad">
+  <div class="section-eyebrow" style="color:var(--purple)">Category K</div>
+  <div class="action-title">卒業・アフターフォロー</div>
+  <p class="section-lead">Cohort 1の実体験から設計。卒業生コミュニティとメンター制度でLTV最大化。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon grad">&#127891;</div>
+    <div class="cat-title">卒業・アフターフォロー</div>
+    <div class="cat-count">4 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">K1</div><div><div class="doc-title">卒業証書テンプレート</div><div class="doc-desc">PDF / セルフマニュアル完成認定・100日完走記念</div></div><div class="doc-format">PDF</div><div class="doc-owner eng">Engineer</div></div>
+    <div class="doc-row"><div class="doc-id">K2</div><div><div class="doc-title">卒業生コミュニティガイド</div><div class="doc-desc">Discord #alumni チャンネル運営ルール・イベント計画</div></div><div class="doc-format">ガイド</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">K3</div><div><div class="doc-title">卒業生メンター制度要綱</div><div class="doc-desc">Cohort 2以降でのメンター試行 / 報酬 / トレーニング要件</div></div><div class="doc-format">要綱</div><div class="doc-owner coach">Coach</div></div>
+    <div class="doc-row"><div class="doc-id">K4</div><div><div class="doc-title">3ヶ月フォローアップ調査</div><div class="doc-desc">効果の持続性測定 / セルフマニュアル活用度 / 再受講意向</div></div><div class="doc-format">Webフォーム</div><div class="doc-owner eng">Engineer</div></div>
+  </div>
+</div>
+
+<!-- ===== L: Iteration ===== -->
+<div class="section" id="l-iter">
+  <div class="section-eyebrow" style="color:var(--cyan)">Category L</div>
+  <div class="action-title">イテレーション</div>
+  <p class="section-lead">MVP仮説検証のフレームワーク。Cohort 1→2→3の進化を構造的に管理。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon iter">&#128260;</div>
+    <div class="cat-title">イテレーション</div>
+    <div class="cat-count">3 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">L1</div><div><div class="doc-title">Cohort振返りテンプレート</div><div class="doc-desc">6仮説の検証結果記録（DAY数 / セッション数 / 価格 / 持続可能性等）</div></div><div class="doc-format">テンプレート</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">L2</div><div><div class="doc-title">価格改定判断基準書</div><div class="doc-desc">NPS・WTP（支払意思額）・コスト分析に基づく改定ロジック</div></div><div class="doc-format">基準書</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">L3</div><div><div class="doc-title">3人目採用トリガーチェックリスト</div><div class="doc-desc">2コホート完走 + NPS≥8 + ウェイトリスト10名超 + 6ヶ月給与リザーブ</div></div><div class="doc-format">チェックリスト</div><div class="doc-owner both">共同</div></div>
+  </div>
+</div>
+
+<!-- ===== M: Founders ===== -->
+<div class="section" id="m-founder">
+  <div class="section-eyebrow" style="color:var(--red)">Category M</div>
+  <div class="action-title">創業者・アドバイザー</div>
+  <p class="section-lead">ADHD創業者2人の持続可能性を制度的に担保。外部アドバイザーとの契約も含む。</p>
+
+  <div class="cat-header">
+    <div class="cat-icon founder">&#128736;</div>
+    <div class="cat-title">創業者・アドバイザー</div>
+    <div class="cat-count">3 docs</div>
+  </div>
+  <div class="doc-grid">
+    <div class="doc-row"><div class="doc-id">M1</div><div><div class="doc-title">創業者間合意書</div><div class="doc-desc">役割・報酬配分・意思決定プロセス・撤退条件・IP所有権</div></div><div class="doc-format">契約書</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">M2</div><div><div class="doc-title">ADHD創業者リスク管理プロトコル</div><div class="doc-desc">相互EF崩壊・ハイパーフォーカス罠・バーンアウト早期検出・回復手順</div></div><div class="doc-format">プロトコル</div><div class="doc-owner both">共同</div></div>
+    <div class="doc-row"><div class="doc-id">M3</div><div><div class="doc-title">アドバイザー契約書</div><div class="doc-desc">月1h・NDA・報酬条件・アドバイス範囲</div></div><div class="doc-format">契約書</div><div class="doc-owner both">共同</div></div>
+  </div>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /page-layout -->
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <p>ADHD特化コーチング — ドキュメント準備マップ v1.0</p>
+  <p style="margin-top:6px"><a href="adhd-mvp-design.html">MVP設計書</a> &middot; <a href="adhd-service-design.html">理想形設計書</a> &middot; <a href="adhd-careerspi-ronten.html">論点整理</a></p>
+  <p style="margin-top:8px;font-size:11px;color:var(--text-muted)">Generated 2026-02-27</p>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
