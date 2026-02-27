@@ -1,0 +1,975 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>才能解放AIコーチ — 忖度なし多角的評価レポート</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg-base:#08080d;--bg-surface:#101018;--bg-raised:#181824;--bg-top:#222234;--border:rgba(255,255,255,.06);--border-focus:rgba(255,255,255,.12);--text:#eaeaf2;--text-dim:#9898ae;--text-muted:#58586e;--blue:#4a7dff;--cyan:#22d3ee;--green:#34d399;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;--pink:#f472b6;--grad-hero:linear-gradient(135deg,#4a7dff 0%,#22d3ee 100%);--grad-success:linear-gradient(135deg,#34d399 0%,#22d3ee 100%);--grad-warn:linear-gradient(135deg,#ef4444 0%,#f59e0b 100%);--grad-vision:linear-gradient(135deg,#a78bfa 0%,#f472b6 100%);--shadow-sm:0 1px 3px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);--shadow-lg:0 8px 32px rgba(0,0,0,.6);--font-sans:'Noto Sans JP',-apple-system,sans-serif;--font-mono:'JetBrains Mono','Fira Code',monospace;--font-heading:'Sora','Noto Sans JP',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--bg-base);color:var(--text);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+.page-layout{display:flex;gap:32px;align-items:flex-start}
+.main-content{flex:1;min-width:0}
+.mono{font-family:var(--font-mono);font-weight:600}
+.headline{font-family:'Playfair Display',Georgia,serif;font-weight:900;letter-spacing:-.02em}
+
+/* TOC Sidebar */
+.toc-sidebar{position:sticky;top:24px;width:260px;flex-shrink:0;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:16px;max-height:calc(100vh - 48px);overflow-y:auto}
+.toc-sidebar h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:3px 0;line-height:1.4;transition:color .15s}
+.toc-sidebar a:hover{color:var(--cyan)}
+.toc-num{color:var(--text-muted);margin-right:4px;font-family:var(--font-mono);font-size:10px}
+.toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-part:first-child{border-top:none;margin-top:0;padding-top:0}
+@media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
+
+/* Hero */
+.hero{padding:72px 0 20px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(239,68,68,.05) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-block;padding:5px 14px;border:1px solid rgba(239,68,68,.25);border-radius:20px;font-size:12px;font-weight:700;color:var(--red);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;background:rgba(239,68,68,.04)}
+.hero h1{font-size:36px;font-weight:900;line-height:1.4;margin-bottom:14px;background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--text-dim);max-width:640px;margin:0 auto 28px;line-height:1.9}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--text-muted)}
+
+/* Sections */
+.section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px}
+.action-title{font-size:24px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
+.section-lead{font-size:15px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
+
+/* Part Divider */
+.part-divider{padding:32px 0 8px;text-align:center}
+.part-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:.5px}
+.part-badge.a{border-color:var(--red);color:var(--red)}
+.part-badge.b{border-color:var(--cyan);color:var(--cyan)}
+.part-badge.c{border-color:var(--green);color:var(--green)}
+.part-badge.d{border-color:var(--amber);color:var(--amber)}
+.part-badge.e{border-color:var(--purple);color:var(--purple)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 20px}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.kpi-grid{grid-template-columns:1fr}}
+.kpi-card{background:var(--bg-surface);border-radius:12px;padding:20px 14px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:transform .15s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-num{font-family:var(--font-mono);font-size:32px;font-weight:600;margin-bottom:4px}
+.kpi-num.warn{background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.good{background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.blue{background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.vision{background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-label{font-size:13px;color:var(--text-dim);font-weight:500;line-height:1.6}
+
+/* Table */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:18px 0;font-size:13px}
+.tbl thead th{background:var(--bg-raised);padding:10px 14px;font-size:11px;font-weight:700;text-align:left;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;background:var(--bg-surface)}
+.tbl tbody tr:last-child td{border-bottom:none}
+.t-name{font-weight:600;color:var(--text)}
+.t-good{color:var(--green);font-weight:500}
+.t-warn{color:var(--amber);font-weight:500}
+.t-bad{color:var(--red);font-weight:500}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:18px 0}
+@media(max-width:600px){.card-grid{grid-template-columns:1fr}}
+.card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm);transition:transform .15s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.card p{font-size:13px;color:var(--text-dim);line-height:1.8}
+.card-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px}
+.card-badge.green{background:rgba(52,211,153,.08);color:var(--green)}
+.card-badge.blue{background:rgba(74,125,255,.08);color:var(--blue)}
+.card-badge.amber{background:rgba(245,158,11,.08);color:var(--amber)}
+.card-badge.red{background:rgba(239,68,68,.08);color:var(--red)}
+.card-badge.purple{background:rgba(167,139,250,.08);color:var(--purple)}
+.card-badge.cyan{background:rgba(34,211,238,.08);color:var(--cyan)}
+
+/* Callouts */
+.sowhat{background:rgba(239,68,68,.03);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.sowhat-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.sowhat p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.sowhat strong{color:#f87171}
+.insight{background:rgba(52,211,153,.03);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.insight-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.insight p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.insight strong{color:var(--green)}
+.note{background:rgba(74,125,255,.03);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.note-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.note p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.note strong{color:var(--blue)}
+.warn-callout{background:rgba(245,158,11,.03);border-left:4px solid var(--amber);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.warn-callout-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.warn-callout p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.warn-callout strong{color:var(--amber)}
+
+/* Issue Cards */
+.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+@media(max-width:700px){.issue-grid{grid-template-columns:1fr}}
+.issue-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:22px;border-left:4px solid;box-shadow:var(--shadow-sm)}
+.issue-card.critical{border-left-color:var(--red)}
+.issue-card.high{border-left-color:var(--amber)}
+.issue-card.medium{border-left-color:var(--blue)}
+.issue-card.low{border-left-color:var(--green)}
+.issue-severity{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;display:inline-block;margin-bottom:8px}
+.issue-card.critical .issue-severity{background:rgba(239,68,68,.12);color:var(--red)}
+.issue-card.high .issue-severity{background:rgba(245,158,11,.12);color:var(--amber)}
+.issue-card.medium .issue-severity{background:rgba(74,125,255,.12);color:var(--blue)}
+.issue-card.low .issue-severity{background:rgba(52,211,153,.12);color:var(--green)}
+.issue-card h4{font-size:16px;font-weight:700;margin-bottom:6px}
+.issue-card p{font-size:14px;color:var(--text-dim);line-height:1.8}
+
+/* Score Bar */
+.score-bar{display:flex;align-items:center;gap:12px;margin:12px 0}
+.score-label{font-size:13px;font-weight:600;color:var(--text);min-width:180px}
+.score-track{flex:1;height:8px;background:var(--bg-raised);border-radius:4px;overflow:hidden;position:relative}
+.score-fill{height:100%;border-radius:4px;transition:width .5s ease}
+.score-fill.excellent{background:var(--grad-success)}
+.score-fill.good{background:var(--grad-hero)}
+.score-fill.warn{background:linear-gradient(135deg,var(--amber),var(--red))}
+.score-fill.bad{background:var(--red)}
+.score-num{font-family:var(--font-mono);font-size:14px;font-weight:600;min-width:40px;text-align:right}
+
+/* Accordion */
+details.acc{margin-bottom:6px}
+details.acc summary{cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;color:var(--text);list-style:none;transition:all .15s}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::before{content:'\25B6';font-size:9px;color:var(--text-muted);transition:transform .2s}
+details.acc[open] summary::before{transform:rotate(90deg)}
+details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-raised);border-radius:8px 8px 0 0}
+.acc-body{padding:16px 20px;background:var(--bg-surface);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;font-size:13px;line-height:1.8;color:var(--text-dim)}
+.acc-body h5{font-size:12px;font-weight:700;color:var(--cyan);margin:12px 0 4px;letter-spacing:1px;text-transform:uppercase}
+.acc-body h5:first-child{margin-top:0}
+.acc-body ul{padding-left:18px;margin:4px 0}
+.acc-body li{margin-bottom:3px}
+.acc-body code{font-family:var(--font-mono);font-size:12px;background:var(--bg-raised);padding:1px 5px;border-radius:3px;color:var(--cyan)}
+.acc-body .code-block{background:var(--bg-raised);border:1px solid var(--border);border-radius:6px;padding:12px 16px;font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--text-dim);margin:8px 0;white-space:pre-wrap;overflow-x:auto}
+
+/* Success Cards */
+.success-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+@media(max-width:900px){.success-grid{grid-template-columns:1fr}}
+.success-card{background:var(--bg-surface);border:1px solid rgba(52,211,153,.18);border-radius:12px;padding:24px;position:relative;box-shadow:var(--shadow-sm)}
+.success-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-success);border-radius:12px 12px 0 0}
+.sc-badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:rgba(52,211,153,.08);padding:3px 10px;border-radius:4px;margin-bottom:10px}
+.success-card h4{font-size:17px;font-weight:700;margin-bottom:8px}
+.success-card p{font-size:14px;color:var(--text-dim);line-height:1.8}
+
+/* Shift Cards (Before/After) */
+.shift-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin:20px 0}
+.shift-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.shift-num{font-family:var(--font-mono);font-size:24px;font-weight:600;background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.shift-card h4{font-size:15px;font-weight:700;margin-bottom:8px}
+.shift-before,.shift-after{font-size:13px;padding:7px 11px;border-radius:7px;margin-bottom:5px;line-height:1.6}
+.shift-before{background:rgba(239,68,68,.05);border-left:3px solid var(--red);color:#f87171}
+.shift-after{background:rgba(34,211,238,.05);border-left:3px solid var(--cyan);color:var(--cyan)}
+
+/* Vision Card */
+.vision-card{background:linear-gradient(135deg,rgba(74,125,255,.04) 0%,rgba(167,139,250,.04) 100%);border:1px solid rgba(167,139,250,.18);border-radius:12px;padding:24px;text-align:center;margin-top:16px}
+.vision-card h3{font-size:18px;font-weight:700;margin-bottom:10px;background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.vision-card p{font-size:14px;color:var(--text-dim);margin-bottom:12px}
+
+/* Evolution Timeline */
+.evo-track{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:24px 0;padding:0 10px}
+.evo-node{text-align:center;flex:0 0 auto}
+.evo-score{font-family:var(--font-mono);font-size:28px;font-weight:600;display:block}
+.evo-label{font-size:11px;color:var(--text-muted);display:block;margin-top:2px}
+.evo-arrow{font-family:var(--font-mono);font-size:20px;color:var(--text-muted);flex:1;text-align:center}
+
+/* Comparison */
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+@media(max-width:600px){.comparison{grid-template-columns:1fr}}
+.comp-side{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.comp-side h4{font-size:15px;font-weight:700;margin-bottom:10px}
+.comp-side ul{list-style:none;padding:0}
+.comp-side li{font-size:13px;color:var(--text-dim);padding:4px 0;line-height:1.6}
+
+/* Matrix */
+.matrix-wrap{overflow-x:auto;margin:18px 0}
+.matrix{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);font-size:12px}
+.matrix thead th{background:var(--bg-raised);padding:8px 6px;font-weight:700;text-align:center;letter-spacing:.5px;color:var(--text-muted);border-bottom:1px solid var(--border);white-space:nowrap;font-size:10px;text-transform:uppercase}
+.matrix thead th:first-child{text-align:left;padding-left:12px;min-width:100px}
+.matrix tbody td{padding:6px;text-align:center;border-bottom:1px solid var(--border);background:var(--bg-surface)}
+.matrix tbody td:first-child{text-align:left;font-weight:600;color:var(--text);padding-left:12px}
+.matrix tbody tr:last-child td{border-bottom:none}
+.matrix tbody tr.total-row td{background:var(--bg-raised);font-weight:700;color:var(--text)}
+.m-excellent{color:var(--green);font-weight:700}
+.m-good{color:var(--cyan);font-weight:600}
+.m-warn{color:var(--amber);font-weight:600}
+.m-bad{color:var(--red);font-weight:700}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0 28px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+.footer a{color:var(--blue);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<div class="hero">
+  <div class="hero-badge">Evaluation Report v1.0</div>
+  <h1>才能解放AIコーチ<br>忖度なし多角的評価レポート</h1>
+  <p class="hero-sub">ADHDユーザー起点で、v1.0仕様 + v1.1拡張仕様を10軸で評価。<br>設計者の意図ではなく、使う側の脳がどう反応するかを精査。<br>企画書・技術仕様書・リサーチ6本 + MY OS設計書（全8Part）を入力とする。</p>
+  <div class="hero-meta">
+    <span>評価日: 2026-02-28</span>
+    <span>|</span>
+    <span>omoshiku Inc.</span>
+    <span>|</span>
+    <span>忖度ゼロ・改善提案つき</span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LAYOUT ═══════════════════════ -->
+<div class="page-layout">
+
+<!-- TOC -->
+<nav class="toc-sidebar">
+  <h3>Contents</h3>
+  <div class="toc-part">Part A — 初回10軸評価</div>
+  <a href="#score-overview"><span class="toc-num">00</span>総合スコア概観</a>
+  <a href="#axis-1"><span class="toc-num">01</span>Time to Value</a>
+  <a href="#axis-2"><span class="toc-num">02</span>認知負荷</a>
+  <a href="#axis-3"><span class="toc-num">03</span>継続性設計</a>
+  <a href="#axis-4"><span class="toc-num">04</span>感情安全性</a>
+  <a href="#axis-5"><span class="toc-num">05</span>実行機能代替度</a>
+  <a href="#axis-6"><span class="toc-num">06</span>ドーパミン設計</a>
+  <a href="#axis-7"><span class="toc-num">07</span>過集中・時間盲目</a>
+  <a href="#axis-8"><span class="toc-num">08</span>機能肥大リスク</a>
+  <a href="#axis-9"><span class="toc-num">09</span>離脱耐性</a>
+  <a href="#axis-10"><span class="toc-num">10</span>独自性</a>
+  <a href="#matrix-1"><span class="toc-num">11</span>統合マトリックス</a>
+  <div class="toc-part">Part B — UI/UX × ゲーミフィケーション</div>
+  <a href="#ux-perfect"><span class="toc-num">B0</span>完璧な設計要素</a>
+  <a href="#ux-b1"><span class="toc-num">B1</span>タスク完了報酬</a>
+  <a href="#ux-b2"><span class="toc-num">B2</span>Progress Ring</a>
+  <a href="#ux-b5"><span class="toc-num">B5</span>オンボーディング</a>
+  <a href="#gamification"><span class="toc-num">C</span>ゲーミフィケーション</a>
+  <div class="toc-part">Part C — MY OS統合再評価</div>
+  <a href="#myos-insights"><span class="toc-num">12</span>MY OSの知見</a>
+  <a href="#re-evaluation"><span class="toc-num">13</span>再評価10軸</a>
+  <a href="#matrix-2"><span class="toc-num">14</span>改善後マトリックス</a>
+  <div class="toc-part">Part D — 82→90への道</div>
+  <a href="#bottleneck"><span class="toc-num">15</span>ボトルネック分析</a>
+  <a href="#five-strategies"><span class="toc-num">16</span>追加改善策5本</a>
+  <a href="#matrix-3"><span class="toc-num">17</span>最終スコア</a>
+  <div class="toc-part">Part E — 結論</div>
+  <a href="#conclusion"><span class="toc-num">18</span>100点にはしない</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- ═══════════════════════ SCORE OVERVIEW ═══════════════════════ -->
+<div class="section" id="score-overview">
+  <div class="section-eyebrow" style="color:var(--red)">PART A &mdash; OVERVIEW</div>
+  <h2 class="action-title">スコア進化: 65.5 → 82.6 → 90.0</h2>
+  <p class="section-lead">初回評価から改善提案を経て、3段階でスコアが進化。「良いアプリ」から「ADHD当事者が手放せないアプリ」へ。</p>
+
+  <div class="evo-track">
+    <div class="evo-node">
+      <span class="evo-score" style="color:var(--amber)">65.5</span>
+      <span class="evo-label">初回評価</span>
+    </div>
+    <div class="evo-arrow">→</div>
+    <div class="evo-node">
+      <span class="evo-score" style="color:var(--cyan)">82.6</span>
+      <span class="evo-label">P0/P1改善後</span>
+    </div>
+    <div class="evo-arrow">→</div>
+    <div class="evo-node">
+      <span class="evo-score" style="color:var(--green)">90.0</span>
+      <span class="evo-label">追加5策後</span>
+    </div>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-num warn">65.5</div>
+      <div class="kpi-label">初回評価<br>（加重平均）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num good">+43</div>
+      <div class="kpi-label">最大改善幅<br>（過集中対策）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num blue">93</div>
+      <div class="kpi-label">最強項目<br>（感情安全性）</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision">90.0</div>
+      <div class="kpi-label">最終スコア<br>（追加改善後）</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ 10-AXIS EVALUATION ═══════════════════════ -->
+
+<!-- Axis 1: Time to Value -->
+<div class="section" id="axis-1">
+  <div class="section-eyebrow" style="color:var(--green)">AXIS 01 / 10</div>
+  <h2 class="action-title">起動→価値の到達速度（Time to Value）</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill excellent" style="width:85%"></div></div>
+    <span class="score-num" style="color:var(--green)">85</span>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>良い点</th><th>懸念点</th></tr></thead>
+    <tbody>
+      <tr><td class="t-good">ワンタップで「今これに集中」カードに到達</td><td class="t-warn">モーニングチェックインが4ステップある</td></tr>
+      <tr><td class="t-good">Focus Modeが起動→タイマー即開始</td><td class="t-warn">エネルギー/気分/睡眠の入力が毎朝必要＝ADHD脳が最も苦手な「ルーティンの立ち上げ」</td></tr>
+      <tr><td class="t-good">15秒ルールを設計原則として明記</td><td class="t-warn">15秒ルールの対象がHome画面だけ</td></tr>
+    </tbody>
+  </table>
+  <div class="warn-callout">
+    <div class="warn-callout-label">ADHDユーザーの本音</div>
+    <p>「朝起きてアプリ開いて、エネルギー何点？気分は？睡眠は？って聞かれるの、<strong>3日目には面倒になる</strong>。Tiimoみたいに"開いたら今日やること一覧がドン"のほうが楽。」</p>
+  </div>
+  <div class="insight">
+    <div class="insight-label">改善提案</div>
+    <p>チェックインを<strong>ゼロ入力デフォルト</strong>にする。前日パターンから推測し「これで合ってる？」のワンタップ確認に変更。現状は「入力させる設計」が多すぎる。</p>
+  </div>
+</div>
+
+<!-- Axis 2: Cognitive Load -->
+<div class="section" id="axis-2">
+  <div class="section-eyebrow" style="color:var(--amber)">AXIS 02 / 10</div>
+  <h2 class="action-title">認知負荷（Cognitive Load）</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill good" style="width:65%"></div></div>
+    <span class="score-num" style="color:var(--amber)">65</span>
+  </div>
+  <div class="sowhat">
+    <div class="sowhat-label">最大の懸念</div>
+    <p><strong>v1.0→v1.1で機能が2倍に</strong>。v1.0: 10テーブル・6 Edge Functions・5画面 → v1.1: 16テーブル・12 Edge Functions・8画面。ADHD当事者向けアプリが<strong>ADHD脳を圧倒するリスク</strong>。</p>
+  </div>
+  <div class="warn-callout">
+    <div class="warn-callout-label">ADHDユーザーの本音</div>
+    <p>「タスク管理、習慣チェック、ゴール管理、振り返り、インボックス…全部一つのアプリでやるの？最初の1週間は楽しいけど、<strong>2週目から"あのアプリ開くの重い"ってなる</strong>。」</p>
+  </div>
+  <div class="insight">
+    <div class="insight-label">改善提案</div>
+    <p>v1.1の4機能を一度に出さず、<strong>ユーザーのレディネスに応じて段階的にアンロック</strong>する設計にすべき。最初は「Today + Chat」だけ。1週間継続→「習慣チェッカー解放」。1ヶ月→「ゴール設定解放」。</p>
+  </div>
+</div>
+
+<!-- Axis 3: Retention -->
+<div class="section" id="axis-3">
+  <div class="section-eyebrow" style="color:var(--red)">AXIS 03 / 10 &mdash; 最大の弱点</div>
+  <h2 class="action-title">継続性設計（Day 1 / Day 7 / Day 30 リテンション）</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill warn" style="width:55%"></div></div>
+    <span class="score-num" style="color:var(--red)">55</span>
+  </div>
+  <div class="sowhat">
+    <div class="sowhat-label">致命的な欠落</div>
+    <p><strong>「使わなくなった時」の設計がゼロ</strong>。ADHD当事者の80%が1ヶ月以内にアプリを離脱する（自身のリサーチで言及）。にもかかわらず、「3日間アプリを開かなかった」→「何が起きるか」の設計がない。<strong>「離脱→復帰」のループ設計こそがADHDアプリの生命線</strong>なのに、完全に抜けている。</p>
+  </div>
+  <div class="issue-grid">
+    <div class="issue-card critical">
+      <div class="issue-severity">P0 必須</div>
+      <h4>「久しぶりモード」</h4>
+      <p>3日以上未使用→次回起動時にインボックス/未達習慣を全リセット。「今日だけに集中しよう」と声がけ。過去の未達を見せない。</p>
+    </div>
+    <div class="issue-card critical">
+      <div class="issue-severity">P0 必須</div>
+      <h4>復帰ボーナス</h4>
+      <p>離脱→復帰した時こそ最大の祝福。「戻ってきたこと自体がすごい」。復帰時はチェックイン不要、いきなりFocusカード。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Axis 4: Emotional Safety -->
+<div class="section" id="axis-4">
+  <div class="section-eyebrow" style="color:var(--green)">AXIS 04 / 10 &mdash; 最大の強み</div>
+  <h2 class="action-title">感情安全性（Emotional Safety / RSD対策）</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill excellent" style="width:88%"></div></div>
+    <span class="score-num" style="color:var(--green)">88</span>
+  </div>
+  <div class="insight">
+    <div class="insight-label">最大の強み</div>
+    <p>4つのAIペルソナの中にEmergencyが独立して存在し、キーワードトリガーで自動切替する設計は、<strong>競合12アプリのどれにもない</strong>。RSD検出→Emergency自動切替は本アプリの真の差別化ポイント。</p>
+  </div>
+  <div class="warn-callout">
+    <div class="warn-callout-label">注意点</div>
+    <p><strong>RSD持ちにChallengerペルソナは超危険</strong>。「もっとできるやろ？」が自己否定を加速するケースがある。Challengerの発動条件に<strong>エネルギーレベル閾値</strong>を追加。エネルギー5以下の日にChallengerは絶対に発動させない。</p>
+  </div>
+</div>
+
+<!-- Axis 5: Executive Function -->
+<div class="section" id="axis-5">
+  <div class="section-eyebrow" style="color:var(--cyan)">AXIS 05 / 10</div>
+  <h2 class="action-title">実行機能代替度（Executive Function Offloading）</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill excellent" style="width:82%"></div></div>
+    <span class="score-num" style="color:var(--green)">82</span>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>実行機能</th><th>代替レベル</th><th>設計</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">開始困難</td><td class="t-good">★★★★★</td><td>「今これに集中」カード＋ワンタップ→Focus Mode</td></tr>
+      <tr><td class="t-name">優先順位付け</td><td class="t-good">★★★★☆</td><td>ドーパミンスコアで自動ソート</td></tr>
+      <tr><td class="t-name">タスク切替</td><td class="t-good">★★★★☆</td><td>ドーパミン5段階ループでSwitch/Recover設計</td></tr>
+      <tr><td class="t-name">時間感覚</td><td class="t-warn">★★★☆☆</td><td>タイマーのみ。Time Blindnessへの根本対策なし</td></tr>
+      <tr><td class="t-name">ワーキングメモリ</td><td class="t-good">★★★★☆</td><td>GTDインボックスで外部化支援</td></tr>
+      <tr><td class="t-name">感情制御</td><td class="t-good">★★★★★</td><td>RSD検出+Emergencyペルソナ</td></tr>
+    </tbody>
+  </table>
+  <div class="sowhat">
+    <div class="sowhat-label">最大の欠落</div>
+    <p><strong>過集中（Hyperfocus）対策がない</strong>。Focus Modeのタイマー終了時、通知だけで過集中から引き戻せるか？「タイマー鳴ったけど無視して3時間経ってた」はADHDあるある。</p>
+  </div>
+</div>
+
+<!-- Axis 6: Dopamine -->
+<div class="section" id="axis-6">
+  <div class="section-eyebrow" style="color:var(--amber)">AXIS 06 / 10</div>
+  <h2 class="action-title">ドーパミン設計の科学的妥当性</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill warn" style="width:60%"></div></div>
+    <span class="score-num" style="color:var(--amber)">60</span>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>主張</th><th>エビデンス</th><th>評価</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">4スイッチモデル</td><td>Dr. Dodsonの"Interest-Based Nervous System"</td><td class="t-good">★★★★☆ 学術的根拠あり</td></tr>
+      <tr><td class="t-name">ドーパミンスコア重み</td><td>重み付けの根拠がゼロ</td><td class="t-bad">★★☆☆☆ 恣意的</td></tr>
+      <tr><td class="t-name">5段階ループ</td><td>ウルトラディアンリズム研究。ADHD特化検証なし</td><td class="t-warn">★★★☆☆</td></tr>
+      <tr><td class="t-name">90分ブロック設計</td><td>「ポモドーロは短すぎる」と批判するが、90分が最適という根拠も同程度に弱い</td><td class="t-bad">★★☆☆☆</td></tr>
+    </tbody>
+  </table>
+  <div class="insight">
+    <div class="insight-label">改善提案</div>
+    <p>ドーパミンスコアの重みを<strong>個人適応型</strong>にする。初期値は現在の固定重み、2週間分のタスク完了/未完了データが溜まったら、実際にどのスイッチが高い時に完了率が高いかを<strong>回帰分析して重みを更新</strong>。</p>
+  </div>
+</div>
+
+<!-- Axis 7: Hyperfocus / Time Blindness -->
+<div class="section" id="axis-7">
+  <div class="section-eyebrow" style="color:var(--red)">AXIS 07 / 10 &mdash; 重大な欠落</div>
+  <h2 class="action-title">過集中・時間盲目への対策</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill bad" style="width:40%"></div></div>
+    <span class="score-num" style="color:var(--red)">40</span>
+  </div>
+  <p class="section-lead">ADHD脳の3大実行機能障害は「開始困難」「注意転導」「時間認知の欠如」。本アプリは前2つをよく設計しているが、時間認知の欠如と過集中への対策がほぼゼロ。</p>
+
+  <table class="tbl">
+    <thead><tr><th>課題</th><th>現状の設計</th><th>ADHDの現実</th><th>ギャップ</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">過集中</td><td>タイマー終了→通知</td><td>過集中中は通知を認知できない。脳が処理しない</td><td class="t-bad">致命的</td></tr>
+      <tr><td class="t-name">時間盲目</td><td>カレンダー連携で次の予定表示</td><td>ADHDの時間感覚は「今」と「今じゃない」の2区分</td><td class="t-bad">対策不足</td></tr>
+      <tr><td class="t-name">遷移困難</td><td>Switch/Recoverの概念</td><td>物理的に支援する仕組みがない</td><td class="t-bad">概念どまり</td></tr>
+      <tr><td class="t-name">会議遅刻</td><td>カレンダー同期</td><td>段階的アラートがない</td><td class="t-bad">不足</td></tr>
+    </tbody>
+  </table>
+
+  <h3 style="font-size:17px;margin:24px 0 12px;color:var(--text)">競合との比較</h3>
+  <table class="tbl">
+    <thead><tr><th>アプリ</th><th>過集中対策</th><th>時間盲目対策</th><th>評価</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">Tiimo</td><td>ビジュアルタイムライン</td><td>ハプティック通知</td><td class="t-good">★★★★☆</td></tr>
+      <tr><td class="t-name">Routinery</td><td>ステップバイステップタイマー</td><td>超過で赤く変化</td><td class="t-good">★★★★☆</td></tr>
+      <tr><td class="t-name">本アプリ</td><td>なし</td><td>タイマー表示のみ</td><td class="t-bad">★☆☆☆☆</td></tr>
+    </tbody>
+  </table>
+
+  <div class="sowhat">
+    <div class="sowhat-label">核心の問題</div>
+    <p>本アプリの設計哲学は「AIが最適な提案→ユーザーが実行」だが、過集中・時間盲目は<strong>「ユーザーがAIの提案を認知できない状態」</strong>で発生する。AIの知能の問題ではなく、<strong>通知チャネルの問題</strong>。</p>
+  </div>
+
+  <h3 style="font-size:17px;margin:24px 0 12px;color:var(--text)">改善提案（優先度順）</h3>
+  <div class="issue-grid">
+    <div class="issue-card critical">
+      <div class="issue-severity">P0</div>
+      <h4>過集中ブレイカー 3段階介入</h4>
+      <p>Level 1（0秒）: 通知+バイブ → Level 2（30秒）: 画面50%暗転+AI音声 → Level 3（90秒）: 画面ロック+全画面メッセージ [あと5分/切り上げる/延長]</p>
+    </div>
+    <div class="issue-card critical">
+      <div class="issue-severity">P0</div>
+      <h4>時間の「感覚的」可視化</h4>
+      <p>背景色グラデーション: 残90-60分=深い青 → 60-30分=紫 → 30-15分=オレンジ → 15-0分=赤+パルス。数字ではなく色で時間を感じさせる。</p>
+    </div>
+    <div class="issue-card high">
+      <div class="issue-severity">P1</div>
+      <h4>タスク遷移の「儀式」</h4>
+      <p>完了→30秒の強制トランジション（深呼吸ガイド+AI一言+水を飲むプロンプト）。スキップは10秒後に表示。</p>
+    </div>
+    <div class="issue-card high">
+      <div class="issue-severity">P1</div>
+      <h4>段階的カレンダーアラート</h4>
+      <p>T-60/T-30/T-15/T-5分の4段階で介入。通知無視パターンを学習し、個人に最適なタイミングに自動調整。</p>
+    </div>
+  </div>
+</div>
+
+<!-- Axis 8: Feature Bloat -->
+<div class="section" id="axis-8">
+  <div class="section-eyebrow" style="color:var(--amber)">AXIS 08 / 10</div>
+  <h2 class="action-title">機能肥大リスク（Feature Bloat）</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill warn" style="width:50%"></div></div>
+    <span class="score-num" style="color:var(--red)">50</span>
+  </div>
+  <div class="comparison">
+    <div class="comp-side">
+      <h4 style="color:var(--green)">v1.0（MVP）は美しく絞れている</h4>
+      <ul>
+        <li>5画面、10テーブル、6 Edge Functions</li>
+        <li>「今日に集中する」という明確なフォーカス</li>
+        <li>ADHD当事者に必要最小限</li>
+      </ul>
+    </div>
+    <div class="comp-side">
+      <h4 style="color:var(--red)">v1.1で突然2倍に</h4>
+      <ul>
+        <li>+3画面（Inbox, Balance拡張, Goal設定）</li>
+        <li>+6テーブル、+6 Edge Functions</li>
+        <li>4つの別アプリを1つに詰め込んだ状態</li>
+      </ul>
+    </div>
+  </div>
+  <div class="insight">
+    <div class="insight-label">改善提案</div>
+    <p>v1.1を<strong>v1.1〜v1.4の4段階に分割</strong>。各フェーズでユーザーが「これは自分に合う」と感じた機能だけをオプトイン。</p>
+  </div>
+</div>
+
+<!-- Axis 9: Abandonment Resistance -->
+<div class="section" id="axis-9">
+  <div class="section-eyebrow" style="color:var(--red)">AXIS 09 / 10</div>
+  <h2 class="action-title">「使わなくなる」パターンへの耐性</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill bad" style="width:45%"></div></div>
+    <span class="score-num" style="color:var(--red)">45</span>
+  </div>
+  <table class="tbl">
+    <thead><tr><th>離脱パターン</th><th>頻度</th><th>本アプリの対策</th><th>評価</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">新規性消失</td><td>最多</td><td>なし。UIもAIトーンも固定</td><td class="t-bad">✗</td></tr>
+      <tr><td class="t-name">罪悪感蓄積</td><td>多い</td><td>未完了タスク/未達習慣の可視化が罪悪感を生む</td><td class="t-warn">△</td></tr>
+      <tr><td class="t-name">完璧主義崩壊</td><td>多い</td><td>ストリークリセット自体がトリガー</td><td class="t-bad">✗</td></tr>
+      <tr><td class="t-name">設定疲れ</td><td>多い</td><td>オンボーディング設計が存在しない</td><td class="t-bad">✗</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- Axis 10: Uniqueness -->
+<div class="section" id="axis-10">
+  <div class="section-eyebrow" style="color:var(--cyan)">AXIS 10 / 10</div>
+  <h2 class="action-title">独自性 vs 既存ツール</h2>
+  <div class="score-bar">
+    <span class="score-label">初回スコア</span>
+    <div class="score-track"><div class="score-fill good" style="width:78%"></div></div>
+    <span class="score-num" style="color:var(--cyan)">78</span>
+  </div>
+  <p class="section-lead">「GTD深い × ADHD最適化 × AI自動化」の3軸交差点は確かに空白。本当の差別化は「バランスホイール × 4スイッチ × RSD検出」の3点セット。</p>
+</div>
+
+<!-- ═══════════════════════ INITIAL MATRIX ═══════════════════════ -->
+<div class="section" id="matrix-1">
+  <div class="section-eyebrow" style="color:var(--red)">PART A &mdash; INTEGRATED</div>
+  <h2 class="action-title">統合評価マトリックス（初回）</h2>
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead><tr><th>#</th><th>評価軸</th><th>スコア</th><th>重み</th><th>加重</th><th>判定</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Time to Value</td><td class="m-good">85</td><td>10%</td><td>8.5</td><td>○</td></tr>
+        <tr><td>2</td><td>認知負荷</td><td class="m-warn">65</td><td>15%</td><td>9.8</td><td>△</td></tr>
+        <tr><td>3</td><td>継続性設計</td><td class="m-bad">55</td><td><strong>20%</strong></td><td>11.0</td><td class="m-bad">✗ 最重要なのに弱い</td></tr>
+        <tr><td>4</td><td>感情安全性</td><td class="m-excellent">88</td><td>10%</td><td>8.8</td><td class="m-excellent">◎ 最大の強み</td></tr>
+        <tr><td>5</td><td>実行機能代替度</td><td class="m-good">82</td><td>10%</td><td>8.2</td><td>○</td></tr>
+        <tr><td>6</td><td>ドーパミン設計</td><td class="m-warn">60</td><td>10%</td><td>6.0</td><td>△</td></tr>
+        <tr><td>7</td><td>過集中・時間盲目</td><td class="m-bad">40</td><td>5%</td><td>2.0</td><td class="m-bad">✗ 重大欠落</td></tr>
+        <tr><td>8</td><td>機能肥大リスク</td><td class="m-bad">50</td><td>10%</td><td>5.0</td><td class="m-bad">✗</td></tr>
+        <tr><td>9</td><td>離脱耐性</td><td class="m-bad">45</td><td>5%</td><td>2.3</td><td class="m-bad">✗</td></tr>
+        <tr><td>10</td><td>独自性</td><td class="m-good">78</td><td>5%</td><td>3.9</td><td>○</td></tr>
+        <tr class="total-row"><td></td><td>合計</td><td></td><td>100%</td><td><strong>65.5</strong></td><td></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">初回結論: 3行</div>
+    <p>1. <strong>感情安全性（RSD対策 + Emergencyペルソナ）は競合12アプリ中トップ</strong>。<br>
+    2. <strong>継続性設計が致命的に弱い</strong>。離脱パターンへの対策がほぼゼロ。<br>
+    3. <strong>v1.1の機能肥大がv1.0の美しさを殺している</strong>。段階的アンロック設計が必須。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PART B: UI/UX × GAMIFICATION ═══════════════════════ -->
+<div class="part-divider"><div class="part-badge b">Part B &mdash; UI/UX &times; Gamification</div></div>
+
+<div class="section" id="ux-perfect">
+  <div class="section-eyebrow" style="color:var(--green)">PART B &mdash; PERFECT ELEMENTS</div>
+  <h2 class="action-title">すでに完璧な設計（変えなくていい）</h2>
+  <div class="success-grid">
+    <div class="success-card"><div class="sc-badge">完璧</div><h4>ダークテーマ4段階背景</h4><p>#08080d→#101018→#181824→#222234。ADHD当事者の光過敏に対応。</p></div>
+    <div class="success-card"><div class="sc-badge">完璧</div><h4>48px最小タッチターゲット</h4><p>WCAG準拠かつADHD脳の「雑なタップ」を受け止める。</p></div>
+    <div class="success-card"><div class="sc-badge">完璧</div><h4>4スイッチ色分け</h4><p>Interest(#f97316) / Challenge(#4a7dff) / Novelty(#e879f9) / Urgency(#fbbf24)</p></div>
+    <div class="success-card"><div class="sc-badge">完璧</div><h4>選択肢3-4個ルール</h4><p>決定麻痺（Decision Paralysis）を根本回避。</p></div>
+    <div class="success-card"><div class="sc-badge">完璧</div><h4>Bottom Nav 3-4タブ</h4><p>ハンバーガーメニュー排除は英断。「隠れたメニュー＝存在しない」</p></div>
+    <div class="success-card"><div class="sc-badge">完璧</div><h4>RSD Emergency切替</h4><p>ペルソナ自動切替は競合12アプリ中唯一。触るな。</p></div>
+  </div>
+  <p style="font-size:14px;color:var(--text-dim);margin-top:16px"><strong>結論: 基盤設計は極めて高品質。問題は「基盤の上に乗る体験」の層にある。</strong></p>
+</div>
+
+<!-- B1: Task Completion Reward -->
+<div class="section" id="ux-b1">
+  <div class="section-eyebrow" style="color:var(--red)">B1 &mdash; 最大の弱点</div>
+  <h2 class="action-title">タスク完了時の「報酬感」が薄すぎる</h2>
+  <p class="section-lead">タスク完了→タスクがリストから消える。以上。ADHD脳の「えっ、今めっちゃ頑張ったのに…何も起きんの？」に対する応答がゼロ。ドーパミン設計で「即時報酬」を語りながら、UIでそれを実現していない矛盾。</p>
+  <div class="note">
+    <div class="note-label">処方箋: 0.3秒マルチ報酬</div>
+    <p>タスク完了タップ→0.3秒以内に全部同時発火:<br>
+    1. <strong>ハプティック</strong>: ダブルタップ振動<br>
+    2. <strong>ビジュアル</strong>: カードが緑に光って✓ポップ（200ms）<br>
+    3. <strong>サウンド</strong>: 控えめな「ポン♪」<br>
+    4. <strong>テキスト</strong>: "+12 XP" がフロート（300ms）<br>
+    5. <strong>AI一言</strong>: 「ナイスや！」「やるやん！」（最低20パターン）<br><br>
+    ※ 1日の初回完了: ミニ紙吹雪（0.5秒で消滅）<br>
+    ※ 「やりすぎ注意」: 報酬が作業を中断してはいけない</p>
+  </div>
+</div>
+
+<!-- B2: Progress Ring -->
+<div class="section" id="ux-b2">
+  <div class="section-eyebrow" style="color:var(--blue)">B2</div>
+  <h2 class="action-title">ホーム画面に「進捗の手触り」を</h2>
+  <p class="section-lead">「今日どれくらい頑張ったか」が数字でしか見えない。ADHD脳は数字を「感覚」に変換できない。Today Progress Ringで完了率を円形プログレスで可視化。未完了タスク数は表示しない（罪悪感トリガー回避）。</p>
+</div>
+
+<!-- B5: Onboarding -->
+<div class="section" id="ux-b5">
+  <div class="section-eyebrow" style="color:var(--red)">B5 &mdash; 致命的欠落</div>
+  <h2 class="action-title">オンボーディングが完全に未設計</h2>
+  <p class="section-lead">リサーチで「ADHD当事者の80%が1ヶ月以内に離脱」と書きながら、Day 0の体験設計がないのは矛盾。ADHD当事者の離脱は「Day 1-3」に集中する。</p>
+  <div class="note">
+    <div class="note-label">処方箋: 「2分で価値を感じる」オンボーディング</div>
+    <p><strong>Step 0 (0秒):</strong> 「ようこそ。ワシはガネーシャ。あんたのADHD脳の味方や」<br>
+    <strong>Step 1 (30秒):</strong> 「頭の中にあることを1つだけ教えて」→ AIが即座に分類+ドーパミンスコア表示<br>
+    <strong>Step 2 (60秒):</strong> 「5分だけ試してみいひん？」→ Focus Mode体験<br>
+    <strong>Step 3 (90秒):</strong> 4スイッチ簡易診断（4択×2問=8秒）<br>
+    <strong>完了 (120秒以内):</strong> ホーム画面到着。最初のタスクがFocusカードに。</p>
+  </div>
+</div>
+
+<!-- C: Gamification -->
+<div class="section" id="gamification">
+  <div class="section-eyebrow" style="color:var(--purple)">GAMIFICATION CRITIQUE</div>
+  <h2 class="action-title">ゲーミフィケーション精査 &mdash; 6つのツッコミ</h2>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-badge red">C1 致命的</div>
+      <h4>XP/レベルシステムが仕様に存在しない</h4>
+      <p>リサーチで「XPとレベルが効く」と結論づけながら、DBスキーマにxp/level/badgesカラムがゼロ。リサーチ→仕様のギャップ。</p>
+    </div>
+    <div class="card">
+      <div class="card-badge amber">C2 重要</div>
+      <h4>変動報酬（Variable Reward）が未実装</h4>
+      <p>ADHD脳のドーパミン報酬系は予測不能な報酬で最も活性化する。全報酬が予測可能ではドーパミン設計の看板に偽りあり。5%で×2、1%で×5ボーナスを。</p>
+    </div>
+    <div class="card">
+      <div class="card-badge amber">C3 重要</div>
+      <h4>バッジ「コレクション体験」がない</h4>
+      <p>4系統×5段階=20個上限。集中マスター / 自己理解の達人 / 習慣の錬金術師 / つながりの力。ロックされたバッジは「シルエット」で表示（新規性）。</p>
+    </div>
+    <div class="card">
+      <div class="card-badge blue">C4 改善</div>
+      <h4>ドーパミンフェーズがUIに見えない</h4>
+      <p>DBにはdopamine_phaseが存在するがUIに一切表示されていない。宝の持ち腐れ。タイマー枠の色変化でフェーズを体感させる。</p>
+    </div>
+    <div class="card">
+      <div class="card-badge purple">C5 推奨</div>
+      <h4>Daily Challengeがない</h4>
+      <p>アプリを開く理由が「自分のタスク」だけ。AIが毎朝1つチャレンジを生成すれば「新規性消失」問題への直接対策に。</p>
+    </div>
+    <div class="card">
+      <div class="card-badge purple">C6 推奨</div>
+      <h4>エネルギーが報酬系に非接続</h4>
+      <p>低エネルギー日(1-3)でタスク完了→XP1.5倍「しんどい日にやったのは偉い」。エネルギーと報酬を連動させる。</p>
+    </div>
+  </div>
+
+  <div class="warn-callout" style="margin-top:24px">
+    <div class="warn-callout-label">やってはいけないチェックリスト</div>
+    <p>ストリーク途切れペナルティ=NG / レベルダウン=NG / 他ユーザー比較ランキング=NG / ログインボーナス義務化=NG / 通知の煽り=NG / 課金で進捗加速=NG / バッジ20個超=NG。<strong>現状の仕様はこれらをほぼ踏んでいない。優秀。</strong></p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PART C: MY OS RE-EVALUATION ═══════════════════════ -->
+<div class="part-divider"><div class="part-badge c">Part C &mdash; MY OS統合再評価</div></div>
+
+<div class="section" id="myos-insights">
+  <div class="section-eyebrow" style="color:var(--green)">PART C &mdash; MY OS INSIGHTS</div>
+  <h2 class="action-title">MY OS設計書が変えた評価の前提</h2>
+  <p class="section-lead">初回評価では「アプリの仕様書」だけを見て判断した。MY OS設計書を読んで、設計者のADHD理解の深度が仕様書に表れているレベルの3倍は深いことがわかった。</p>
+  <table class="tbl">
+    <thead><tr><th>MY OSの知見</th><th>初回の見立て</th><th>再評価</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">過集中管理3段階プロトコル（Part 3-2）</td><td class="t-bad">「対策がゼロ」と断じた</td><td class="t-good">設計者は概念を完全に持っている。仕様への落とし込みが間に合っていなかっただけ</td></tr>
+      <tr><td class="t-name">ドーパミンスケジューリング（Part 3-1）</td><td class="t-bad">「重みの根拠がゼロ」と批判</td><td class="t-good">N=1の一次データに基づくモデル。定性的妥当性は高い</td></tr>
+      <tr><td class="t-name">侘び寂び×ADHD（Part 5）</td><td class="t-warn">ストリーク→全放棄リスク指摘</td><td class="t-good">「連続」から「頻度」へ転換可能。1日抜けても「7日中5日、ええやん」</td></tr>
+      <tr><td class="t-name">7行動科学フレームワーク（Part 3-3）</td><td class="t-bad">「科学的検証ゼロ」と批判</td><td class="t-good">アプリの各機能にマッピング可能。理論を理解した上での設計</td></tr>
+      <tr><td class="t-name">AI認知プロステティクス（Part 4）</td><td class="t-warn">通知チャネル問題を指摘</td><td class="t-good">将来の進化ロードマップとして極めて価値がある</td></tr>
+    </tbody>
+  </table>
+  <div class="insight">
+    <div class="insight-label">核心</div>
+    <p>設計者は「ADHD当事者としての深い自己理解」を持ち、体系化した知的資産（MY OS）を持っている。問題はそれが<strong>まだアプリ仕様に十分に翻訳されていない</strong>こと。改善を実施すればこのギャップは大幅に縮まる。</p>
+  </div>
+</div>
+
+<!-- Re-evaluation highlights -->
+<div class="section" id="re-evaluation">
+  <div class="section-eyebrow" style="color:var(--cyan)">PART C &mdash; RE-EVALUATION</div>
+  <h2 class="action-title">改善後の10軸ハイライト</h2>
+
+  <div class="shift-grid">
+    <div class="shift-card">
+      <div class="shift-num">+43</div>
+      <h4>過集中・時間盲目</h4>
+      <div class="shift-before">旧: 40/100（12競合中最下位）</div>
+      <div class="shift-after">改善後: 83/100（12競合中トップ逆転）</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+28</div>
+      <h4>離脱耐性</h4>
+      <div class="shift-before">旧: 45/100（離脱パターン無対策）</div>
+      <div class="shift-after">改善後: 73/100（久しぶりモード+侘び寂びストリーク）</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+26</div>
+      <h4>機能肥大リスク</h4>
+      <div class="shift-before">旧: 50/100（v1.1で一気に2倍）</div>
+      <div class="shift-after">改善後: 76/100（4段階アンロック+エネルギー連動UI）</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+23</div>
+      <h4>継続性設計</h4>
+      <div class="shift-before">旧: 55/100（離脱→復帰ループなし）</div>
+      <div class="shift-after">改善後: 78/100（復帰ボーナス+頻度ベースストリーク）</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+20</div>
+      <h4>ドーパミン設計</h4>
+      <div class="shift-before">旧: 60/100（固定重み・恣意的）</div>
+      <div class="shift-after">改善後: 80/100（適応的重み+7フレームワーク統合）</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+5</div>
+      <h4>感情安全性（維持）</h4>
+      <div class="shift-before">旧: 88/100（すでに最高水準）</div>
+      <div class="shift-after">改善後: 93/100（Challengerエネルギー閾値+RSDトリガーマップ）</div>
+    </div>
+  </div>
+</div>
+
+<!-- Matrix 2 -->
+<div class="section" id="matrix-2">
+  <div class="section-eyebrow" style="color:var(--cyan)">INTEGRATED MATRIX &mdash; AFTER P0/P1</div>
+  <h2 class="action-title">改善後の統合評価マトリックス</h2>
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead><tr><th>#</th><th>評価軸</th><th>旧</th><th>改善後</th><th>変動</th><th>重み</th><th>加重</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Time to Value</td><td>85</td><td class="m-excellent">90</td><td>+5</td><td>10%</td><td>9.0</td></tr>
+        <tr><td>2</td><td>認知負荷</td><td>65</td><td class="m-good">78</td><td>+13</td><td>15%</td><td>11.7</td></tr>
+        <tr><td>3</td><td>継続性設計</td><td>55</td><td class="m-good">78</td><td>+23</td><td><strong>20%</strong></td><td>15.6</td></tr>
+        <tr><td>4</td><td>感情安全性</td><td>88</td><td class="m-excellent">93</td><td>+5</td><td>10%</td><td>9.3</td></tr>
+        <tr><td>5</td><td>実行機能代替度</td><td>82</td><td class="m-excellent">91</td><td>+9</td><td>10%</td><td>9.1</td></tr>
+        <tr><td>6</td><td>ドーパミン設計</td><td>60</td><td class="m-good">80</td><td>+20</td><td>10%</td><td>8.0</td></tr>
+        <tr><td>7</td><td>過集中対策</td><td>40</td><td class="m-good">83</td><td class="m-excellent">+43</td><td>5%</td><td>4.2</td></tr>
+        <tr><td>8</td><td>機能肥大</td><td>50</td><td class="m-good">76</td><td>+26</td><td>10%</td><td>7.6</td></tr>
+        <tr><td>9</td><td>離脱耐性</td><td>45</td><td class="m-warn">73</td><td>+28</td><td>5%</td><td>3.7</td></tr>
+        <tr><td>10</td><td>独自性</td><td>78</td><td class="m-excellent">88</td><td>+10</td><td>5%</td><td>4.4</td></tr>
+        <tr class="total-row"><td></td><td>合計</td><td><strong>65.5</strong></td><td><strong>82.6</strong></td><td><strong>+17.1</strong></td><td>100%</td><td><strong>82.6</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="warn-callout">
+    <div class="warn-callout-label">改善後も残る3つのリスク</div>
+    <p><strong>Risk 1:</strong> 「新規性維持」がまだ60点止まり。UI/UXレベルの変化が入っていない。<br>
+    <strong>Risk 2:</strong> 「N=1問題」— 設計者の脳に最適化されすぎるリスク。v1.0でクローズドβ（10名）で検証。<br>
+    <strong>Risk 3:</strong> 実装の複雑性がv1.0スコープを超える。P0改善を全部入れるとMVPが肥大化する矛盾。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PART D: 82→90 ═══════════════════════ -->
+<div class="part-divider"><div class="part-badge d">Part D &mdash; 82 → 90 への道</div></div>
+
+<div class="section" id="bottleneck">
+  <div class="section-eyebrow" style="color:var(--amber)">BOTTLENECK ANALYSIS</div>
+  <h2 class="action-title">どこを上げれば90に届くか</h2>
+  <p class="section-lead">加重への貢献度（重み×現在のギャップ）で分析。上位3項目（継続性+認知負荷+機能肥大）で合計+5.6の改善余地。</p>
+
+  <div class="score-bar"><span class="score-label">#3 継続性設計（20%）</span><div class="score-track"><div class="score-fill warn" style="width:44%"></div></div><span class="score-num">4.4</span></div>
+  <div class="score-bar"><span class="score-label">#2 認知負荷（15%）</span><div class="score-track"><div class="score-fill warn" style="width:33%"></div></div><span class="score-num">3.3</span></div>
+  <div class="score-bar"><span class="score-label">#8 機能肥大（10%）</span><div class="score-track"><div class="score-fill good" style="width:24%"></div></div><span class="score-num">2.4</span></div>
+  <div class="score-bar"><span class="score-label">#6 ドーパミン（10%）</span><div class="score-track"><div class="score-fill good" style="width:20%"></div></div><span class="score-num">2.0</span></div>
+  <div class="score-bar"><span class="score-label">#9 離脱耐性（5%）</span><div class="score-track"><div class="score-fill good" style="width:14%"></div></div><span class="score-num">1.4</span></div>
+</div>
+
+<div class="section" id="five-strategies">
+  <div class="section-eyebrow" style="color:var(--amber)">5 STRATEGIES</div>
+  <h2 class="action-title">追加改善策 5本</h2>
+
+  <details class="acc" open>
+    <summary>① 継続性 78→92（+2.8加重）← 最大レバレッジ</summary>
+    <div class="acc-body">
+      <h5>Curiosity Engine（好奇心エンジン）</h5>
+      <p>AIがユーザーの過去データから「意外なつながり」を毎日1つ生成。データが溜まるほどインサイトが深くなる→使い続ける理由が時間とともに強化。ADHDの「新しいアプリに飛びつく→飽きる」パターンへの解毒剤。</p>
+      <h5>ホーム画面ウィジェット</h5>
+      <p>iOSウィジェット / Androidウィジェット。アプリを開かなくても「今日の進捗」が目に入る。「アプリの存在を忘れた」離脱パターンへの直接対策。</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>② 認知負荷 78→88（+1.5加重）</summary>
+    <div class="acc-body">
+      <h5>Zen Mode（禅モード）</h5>
+      <p>ホーム画面右上に「🧘」ボタン1つ。タップでBottomNav非表示、Focusカード以外の全情報ブロック非表示。画面全体が「今やるべき1つのタスク」だけの空間になる。CSS切替だけで実装可能。</p>
+      <h5>GTDインボックスの「おまかせ」デフォルト</h5>
+      <p>AI分類結果→デフォルトで全承認。確認したい人だけ詳細を開く。30秒で自動確定。9カテゴリ×N件の判断→0判断。</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>③ 機能肥大 76→90（+1.4加重）</summary>
+    <div class="acc-body">
+      <h5>Feature Auto-Hibernate（機能の自動冬眠）</h5>
+      <p>30日間使わなかった機能→自動的にナビから非表示。設定から復活可能。v1.4まで全機能が入っていても、見えるのは2-3機能だけ。「機能が多い」という主観的印象を物理的に消す。</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>④ ドーパミン設計 80→92（+1.2加重）</summary>
+    <div class="acc-body">
+      <h5>A/Bテストフレームワーク</h5>
+      <p>v1.0のDB設計にab_experimentsテーブルを組み込む。初期実験: ドーパミンスコア重み固定vs適応的、タスク完了報酬XPフロートvsマルチ報酬。「N=1→N=100」への移行基盤。</p>
+      <h5>マルチ報酬のフェーズ紐づけ</h5>
+      <p>Ignite完了: +8 XP / Accelerate: +12 XP / Sustain: +15 XP（最高報酬）/ Switch: +5 XP / Recover: +3 XP。全フェーズで報われる設計。</p>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>⑤ 離脱耐性 73→90（+0.85加重）</summary>
+    <div class="acc-body">
+      <h5>アプリ外リーチ</h5>
+      <ul>
+        <li><strong>週次メールダイジェスト</strong>: 「今週のあんた、こんな感じやったで」。2週間開封なし→月次に自動変更</li>
+        <li><strong>カレンダーリマインド</strong>: Google Calendar連携で「ガネーシャタイム ☕」を自動挿入</li>
+        <li><strong>Watch コンプリケーション</strong>（v1.2）: 手首に「今のFocusタスク」を常時表示</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Matrix 3 -->
+<div class="section" id="matrix-3">
+  <div class="section-eyebrow" style="color:var(--green)">FINAL SCORE MATRIX</div>
+  <h2 class="action-title">追加改善を反映した最終スコア</h2>
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead><tr><th>#</th><th>評価軸</th><th>82.6版</th><th>90版</th><th>追加改善</th><th>重み</th><th>加重+</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>Time to Value</td><td>90</td><td class="m-excellent">93</td><td>オンボーディング確定</td><td>10%</td><td>+0.3</td></tr>
+        <tr><td>2</td><td>認知負荷</td><td>78</td><td class="m-excellent">88</td><td>Zen Mode + GTDおまかせ</td><td>15%</td><td>+1.5</td></tr>
+        <tr><td>3</td><td>継続性設計</td><td>78</td><td class="m-excellent">90</td><td>Curiosity Engine + Widget</td><td><strong>20%</strong></td><td><strong>+2.4</strong></td></tr>
+        <tr><td>4</td><td>感情安全性</td><td>93</td><td class="m-excellent">93</td><td>変更なし</td><td>10%</td><td>0</td></tr>
+        <tr><td>5</td><td>実行機能代替度</td><td>91</td><td class="m-excellent">91</td><td>変更なし</td><td>10%</td><td>0</td></tr>
+        <tr><td>6</td><td>ドーパミン設計</td><td>80</td><td class="m-excellent">90</td><td>A/Bテスト + マルチ報酬</td><td>10%</td><td>+1.0</td></tr>
+        <tr><td>7</td><td>過集中対策</td><td>83</td><td class="m-excellent">88</td><td>Watch連携</td><td>5%</td><td>+0.25</td></tr>
+        <tr><td>8</td><td>機能肥大</td><td>76</td><td class="m-excellent">88</td><td>Auto-Hibernate</td><td>10%</td><td>+1.2</td></tr>
+        <tr><td>9</td><td>離脱耐性</td><td>73</td><td class="m-good">86</td><td>メール + Calendar + Widget</td><td>5%</td><td>+0.65</td></tr>
+        <tr><td>10</td><td>独自性</td><td>88</td><td class="m-excellent">90</td><td>Curiosity + A/B強化</td><td>5%</td><td>+0.1</td></tr>
+        <tr class="total-row"><td></td><td>合計</td><td><strong>82.6</strong></td><td><strong>90.0</strong></td><td></td><td>100%</td><td><strong>+7.4</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="kpi-grid" style="margin-top:24px">
+    <div class="kpi-card">
+      <div class="kpi-num warn">65.5</div>
+      <div class="kpi-label">初回評価</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num blue">82.6</div>
+      <div class="kpi-label">P0/P1改善後</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num good">90.0</div>
+      <div class="kpi-label">追加5策後</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision">+24.5</div>
+      <div class="kpi-label">トータル改善幅</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════ PART E: CONCLUSION ═══════════════════════ -->
+<div class="part-divider"><div class="part-badge e">Part E &mdash; 結論</div></div>
+
+<div class="section" id="conclusion">
+  <div class="section-eyebrow" style="color:var(--purple)">PHILOSOPHY</div>
+  <h2 class="action-title">100点にはしない。それがこのアプリの思想だから。</h2>
+  <p class="section-lead">100点を目指さない理由は3つ。これは「できない」のではなく「しない」という設計判断。</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-badge red">理由 1</div>
+      <h4>100点を目指すとADHD脳に最悪のアプリになる</h4>
+      <p>全エッジケース対応→機能数2倍→設定項目3倍→画面遷移複雑化。100点を追求するほど、ADHDユーザーにとっての実効スコアは下がる。</p>
+    </div>
+    <div class="card">
+      <div class="card-badge purple">理由 2</div>
+      <h4>侘び寂びが答えを出している</h4>
+      <p>「完璧な茶碗より、ひびの入った茶碗に味がある」。足りない部分をユーザーが「これ欲しい」と声を上げる→一緒に作っていく感覚→コミュニティが生まれる→それ自体が継続利用の動機。</p>
+    </div>
+    <div class="card">
+      <div class="card-badge cyan">理由 3</div>
+      <h4>ADHDの個人差は「設計」では吸収できない</h4>
+      <p>10人いれば10通りのADHD。不注意優勢型と多動優勢型では最適UIが正反対。1つのアプリで全サブタイプに100点は物理的に不可能。</p>
+    </div>
+  </div>
+
+  <div class="vision-card" style="margin-top:24px">
+    <h3>90点の設計 + ユーザーの手で磨かれる10点 = 100点</h3>
+    <p>設計者が出すのは90点まで。残りの10点はユーザーのもの。<br>それが「才能解放」の本質 — 完璧を与えるのではなく、<strong>自分で完璧にしていく力を引き出す</strong>。</p>
+  </div>
+
+  <div class="note" style="margin-top:24px">
+    <div class="note-label">次のステップ</div>
+    <p>1. <strong>v1.0をできるだけ早く10人の手に渡す</strong>ことが、90→95への最短距離。<br>
+    2. 65→83は設計の穴を埋める。83→90は体験の質を上げる。<strong>90→95はユーザーデータから学ぶ</strong>。<br>
+    3. 95→100は存在しない。ADHDの個人差が大きすぎて「全員に完璧」は不可能。だからこそパーソナライズが命。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+</div><!-- main-content -->
+</div><!-- page-layout -->
+
+<div class="footer">
+  <p>才能解放AIコーチ — 忖度なし多角的評価レポート v1.0<br>
+  Generated on 2026-02-28 &middot; omoshiku Inc.</p>
+</div>
+
+</div><!-- container -->
+</body>
+</html>
