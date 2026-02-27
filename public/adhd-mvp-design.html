@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ADHD特化コーチング — MVPパイロット設計書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-base:#08080d;--bg-surface:#101018;--bg-raised:#181824;--bg-top:#222234;
+  --border:rgba(255,255,255,0.06);--border-focus:rgba(255,255,255,0.12);
+  --text:#eaeaf2;--text-dim:#9898ae;--text-muted:#58586e;
+  --blue:#4a7dff;--cyan:#22d3ee;--green:#34d399;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;--pink:#f472b6;
+  --grad-hero:linear-gradient(135deg,#4a7dff 0%,#22d3ee 100%);
+  --grad-success:linear-gradient(135deg,#34d399 0%,#22d3ee 100%);
+  --grad-warn:linear-gradient(135deg,#ef4444 0%,#f59e0b 100%);
+  --grad-vision:linear-gradient(135deg,#a78bfa 0%,#f472b6 100%);
+  --grad-mvp:linear-gradient(135deg,#f59e0b 0%,#ef4444 100%);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.4);--shadow-md:0 4px 16px rgba(0,0,0,0.5);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',-apple-system,sans-serif;background:var(--bg-base);color:var(--text);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+.mono{font-family:'JetBrains Mono',monospace;font-weight:600}
+
+/* Layout */
+.page-layout{display:flex;gap:32px;align-items:flex-start}
+.main-content{flex:1;min-width:0}
+
+/* TOC */
+.toc-sidebar{position:sticky;top:24px;width:240px;flex-shrink:0;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:16px;max-height:calc(100vh - 48px);overflow-y:auto}
+.toc-sidebar h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:3px 0;line-height:1.4;transition:color .15s}
+.toc-sidebar a:hover{color:var(--cyan)}
+.toc-sidebar .toc-num{color:var(--text-muted);margin-right:4px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.toc-sidebar .toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;margin-bottom:4px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-sidebar .toc-part:first-child{border-top:none;margin-top:0;padding-top:0}
+@media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
+
+/* Sections */
+.section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px}
+.action-title{font-size:22px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
+.section-lead{font-size:14px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
+
+/* Part divider */
+.part-divider{padding:32px 0 8px;text-align:center}
+.part-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.part-badge.a{border-color:var(--amber);color:var(--amber)}
+.part-badge.b{border-color:var(--cyan);color:var(--cyan)}
+.part-badge.c{border-color:var(--green);color:var(--green)}
+.part-badge.d{border-color:var(--purple);color:var(--purple)}
+
+/* Hero */
+.hero{padding:72px 0 20px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(245,158,11,0.06) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-block;padding:5px 14px;border:1px solid rgba(245,158,11,0.3);border-radius:20px;font-size:12px;font-weight:700;color:var(--amber);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;background:rgba(245,158,11,0.04)}
+.hero h1{font-size:32px;font-weight:900;line-height:1.4;margin-bottom:14px;background:var(--grad-mvp);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--text-dim);max-width:640px;margin:0 auto 28px;line-height:1.9}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--text-muted)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 20px}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi-card{background:var(--bg-surface);border-radius:12px;padding:20px 14px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:transform .15s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-num{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:600;margin-bottom:4px}
+.kpi-num.warn{background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.good{background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.blue{background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.vision{background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-label{font-size:12px;color:var(--text-dim);font-weight:500;line-height:1.5}
+
+/* Callouts */
+.sowhat{background:rgba(239,68,68,0.03);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.sowhat-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.sowhat p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.sowhat strong{color:#f87171}
+.insight{background:rgba(52,211,153,0.03);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.insight-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.insight p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.insight strong{color:var(--green)}
+.note{background:rgba(74,125,255,0.03);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.note-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.note p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.note strong{color:var(--blue)}
+.mvp-callout{background:rgba(245,158,11,0.03);border-left:4px solid var(--amber);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.mvp-callout-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--amber);margin-bottom:6px}
+.mvp-callout p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.mvp-callout strong{color:var(--amber)}
+
+/* Evidence badge */
+.ev{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:3px;vertical-align:middle;margin-left:4px}
+.ev.rct{background:rgba(52,211,153,0.12);color:var(--green)}
+.ev.meta{background:rgba(74,125,255,0.12);color:var(--blue)}
+.ev.pilot{background:rgba(245,158,11,0.12);color:var(--amber)}
+.ev.expert{background:rgba(167,139,250,0.12);color:var(--purple)}
+
+/* Tables */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:18px 0;font-size:13px}
+.tbl thead th{background:var(--bg-raised);padding:10px 14px;font-size:11px;font-weight:700;text-align:left;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;background:var(--bg-surface)}
+.tbl tbody tr:last-child td{border-bottom:none}
+.t-name{font-weight:600;color:var(--text)}
+.t-good{color:var(--green);font-weight:500}
+.t-warn{color:var(--amber);font-weight:500}
+.t-bad{color:var(--red);font-weight:500}
+.t-mvp{color:var(--amber);font-weight:700}
+.t-ideal{color:var(--blue);font-weight:500}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:18px 0}
+.card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.card p{font-size:13px;color:var(--text-dim);line-height:1.8}
+.card-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px}
+.card-badge.green{background:rgba(52,211,153,0.08);color:var(--green)}
+.card-badge.blue{background:rgba(74,125,255,0.08);color:var(--blue)}
+.card-badge.amber{background:rgba(245,158,11,0.08);color:var(--amber)}
+.card-badge.purple{background:rgba(167,139,250,0.08);color:var(--purple)}
+.card-badge.pink{background:rgba(244,114,182,0.08);color:var(--pink)}
+.card-badge.red{background:rgba(239,68,68,0.08);color:var(--red)}
+.card-badge.cyan{background:rgba(34,211,238,0.08);color:var(--cyan)}
+
+/* Accordion */
+details.acc{margin-bottom:6px}
+details.acc summary{cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;color:var(--text);list-style:none;transition:all .15s}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::before{content:'\25B6';font-size:9px;color:var(--text-muted);transition:transform .2s}
+details.acc[open] summary::before{transform:rotate(90deg)}
+details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-raised);border-radius:8px 8px 0 0}
+.acc-body{padding:16px 20px;background:var(--bg-surface);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;font-size:13px;line-height:1.8;color:var(--text-dim)}
+.acc-body h5{font-size:12px;font-weight:700;color:var(--cyan);margin:12px 0 4px;letter-spacing:1px;text-transform:uppercase}
+.acc-body h5:first-child{margin-top:0}
+.acc-body ul{padding-left:18px;margin:4px 0}
+.acc-body li{margin-bottom:3px}
+
+/* Timeline */
+.timeline{display:grid;grid-template-columns:60px 1fr;gap:0;margin:18px 0}
+.tl-week{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-muted);padding:8px 0;border-right:2px solid var(--border);text-align:right;padding-right:12px}
+.tl-content{padding:6px 0 6px 16px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.tl-pill{font-size:10px;padding:3px 8px;border-radius:4px;font-weight:600;white-space:nowrap}
+.tl-pill.day{background:rgba(74,125,255,0.10);color:var(--blue)}
+.tl-pill.personal{background:rgba(52,211,153,0.10);color:var(--green)}
+.tl-pill.group{background:rgba(245,158,11,0.10);color:var(--amber)}
+.tl-pill.body{background:rgba(167,139,250,0.10);color:var(--purple)}
+.tl-pill.buddy{background:rgba(34,211,238,0.10);color:var(--cyan)}
+.tl-pill.reflect{background:rgba(244,114,182,0.10);color:var(--pink)}
+.tl-act{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:4px 0;color:var(--text-muted);grid-column:1/-1;border-top:2px solid var(--border-focus);margin-top:4px;padding-top:8px}
+
+/* Phase cards */
+.phase-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+.phase-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.phase-card .phase-policy{font-size:13px;color:var(--cyan);font-weight:600;margin-bottom:8px;padding:5px 12px;background:rgba(34,211,238,0.04);border-radius:6px;display:inline-block}
+.phase-card>p{font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.8}
+.phase-items{display:flex;flex-direction:column;gap:4px}
+.phase-item{font-size:12px;color:var(--text-dim);padding:5px 10px;background:var(--bg-raised);border-radius:5px;border:1px solid var(--border);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.pi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.pi-dot.g{background:var(--green)}.pi-dot.c{background:var(--cyan)}.pi-dot.p{background:var(--text-muted)}.pi-dot.a{background:var(--amber)}
+
+/* Vision */
+.vision-card{background:linear-gradient(135deg,rgba(245,158,11,0.04) 0%,rgba(239,68,68,0.04) 100%);border:1px solid rgba(245,158,11,0.18);border-radius:12px;padding:24px;text-align:center;margin-top:16px}
+.vision-card h3{font-size:18px;font-weight:700;margin-bottom:10px;background:var(--grad-mvp);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.vision-card p{font-size:14px;color:var(--text-dim);margin-bottom:12px}
+
+/* Role split */
+.role-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+@media(max-width:768px){.role-grid{grid-template-columns:1fr}}
+.role-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.role-card h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.role-card .role-hours{font-family:'JetBrains Mono',monospace;font-size:24px;font-weight:600;margin-bottom:8px}
+.role-card ul{padding-left:16px;font-size:13px;color:var(--text-dim);line-height:1.8}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0 28px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+</style>
+</head>
+<body>
+<div class="container">
+
+<div class="hero">
+<div class="hero-badge">MVP Pilot Design</div>
+<h1>ADHD特化コーチング<br>MVPパイロット設計書</h1>
+<p class="hero-sub">2人のADHD当事者が、6-8名の仲間と100日間で「脳の取扱説明書」を作る。理想形の設計思想を維持しつつ、2人で回せるミニマルな構造に再設計。</p>
+<div class="hero-meta">
+<span>New Venture</span><span>|</span><span>2026-02-27</span><span>|</span><span>Based on: <a href="adhd-service-design.html" style="color:var(--cyan);text-decoration:underline">理想形設計書v1</a> + <a href="adhd-careerspi-ronten.html" style="color:var(--cyan);text-decoration:underline">論点整理v1</a></span>
+</div>
+</div>
+
+<div class="kpi-grid">
+<div class="kpi-card"><div class="kpi-num warn">2人</div><div class="kpi-label">創業メンバー<br>（コーチ+エンジニア）</div></div>
+<div class="kpi-card"><div class="kpi-num good">6-8名</div><div class="kpi-label">1コホート参加者数</div></div>
+<div class="kpi-card"><div class="kpi-num blue">100日</div><div class="kpi-label">プログラム期間</div></div>
+<div class="kpi-card"><div class="kpi-num vision">¥30-50万</div><div class="kpi-label">参加費（税込）</div></div>
+</div>
+
+<div class="page-layout">
+
+<nav class="toc-sidebar">
+<h3>Contents</h3>
+<div class="toc-part">Part A: MVP Overview</div>
+<a href="#s1"><span class="toc-num">01</span> MVPコンセプト</a>
+<a href="#s2"><span class="toc-num">02</span> 体制（2人の役割分担）</a>
+<a href="#s3"><span class="toc-num">03</span> ターゲット&スクリーニング</a>
+<div class="toc-part">Part B: Curriculum</div>
+<a href="#s4"><span class="toc-num">04</span> 100日タイムライン</a>
+<a href="#s5"><span class="toc-num">05</span> 8 DAY講義</a>
+<a href="#s6"><span class="toc-num">06</span> セッション設計</a>
+<a href="#s7"><span class="toc-num">07</span> バディ&コミュニティ</a>
+<div class="toc-part">Part C: Technology</div>
+<a href="#s8"><span class="toc-num">08</span> Build vs Buy</a>
+<a href="#s9"><span class="toc-num">09</span> セルフマニュアルビルダー</a>
+<a href="#s10"><span class="toc-num">10</span> ダッシュボード&Bot</a>
+<div class="toc-part">Part D: Business</div>
+<a href="#s11"><span class="toc-num">11</span> 収益モデル</a>
+<a href="#s12"><span class="toc-num">12</span> マーケティング</a>
+<a href="#s13"><span class="toc-num">13</span> リスク&安全管理</a>
+<a href="#s14"><span class="toc-num">14</span> ロードマップ</a>
+</nav>
+
+<div class="main-content">
+
+<div class="part-divider"><span class="part-badge a">Part A &mdash; MVP Overview</span></div>
+
+<!-- SEC 1 -->
+<div class="section" id="s1">
+<div class="section-eyebrow" style="color:var(--amber)">01 &mdash; MVP Concept</div>
+<div class="action-title">理想形を「2人で回せる最小構造」に再設計する</div>
+<p class="section-lead">理想形（20名×5コーチ×16DAY）の設計思想は維持しつつ、2人のADHD当事者が1コホートを直接運営できる構造に絞り込む。「自分たちが使って効果を実感した仕組みだけを提供する」がMVPの原則。</p>
+
+<table class="tbl">
+<thead><tr><th>項目</th><th class="t-ideal">理想形</th><th class="t-mvp">MVP</th><th>変更理由</th></tr></thead>
+<tbody>
+<tr><td class="t-name">参加者数</td><td>20名（5チーム×4名）</td><td class="t-mvp">6-8名（1グループ）</td><td>2人で直接対応可能な上限</td></tr>
+<tr><td class="t-name">スタッフ</td><td>5コーチ + 0.5 CS</td><td class="t-mvp">2人（Coach + Engineer）</td><td>創業チームのみ</td></tr>
+<tr><td class="t-name">DAY講義</td><td>16 DAY（90分）</td><td class="t-mvp">8 DAY（60分）</td><td>効果量トップ6介入に集中</td></tr>
+<tr><td class="t-name">パーソナル</td><td>4回/人（Coach担当）</td><td class="t-mvp">5回/人（Coach 3回 + Engineer 2回）</td><td>ツール＆データセッション追加</td></tr>
+<tr><td class="t-name">グループ</td><td>12回（4人チーム）</td><td class="t-mvp">6回（全員1グループ）</td><td>チーム分割不要</td></tr>
+<tr><td class="t-name">REBOOST</td><td>2日間（VIP/BT）</td><td class="t-mvp">外部紹介のみ</td><td>IP部分利用のため</td></tr>
+<tr><td class="t-name">コンテンツ</td><td>キャリスピ2.0派生</td><td class="t-mvp">完全独自（リサーチA-Hベース）</td><td>IP独立</td></tr>
+<tr><td class="t-name">ツール</td><td>外部SaaS 6カテゴリ</td><td class="t-mvp">自作3ツール + 既存4サービス</td><td>Claude Code活用</td></tr>
+<tr><td class="t-name">価格</td><td>¥580,800〜1,051,600</td><td class="t-mvp">¥300,000〜500,000</td><td>MVP検証価格</td></tr>
+<tr><td class="t-name">売上/コホート</td><td>¥14,000,000</td><td class="t-mvp">¥1,800,000〜4,000,000</td><td>規模に比例</td></tr>
+</tbody>
+</table>
+
+<div class="card-grid">
+<div class="card"><div class="card-badge amber">MVP原則1</div><h4>当事者が最大の差別化</h4><p>2人ともADHD当事者。「先生→生徒」ではなく「仲間→仲間」のピアコーチングモデル。自分たちが使って効果を実感した仕組みだけを提供する。</p></div>
+<div class="card"><div class="card-badge green">MVP原則2</div><h4>エビデンス×体験の二重裏付け</h4><p>全8 DAYが査読済み研究に基づく（効果量d=0.4-0.89）。かつ、創業者自身がその介入を実践している。研究だけでも体験だけでもない、両方の裏付け。</p></div>
+<div class="card"><div class="card-badge cyan">MVP原則3</div><h4>作るのは「競争優位」だけ</h4><p>Claude Codeで「ADHDセルフマニュアルビルダー」等を自作。ただしZoom、Discord、Calendlyは既存を使う。作りすぎない。</p></div>
+</div>
+
+<div class="mvp-callout">
+<div class="mvp-callout-label">IP境界</div>
+<p>キャリスピ2.0の方法論エッセンス（構造化された目標設定、段階的な行動計画）は<strong>概念レベルで参考</strong>にするが、コンテンツ（講義素材、ワークシート、スライド）は<strong>すべて独自開発</strong>。REBOOSTは外部サービスとして紹介のみ。</p>
+</div>
+</div>
+
+<!-- SEC 2 -->
+<div class="section" id="s2">
+<div class="section-eyebrow" style="color:var(--amber)">02 &mdash; Team Structure</div>
+<div class="action-title">Coach + Engineer の2人体制 — 合計~30h/週で回す</div>
+
+<div class="role-grid">
+<div class="role-card" style="border-top:3px solid var(--green)">
+<h4 style="color:var(--green)">Coach</h4>
+<div class="role-hours" style="color:var(--green)">~13h/週</div>
+<ul>
+<li>DAY講義の設計・デリバリー（2h/週平均）</li>
+<li>パーソナル1:1 — P1, P3, P5 の3セッション担当（4.5h/週平均）</li>
+<li>グループセッション（隔週 0.75h/週平均）</li>
+<li>コミュニティ管理・感情サポート（1h/週）</li>
+<li>SNSコンテンツ制作（3h/週）</li>
+<li>管理・計画（1h/週）</li>
+</ul>
+</div>
+<div class="role-card" style="border-top:3px solid var(--cyan)">
+<h4 style="color:var(--cyan)">Engineer</h4>
+<div class="role-hours" style="color:var(--cyan)">~15h/週</div>
+<ul>
+<li>ボディダブリングセッション（毎週1h）</li>
+<li>パーソナル1:1 — P2, P4 の2セッション担当（3h/週平均）</li>
+<li>グループセッション（隔週 0.75h/週平均）</li>
+<li>ツール開発・保守（4h/週）</li>
+<li>データ追跡・ダッシュボード運用（2h/週）</li>
+<li>コミュニティ技術サポート（1h/週）</li>
+<li>SNSコンテンツ制作（2h/週）</li>
+<li>オペレーション（1h/週）</li>
+</ul>
+</div>
+</div>
+
+<h4 style="margin:20px 0 10px;font-size:14px">パーソナルセッション分担</h4>
+<table class="tbl">
+<thead><tr><th>#</th><th>タイミング</th><th>担当</th><th>フォーカス</th></tr></thead>
+<tbody>
+<tr><td class="t-name">P1</td><td>W2</td><td style="color:var(--green)">Coach</td><td>ADHDアセスメント、価値発見、セルフマニュアルCh1</td></tr>
+<tr><td class="t-name">P2</td><td>W4-5</td><td style="color:var(--cyan)">Engineer</td><td>ツールオンボーディング、環境監査、デジタルナッジ設定</td></tr>
+<tr><td class="t-name">P3</td><td>W7-8</td><td style="color:var(--green)">Coach</td><td>中間振返り、認知リフレーミング、目標調整</td></tr>
+<tr><td class="t-name">P4</td><td>W10-11</td><td style="color:var(--cyan)">Engineer</td><td>データレビュー（「あなたの数字」）、システム最適化</td></tr>
+<tr><td class="t-name">P5</td><td>W13</td><td style="color:var(--green)">Coach</td><td>セルフマニュアル完成、卒業準備、卒業後プラン</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<div class="note-label">コンティンジェンシー</div>
+<p>片方が1-2週間不在の場合:<br>
+・ボディダブリング → Focusmate（ホスト不要のピア型）に切替<br>
+・パーソナルセッション → 1週間バッファ内でリスケ<br>
+・グループセッション → 事前設計の「ファシリテーションカード」でピア進行<br>
+・コミュニティ → 非同期モードに移行（即レス義務なし）<br>
+<strong>残った1人は週3セッションをハードキャップ</strong>（バーンアウト防止）</p>
+</div>
+</div>
+
+<!-- SEC 3 -->
+<div class="section" id="s3">
+<div class="section-eyebrow" style="color:var(--amber)">03 &mdash; Target &amp; Screening</div>
+<div class="action-title">MVPは「診断済み就労中」と「グレーゾーン」に集中</div>
+
+<table class="tbl">
+<thead><tr><th>セグメント</th><th>MVP優先度</th><th>理由</th></tr></thead>
+<tbody>
+<tr><td class="t-name">A. 診断済み就労中</td><td class="t-good">★★★ 最優先</td><td>ニーズが明確、自己理解の動機が高い、価格許容度あり</td></tr>
+<tr><td class="t-name">B. グレーゾーン</td><td class="t-good">★★★ 最優先</td><td>制度の谷間にいる、サービスが存在しない市場</td></tr>
+<tr><td class="t-name">C. 遅延診断30代+</td><td class="t-warn">★★ 2期目以降</td><td>アイデンティティケアの専門性が必要（研修積んでから）</td></tr>
+<tr><td class="t-name">D. ADHD傾向起業家</td><td class="t-warn">★★ 2期目以降</td><td>ニーズはあるが、ビジネスコーチングとの混同リスク</td></tr>
+</tbody>
+</table>
+
+<h4 style="margin:20px 0 10px;font-size:14px">スクリーニングプロセス（自作ツール）</h4>
+<table class="tbl">
+<thead><tr><th>ステップ</th><th>ツール</th><th>基準</th><th>対応</th></tr></thead>
+<tbody>
+<tr><td class="t-name">1. 応募フォーム</td><td>Googleフォーム</td><td>&mdash;</td><td>基本情報 + 動機 + 期待</td></tr>
+<tr><td class="t-name">2. ASRS-v1.1</td><td>自作オンライン採点</td><td>4項目以上</td><td>情報提供（診断は医師のみ）</td></tr>
+<tr><td class="t-name">3. PHQ-9</td><td>自作オンライン採点</td><td>15点以上</td><td>主治医承認を条件に参加可</td></tr>
+<tr><td class="t-name">4. GAD-7</td><td>自作オンライン採点</td><td>10点以上</td><td>医療機関紹介推奨、参加は可</td></tr>
+<tr><td class="t-name">5. 自殺念慮</td><td>PHQ-9 Q9</td><td>1点以上</td><td><strong>即時エスカレーション</strong></td></tr>
+<tr><td class="t-name">6. ディスカバリーコール</td><td>Zoom 15分</td><td>&mdash;</td><td>最終判断・相互フィット確認</td></tr>
+</tbody>
+</table>
+
+<div class="sowhat">
+<div class="sowhat-label">除外基準（非妥協）</div>
+<p>・現在精神科治療中（主治医の許可がない場合）<br>
+・自殺念慮あり（PHQ-9 Q9 ≥ 1） → 即時医療機関紹介<br>
+・重度併存症（物質使用障害が活発）<br>
+・18歳未満<br>
+<strong>「コーチングは治療ではない」のスコープを明文化した合意書に署名必須</strong></p>
+</div>
+</div>
+
+
+<div class="part-divider"><span class="part-badge b">Part B &mdash; 100-Day Curriculum</span></div>
+
+<!-- SEC 4 -->
+<div class="section" id="s4">
+<div class="section-eyebrow" style="color:var(--cyan)">04 &mdash; Program Timeline</div>
+<div class="action-title">3幕構成 — 基盤 → 構築 → 統合</div>
+<p class="section-lead">週2回の同期タッチポイント（月曜ボディダブリング + 水曜DAY講義/グループ）。金曜は非同期の週次振返り。ADHDに必要な「構造」を与えつつ、「詰め込みすぎない」を両立。</p>
+
+<div class="timeline">
+<div class="tl-act">Act 1: Foundation &mdash; 基盤（W1-4）</div>
+<div class="tl-week">W1</div><div class="tl-content"><span class="tl-pill day">キックオフ 90分</span><span class="tl-pill day">DAY1 ADHD脳のOS</span><span class="tl-pill buddy">バディペアリング</span></div>
+<div class="tl-week">W2</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill day">DAY2 トリガーとパターン</span><span class="tl-pill personal">P1 アセスメント</span></div>
+<div class="tl-week">W3</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill day">DAY3 環境デザイン</span><span class="tl-pill group">G1 パターン共有</span></div>
+<div class="tl-week">W4</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill day">DAY4 If-Then自動操縦</span><span class="tl-pill personal">P2 ツール設定</span></div>
+
+<div class="tl-act">Act 2: Build &mdash; 構築（W5-10）</div>
+<div class="tl-week">W5</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill group">G2 If-Then実践報告</span><span class="tl-pill reflect">週次振返り</span></div>
+<div class="tl-week">W6</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill day">DAY5 時間アーキテクチャ</span><span class="tl-pill reflect">週次振返り</span></div>
+<div class="tl-week">W7</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill day">DAY6 証人の力</span><span class="tl-pill personal">P3 中間振返り</span><span class="tl-pill buddy">バディ組替え</span></div>
+<div class="tl-week">W8</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill group">G3 時間管理実践</span><span class="tl-pill reflect">週次振返り</span></div>
+<div class="tl-week">W9</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill day">DAY7 強みは本物</span><span class="tl-pill group">G4 強み共有</span></div>
+<div class="tl-week">W10</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill group">G5 進捗会議</span><span class="tl-pill personal">P4 データレビュー</span></div>
+
+<div class="tl-act">Act 3: Integrate &mdash; 統合（W11-14）</div>
+<div class="tl-week">W11</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill group">G6 ショーケース</span><span class="tl-pill reflect">週次振返り</span></div>
+<div class="tl-week">W12</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill day">DAY8 セルフマニュアル完成</span></div>
+<div class="tl-week">W13</div><div class="tl-content"><span class="tl-pill body">ボディダブリング</span><span class="tl-pill personal">P5 卒業面談</span><span class="tl-pill reflect">最終振返り</span></div>
+<div class="tl-week">W14</div><div class="tl-content"><span class="tl-pill day">卒業式 90分</span></div>
+</div>
+
+<div class="insight">
+<div class="insight-label">週次リズムの設計意図</div>
+<p><strong>月曜ボディダブリング</strong>: 「フレッシュスタート効果」で週の開始を共有エネルギーで<br>
+<strong>水曜DAY/グループ</strong>: 週中にアカウンタビリティの錨<br>
+<strong>金曜パルスチェック</strong>: 外部締切=人工的な緊急性（Safren CBTモデル）<br>
+<strong>バディチェックイン</strong>: 毎日10分の非同期（スタッフ時間ゼロ）</p>
+</div>
+</div>
+
+<!-- SEC 5 -->
+<div class="section" id="s5">
+<div class="section-eyebrow" style="color:var(--cyan)">05 &mdash; 8 DAY Lectures</div>
+<div class="action-title">効果量トップ6の介入 × 独自コンテンツ × セルフマニュアル連動</div>
+<p class="section-lead">各DAY 60分（15分心理教育 + 25分コアワーク + 15分グループ議論 + 5分セルフマニュアル課題）。全コンテンツ独自開発。各DAYで「ADHDセルフマニュアル」の1章が完成する。</p>
+
+<details class="acc" open>
+<summary><span style="color:var(--blue);margin-right:6px">DAY 1</span> ADHD脳のOS <span class="ev meta">d=0.5-0.7</span></summary>
+<div class="acc-body">
+<h5>心理教育</h5>
+<ul><li>ドーパミンシステム入門: 「頑張れ」が機能しない脳科学的理由</li><li>Sonuga-Barke三経路: 抑制 / 遅延回避 / 時間処理</li><li>自分のADHD「タイプ」: 信号不足 vs 信号過多 vs 時間盲目</li></ul>
+<h5>コアワーク</h5>
+<ul><li>「脳プロファイルカード」: 15シナリオ自己評価（各経路5問）→ 自分のパターン特定</li></ul>
+<h5>セルフマニュアル</h5>
+<ul><li>Ch.1「私の脳のプロファイル」（主経路、副経路、日常での現れ方）</li></ul>
+</div>
+</details>
+
+<details class="acc">
+<summary><span style="color:var(--blue);margin-right:6px">DAY 2</span> トリガーとパターン <span class="ev rct">d=0.89</span></summary>
+<div class="acc-body">
+<h5>心理教育</h5>
+<ul><li>ABC分析フレームワーク: 先行条件→行動→結果</li><li>先延ばし方程式: 低興味 + 締切なし = 回避</li><li>パターン認識: 繰り返すトリガー状況トップ3</li></ul>
+<h5>コアワーク</h5>
+<ul><li>過去1週間の実体験からABCワークシート5枚記入</li><li>「変えられる先行条件」と「受け入れる先行条件」を分類</li></ul>
+<h5>事前課題（W1に配布）</h5>
+<ul><li>「つまずいた瞬間」を3つ、文脈メモとともに記録</li></ul>
+<h5>セルフマニュアル</h5>
+<ul><li>Ch.2「私のトリガーマップ」（主要トリガー、ABCパターン、変更可能 vs 受容）</li></ul>
+</div>
+</details>
+
+<details class="acc">
+<summary><span style="color:var(--blue);margin-right:6px">DAY 3</span> 環境デザイン <span class="ev expert">d=0.5+</span></summary>
+<div class="acc-body">
+<h5>心理教育</h5>
+<ul><li>ADHD向けナッジ理論: デフォルト、摩擦、キュー</li><li>物理環境監査: デスク、自宅、スマホ、通知</li><li>選択アーキテクチャ: 1日の中から「判断」を減らす設計</li></ul>
+<h5>コアワーク</h5>
+<ul><li>環境監査チェックリスト（物理/デジタル/社会 30項目）</li><li>今週実装する3つのナッジを設計</li><li>Engineerによるライブデモ: スマホ設定、デスク整理、デジタルツール</li></ul>
+<h5>セルフマニュアル</h5>
+<ul><li>Ch.3「私の環境設計図」（現状、3ナッジ、目標状態）</li></ul>
+</div>
+</details>
+
+<details class="acc">
+<summary><span style="color:var(--blue);margin-right:6px">DAY 4</span> If-Then自動操縦 <span class="ev meta">d=0.65 (94研究)</span></summary>
+<div class="acc-body">
+<h5>心理教育</h5>
+<ul><li>Implementation Intentionsの科学: 「運動を増やす」がなぜ失敗するか</li><li>If-Thenフォーマット: 「If [状況], then I will [具体行動]」</li><li>ハビットスタッキング: 既存の習慣に新行動をリンク</li><li>2分バージョンの原則（開始を極小化する）</li></ul>
+<h5>コアワーク</h5>
+<ul><li>DAY2のトップ5トリガーに対するIf-Thenプラン5本作成</li><li>バディペアでお互いのプランの具体性をレビュー</li><li>ストレステスト: 「何がうまくいかない？」→ コンティンジェンシーIf-Then追加</li></ul>
+<h5>セルフマニュアル</h5>
+<ul><li>Ch.4「私のIf-Thenプレイブック」（主要5プラン + コンティンジェンシー5プラン）</li></ul>
+</div>
+</details>
+
+<details class="acc">
+<summary><span style="color:var(--blue);margin-right:6px">DAY 5</span> 時間アーキテクチャ <span class="ev rct">d=0.89</span></summary>
+<div class="acc-body">
+<h5>心理教育</h5>
+<ul><li>時間盲目性の深掘り: 神経学的現象であり、道徳の問題ではない</li><li>時間見積もりエクササイズ: 予想 vs 実際（ライブデモ）</li><li>タイムコンテナ: ADHDに適応したポモドーロ（柔軟、非画一的）</li><li>タスク切替の管理: 最も困難な瞬間への対処</li></ul>
+<h5>コアワーク</h5>
+<ul><li>タイム見積もりチャレンジ（10タスク、見積もり→計測）</li><li>「理想の1週間」デザイン（エネルギーレベルで色分け）</li><li>ナッジBotの時間系リマインダー3つを設定</li></ul>
+<h5>セルフマニュアル</h5>
+<ul><li>Ch.5「私の時間設計」（見積もりバイアス、理想の週、切替プロトコル）</li></ul>
+</div>
+</details>
+
+<details class="acc">
+<summary><span style="color:var(--blue);margin-right:6px">DAY 6</span> 証人の力 <span class="ev pilot">d=0.5-0.8</span></summary>
+<div class="acc-body">
+<h5>心理教育</h5>
+<ul><li>ボディダブリングの科学: なぜ他者の存在が変えるのか</li><li>社会的促進理論 × ADHD</li><li>SDTの「関係性」: つながりは弱さではない</li><li>助けの求め方（ADHD向けにハードルを下げる方法）</li></ul>
+<h5>コアワーク</h5>
+<ul><li>講義中にライブボディダブリング25分実施</li><li>「サポートマップ」設計: 誰に、いつ、どんなサポートを？</li><li>バディに具体的な1つのお願いをする練習</li></ul>
+<h5>セルフマニュアル</h5>
+<ul><li>Ch.6「私のサポート設計」（サポートマップ、ボディダブリング予定、依頼プロトコル）</li></ul>
+</div>
+</details>
+
+<details class="acc">
+<summary><span style="color:var(--blue);margin-right:6px">DAY 7</span> 強みは本物 <span class="ev rct">d=0.4-0.6</span></summary>
+<div class="acc-body">
+<h5>心理教育</h5>
+<ul><li>ADHDの10の強み（2025 Psychological Medicine研究）</li><li>「スーパーパワーの罠」: 強みと課題の両方に誠実に</li><li>セルフコンパッションの科学（Neff）: 自己批判はモチベーションではない</li><li>失敗のリフレーミング: 「何が悪い？」→「何を学んだ？」</li></ul>
+<h5>コアワーク</h5>
+<ul><li>強みカードソート（ADHD 10強み + VIA強み抜粋）</li><li>バディフィードバック: 「あなたにはこの強みが見えます。なぜなら...」</li><li>セルフコンパッションレター: 親友に書くように自分に手紙</li></ul>
+<h5>セルフマニュアル</h5>
+<ul><li>Ch.7「私の強みインベントリ」（トップ5強み、エビデンス、活用法）</li></ul>
+</div>
+</details>
+
+<details class="acc">
+<summary><span style="color:var(--blue);margin-right:6px">DAY 8</span> セルフマニュアル完成</summary>
+<div class="acc-body">
+<h5>心理教育</h5>
+<ul><li>当事者研究（Tojisha-Kenkyu）: 自分自身の専門家になる</li><li>セルフコーチング: Zimmermanサイクル（計画→実行→振返り）</li><li>「オーナーズマニュアル」: 自分の脳を操作する人に渡す説明書</li><li>ADHDの季節性: 戦略はアップデートが必要。それが普通。</li></ul>
+<h5>コアワーク</h5>
+<ul><li>セルフマニュアルの全章レビュー＆完成（ペア編集）</li><li>「エレベーターピッチ」練習: 自分のADHDを2分で説明</li><li>「次の100日」プランを、学んだ全ツールで設計</li></ul>
+<h5>セルフマニュアル</h5>
+<ul><li>Ch.8「私の運用マニュアル」（サマリーカード、90日プラン、更新スケジュール）</li></ul>
+</div>
+</details>
+
+<div class="insight">
+<div class="insight-label">セルフマニュアル = コアプロダクト</div>
+<p><strong>全参加者が100日で「自分のADHD取扱説明書」を完成させる。</strong>8章、すべて自分の言葉で、エビデンスに基づいたフレームワークを使って。これは汎用ワークブックではなく、本当にその人だけのもの。PDF書出しで卒業成果物に。</p>
+</div>
+</div>
+
+<!-- SEC 6 -->
+<div class="section" id="s6">
+<div class="section-eyebrow" style="color:var(--cyan)">06 &mdash; Sessions Design</div>
+<div class="action-title">パーソナル5回 + グループ6回 — 少数精鋭の濃密設計</div>
+
+<h4 style="margin:16px 0 8px;font-size:14px">グループセッション6回（75分）</h4>
+<table class="tbl">
+<thead><tr><th>回</th><th>週</th><th>テーマ</th><th>形式</th><th>ファシリテーター</th></tr></thead>
+<tbody>
+<tr><td class="t-name">G1</td><td>W3</td><td>パターン共有（DAY2-3の成果物をシェア）</td><td>ラウンドロビン + ピアFB</td><td>Coach</td></tr>
+<tr><td class="t-name">G2</td><td>W5</td><td>If-Then実践報告（1週間の実行結果）</td><td>ペア→全体シェア</td><td>Engineer</td></tr>
+<tr><td class="t-name">G3</td><td>W8</td><td>時間管理実践（DAY5の成果物共有）</td><td>グループブレスト</td><td>Coach</td></tr>
+<tr><td class="t-name">G4</td><td>W9</td><td>強み共有（DAY7のカードソート結果）</td><td>バディFB + 全体</td><td>Engineer</td></tr>
+<tr><td class="t-name">G5</td><td>W10</td><td>進捗会議（障害予測→対処ブレスト）</td><td>構造化議論</td><td>Coach</td></tr>
+<tr><td class="t-name">G6</td><td>W11</td><td>ショーケース（セルフマニュアル抜粋発表）</td><td>プレゼン+祝福</td><td>Both</td></tr>
+</tbody>
+</table>
+
+<h4 style="margin:24px 0 8px;font-size:14px">ADHD向けファシリテーション5原則</h4>
+<table class="tbl">
+<thead><tr><th>原則</th><th>実践</th></tr></thead>
+<tbody>
+<tr><td class="t-name">時間の可視化</td><td>タイムタイマーを画面共有。各パートの残り時間を常に表示</td></tr>
+<tr><td class="t-name">構造の明示</td><td>開始時に「今日の3ステップ」をスライド提示</td></tr>
+<tr><td class="t-name">発言の均等化</td><td>ラウンドロビン形式（順番発言）。挙手制は不注意優勢に不利</td></tr>
+<tr><td class="t-name">動きの挿入</td><td>30分に1回「1分間ストレッチ」</td></tr>
+<tr><td class="t-name">テキスト併用</td><td>口頭シェアに加え、チャットへのキーワード書込み推奨</td></tr>
+</tbody>
+</table>
+</div>
+
+<!-- SEC 7 -->
+<div class="section" id="s7">
+<div class="section-eyebrow" style="color:var(--cyan)">07 &mdash; Buddy &amp; Community</div>
+<div class="action-title">バディペア × Discord — スタッフ時間ゼロの日常アカウンタビリティ</div>
+
+<div class="card-grid">
+<div class="card"><div class="card-badge cyan">バディシステム</div><h4>毎日10分の非同期チェックイン</h4><p>3-4組のペア。朝「今日のONE THING」→ 夜「やった？」をボイスメッセージorテキストで。<strong>W7でペア組替え</strong>（新鮮さ=ADHD脳に効く）。スタッフ時間: 0h/週。</p></div>
+<div class="card"><div class="card-badge purple">ボディダブリング</div><h4>毎週月曜50分</h4><p>Engineer主催のZoomコワーキング。全員カメラON、各自の作業を黙々と。週の開始を「一緒に」始める効果。出席率がパルスチェックスコアと相関するか検証。</p></div>
+</div>
+
+<h4 style="margin:20px 0 10px;font-size:14px">Discord 4チャンネル</h4>
+<table class="tbl">
+<thead><tr><th>チャンネル</th><th>目的</th><th>ルール</th></tr></thead>
+<tbody>
+<tr><td class="t-name">#全体</td><td>お知らせ、スケジュール</td><td>投稿は運営のみ</td></tr>
+<tr><td class="t-name">#バディ</td><td>バディペアのチェックイン</td><td>ペアごとのスレッド。48h返信推奨</td></tr>
+<tr><td class="t-name">#つぶやき</td><td>思いつき、気づき、なんでもOK</td><td><strong>返信不要</strong>。ADHD衝動性を「発想の泉」に</td></tr>
+<tr><td class="t-name">#質問</td><td>運営への質問</td><td>24h以内回答</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<div class="note-label">RSD配慮ルール（全チャンネル共通）</div>
+<p>・「既読スルー」を責めない文化の明文化<br>
+・批判的フィードバックは「サンドイッチ法」推奨<br>
+・「参加しない自由」の保証（ミュートOK）<br>
+・感情的な投稿には「共感リアクション」で応答（アドバイス禁止ルール）</p>
+</div>
+</div>
+
+
+<div class="part-divider"><span class="part-badge c">Part C &mdash; Technology</span></div>
+
+<!-- SEC 8 -->
+<div class="section" id="s8">
+<div class="section-eyebrow" style="color:var(--green)">08 &mdash; Build vs Buy</div>
+<div class="action-title">競争優位を生むものだけ自作。あとは借りる。</div>
+
+<table class="tbl">
+<thead><tr><th>カテゴリ</th><th>選択</th><th>ツール</th><th>コスト</th></tr></thead>
+<tbody>
+<tr><td class="t-name">セルフマニュアル</td><td class="t-good">★ 自作</td><td>ADHDセルフマニュアルビルダー（Web App）</td><td>¥0（Supabase無料枠）</td></tr>
+<tr><td class="t-name">週次チェック</td><td class="t-good">★ 自作</td><td>パルスチェック（フォーム+ダッシュボード）</td><td>¥0</td></tr>
+<tr><td class="t-name">リマインダー</td><td class="t-good">★ 自作</td><td>ナッジBot（Discord Bot）</td><td>¥0</td></tr>
+<tr><td class="t-name">ビデオ通話</td><td>既存</td><td>Zoom Pro</td><td>¥2,000/月</td></tr>
+<tr><td class="t-name">コミュニティ</td><td>既存</td><td>Discord（無料）</td><td>¥0</td></tr>
+<tr><td class="t-name">予約管理</td><td>既存</td><td>Calendly（無料枠）</td><td>¥0</td></tr>
+<tr><td class="t-name">決済</td><td>既存</td><td>Stripe（3.6%手数料）</td><td>変動</td></tr>
+<tr><td class="t-name">ファイル共有</td><td>既存</td><td>Google Drive</td><td>¥0</td></tr>
+</tbody>
+</table>
+
+<div class="sowhat">
+<div class="sowhat-label">作らないもの（ADHD創業者への自戒）</div>
+<p><strong>ネイティブモバイルアプリ</strong>: Web Appで十分。iOS/Androidは月単位の浪費。<br>
+<strong>AIコーチングチャットボット</strong>: AIコーチはTier 4（未検証）。人間の接続がこのサービスの価値。<br>
+<strong>LMS（学習管理システム）</strong>: Google Drive + Zoom録画で足りる。<br>
+<strong>動画プラットフォーム</strong>: Zoomで完結。<br>
+<strong>バディマッチングアルゴリズム</strong>: 6-8人なら5分で手動ペアリング。</p>
+</div>
+</div>
+
+<!-- SEC 9 -->
+<div class="section" id="s9">
+<div class="section-eyebrow" style="color:var(--green)">09 &mdash; Self-Manual Builder</div>
+<div class="action-title">MVPの中核プロダクト — 100日で「脳の取扱説明書」を構築するWeb App</div>
+
+<div class="card-grid">
+<div class="card"><div class="card-badge green">機能1</div><h4>テンプレート駆動の8章</h4><p>各DAY講義がセルフマニュアルの1章をアンロック。構造化された質問に答えていくだけで、章が完成する。空白のページを渡さない（ADHD向け）。</p></div>
+<div class="card"><div class="card-badge blue">機能2</div><h4>進捗トラッカー</h4><p>完了率（%）、ストリークカウンター、最終更新日。シンプルなダッシュボードで「やった感」を視覚化。</p></div>
+<div class="card"><div class="card-badge purple">機能3</div><h4>PDF書出し</h4><p>卒業時にセルフマニュアル全体をPDFで書出し。これが「卒業成果物」。物理的な成果物=自己効力感の強化。</p></div>
+<div class="card"><div class="card-badge amber">機能4</div><h4>コーチビュー</h4><p>コーチ側から全参加者のマニュアル進捗を一覧。P4データレビューセッションの素材に。</p></div>
+</div>
+
+<div class="mvp-callout">
+<div class="mvp-callout-label">技術スタック</div>
+<p>フロントエンド: Astro or Next.js / バックエンド: Supabase（認証+DB+ストレージ、無料枠で8名に十分） / デプロイ: Vercel / 開発: Claude Code / <strong>想定開発期間: 2-3日</strong></p>
+</div>
+</div>
+
+<!-- SEC 10 -->
+<div class="section" id="s10">
+<div class="section-eyebrow" style="color:var(--green)">10 &mdash; Dashboard &amp; Nudge Bot</div>
+<div class="action-title">データで「見える化」し、Botで「忘れない化」する</div>
+
+<h4 style="margin:16px 0 8px;font-size:14px">週次パルスチェック（5問）</h4>
+<table class="tbl">
+<thead><tr><th>#</th><th>質問</th><th>測定対象</th><th>介入との対応</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>今週、意図したタイミングでタスクを開始できた</td><td>時間管理</td><td>DAY 5 (Safren)</td></tr>
+<tr><td>2</td><td>If-Thenプランを実行できた</td><td>Implementation Intentions</td><td>DAY 4</td></tr>
+<tr><td>3</td><td>環境が集中を支えてくれた</td><td>環境デザイン</td><td>DAY 3</td></tr>
+<tr><td>4</td><td>バディ/グループとのつながりを感じた</td><td>社会的サポート</td><td>DAY 6</td></tr>
+<tr><td>5</td><td>つまずいた時に自分に優しくできた</td><td>セルフコンパッション</td><td>DAY 7</td></tr>
+</tbody>
+</table>
+
+<h4 style="margin:24px 0 8px;font-size:14px">ナッジBot（Discord Bot）</h4>
+<table class="tbl">
+<thead><tr><th>タイミング</th><th>メッセージ</th><th>目的</th></tr></thead>
+<tbody>
+<tr><td class="t-name">毎朝（個人設定時刻）</td><td>「今日のONE THINGは？」</td><td>タスク開始の外部トリガー</td></tr>
+<tr><td class="t-name">月曜朝</td><td>「今週のIf-Thenプランをチェック！」+ リンク</td><td>週初めの意図設定</td></tr>
+<tr><td class="t-name">金曜夕方</td><td>「パルスチェックの時間です」+ リンク</td><td>週次振返りのリマインド</td></tr>
+<tr><td class="t-name">ストリーク達成時</td><td>「5日連続チェックイン！新しい神経回路が育ってるよ」</td><td>即時報酬（ドーパミン）</td></tr>
+</tbody>
+</table>
+</div>
+
+
+<div class="part-divider"><span class="part-badge d">Part D &mdash; Business &amp; Operations</span></div>
+
+<!-- SEC 11 -->
+<div class="section" id="s11">
+<div class="section-eyebrow" style="color:var(--purple)">11 &mdash; Financial Model</div>
+<div class="action-title">固定費~10万円、粗利率90%超 — 2人だからこそのゼロコスト構造</div>
+
+<h4 style="margin:16px 0 10px;font-size:14px">3シナリオ（1コホートあたり）</h4>
+<div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="kpi-card"><div class="kpi-num" style="color:var(--text-dim);font-size:24px">¥1.8M</div><div class="kpi-label">Conservative<br>6名 × ¥300,000</div></div>
+<div class="kpi-card" style="border-color:rgba(52,211,153,0.2)"><div class="kpi-num good" style="font-size:24px">¥2.8M</div><div class="kpi-label">Base<br>7名 × ¥400,000</div></div>
+<div class="kpi-card"><div class="kpi-num vision" style="font-size:24px">¥4.0M</div><div class="kpi-label">Optimistic<br>8名 × ¥500,000</div></div>
+</div>
+
+<table class="tbl">
+<thead><tr><th>項目</th><th>金額</th><th>備考</th></tr></thead>
+<tbody>
+<tr><td class="t-name">Zoom Pro (4ヶ月)</td><td>¥8,000</td><td>¥1,999/月</td></tr>
+<tr><td class="t-name">ドメイン+ホスティング</td><td>¥3,000</td><td>Vercel無料枠 + カスタムドメイン</td></tr>
+<tr><td class="t-name">Supabase</td><td>¥0</td><td>無料枠で8ユーザー十分</td></tr>
+<tr><td class="t-name">Discord / Calendly</td><td>¥0</td><td>無料プラン</td></tr>
+<tr><td class="t-name">Stripe手数料</td><td>売上×3.6%</td><td>¥64,800〜¥144,000</td></tr>
+<tr><td class="t-name">コンテンツツール</td><td>¥6,000</td><td>Canva等 ¥1,500/月×4ヶ月</td></tr>
+<tr><td class="t-name"><strong>固定費合計</strong></td><td><strong>~¥80,000〜¥160,000</strong></td><td>&mdash;</td></tr>
+</tbody>
+</table>
+
+<table class="tbl">
+<thead><tr><th>シナリオ</th><th>売上</th><th>コスト</th><th>利益</th><th>1人あたり（50:50）</th></tr></thead>
+<tbody>
+<tr><td class="t-name">Conservative</td><td>¥1,800,000</td><td>~¥100,000</td><td>¥1,700,000</td><td>¥850,000</td></tr>
+<tr><td class="t-name">Base</td><td>¥2,800,000</td><td>~¥130,000</td><td class="t-good">¥2,670,000</td><td class="t-good">¥1,335,000</td></tr>
+<tr><td class="t-name">Optimistic</td><td>¥4,000,000</td><td>~¥160,000</td><td class="t-good">¥3,840,000</td><td class="t-good">¥1,920,000</td></tr>
+</tbody>
+</table>
+
+<h4 style="margin:24px 0 10px;font-size:14px">年間プロジェクション</h4>
+<table class="tbl">
+<thead><tr><th>年</th><th>コホート数</th><th>年間利益（Base）</th><th>1人あたり年収</th></tr></thead>
+<tbody>
+<tr><td class="t-name">Year 1</td><td>2回</td><td>¥5,340,000</td><td>¥2,670,000</td></tr>
+<tr><td class="t-name">Year 2</td><td>3回</td><td>¥8,010,000</td><td>¥4,005,000</td></tr>
+</tbody>
+</table>
+
+<div class="mvp-callout">
+<div class="mvp-callout-label">Year 1の現実</div>
+<p>Year 1は2コホート × Base = <strong>1人あたり約267万円</strong>。フルタイム報酬には不十分。<strong>Year 1は副業 or 貯蓄取り崩し前提</strong>。Year 2で3コホート×価格改定（実績ベースで¥450,000-500,000に引上げ可能）が損益分岐の目安。</p>
+</div>
+</div>
+
+<!-- SEC 12 -->
+<div class="section" id="s12">
+<div class="section-eyebrow" style="color:var(--purple)">12 &mdash; Marketing (¥0 Budget)</div>
+<div class="action-title">無料ボディダブリング = トロイの木馬</div>
+<p class="section-lead">マーケティング予算ゼロで6-8名を獲得する。最強のウェッジは「ADHDの当事者2人が作った、当事者のためのプログラム」という物語。</p>
+
+<h4 style="margin:16px 0 8px;font-size:14px">コンテンツ3本柱</h4>
+<div class="card-grid">
+<div class="card"><div class="card-badge blue">信頼構築</div><h4>心理教育コンテンツ</h4><p>X + note で神経科学ミニ解説。「なぜ始められない？」「時間盲目性は怠慢じゃない」。週3-5本。Coach主担当。</p></div>
+<div class="card"><div class="card-badge pink">共感構築</div><h4>当事者ストーリー</h4><p>X + YouTube Shorts。個人の体験、「今週のADHDモーメント」、Before/After。週2-3本。両者。</p></div>
+<div class="card"><div class="card-badge green">価値実証</div><h4>実践ツール無料配布</h4><p>セルフマニュアルの章のライト版、If-Thenテンプレート、環境監査チェックリスト。週1-2本。Engineer主担当。</p></div>
+</div>
+
+<h4 style="margin:24px 0 8px;font-size:14px">集客ファネル（プレローンチ12週）</h4>
+<table class="tbl">
+<thead><tr><th>段階</th><th>施策</th><th>目標</th></tr></thead>
+<tbody>
+<tr><td class="t-name">認知（M1-3）</td><td>X/noteコンテンツ開始</td><td>フォロワー500-1,000</td></tr>
+<tr><td class="t-name">関与（M2-4）</td><td>Discordコミュニティ「ADHD Labs」開設 + 毎週無料ボディダブリング + 月1無料ウェビナー</td><td>Discord 50-100名、ウェビナー30名+</td></tr>
+<tr><td class="t-name">転換（M4-5）</td><td>Cohort 1告知「ファウンディングメンバー」枠。先着4名¥300,000、以降¥400,000。ディスカバリーコール15分。</td><td>パイプライン~20名 → 6-8名成約</td></tr>
+<tr><td class="t-name">紹介（Cohort 1後）</td><td>卒業生の体験談（動画・テキスト）。「友達紹介」で双方¥50,000 OFF</td><td>Cohort 2の30%をリファラルで</td></tr>
+</tbody>
+</table>
+
+<div class="insight">
+<div class="insight-label">トロイの木馬: 無料ボディダブリング</div>
+<p><strong>毎週50分の無料Discordコワーキングセッション。</strong>コストゼロ（Engineerが主催）。コアプロダクトの価値を体験させる。タスク開始に苦しむ人が集まる = ターゲットそのもの。「50分で効果を感じるなら、100日間でどうなるか想像してください」。</p>
+</div>
+</div>
+
+<!-- SEC 13 -->
+<div class="section" id="s13">
+<div class="section-eyebrow" style="color:var(--purple)">13 &mdash; Risk &amp; Safety</div>
+<div class="action-title">2人ともADHD — 最大の強みであり、最大のリスク</div>
+
+<table class="tbl">
+<thead><tr><th>リスク</th><th>確率</th><th>影響</th><th>緩和策</th></tr></thead>
+<tbody>
+<tr><td class="t-name">両者のEF同時崩壊</td><td class="t-warn">中-高</td><td class="t-bad">高</td><td>各Act間に1週間バッファ。DAY講義を事前録画（バックアップ）。「緊急非同期週」プロトコル</td></tr>
+<tr><td class="t-name">ツール開発にハイパーフォーカス</td><td class="t-bad">高</td><td class="t-warn">中</td><td>コホート中のツール開発は<strong>週4h上限</strong>。「人と過ごした時間 > ツールの時間」を週次で確認</td></tr>
+<tr><td class="t-name">感情的バーンアウト</td><td class="t-warn">中-高</td><td class="t-bad">高</td><td>1日3セッション上限。自分たちもセルフコンパッション実践。月1回の外部スーパービジョン</td></tr>
+<tr><td class="t-name">創業者間コンフリクト</td><td class="t-warn">低-中</td><td class="t-bad">致命的</td><td>創業者契約（役割・報酬・退出条件）をCohort 1前に締結。3ヶ月トライアル期間</td></tr>
+<tr><td class="t-name">参加者のメンタル危機</td><td class="t-warn">中</td><td class="t-bad">高</td><td>スクリーニング（PHQ-9/GAD-7）。スコープ合意書。医療機関紹介先2-3件確保</td></tr>
+<tr><td class="t-name">人数未達</td><td class="t-warn">中</td><td class="t-warn">中-高</td><td>最低4名で開講。それ未満は4週延期。コンテンツマーケを継続</td></tr>
+</tbody>
+</table>
+
+<div class="note">
+<div class="note-label">外部アドバイザー（必須）</div>
+<p>ADHDでは<strong>ない</strong>外部アドバイザーを1名確保。月1時間のチェックイン。<br>
+役割: 「順調？ 何を避けてる？ 何を変えるべき？」を聞く。<br>
+創業者のアカウンタビリティパートナーとして機能。<strong>参加者にバディを提供するなら、自分たちにも必要。</strong></p>
+</div>
+</div>
+
+<!-- SEC 14 -->
+<div class="section" id="s14">
+<div class="section-eyebrow" style="color:var(--purple)">14 &mdash; Roadmap</div>
+<div class="action-title">プレローンチ12週 → Cohort 1 → 3人目採用まで</div>
+
+<div class="phase-card" style="border-top:3px solid var(--amber)">
+<h3>プレローンチ &mdash; 12週間</h3>
+<div class="phase-policy">Cohort 1開講前に完了すべきこと</div>
+<div class="phase-items">
+<div class="phase-item"><span class="pi-dot a"></span><strong>W-12〜-9:</strong> 創業者契約締結 / 8 DAY講義アウトライン完成 / Discord開設 / SNSコンテンツ開始 / 無料ボディダブリング開始</div>
+<div class="phase-item"><span class="pi-dot c"></span><strong>W-8〜-5:</strong> セルフマニュアルビルダーMVP開発（2-3日） / パルスチェック構築（1日） / ナッジBot構築（1-2日） / 8 DAYスライド全完成 / スクリーニングフォーム / 参加者契約書</div>
+<div class="phase-item"><span class="pi-dot g"></span><strong>W-4〜-1:</strong> Cohort 1応募開始 / ディスカバリーコール / 6-8名受入 / ウェルカムキット送付 / バディペアリング / DAY1ドライラン / Stripe決済設定 / 医療機関紹介先確保</div>
+</div>
+</div>
+
+<div class="phase-card" style="border-top:3px solid var(--green)">
+<h3>Cohort 1 &mdash; 100日間で検証する6つの仮説</h3>
+<div class="phase-policy">「正解を出す」のではなく「何が効くかを学ぶ」</div>
+<div class="phase-items">
+<div class="phase-item"><span class="pi-dot g"></span><strong>仮説1:</strong> 8 DAYは適切な量か？ → 卒業時アンケート「多い/ちょうどいい/足りない」</div>
+<div class="phase-item"><span class="pi-dot g"></span><strong>仮説2:</strong> パーソナル5回は十分か？ → セッション活用率 + 満足度</div>
+<div class="phase-item"><span class="pi-dot g"></span><strong>仮説3:</strong> ボディダブリングはエンゲージメントを駆動するか？ → 出席率 × パルスチェック相関</div>
+<div class="phase-item"><span class="pi-dot g"></span><strong>仮説4:</strong> セルフマニュアルは価値を感じてもらえるか？ → 完成率、NPS、推薦意向</div>
+<div class="phase-item"><span class="pi-dot g"></span><strong>仮説5:</strong> ¥300,000-400,000は適正価格か？ → ディスカバリーコール転換率、知覚価値アンケート</div>
+<div class="phase-item"><span class="pi-dot g"></span><strong>仮説6:</strong> 2人体制は持続可能か？ → 創業者のバーンアウトレベル（週次自己評価）、実働時間</div>
+</div>
+</div>
+
+<div class="phase-card" style="border-top:3px solid var(--cyan)">
+<h3>Cohort 2 &mdash; フィードバック反映 + 価格改定</h3>
+<div class="phase-items">
+<div class="phase-item"><span class="pi-dot c"></span>Cohort 1のフィードバックでカリキュラム修正（低エンゲージDAYを統合/削除）</div>
+<div class="phase-item"><span class="pi-dot c"></span>実績+体験談で価格改定（¥400,000-500,000）</div>
+<div class="phase-item"><span class="pi-dot c"></span>Cohort 1卒業生を「メンター」として1セッション招待</div>
+<div class="phase-item"><span class="pi-dot c"></span>DAY講義の一部を事前録画化（Coach が録画+ライブコメンタリー方式）</div>
+</div>
+</div>
+
+<div class="phase-card" style="border-top:3px solid var(--purple)">
+<h3>3人目の採用タイミング</h3>
+<div class="phase-policy">全条件を満たした時のみ</div>
+<div class="phase-items">
+<div class="phase-item"><span class="pi-dot p"></span>2コホート完走 + NPS ≥ 8</div>
+<div class="phase-item"><span class="pi-dot p"></span>ウェイトリスト10名超</div>
+<div class="phase-item"><span class="pi-dot p"></span>ボトルネックが「人的デリバリー」であると両者が合意</div>
+<div class="phase-item"><span class="pi-dot p"></span>6ヶ月分の給与リザーブあり</div>
+</div>
+<p style="margin-top:12px"><strong>推奨: 「オペレーション/コミュニティマネージャー」を先に採用。</strong>スケジュール管理、Discord運営、データ追跡を委譲。コーチ増員よりもオペレーション外注が先。ADHDにとって最も苦手な「管理業務」を最初に手放す。</p>
+</div>
+
+<div class="vision-card">
+<h3>2人のADHD当事者が作る、日本初のエビデンスベースADHDコーチング</h3>
+<p>「脳のクセを、人生の武器に。」<br>
+自分たちが当事者だから分かる。科学が裏付ける。仲間が支える。<br>
+100日で「ADHD自己マニュアル」を完成させ、自分の脳の専門家になる。</p>
+</div>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /page-layout -->
+
+<div class="footer">
+ADHD特化コーチング — MVPパイロット設計書 v1<br>
+<span>Generated: 2026-02-27 | Base: <a href="adhd-service-design.html" style="color:var(--cyan)">理想形設計書v1</a> + <a href="adhd-careerspi-ronten.html" style="color:var(--cyan)">論点整理v1</a> | Research Themes A-H</span>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
