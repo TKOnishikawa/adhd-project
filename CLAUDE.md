@@ -100,12 +100,12 @@
 - [x] D13-D14: DAY7 スライド構成案 + ファシリテーターノート（強みは本物・セルフコンパッション）
 - [x] D15-D16: DAY8 スライド構成案 + ファシリテーターノート（セルフマニュアル完成・統合）
 
-### カテゴリE: パーソナルセッション（5件）— ✅ 完了（Drive: _templates/sessions/）
-- [x] E1: PS1 目標設定（Coach, W3）
-- [x] E2: PS2 ツール＆データ（Engineer, W5）
-- [x] E3: PS3 中間レビュー（Coach, W7）
-- [x] E4: PS4 データ統合（Engineer, W10）
-- [x] E5: PS5 卒業セッション（Coach, W12）
+### カテゴリE: パーソナルセッション（5件）— ✅ 完了（Drive: _templates/sessions/）※4本柱フレームワークで再設計済
+- [x] E1: PS1 自己理解 — ADHDの脳を知る（Coach, W2）
+- [x] E2: PS2 ゴール設定 — ADHDの脳で叶えるGOAL（Coach, W4-5）
+- [x] E3: PS3 決断 — 衝動と先延ばしの間で（Coach, W6-7）
+- [x] E4: PS4 アクションプラン — テクノロジー × 仕組みで動く（Coach, W8-9）
+- [x] E5: PS5 統合 — 4本柱ダッシュボード × 次の100日（Coach, W12-13）
 
 ### カテゴリF: 運営（8件）— ✅ 完了（Drive: _templates/operations/）
 - [x] F1: 週次運営チェックリスト

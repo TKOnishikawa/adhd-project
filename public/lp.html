@@ -127,17 +127,17 @@ section { padding: 80px 0; }
 
 /* ── Personal Sessions ── */
 .personal-section { background: #fff; }
-.ps-list { margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto; }
+.ps-pillars { display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 36px; flex-wrap: wrap; }
+.ps-pillar { display: flex; align-items: center; gap: 6px; background: linear-gradient(135deg, rgba(124,58,237,0.08), rgba(124,58,237,0.03)); border: 1px solid rgba(124,58,237,0.15); border-radius: 24px; padding: 8px 18px; font-size: 0.88rem; font-weight: 600; color: #5b21b6; }
+.ps-pillar span { font-size: 1.1rem; }
+.ps-pillar-arrow { color: rgba(124,58,237,0.3); font-size: 1.2rem; font-weight: 300; }
+@media (max-width: 639px) { .ps-pillar-arrow { display: none; } .ps-pillars { gap: 8px; } .ps-pillar { font-size: 0.8rem; padding: 6px 14px; } }
+.ps-list { margin-top: 36px; max-width: 720px; margin-left: auto; margin-right: auto; }
 .ps-item { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
 .ps-item:last-child { border-bottom: none; }
-.ps-icon { flex-shrink: 0; width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-.ps-icon.coach { background: rgba(124,58,237,0.1); }
-.ps-icon.engineer { background: rgba(13,148,136,0.1); }
+.ps-icon { flex-shrink: 0; width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; background: rgba(124,58,237,0.1); }
 .ps-week { font-size: 0.7rem; font-weight: 700; color: #7c3aed; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
 .ps-title { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
-.ps-lead { font-size: 0.78rem; font-weight: 500; margin-bottom: 4px; }
-.ps-lead.coach-lead { color: #7c3aed; }
-.ps-lead.eng-lead { color: #0d9488; }
 .ps-desc { font-size: 0.82rem; color: #78716c; line-height: 1.6; }
 
 /* ── Weekly Rhythm ── */
@@ -378,16 +378,16 @@ section { padding: 80px 0; }
           <div class="m-cell m-empty"></div>
           <div class="m-cell m-personal">P1</div>
           <div class="m-cell m-empty"></div>
-          <div class="m-cell m-empty"></div>
           <div class="m-cell m-personal">P2</div>
           <div class="m-cell m-empty"></div>
           <div class="m-cell m-personal">P3</div>
           <div class="m-cell m-empty"></div>
-          <div class="m-cell m-empty"></div>
           <div class="m-cell m-personal">P4</div>
           <div class="m-cell m-empty"></div>
           <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
           <div class="m-cell m-personal">P5</div>
+          <div class="m-cell m-empty"></div>
           <div class="m-cell m-empty"></div>
           <div class="matrix-label">もくもく会</div>
           <div class="m-cell m-weekly">BD</div>
@@ -556,53 +556,57 @@ section { padding: 80px 0; }
       <div class="section-number fade-in">06</div>
       <span class="section-label fade-in">Personal Sessions</span>
       <h2 class="section-title fade-in">5回のパーソナルセッション</h2>
-      <p class="section-subtitle fade-in">1回45分。Coach&#65288;心理・行動変容&#65289;とEngineer&#65288;ツール・データ&#65289;が交互にサポート。</p>
+      <p class="section-subtitle fade-in">1回45分。キャリスピの方法論 &#215; ADHD脳の科学。4本柱であなたの変化を加速させます。</p>
     </div>
     <div class="container">
+      <div class="ps-pillars fade-in">
+        <div class="ps-pillar"><span>&#127793;</span>自己理解</div>
+        <div class="ps-pillar-arrow">&#8594;</div>
+        <div class="ps-pillar"><span>&#127919;</span>ゴール設定</div>
+        <div class="ps-pillar-arrow">&#8594;</div>
+        <div class="ps-pillar"><span>&#9889;</span>決断</div>
+        <div class="ps-pillar-arrow">&#8594;</div>
+        <div class="ps-pillar"><span>&#9881;&#65039;</span>アクションプラン</div>
+      </div>
       <div class="ps-list">
         <div class="ps-item fade-in">
-          <div class="ps-icon coach">&#129504;</div>
+          <div class="ps-icon coach">&#127793;</div>
           <div>
             <div class="ps-week">Week 2</div>
-            <div class="ps-title">PS1: ADHDアセスメント &#215; 価値発見</div>
-            <div class="ps-lead coach-lead">Coach</div>
-            <div class="ps-desc">初期アセスメントを実施し、あなた固有のADHD特性を深掘り。セルフマニュアルCh.1「脳のプロファイル」を一緒に完成させます。</div>
+            <div class="ps-title">PS1: 自己理解 &#8212; ADHDの脳を知る</div>
+            <div class="ps-desc">ASRS結果の「自分ごと化」と4トリガーマップ&#65288;Interest / Novelty / Challenge / Urgency&#65289;で、あなた固有のADHD特性を可視化。ハイパーフォーカスの条件を発見し、セルフマニュアルCh.1-2を着手します。</div>
           </div>
         </div>
         <div class="ps-item fade-in">
-          <div class="ps-icon engineer">&#128736;</div>
+          <div class="ps-icon coach">&#127919;</div>
           <div>
-            <div class="ps-week">Week 5</div>
-            <div class="ps-title">PS2: ツール設定 &#215; デジタルナッジ</div>
-            <div class="ps-lead eng-lead">Engineer</div>
-            <div class="ps-desc">セルフマニュアルビルダーのオンボーディング、スマホ・PC・デスクのデジタルナッジを一緒に設定。環境を「ADHDフレンドリー」に。</div>
+            <div class="ps-week">Week 4-5</div>
+            <div class="ps-title">PS2: ゴール設定 &#8212; ADHDの脳で叶えるGOAL</div>
+            <div class="ps-desc">定性/定量GOALとVISIONを設定し、14週マイルストーンに分解。各マイルストーンに即時報酬を紐付け、ドーパミン駆動で前に進む設計。「ワクワク度テスト」でGOALの本気度を確認します。</div>
           </div>
         </div>
         <div class="ps-item fade-in">
-          <div class="ps-icon coach">&#129504;</div>
+          <div class="ps-icon coach">&#9889;</div>
           <div>
-            <div class="ps-week">Week 7-8</div>
-            <div class="ps-title">PS3: 中間振返り &#215; 認知リフレーミング</div>
-            <div class="ps-lead coach-lead">Coach</div>
-            <div class="ps-desc">前半の成果を振返り、目標を調整。認知のリフレーミングで「できていないこと」から「できたこと」にフォーカスをシフト。</div>
+            <div class="ps-week">Week 6-7</div>
+            <div class="ps-title">PS3: 決断 &#8212; 衝動と先延ばしの間で</div>
+            <div class="ps-desc">ADHD版ペイン&amp;プレジャー分析で「本当に手放したいもの」と「本当に手に入れたいもの」を明確に。48時間ルールで衝動をコントロールし、Coping Planningで想定外に備えます。</div>
           </div>
         </div>
         <div class="ps-item fade-in">
-          <div class="ps-icon engineer">&#128736;</div>
+          <div class="ps-icon coach">&#9881;&#65039;</div>
           <div>
-            <div class="ps-week">Week 10-11</div>
-            <div class="ps-title">PS4: データレビュー &#8212;「あなたの数字」</div>
-            <div class="ps-lead eng-lead">Engineer</div>
-            <div class="ps-desc">パルスチェック・もくもく会出席率・If-Then実行率のデータを可視化。数字に基づいてシステムを最適化。</div>
+            <div class="ps-week">Week 8-9</div>
+            <div class="ps-title">PS4: アクションプラン &#8212; テクノロジー &#215; 仕組みで動く</div>
+            <div class="ps-desc">Implementation Intentions&#65288;When-Then形式&#65289;を精錬し、デジタルナッジとテクノロジーで実行環境を最適化。行動データを分析し、「頑張る」ではなく「仕組みで動く」システムを完成させます。</div>
           </div>
         </div>
         <div class="ps-item fade-in">
-          <div class="ps-icon coach">&#129504;</div>
+          <div class="ps-icon coach">&#127775;</div>
           <div>
-            <div class="ps-week">Week 13</div>
-            <div class="ps-title">PS5: 卒業準備 &#215; 次の100日プラン</div>
-            <div class="ps-lead coach-lead">Coach</div>
-            <div class="ps-desc">セルフマニュアル完成確認、卒業後のセルフコーチングプロトコルを策定。「次の100日」を自分の力で設計します。</div>
+            <div class="ps-week">Week 12-13</div>
+            <div class="ps-title">PS5: 統合 &#8212; 4本柱ダッシュボード &#215; 次の100日</div>
+            <div class="ps-desc">自己理解&#8594;GOAL&#8594;決断&#8594;APの旅を1枚の「人生のダッシュボード」に統合。セルフマニュアル全8章を完成させ、卒業後も同じ4本柱フレームワークで自走する「次の100日」プランを設計します。</div>
           </div>
         </div>
       </div>
