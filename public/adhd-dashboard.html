@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>ADHD特化コーチング — プロジェクトダッシュボード</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg-base:#08080d;--bg-surface:#101018;--bg-raised:#181824;--bg-top:#222234;
+  --border:rgba(255,255,255,0.06);--border-focus:rgba(255,255,255,0.12);
+  --text:#eaeaf2;--text-dim:#9898ae;--text-muted:#58586e;
+  --blue:#4a7dff;--cyan:#22d3ee;--green:#34d399;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;--pink:#f472b6;
+  --grad-hero:linear-gradient(135deg,#a78bfa 0%,#7c3aed 50%,#f472b6 100%);
+  --grad-success:linear-gradient(135deg,#34d399 0%,#22d3ee 100%);
+  --grad-warn:linear-gradient(135deg,#ef4444 0%,#f59e0b 100%);
+  --grad-vision:linear-gradient(135deg,#a78bfa 0%,#f472b6 100%);
+  --grad-progress:linear-gradient(135deg,#22d3ee 0%,#34d399 100%);
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.4);--shadow-md:0 4px 16px rgba(0,0,0,0.5);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Noto Sans JP',-apple-system,sans-serif;background:var(--bg-base);color:var(--text);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+.mono{font-family:'JetBrains Mono',monospace;font-weight:600}
+a{color:var(--cyan);text-decoration:none;transition:color .15s}
+a:hover{color:var(--purple)}
+
+/* Layout */
+.page-layout{display:flex;gap:32px;align-items:flex-start}
+.main-content{flex:1;min-width:0}
+
+/* TOC Sidebar */
+.toc-sidebar{position:sticky;top:24px;width:240px;flex-shrink:0;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:16px;max-height:calc(100vh - 48px);overflow-y:auto}
+.toc-sidebar h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:4px 0;line-height:1.4;transition:color .15s}
+.toc-sidebar a:hover{color:var(--cyan)}
+.toc-sidebar .toc-num{color:var(--text-muted);margin-right:4px;font-family:'JetBrains Mono',monospace;font-size:10px}
+.toc-sidebar .toc-divider{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;margin-bottom:4px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-sidebar .toc-divider:first-child{border-top:none;margin-top:0;padding-top:0}
+@media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
+
+/* Sections */
+.section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px}
+.action-title{font-size:22px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
+.section-lead{font-size:14px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
+
+/* Hero — Purple Gradient */
+.hero{padding:72px 0 20px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(167,139,250,0.08) 0%,rgba(124,58,237,0.03) 40%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-block;padding:5px 14px;border:1px solid rgba(167,139,250,0.3);border-radius:20px;font-size:12px;font-weight:700;color:var(--purple);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;background:rgba(167,139,250,0.04)}
+.hero h1{font-size:32px;font-weight:900;line-height:1.4;margin-bottom:14px;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:var(--text-dim);max-width:640px;margin:0 auto 28px;line-height:1.9}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 20px}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+.kpi-card{background:var(--bg-surface);border-radius:12px;padding:20px 14px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:transform .15s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-num{font-family:'JetBrains Mono',monospace;font-size:32px;font-weight:600;margin-bottom:4px}
+.kpi-num.purple{background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.warn{background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.good{background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.blue{background:linear-gradient(135deg,#4a7dff,#22d3ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.vision{background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-label{font-size:12px;color:var(--text-dim);font-weight:500;line-height:1.5}
+
+/* Timeline */
+.phase-timeline{margin:18px 0;display:flex;flex-direction:column;gap:0}
+.phase-row{display:grid;grid-template-columns:36px 1fr;gap:0;position:relative}
+.phase-track{display:flex;flex-direction:column;align-items:center;position:relative}
+.phase-dot{width:14px;height:14px;border-radius:50%;border:2px solid var(--border);background:var(--bg-base);z-index:2;flex-shrink:0;margin-top:2px}
+.phase-dot.done{background:var(--green);border-color:var(--green)}
+.phase-dot.active{background:var(--amber);border-color:var(--amber);box-shadow:0 0 8px rgba(245,158,11,0.4)}
+.phase-dot.pending{background:var(--bg-raised);border-color:var(--text-muted)}
+.phase-line{width:2px;flex:1;background:var(--border);min-height:16px}
+.phase-line.done{background:var(--green)}
+.phase-line.active{background:linear-gradient(to bottom,var(--amber),var(--border))}
+.phase-body{padding:0 0 20px 12px}
+.phase-header{display:flex;align-items:center;gap:10px;margin-bottom:4px}
+.phase-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 8px;border-radius:3px}
+.phase-label.done{background:rgba(52,211,153,0.08);color:var(--green)}
+.phase-label.active{background:rgba(245,158,11,0.08);color:var(--amber)}
+.phase-label.pending{background:rgba(88,88,110,0.12);color:var(--text-muted)}
+.phase-name{font-size:15px;font-weight:700;color:var(--text)}
+.phase-desc{font-size:13px;color:var(--text-dim);line-height:1.7}
+
+/* Artifact Cards */
+.artifact-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:18px 0}
+.artifact-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm);transition:all .15s}
+.artifact-card:hover{border-color:var(--border-focus);transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.artifact-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px}
+.artifact-badge.design{background:rgba(167,139,250,0.08);color:var(--purple)}
+.artifact-badge.analysis{background:rgba(74,125,255,0.08);color:var(--blue)}
+.artifact-badge.planning{background:rgba(245,158,11,0.08);color:var(--amber)}
+.artifact-badge.research{background:rgba(52,211,153,0.08);color:var(--green)}
+.artifact-badge.infra{background:rgba(34,211,238,0.08);color:var(--cyan)}
+.artifact-card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.artifact-card p{font-size:13px;color:var(--text-dim);line-height:1.8}
+.artifact-link{display:inline-block;margin-top:10px;font-size:12px;font-weight:600;color:var(--cyan);padding:4px 12px;border:1px solid rgba(34,211,238,0.2);border-radius:6px;transition:all .15s}
+.artifact-link:hover{background:rgba(34,211,238,0.06);border-color:rgba(34,211,238,0.4)}
+
+/* Tables */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:18px 0;font-size:13px}
+.tbl thead th{background:var(--bg-raised);padding:10px 14px;font-size:11px;font-weight:700;text-align:left;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;background:var(--bg-surface)}
+.tbl tbody tr:last-child td{border-bottom:none}
+.tbl tbody tr:hover td{background:var(--bg-raised)}
+.t-name{font-weight:600;color:var(--text)}
+.t-decided{color:var(--green);font-weight:600}
+.t-detail{color:var(--text-dim)}
+
+/* Progress Bars */
+.prog-section{margin:18px 0}
+.prog-row{display:grid;grid-template-columns:140px 1fr 60px;gap:12px;align-items:center;padding:8px 0;border-bottom:1px solid var(--border)}
+.prog-row:last-child{border-bottom:none}
+.prog-cat{font-size:13px;font-weight:600;color:var(--text)}
+.prog-bar-wrap{background:var(--bg-raised);border-radius:8px;height:8px;overflow:hidden}
+.prog-bar-fill{height:100%;border-radius:8px;transition:width .4s}
+.prog-bar-fill.tier1{background:var(--grad-warn)}
+.prog-bar-fill.tier2{background:linear-gradient(90deg,var(--amber),var(--cyan))}
+.prog-bar-fill.tier3{background:linear-gradient(90deg,var(--text-muted),var(--purple))}
+.prog-bar-fill.zero{background:var(--bg-raised)}
+.prog-count{font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-muted);text-align:right}
+.tier-header{display:flex;align-items:center;gap:10px;margin-top:24px;margin-bottom:10px}
+.tier-badge{display:inline-block;padding:4px 14px;border:2px solid;border-radius:20px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase}
+.tier-badge.t1{border-color:var(--red);color:var(--red)}
+.tier-badge.t2{border-color:var(--amber);color:var(--amber)}
+.tier-badge.t3{border-color:var(--text-muted);color:var(--text-muted)}
+.tier-summary{font-size:12px;color:var(--text-dim)}
+.tier-dimmed{opacity:0.5}
+
+/* Callouts */
+.callout{border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.callout.purple{background:rgba(167,139,250,0.03);border-left:4px solid var(--purple)}
+.callout.amber{background:rgba(245,158,11,0.03);border-left:4px solid var(--amber)}
+.callout-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;margin-bottom:6px}
+.callout.purple .callout-label{color:var(--purple)}
+.callout.amber .callout-label{color:var(--amber)}
+.callout p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+
+/* Next Actions */
+.action-list{display:flex;flex-direction:column;gap:8px;margin:18px 0}
+.action-item{display:flex;align-items:flex-start;gap:12px;padding:14px 18px;background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;transition:all .15s}
+.action-item:hover{border-color:var(--border-focus);background:var(--bg-raised)}
+.action-priority{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;letter-spacing:1px;padding:3px 8px;border-radius:4px;flex-shrink:0;margin-top:2px}
+.action-priority.p1{background:rgba(239,68,68,0.08);color:var(--red)}
+.action-priority.p2{background:rgba(245,158,11,0.08);color:var(--amber)}
+.action-priority.p3{background:rgba(74,125,255,0.08);color:var(--blue)}
+.action-text{flex:1}
+.action-text strong{font-size:14px;font-weight:700;color:var(--text);display:block;margin-bottom:2px}
+.action-text span{font-size:12px;color:var(--text-dim);line-height:1.6}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0 28px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+.footer a{color:var(--text-dim);margin:0 6px;transition:color .15s}
+.footer a:hover{color:var(--cyan)}
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ===== HERO ===== -->
+<div class="hero">
+  <div class="hero-badge">Project Dashboard</div>
+  <h1>ADHD特化コーチング<br>プロジェクトダッシュボード</h1>
+  <p class="hero-sub">事業立ち上げの全体進捗・成果物・意思決定を一元管理</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-num purple">7/10</div>
+      <div class="kpi-label">Phase Progress<br>フェーズ進捗</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num warn">0/84</div>
+      <div class="kpi-label">Documents<br>ドキュメント作成済</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num blue">34</div>
+      <div class="kpi-label">Drive Folders<br>フォルダ構築済</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num good">8/8</div>
+      <div class="kpi-label">Research Themes<br>リサーチ完了</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== PAGE LAYOUT ===== -->
+<div class="page-layout">
+
+<!-- TOC Sidebar -->
+<nav class="toc-sidebar">
+  <h3>Contents</h3>
+  <div class="toc-divider">Overview</div>
+  <a href="#phases"><span class="toc-num">01</span> Phase Progress</a>
+  <a href="#artifacts"><span class="toc-num">02</span> Artifact Map</a>
+  <div class="toc-divider">Details</div>
+  <a href="#decisions"><span class="toc-num">03</span> Decision Log</a>
+  <a href="#documents"><span class="toc-num">04</span> Document Progress</a>
+  <div class="toc-divider">Actions</div>
+  <a href="#next-actions"><span class="toc-num">05</span> Next Actions</a>
+</nav>
+
+<!-- Main Content -->
+<div class="main-content">
+
+<!-- ===== SEC 1: PHASE PROGRESS ===== -->
+<div class="section" id="phases">
+  <div class="section-eyebrow" style="color:var(--purple)">Section 01</div>
+  <div class="action-title">Phase Progress</div>
+  <p class="section-lead">コンセプト策定からマーケティングまで、全10フェーズの進捗状況。現在Phase 5（ドキュメント構築）に着手中。</p>
+
+  <div class="phase-timeline">
+
+    <!-- Phase 0 -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot done"></div><div class="phase-line done"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label done">Complete</span>
+          <span class="phase-name">Phase 0: コンセプト壁打ち</span>
+        </div>
+        <div class="phase-desc">サービス理念・ターゲット定義・差別化ポイントの確立</div>
+      </div>
+    </div>
+
+    <!-- Phase 1 -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot done"></div><div class="phase-line done"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label done">Complete</span>
+          <span class="phase-name">Phase 1: 徹底リサーチ（8テーマ A-H）</span>
+        </div>
+        <div class="phase-desc">ADHD基礎 / 神経科学 / 強みの科学 / 行動科学 / 介入エビデンス / 成人ADHD実生活 / セルフコーチング / 市場・サービス</div>
+      </div>
+    </div>
+
+    <!-- Phase 2a -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot done"></div><div class="phase-line done"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label done">Complete</span>
+          <span class="phase-name">Phase 2a: 理想形設計</span>
+        </div>
+        <div class="phase-desc">100日プログラムの全体アーキテクチャ・セッション設計・成果物定義</div>
+      </div>
+    </div>
+
+    <!-- Phase 2b -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot done"></div><div class="phase-line done"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label done">Complete</span>
+          <span class="phase-name">Phase 2b: 論点整理</span>
+        </div>
+        <div class="phase-desc">キャリスピIP利用・価格帯・リスク・運営の意思決定ポイント整理</div>
+      </div>
+    </div>
+
+    <!-- Phase 2c -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot done"></div><div class="phase-line done"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label done">Complete</span>
+          <span class="phase-name">Phase 2c: MVP設計</span>
+        </div>
+        <div class="phase-desc">最小構成でのパイロット設計・6仮説検証フレームワーク策定</div>
+      </div>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot done"></div><div class="phase-line done"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label done">Complete</span>
+          <span class="phase-name">Phase 3: ドキュメント棚卸し（84件）</span>
+        </div>
+        <div class="phase-desc">13カテゴリ・3 Tierに分類。優先度付きドキュメント準備マップ完成</div>
+      </div>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot done"></div><div class="phase-line done"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label done">Complete</span>
+          <span class="phase-name">Phase 4: インフラ構築（Drive 34フォルダ）</span>
+        </div>
+        <div class="phase-desc">Google Drive フォルダツリー構築・テンプレート配置・アクセス権設定</div>
+      </div>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot active"></div><div class="phase-line active"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label active">In Progress</span>
+          <span class="phase-name">Phase 5: ドキュメント構築（Tier 1: 47件）</span>
+        </div>
+        <div class="phase-desc">最優先ドキュメントの作成。法務・スクリーニング・オンボーディング・DAY講義・パーソナル・運営の6カテゴリ</div>
+      </div>
+    </div>
+
+    <!-- Phase 6 -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot pending"></div><div class="phase-line"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label pending">Pending</span>
+          <span class="phase-name">Phase 6: ツール開発</span>
+        </div>
+        <div class="phase-desc">セルフマニュアルビルダー・進捗トラッカー・バディマッチングシステム等</div>
+      </div>
+    </div>
+
+    <!-- Phase 7 -->
+    <div class="phase-row">
+      <div class="phase-track"><div class="phase-dot pending"></div><div class="phase-line" style="visibility:hidden"></div></div>
+      <div class="phase-body">
+        <div class="phase-header">
+          <span class="phase-label pending">Pending</span>
+          <span class="phase-name">Phase 7: マーケ・集客</span>
+        </div>
+        <div class="phase-desc">LP制作・SNS戦略実行・初回コホート募集・パートナー連携</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="callout purple">
+    <div class="callout-label">Current Focus</div>
+    <p>Phase 5 のドキュメント構築に着手。Tier 1（47件）の法務・スクリーニング・講義資料を優先的に作成中。</p>
+  </div>
+</div>
+
+<!-- ===== SEC 2: ARTIFACT MAP ===== -->
+<div class="section" id="artifacts">
+  <div class="section-eyebrow" style="color:var(--cyan)">Section 02</div>
+  <div class="action-title">Artifact Map</div>
+  <p class="section-lead">これまでに生成された主要成果物の一覧。各ドキュメントへのリンクから詳細を確認可能。</p>
+
+  <div class="artifact-grid">
+
+    <div class="artifact-card">
+      <div class="artifact-badge design">Design</div>
+      <h4>理想形設計書</h4>
+      <p>100日プログラムの全体アーキテクチャ。4フェーズ・8 DAY講義・パーソナルセッション・グループセッションの完全設計。</p>
+      <a href="adhd-service-design.html" class="artifact-link">View Document &rarr;</a>
+    </div>
+
+    <div class="artifact-card">
+      <div class="artifact-badge analysis">Analysis</div>
+      <h4>論点整理</h4>
+      <p>キャリスピIP利用・価格帯・リスク・運営体制に関する意思決定ポイントの網羅的整理。</p>
+      <a href="adhd-careerspi-ronten.html" class="artifact-link">View Document &rarr;</a>
+    </div>
+
+    <div class="artifact-card">
+      <div class="artifact-badge planning">Planning</div>
+      <h4>MVPパイロット設計書</h4>
+      <p>最小構成でのパイロット実施計画。6仮説検証・100日タイムライン・リソース配分。</p>
+      <a href="adhd-mvp-design.html" class="artifact-link">View Document &rarr;</a>
+    </div>
+
+    <div class="artifact-card">
+      <div class="artifact-badge planning">Planning</div>
+      <h4>ドキュメント準備マップ</h4>
+      <p>84件のドキュメントを13カテゴリ・3 Tierに分類。作成優先度・担当・フォーマット定義。</p>
+      <a href="adhd-doc-inventory.html" class="artifact-link">View Document &rarr;</a>
+    </div>
+
+    <div class="artifact-card">
+      <div class="artifact-badge research">Research</div>
+      <h4>リサーチ 8テーマ（A-H）</h4>
+      <p>ADHD基礎から市場分析まで8テーマの徹底リサーチ。Gemini Deep Research + 論文ベース。</p>
+      <a href="https://tkonishikawa.github.io/adhd-project/research/" class="artifact-link">View Research Hub &rarr;</a>
+    </div>
+
+    <div class="artifact-card">
+      <div class="artifact-badge infra">Infrastructure</div>
+      <h4>Drive フォルダ構造</h4>
+      <p>Google Drive に34フォルダを構築。事業運営・コホート管理・参加者個人フォルダのツリー設計。</p>
+      <span style="font-size:12px;color:var(--text-muted);margin-top:10px;display:inline-block">Google Drive (internal)</span>
+    </div>
+
+  </div>
+</div>
+
+<!-- ===== SEC 3: DECISION LOG ===== -->
+<div class="section" id="decisions">
+  <div class="section-eyebrow" style="color:var(--green)">Section 03</div>
+  <div class="action-title">Decision Log</div>
+  <p class="section-lead">事業設計における主要な意思決定の記録。各論点の結論と根拠。</p>
+
+  <table class="tbl">
+    <thead>
+      <tr>
+        <th style="width:180px">論点</th>
+        <th style="width:180px">決定事項</th>
+        <th>根拠・備考</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="t-name">キャリスピIP利用</td>
+        <td class="t-decided">部分利用</td>
+        <td class="t-detail">強みの活かし方のフレームワークを基盤として活用。ADHD特化の独自メソッドを上乗せ</td>
+      </tr>
+      <tr>
+        <td class="t-name">コホートサイズ</td>
+        <td class="t-decided">6-8名</td>
+        <td class="t-detail">心理的安全性と多様性のバランス。ADHD特性上、少人数が効果的</td>
+      </tr>
+      <tr>
+        <td class="t-name">価格帯</td>
+        <td class="t-decided">&yen;30-50万</td>
+        <td class="t-detail">100日プログラム全体。MVP段階では&yen;30万で検証開始</td>
+      </tr>
+      <tr>
+        <td class="t-name">プログラム期間</td>
+        <td class="t-decided">100日</td>
+        <td class="t-detail">行動変容の定着に必要な期間。66日の習慣形成研究 + バッファ</td>
+      </tr>
+      <tr>
+        <td class="t-name">Drive設計</td>
+        <td class="t-decided">DXコンサルと完全分離</td>
+        <td class="t-detail">事業ドメインの混在リスク回避。独立したフォルダツリーで管理</td>
+      </tr>
+      <tr>
+        <td class="t-name">動画保管</td>
+        <td class="t-decided">YouTube限定公開</td>
+        <td class="t-detail">Driveの容量制約回避。限定公開URLで参加者のみアクセス可能</td>
+      </tr>
+      <tr>
+        <td class="t-name">ビデオ会議</td>
+        <td class="t-decided">Google Meet</td>
+        <td class="t-detail">Google Workspace統合。録画→YouTube自動アップロードの連携が容易</td>
+      </tr>
+      <tr>
+        <td class="t-name">参加者フォルダ</td>
+        <td class="t-decided">ID+実名</td>
+        <td class="t-detail">プライバシーとアクセシビリティのバランス。例: P001_山田太郎</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ===== SEC 4: DOCUMENT PROGRESS ===== -->
+<div class="section" id="documents">
+  <div class="section-eyebrow" style="color:var(--amber)">Section 04</div>
+  <div class="action-title">Document Progress</div>
+  <p class="section-lead">84件のドキュメントをTier別・カテゴリ別に進捗管理。現在Phase 5でTier 1（47件）を優先作成中。</p>
+
+  <!-- Tier 1 -->
+  <div class="tier-header">
+    <span class="tier-badge t1">Tier 1 &mdash; Must Have</span>
+    <span class="tier-summary">47件 &middot; パイロット実施に必須</span>
+  </div>
+  <div class="prog-section">
+    <div class="prog-row">
+      <div class="prog-cat">A: 法務</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 6</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">B: スクリーニング</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 6</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">C: オンボーディング</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 6</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">D: DAY講義</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 16</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">E: パーソナル</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 5</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">F: 運営</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 8</div>
+    </div>
+  </div>
+
+  <!-- Tier 2 -->
+  <div class="tier-header tier-dimmed">
+    <span class="tier-badge t2">Tier 2 &mdash; Should Have</span>
+    <span class="tier-summary">21件 &middot; パイロット品質向上</span>
+  </div>
+  <div class="prog-section tier-dimmed">
+    <div class="prog-row">
+      <div class="prog-cat">G: グループ</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 6</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">H: テクノロジー</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 4</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">I: ストレングス</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 5</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">J: マーケ</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 6</div>
+    </div>
+  </div>
+
+  <!-- Tier 3 -->
+  <div class="tier-header tier-dimmed">
+    <span class="tier-badge t3">Tier 3 &mdash; Nice to Have</span>
+    <span class="tier-summary">16件 &middot; スケール時に整備</span>
+  </div>
+  <div class="prog-section tier-dimmed">
+    <div class="prog-row">
+      <div class="prog-cat">K: アルムナイ</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 7</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">L: イテレーション</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 3</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">M: 創業者</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 3</div>
+    </div>
+    <div class="prog-row">
+      <div class="prog-cat">N: エビデンス</div>
+      <div class="prog-bar-wrap"><div class="prog-bar-fill zero" style="width:0%"></div></div>
+      <div class="prog-count">0 / 3</div>
+    </div>
+  </div>
+
+  <div class="callout amber">
+    <div class="callout-label">Document Strategy</div>
+    <p>Tier 1 の47件をパイロット開始前に完成させる。1件あたり平均2-3時間、AI活用で効率化。カテゴリD（DAY講義16件）が最大ボリューム。</p>
+  </div>
+</div>
+
+<!-- ===== SEC 5: NEXT ACTIONS ===== -->
+<div class="section" id="next-actions">
+  <div class="section-eyebrow" style="color:var(--red)">Section 05</div>
+  <div class="action-title">Next Actions</div>
+  <p class="section-lead">直近で取り組むべきアクションの優先リスト。</p>
+
+  <div class="action-list">
+    <div class="action-item">
+      <div class="action-priority p1">P1</div>
+      <div class="action-text">
+        <strong>カテゴリA: 法務ドキュメント作成</strong>
+        <span>利用規約・プライバシーポリシー・参加同意書・免責事項・キャンセルポリシー・NDA の6件。法的リスクの最小化が最優先。</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-priority p1">P1</div>
+      <div class="action-text">
+        <strong>カテゴリB: スクリーニングツール整備</strong>
+        <span>申込フォーム・事前面談スクリプト・適性チェックリスト・受入基準書。安全な参加者選定のためパイロット前に必須。</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-priority p1">P1</div>
+      <div class="action-text">
+        <strong>カテゴリD: DAY 1-2 講義資料作成</strong>
+        <span>DAY 1「ADHD脳の取扱説明書」・DAY 2「強みの発掘ワークショップ」。プログラム冒頭の最重要コンテンツ。</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-priority p2">P2</div>
+      <div class="action-text">
+        <strong>カテゴリC: オンボーディング設計</strong>
+        <span>ウェルカムキット・初回セットアップガイド・バディマッチングルール。参加者の第一印象を左右。</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-priority p2">P2</div>
+      <div class="action-text">
+        <strong>カテゴリF: 運営マニュアル作成</strong>
+        <span>コーチ向けセッション運営ガイド・緊急対応プロトコル・進捗管理テンプレート。</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-priority p3">P3</div>
+      <div class="action-text">
+        <strong>パイロット参加者の事前リクルーティング</strong>
+        <span>SNS・知人ネットワーク経由で6-8名の候補者リスト作成。スクリーニングツール完成後に正式募集開始。</span>
+      </div>
+    </div>
+    <div class="action-item">
+      <div class="action-priority p3">P3</div>
+      <div class="action-text">
+        <strong>LP（ランディングページ）のワイヤーフレーム</strong>
+        <span>Phase 7 に先行して、コンセプト・プログラム概要・申込動線のワイヤーフレームを準備。</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /page-layout -->
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <p style="font-size:14px;font-weight:600;color:var(--text-dim);margin-bottom:12px">ADHD特化コーチング &mdash; プロジェクトダッシュボード</p>
+  <p>
+    <a href="adhd-service-design.html">理想形設計書</a> &middot;
+    <a href="adhd-careerspi-ronten.html">論点整理</a> &middot;
+    <a href="adhd-mvp-design.html">MVP設計書</a> &middot;
+    <a href="adhd-doc-inventory.html">ドキュメント準備マップ</a> &middot;
+    <a href="https://tkonishikawa.github.io/adhd-project/">Research Hub</a>
+  </p>
+  <p style="margin-top:10px;font-size:11px;color:var(--text-muted)">Last updated: 2026-02-27</p>
+</div>
+
+</div><!-- /container -->
+</body>
+</html>
