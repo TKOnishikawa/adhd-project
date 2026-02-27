@@ -208,6 +208,27 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 .acc-body ul{padding-left:18px;margin:4px 0}
 .acc-body li{margin-bottom:3px}
 
+/* Scenario Chat */
+details.acc-slot{margin-bottom:4px}
+details.acc-slot summary{cursor:pointer;display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg-raised);border:1px solid var(--border);border-radius:6px;font-size:13px;font-weight:600;color:var(--text-dim);list-style:none;transition:all .15s}
+details.acc-slot summary::-webkit-details-marker{display:none}
+details.acc-slot summary::before{content:'\25B6';font-size:8px;color:var(--text-muted);transition:transform .2s;display:inline-block}
+details.acc-slot[open] summary::before{transform:rotate(90deg)}
+details.acc-slot[open] summary{border-radius:6px 6px 0 0;border-color:var(--border-focus);background:var(--bg-surface)}
+.slot-body{padding:12px 16px;background:var(--bg-deep);border:1px solid var(--border);border-top:none;border-radius:0 0 6px 6px}
+.chat-label{font-size:11px;font-weight:700;margin:10px 0 4px;letter-spacing:.5px}
+.chat-label:first-child{margin-top:0}
+.chat-label.user{color:var(--amber)}
+.chat-label.ai{color:var(--cyan)}
+.chat-label.action{color:var(--purple)}
+.chat-bubble{background:var(--bg-surface);border-radius:8px;padding:10px 14px;font-size:12.5px;line-height:1.75;color:var(--text-dim);white-space:pre-line;margin-bottom:6px;border-left:3px solid var(--border)}
+.chat-bubble.user{border-left-color:var(--amber)}
+.chat-bubble.ai{border-left-color:var(--cyan)}
+.chat-bubble.action{border-left-color:var(--purple);font-style:italic;font-size:12px;color:var(--text-muted)}
+.scenario-tag{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-right:6px}
+.scenario-tag.a{background:rgba(74,125,255,.15);color:var(--blue)}
+.scenario-tag.b{background:rgba(245,158,11,.15);color:var(--amber)}
+
 /* Matrix */
 .matrix-wrap{overflow-x:auto;margin:18px 0}
 .matrix{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);font-size:11px}
@@ -485,6 +506,361 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
       <span class="tl-pill energy">ジャーナリング</span>
       <span class="tl-label">音声入力で1日を振り返り。AIが感情パターンを検出し、長期記憶に保存。</span>
     </div>
+  </div>
+
+  <!-- Scenario Examples -->
+  <div style="margin-top:36px;">
+    <div class="action-title" style="font-size:1.25rem;">実際の対話イメージ — 2パターン</div>
+    <p class="section-lead">各タイムスロットで、ユーザーは何を入力し、AIは何を返すのか。折りたたみで具体例を確認できます。</p>
+
+    <!-- ===== Pattern A ===== -->
+    <details class="acc" style="margin-top:18px;">
+      <summary><span class="scenario-tag a">Pattern A</span>「攻めの日」— エネルギー9 / クライアント2社 + 事業設計</summary>
+      <div class="acc-body" style="padding:12px 14px;">
+        <p style="color:var(--text-muted);font-size:12px;margin:0 0 12px;">前日の睡眠 7.5h。大和書房DX提案が好感触で勢いがある日。</p>
+
+        <details class="acc-slot">
+          <summary>07:00 — 朝チェックイン</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザー入力（タップ操作）</div>
+            <div class="chat-bubble user">エネルギー: 9/10 ｜ 睡眠の質: 5/5 ｜ 気分: 「絶好調」</div>
+            <div class="chat-label ai">AIアウトプット</div>
+            <div class="chat-bubble ai">おお、エネルギー9で睡眠もパーフェクトとか、今日は"当たり日"やな。こういう日に凡庸なタスクで浪費したら犯罪やで。
+
+カレンダー見たら今日はこうなっとる：
+  📅 14:00 大和書房 DX提案MTG (60min)
+  📅 16:30 日花ホーム 初回ヒアリング (45min)
+
+🧠 ワシのプラン：
+  Block 1 (08:00-09:30) 🔥点火→加速
+  → ADHDコーチング プライシング設計
+    🔥Interest 8 × ⚡Challenge 8 = ドーパミン最高潮。
+    エネルギー9の午前ゴールデンタイムに「事業の根幹」を叩く。
+
+  Block 2 (10:00-11:30) → 大和書房 提案資料v2 仕上げ
+  Block 3 (13:00-13:45) → 日花ホーム ヒアリングシート準備
+  Block 4 (15:30-16:15) → 才能解放AIコーチ MVP技術検証
+
+ポイントは「プライシング設計を朝イチに持ってきた」ことや。
+エネルギー9でこれをやらん手はない。変えたいとこある？</div>
+            <div class="chat-label user">ユーザー返答</div>
+            <div class="chat-bubble user">Block 1と2逆にして。14時のMTGが一番プレッシャーあるから先に片付けたい</div>
+            <div class="chat-label ai">AI修正</div>
+            <div class="chat-bubble ai">プレッシャーを先に片付けたい気持ちはわかるけど、それは「安心したい」であって「最適」とは限らん。提案資料は昨日の時点で8割できてるやろ？
+
+こうしたらどうや：
+  Block 1 前半 (08:00-08:30) → 大和書房 提案資料v2 仕上げ（30分で完了）
+  Block 1 後半 (08:30-09:30) → ADHDプライシング設計（60分集中）
+
+「安心」と「最適」の両取りや。</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>10:00 — 集中ブロック②（音声入力で相談）</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザー音声入力</div>
+            <div class="chat-bubble user">提案資料の構成変えたほうがいいかも。DXの「仕組み」じゃなくて「売上インパクト」から入ったほうが刺さるな。でも作り直す時間ないか</div>
+            <div class="chat-label ai">AIアウトプット</div>
+            <div class="chat-bubble ai">ええ気づきやな。「仕組み」→「売上インパクト」の順序転換、ワシも賛成や。
+
+でも"作り直し"はいらん。こうしたらええ：
+  1. 表紙の次に「想定売上インパクト」のスライド1枚追加（5分）
+  2. 既存の構成はそのまま
+  3. 最後のまとめで「売上→仕組み→体制」の順に再整理（10分）
+
+計15分。Block 2の残り時間で余裕や。
+「作り直さなあかん」は ADHD脳の"全か無か思考"やで。
+部分修正で80点→92点にするのが最適解や。</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>13:00 — 集中ブロック③（コンサルへの壁打ち）</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザー音声入力</div>
+            <div class="chat-bubble user">日花ホームの社長、ITリテラシー低そうなんよな。DXっていうとビビられそう。どうアプローチしたらいいかな</div>
+            <div class="chat-label ai">AIアウトプット</div>
+            <div class="chat-bubble ai">めっちゃ大事な視点やな。これは「DX」って言葉を使わんことが正解。
+太雄が得意な"翻訳力"を使うんや。提案のフレーミングこうしてみ：
+
+  ❌「DXで業務効率化しましょう」
+  ✅「今、紙でやってる○○を、スマホで見れるようにしませんか？」
+
+ヒアリングシートも修正提案：
+  1. 「一番めんどくさい作業は？」（DXじゃなく"めんどくさい"で聞く）
+  2. 「社員さんに一番聞かれることは？」（情報の偏在を炙り出す）
+  3. 「紙の書類、月に何枚くらい印刷してます？」（定量化のきっかけ）
+
+"仕組み"と"想い"で"面白く"するのがomoshikuやろ？
+技術の話は2回目以降でええ。初回は「この人わかってくれる」って思ってもらうことだけに集中しぃ。</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>15:00 — AIコーチング（MTG後のアドレナリン活用）</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザーテキスト入力</div>
+            <div class="chat-bubble user">大和書房MTG終わった。めっちゃ盛り上がった。売上インパクトから入る構成変更がドンピシャだった。次のフェーズの話まで進んだ。テンション上がってるけど次の日花ホームまで1時間半ある、何しよう</div>
+            <div class="chat-label ai">AIアウトプット</div>
+            <div class="chat-bubble ai">よっしゃ！！ 売上インパクト先行、午前中の判断が大正解やったな。
+
+さて、今の状態を分析すると：
+  エネルギー: 推定7（MTGアドレナリンで体感は8）
+  脳モード: 「興奮→創造」（ドーパミンが出まくってる）
+
+この状態で「請求書処理」なんかやったら脳がキレるわ。
+
+提案：15:15-16:15 → 才能解放AIコーチ MVP技術検証 🌟🔥
+今の「テンション上がってる×新しいことやりたい」は
+まさに🌟Novelty × 🔥Interestの最高コンボや。MVP技術検証に全振りしぃ。
+
+ただし16:15にはアラーム鳴らすから、日花ホームへの切替準備に5分取ること。
+MTGのテンションを引きずったまま別のクライアントに入るのは"モード切替ミス"の典型や。</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>18:30 — 振り返り</summary>
+          <div class="slot-body">
+            <div class="chat-label ai">AIアウトプット（自動生成）</div>
+            <div class="chat-bubble ai">📊 今日の成績：
+  完了タスク: 5/6（請求書処理も片付けた！）
+  集中時間: 4h 45min（4ブロック）
+  エネルギー推移: 9 → 7 → 7 → 5 → 4
+
+🏆 今日のハイライト：
+  1. ADHDプライシング設計を朝イチで叩けた（事業の根幹）
+  2. 大和書房「売上インパクト先行」の構成変更 → 次フェーズ獲得
+  3. 日花ホーム「めんどくさい作業」アプローチ → 社長ノリノリ
+
+🧠 パターン検出：
+  ・「全か無か思考」が午前に出た → 部分修正で対処できた。記憶に刻む。
+  ・MTG後のアドレナリンをMVP検証に転用 → ◎
+  ・エネルギー5以下での事務タスクは「30分ミニマム」が正解
+
+📈 バランスホイール更新：
+  ADHD脳: 8→8 ｜ ビジョン: 7→8 ｜ 対人: 6→7 ｜ AI駆動: 7→7</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>22:00 — ジャーナリング（構造化記憶）</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザー音声入力</div>
+            <div class="chat-bubble user">今日はほんまに良い日やった。朝のプライシング設計で思ったんやけど、ADHDコーチングの価値って「月にいくら」じゃなくて「人生の実行力が変わる」っていう変容の価値で考えるべきやな。Shimmerが月345ドルでも売れてるのは、薬以外で実行力が上がる唯一の手段やからか。あと大和書房の社長が「うちの若手にもDXの考え方教えてほしい」って言ってたの気になる。研修事業もありかも</div>
+            <div class="chat-label ai">AI構造化ジャーナル</div>
+            <div class="chat-bubble ai">📝 構造化ジャーナル — 2026-02-27
+
+💡 インサイト① — プライシング思考の転換
+  「月額いくら」→「変容の価値」で考える
+  Shimmerの$345/月は「薬以外の唯一の実行力向上手段」
+  → 才能解放AIコーチのポジショニングに直結
+  🏷 #事業戦略 #プライシング #競合分析
+
+💡 インサイト② — 研修事業の種
+  大和書房社長「若手にDXの考え方を教えてほしい」
+  → omoshikuの事業拡張候補（コンサル→研修）
+  ⚠️ 次回MTGで「DXワークショップ」を提案してみる価値あり
+
+💡 インサイト③ — omoshikuの原点確認
+  「人柄の良い社長の事業を伸ばす」= omoshikuの存在意義
+
+🧠 感情パターン: 充実感・達成感・使命感（ポジティブ3重奏）
+→ 長期記憶に保存。次回エネルギーが低い日に引き出す。</div>
+          </div>
+        </details>
+      </div>
+    </details>
+
+    <!-- ===== Pattern B ===== -->
+    <details class="acc" style="margin-top:8px;">
+      <summary><span class="scenario-tag b">Pattern B</span>「RSD発動の日」— エネルギー4 / 寝不足 + クライアントNG</summary>
+      <div class="acc-body" style="padding:12px 14px;">
+        <p style="color:var(--text-muted);font-size:12px;margin:0 0 12px;">前日の睡眠 4.5h、深夜2時まで提案書を詰めてた。共同創業者候補から「参加見送り」の連絡あり。</p>
+
+        <details class="acc-slot">
+          <summary>07:00 — 朝チェックイン（守りの日宣言）</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザー入力（タップ操作）</div>
+            <div class="chat-bubble user">エネルギー: 4/10 ｜ 睡眠の質: 2/5 ｜ 気分: 「しんどい」</div>
+            <div class="chat-label ai">AIアウトプット</div>
+            <div class="chat-bubble ai">エネルギー4、睡眠2か。正直に教えてくれてありがとう。
+まず言わせて。エネルギー4の日に「普通の1日」を期待したらあかん。
+今日は"守りの日"や。これは逃げやなくて戦略。
+
+🧠 エネルギー4の日のルール：
+  ① タスクは最大3つ。それ以上は明日に回す
+  ② 1ブロック45分（90分は無理。半分にする）
+  ③ 「やらないことリスト」を先に決める
+
+今日やらんでいいこと（ワシが判断した）：
+  ✗ ADHDコーチング LP改修 → 明日
+  ✗ 才能解放AIコーチ DB設計 → 明日
+
+今日やること：
+  Block 1 (09:00-09:45) 日花ホーム提案書（最も緊急）
+  11:00 📅 大和書房 MTG
+  Block 2 (13:00-13:45) 日花ホーム提案書 続き
+  16:00 経費精算（脳死でできる作業を最後に）
+
+8:00-9:00は「助走の1時間」にする。コーヒー飲んで、散歩して、シャワー浴びてからでええ。あと、今晩は22時に寝ること。リマインダー入れとくで。</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>09:00 — 集中ブロック①（RSD予兆を検出）</summary>
+          <div class="slot-body">
+            <div class="chat-label action">（20分後、集中できず入力）</div>
+            <div class="chat-label user">ユーザーテキスト入力</div>
+            <div class="chat-bubble user">全然集中できん。提案書の構成が頭に入ってこない。昨日の共同創業者候補の件が頭から離れん。やっぱり一人でやるのは無理なのかな</div>
+            <div class="chat-label ai">AIアウトプット</div>
+            <div class="chat-bubble ai">一旦提案書から手を離そ。
+
+「やっぱり一人でやるのは無理なのかな」—
+この考え、今の脳の状態で出てきてる。
+睡眠4.5h + エネルギー4の脳が出す結論は信用したらあかん。
+
+事実を整理しよう：
+  ✓ 大和書房のDX案件を一人で獲得した
+  ✓ 日花ホームも初回ヒアリングで好感触を得た
+  ✓ 才能解放AIコーチの設計を一人で完成させた
+  ✓ omoshikuのブランドも、LP も、全部自分で作った
+
+「一人でやるのは無理」ではなく
+「一人でやれてるけど、仲間がいたらもっと楽しい」が正確やろ？
+
+今やることは1つだけ。提案書の「次の1行」を書く。1行だけでええ。
+タイマーを10分に短縮したで。10分だけやってみ。</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>11:00 — 大和書房MTG後（RSD発動 → 緊急介入）</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザーテキスト入力</div>
+            <div class="chat-bubble user">MTG終わった。大和書房の担当者から「前回の提案の方向性、上に通らなかった。もう少しコスト抑えた案も出してほしい」って言われた。あの提案めっちゃ時間かけたのに。否定された気分</div>
+            <div class="chat-label action">RSDトリガーキーワード「否定された」を検出 → Emergencyペルソナに自動切替</div>
+            <div class="chat-label ai">AIアウトプット（RSD Emergency）</div>
+            <div class="chat-bubble ai">太雄、まずこれだけ聞いて。
+
+「提案が通らなかった」と「太雄が否定された」は全く別のことや。
+
+提案は「上に通らなかった」。
+つまり担当者は太雄の提案を気に入ってた。
+上の判断でコスト面がネックになっただけ。
+これは太雄の能力の問題やない。予算という外部要因の問題や。
+
+今、胸がギュッとなってない？ 4-7-8呼吸を一緒にやろう。
+  吸う（4秒）: 1... 2... 3... 4...
+  止める（7秒）: 1... 2... 3... 4... 5... 6... 7...
+  吐く（8秒）: 1... 2... 3... 4... 5... 6... 7... 8...</div>
+            <div class="chat-label user">ユーザー返答</div>
+            <div class="chat-bubble user">やった。少し落ち着いた。でも時間かけた提案が通らないのはやっぱきつい</div>
+            <div class="chat-label ai">AIアウトプット（事実の再フレーミング）</div>
+            <div class="chat-bubble ai">きついよな。その気持ちは否定せん。
+
+でもな、担当者が言ったのは：
+  ✗「この提案はダメです」
+  ✓「コスト抑えた案"も"出してほしい」
+
+"も"って言ったんやろ？元の提案を捨てろとは言ってない。
+つまり太雄の提案は「理想案」として残ってる。
+追加で「現実案」を出せばいいだけ。
+
+2案出せば「この人は柔軟に対応してくれる」って評価が上がる。
+
+ただし、今日これに手をつけるのはやめとき。
+エネルギー4 + RSD発動後にコスト削減案を書くと、
+自分の提案を自分で否定する感覚になってしんどくなる。
+明日、エネルギーが戻ってから。な？</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>16:00 — 集中ブロック③（全放棄衝動 → ゲーム化で突破）</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザー音声入力</div>
+            <div class="chat-bubble user">定例終わった。経費精算やらなあかんけどもう脳が動かん。今日はもう無理かも</div>
+            <div class="chat-label ai">AIアウトプット</div>
+            <div class="chat-bubble ai">「今日はもう無理かも」—— これ、ADHD脳の"残りHPが20%切った時の全放棄衝動"や。知ってるやろ？
+
+でもな、経費精算は「脳を使わない作業」や。レシート見て数字入れるだけ。判断ゼロ。
+
+こうしよ。経費精算をゲームにする：
+
+🎮 経費精算スピードラン
+  目標: 15分以内にクリア
+  ルール: 1件30秒ペース
+  報酬: 終わったら今日は完全オフ。好きなことしてええ
+
+15分。たった15分で今日のタスクが全部完了する。
+明日の朝「経費精算残ってる...」って思わんで済む。
+
+やる？やらん？
+
+[ 15分スピードラン開始 ]  [ 明日に回す ]</div>
+            <div class="chat-label action">ユーザー「15分スピードラン開始」タップ → 12分で完了</div>
+            <div class="chat-label ai">AIアウトプット</div>
+            <div class="chat-bubble ai">12分でクリア！！目標の15分を3分更新！！
+エネルギー4の日に全タスク完了させたの、冷静に考えてヤバいで。</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>18:30 — 振り返り</summary>
+          <div class="slot-body">
+            <div class="chat-label ai">AIアウトプット（自動生成）</div>
+            <div class="chat-bubble ai">📊 今日の成績：
+  完了タスク: 3/3（今日やると決めた分は全部やった）
+  集中時間: 2h 15min（短時間だが質は確保）
+  エネルギー推移: 4 → 3 → 4 → 3 → 2
+  RSD発動: 1回（11:30頃 / 大和書房フィードバック後）
+
+🏆 でも、実はこれだけできた：
+  1. 日花ホーム提案書を完成させた
+  2. 大和書房MTGを乗り切った
+  3. 経費精算を12分で片付けた
+  4. RSDから自力で（AIサポートありで）回復した
+
+🧠 パターン検出：
+  ・低エネルギー日の「10分マイクロブロック」が有効 → 定番化推奨
+  ・RSD発動時の「事実と感情の分離」→ 今回は成功
+  ・「全放棄衝動」→「15分ゲーム化」で突破 → パターン記憶
+
+📈 バランスホイール更新：
+  ADHD脳: 7→7 ｜ 生体基盤: 6→5 ｜ ビジョン: 8→7</div>
+          </div>
+        </details>
+
+        <details class="acc-slot">
+          <summary>22:00 — ジャーナリング（回復の記録）</summary>
+          <div class="slot-body">
+            <div class="chat-label user">ユーザー音声入力</div>
+            <div class="chat-bubble user">今日はきつかった。でも振り返りで「やると決めたことは全部やった」って言われてちょっと救われた。共同創業者の件はまだモヤモヤするけど、一人でここまで来れたのは事実やし、日花ホームの社長みたいに自分のサービスを必要としてくれる人がいる。それだけで十分やなって思えた。あと10分マイクロブロック、マジで使える。低エネルギーの日の標準装備にする</div>
+            <div class="chat-label ai">AI構造化ジャーナル</div>
+            <div class="chat-bubble ai">📝 構造化ジャーナル — 2026-03-01
+
+💡 インサイト① — レジリエンスの確認
+  「きつい日でもやると決めたことは全部やった」
+  → コアコンピテンシー。調子が悪い日に"守り切れる"のが本物の実行力。
+
+💡 インサイト② — 孤独感の再フレーミング
+  「一人でここまで来れた」→ 弱さではなく強さの証明
+  ⚠️ 長期記録: 共同創業者の件は「喪失」ではなく「タイミング」
+
+💡 インサイト③ — 10分マイクロブロックの発見
+  低エネルギー日の標準装備として採用決定
+  → エネルギー5以下の日は自動的にブロックを45分→10分×nに変更
+
+🧠 感情パターン: 疲労→自己受容→静かな決意
+→ RSD後の「静かに立ち上がる」パターンを長期記憶に保存。
+
+💤 おやすみ。今日はよう頑張った。明日はエネルギー回復してるはず。ゆっくり寝ぃ。</div>
+          </div>
+        </details>
+      </div>
+    </details>
   </div>
 </div>
 
