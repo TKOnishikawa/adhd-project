@@ -1,0 +1,1284 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>才能解放AIコーチ — 企画書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg-base:#08080d;--bg-surface:#101018;--bg-raised:#181824;--bg-top:#222234;--border:rgba(255,255,255,.06);--border-focus:rgba(255,255,255,.12);--text:#eaeaf2;--text-dim:#9898ae;--text-muted:#58586e;--blue:#4a7dff;--cyan:#22d3ee;--green:#34d399;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;--pink:#f472b6;--grad-hero:linear-gradient(135deg,#4a7dff 0%,#22d3ee 100%);--grad-success:linear-gradient(135deg,#34d399 0%,#22d3ee 100%);--grad-warn:linear-gradient(135deg,#ef4444 0%,#f59e0b 100%);--grad-vision:linear-gradient(135deg,#a78bfa 0%,#f472b6 100%);--shadow-sm:0 1px 3px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);--shadow-lg:0 8px 32px rgba(0,0,0,.6);--font-sans:'Noto Sans JP',-apple-system,sans-serif;--font-mono:'JetBrains Mono','Fira Code',monospace;--font-heading:'Sora','Noto Sans JP',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--bg-base);color:var(--text);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+.page-layout{display:flex;gap:32px;align-items:flex-start}
+.main-content{flex:1;min-width:0}
+.mono{font-family:var(--font-mono);font-weight:600}
+.headline{font-family:'Playfair Display',Georgia,serif;font-weight:900;letter-spacing:-.02em}
+
+/* TOC Sidebar */
+.toc-sidebar{position:sticky;top:24px;width:250px;flex-shrink:0;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:16px;max-height:calc(100vh - 48px);overflow-y:auto}
+.toc-sidebar h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:3px 0;line-height:1.4;transition:color .15s}
+.toc-sidebar a:hover{color:var(--cyan)}
+.toc-num{color:var(--text-muted);margin-right:4px;font-family:var(--font-mono);font-size:10px}
+.toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-part:first-child{border-top:none;margin-top:0;padding-top:0}
+@media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
+
+/* Hero */
+.hero{padding:72px 0 20px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(74,125,255,.05) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-block;padding:5px 14px;border:1px solid rgba(74,125,255,.25);border-radius:20px;font-size:12px;font-weight:700;color:var(--blue);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;background:rgba(74,125,255,.04)}
+.hero h1{font-size:36px;font-weight:900;line-height:1.4;margin-bottom:14px;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--text-dim);max-width:640px;margin:0 auto 28px;line-height:1.9}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--text-muted)}
+
+/* Sections */
+.section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px}
+.action-title{font-size:24px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
+.section-lead{font-size:15px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
+
+/* Part Divider */
+.part-divider{padding:32px 0 8px;text-align:center}
+.part-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.part-badge.a{border-color:var(--red);color:var(--red)}
+.part-badge.b{border-color:var(--cyan);color:var(--cyan)}
+.part-badge.c{border-color:var(--green);color:var(--green)}
+.part-badge.d{border-color:var(--amber);color:var(--amber)}
+.part-badge.e{border-color:var(--purple);color:var(--purple)}
+.part-badge.f{border-color:var(--blue);color:var(--blue)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 20px}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.kpi-grid{grid-template-columns:1fr}}
+.kpi-card{background:var(--bg-surface);border-radius:12px;padding:20px 14px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:transform .15s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-num{font-family:var(--font-mono);font-size:32px;font-weight:600;margin-bottom:4px}
+.kpi-num.warn{background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.good{background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.blue{background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.vision{background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-label{font-size:13px;color:var(--text-dim);font-weight:500;line-height:1.6}
+
+/* Table */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:18px 0;font-size:13px}
+.tbl thead th{background:var(--bg-raised);padding:10px 14px;font-size:11px;font-weight:700;text-align:left;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;background:var(--bg-surface)}
+.tbl tbody tr:last-child td{border-bottom:none}
+.t-name{font-weight:600;color:var(--text)}
+.t-good{color:var(--green);font-weight:500}
+.t-warn{color:var(--amber);font-weight:500}
+.t-bad{color:var(--red);font-weight:500}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:18px 0}
+@media(max-width:600px){.card-grid{grid-template-columns:1fr}}
+.card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm);transition:transform .15s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.card p{font-size:13px;color:var(--text-dim);line-height:1.8}
+.card-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px}
+.card-badge.green{background:rgba(52,211,153,.08);color:var(--green)}
+.card-badge.blue{background:rgba(74,125,255,.08);color:var(--blue)}
+.card-badge.amber{background:rgba(245,158,11,.08);color:var(--amber)}
+.card-badge.purple{background:rgba(167,139,250,.08);color:var(--purple)}
+.card-badge.pink{background:rgba(244,114,182,.08);color:var(--pink)}
+.card-badge.red{background:rgba(239,68,68,.08);color:var(--red)}
+.card-badge.cyan{background:rgba(34,211,238,.08);color:var(--cyan)}
+
+/* Callouts */
+.sowhat{background:rgba(239,68,68,.03);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.sowhat-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.sowhat p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.sowhat strong{color:#f87171}
+.insight{background:rgba(52,211,153,.03);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.insight-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.insight p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.insight strong{color:var(--green)}
+.note{background:rgba(74,125,255,.03);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.note-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.note p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.note strong{color:var(--blue)}
+
+/* Issue Cards */
+.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+@media(max-width:700px){.issue-grid{grid-template-columns:1fr}}
+.issue-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:22px;border-left:4px solid;box-shadow:var(--shadow-sm)}
+.issue-card.critical{border-left-color:var(--red)}
+.issue-card.high{border-left-color:var(--amber)}
+.issue-card.medium{border-left-color:var(--blue)}
+.issue-severity{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;display:inline-block;margin-bottom:8px}
+.issue-card.critical .issue-severity{background:rgba(239,68,68,.12);color:var(--red)}
+.issue-card.high .issue-severity{background:rgba(245,158,11,.12);color:var(--amber)}
+.issue-card.medium .issue-severity{background:rgba(74,125,255,.12);color:var(--blue)}
+.issue-card h4{font-size:16px;font-weight:700;margin-bottom:6px}
+.issue-card p{font-size:14px;color:var(--text-dim);line-height:1.8}
+
+/* Success Cards */
+.success-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:20px 0}
+@media(max-width:900px){.success-grid{grid-template-columns:1fr}}
+.success-card{background:var(--bg-surface);border:1px solid rgba(52,211,153,.18);border-radius:12px;padding:24px;position:relative;box-shadow:var(--shadow-sm)}
+.success-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--grad-success);border-radius:12px 12px 0 0}
+.sc-badge{display:inline-block;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--green);background:rgba(52,211,153,.08);padding:3px 10px;border-radius:4px;margin-bottom:10px}
+.success-card h4{font-size:17px;font-weight:700;margin-bottom:8px}
+.success-card p{font-size:14px;color:var(--text-dim);line-height:1.8}
+
+/* Layer Stack */
+.layer-stack{display:flex;flex-direction:column;gap:14px;margin:20px 0}
+.layer{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:24px;position:relative;box-shadow:var(--shadow-sm)}
+.layer-badge{position:absolute;top:-9px;left:18px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 10px;border-radius:4px}
+.layer-badge.l1{background:var(--blue);color:#fff}
+.layer-badge.l2{background:var(--cyan);color:#000}
+.layer-badge.l3{background:var(--green);color:#000}
+.layer-badge.l4{background:var(--purple);color:#fff}
+.layer h4{font-size:17px;font-weight:700;margin-bottom:6px;margin-top:4px}
+.layer p{font-size:14px;color:var(--text-dim);margin-bottom:10px;line-height:1.8}
+.tech-pills{display:flex;flex-wrap:wrap;gap:5px}
+.tech-pill{font-size:12px;font-family:var(--font-mono);padding:3px 9px;border-radius:5px;background:var(--bg-top);border:1px solid var(--border);color:var(--text-muted)}
+
+/* Hub Architecture */
+.arch-hub{background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;padding:36px 24px;margin:20px 0;text-align:center;box-shadow:var(--shadow-sm)}
+.hub-tier{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0}
+.hub-connector{font-family:var(--font-mono);font-size:18px;color:var(--text-muted);margin:6px 0}
+.hub-core{display:inline-block;background:rgba(34,211,238,.06);border:2px solid rgba(34,211,238,.35);border-radius:14px;padding:16px 32px;margin:8px 0}
+.hub-core-name{font-size:17px;font-weight:800;color:var(--cyan)}
+.hub-core-sub{font-size:13px;color:var(--text-dim)}
+.hub-node{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid;text-align:center;min-width:88px}
+.hub-node.primary{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.25);color:var(--green)}
+.hub-node.secondary{background:var(--bg-raised);border-color:var(--border);color:var(--text-dim)}
+.hub-node.migrate{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.25);color:var(--amber);font-weight:600}
+.hub-node.mcp{background:rgba(74,125,255,.06);border-color:rgba(74,125,255,.25);color:var(--blue);font-weight:600}
+.hub-node .node-sub{font-size:11px;color:var(--text-muted);display:block;margin-top:1px}
+
+/* Timeline */
+.timeline{display:grid;grid-template-columns:72px 1fr;gap:0;margin:18px 0}
+.tl-time{font-family:var(--font-mono);font-size:12px;color:var(--text-muted);padding:10px 0;border-right:2px solid var(--border);text-align:right;padding-right:12px}
+.tl-content{padding:8px 0 8px 16px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;border-bottom:1px solid var(--border)}
+.tl-pill{font-size:11px;padding:4px 10px;border-radius:5px;font-weight:600;white-space:nowrap}
+.tl-pill.energy{background:rgba(245,158,11,.10);color:var(--amber)}
+.tl-pill.ai{background:rgba(34,211,238,.10);color:var(--cyan)}
+.tl-pill.focus{background:rgba(74,125,255,.10);color:var(--blue)}
+.tl-pill.rest{background:rgba(167,139,250,.10);color:var(--purple)}
+.tl-pill.review{background:rgba(52,211,153,.10);color:var(--green)}
+.tl-label{font-size:13px;color:var(--text-dim);margin-left:4px}
+
+/* Phase Card */
+.phase-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+.phase-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.phase-policy{font-size:13px;color:var(--cyan);font-weight:600;margin-bottom:8px;padding:5px 12px;background:rgba(34,211,238,.04);border-radius:6px;display:inline-block}
+.phase-card>p{font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.8}
+.phase-items{display:flex;flex-direction:column;gap:4px}
+.phase-item{font-size:12px;color:var(--text-dim);padding:5px 10px;background:var(--bg-raised);border-radius:5px;border:1px solid var(--border);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.pi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.pi-dot.g{background:var(--green)}
+.pi-dot.c{background:var(--cyan)}
+.pi-dot.b{background:var(--blue)}
+.pi-dot.p{background:var(--purple)}
+.pi-dot.r{background:var(--red)}
+
+/* Shift Cards */
+.shift-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:14px;margin:20px 0}
+.shift-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.shift-num{font-family:var(--font-mono);font-size:24px;font-weight:600;background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent;margin-bottom:4px}
+.shift-card h4{font-size:15px;font-weight:700;margin-bottom:8px}
+.shift-before,.shift-after{font-size:13px;padding:7px 11px;border-radius:7px;margin-bottom:5px;line-height:1.6}
+.shift-before{background:rgba(239,68,68,.05);border-left:3px solid var(--red);color:#f87171}
+.shift-after{background:rgba(34,211,238,.05);border-left:3px solid var(--cyan);color:var(--cyan)}
+
+/* Vision Card */
+.vision-card{background:linear-gradient(135deg,rgba(74,125,255,.04) 0%,rgba(167,139,250,.04) 100%);border:1px solid rgba(167,139,250,.18);border-radius:12px;padding:24px;text-align:center;margin-top:16px}
+.vision-card h3{font-size:18px;font-weight:700;margin-bottom:10px;background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.vision-card p{font-size:14px;color:var(--text-dim);margin-bottom:12px}
+.vision-items{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+.vision-item{padding:8px 16px;border-radius:8px;background:var(--bg-surface);border:1px solid var(--border);font-size:13px;color:var(--text-dim)}
+
+/* Accordion */
+details.acc{margin-bottom:6px}
+details.acc summary{cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;color:var(--text);list-style:none;transition:all .15s}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::before{content:'\25B6';font-size:9px;color:var(--text-muted);transition:transform .2s}
+details.acc[open] summary::before{transform:rotate(90deg)}
+details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-raised);border-radius:8px 8px 0 0}
+.acc-body{padding:16px 20px;background:var(--bg-surface);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;font-size:13px;line-height:1.8;color:var(--text-dim)}
+.acc-body h5{font-size:12px;font-weight:700;color:var(--cyan);margin:12px 0 4px;letter-spacing:1px;text-transform:uppercase}
+.acc-body h5:first-child{margin-top:0}
+.acc-body ul{padding-left:18px;margin:4px 0}
+.acc-body li{margin-bottom:3px}
+
+/* Matrix */
+.matrix-wrap{overflow-x:auto;margin:18px 0}
+.matrix{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);font-size:11px}
+.matrix thead th{background:var(--bg-raised);padding:8px 6px;font-weight:700;text-align:center;letter-spacing:.5px;color:var(--text-muted);border-bottom:1px solid var(--border);white-space:nowrap}
+.matrix thead th:first-child{text-align:left;padding-left:12px;min-width:100px}
+.matrix tbody td{padding:6px;text-align:center;border-bottom:1px solid var(--border);background:var(--bg-surface)}
+.matrix tbody td:first-child{text-align:left;font-weight:600;color:var(--text);padding-left:12px}
+.matrix tbody tr:last-child td{border-bottom:none}
+.m-a{color:var(--green);font-weight:700}
+.m-b{color:var(--amber)}
+.m-x{color:var(--text-muted)}
+
+/* Pyramid */
+.pyramid{display:flex;flex-direction:column;align-items:center;gap:8px;margin:20px 0}
+.pyramid-tier{border-radius:10px;padding:16px 24px;text-align:center;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.pyramid-tier h4{font-size:15px;font-weight:700;margin-bottom:4px}
+.pyramid-tier p{font-size:12px;color:var(--text-dim);line-height:1.6}
+
+/* Radar Chart (SVG inline) */
+.radar-container{display:flex;justify-content:center;margin:20px 0}
+
+/* Cycle Diagram */
+.cycle{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:20px 0;align-items:center}
+.cycle-step{background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:12px 16px;text-align:center;min-width:120px;box-shadow:var(--shadow-sm)}
+.cycle-step .step-num{font-family:var(--font-mono);font-size:20px;font-weight:700;margin-bottom:2px}
+.cycle-step .step-name{font-size:12px;font-weight:600;margin-bottom:2px}
+.cycle-step .step-desc{font-size:11px;color:var(--text-dim)}
+.cycle-arrow{font-family:var(--font-mono);font-size:20px;color:var(--text-muted)}
+
+/* Comparison */
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0}
+@media(max-width:600px){.comparison{grid-template-columns:1fr}}
+.comp-side{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.comp-side h4{font-size:15px;font-weight:700;margin-bottom:10px}
+.comp-side ul{list-style:none;padding:0}
+.comp-side li{font-size:13px;color:var(--text-dim);padding:4px 0;line-height:1.6}
+
+/* Discussion Card */
+.disc-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px;margin:20px 0}
+.disc-card{background:var(--bg-surface);border:1px solid rgba(244,114,182,.15);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.disc-card h4{font-size:15px;font-weight:700;color:var(--pink);margin-bottom:8px}
+.disc-card p{font-size:13px;color:var(--text-dim);line-height:1.8}
+.disc-opt{font-size:12px;color:var(--text-muted);margin-top:8px;padding-top:8px;border-top:1px solid var(--border)}
+
+/* Evidence Badges */
+.ev{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:3px;vertical-align:middle;margin-left:4px}
+.ev.rct{background:rgba(52,211,153,.12);color:var(--green)}
+.ev.meta{background:rgba(74,125,255,.12);color:var(--blue)}
+.ev.pilot{background:rgba(245,158,11,.12);color:var(--amber)}
+.ev.expert{background:rgba(167,139,250,.12);color:var(--purple)}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0 28px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+.footer a{color:var(--blue);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<div class="hero">
+  <div class="hero-badge">Business Proposal v1.0</div>
+  <h1>才能解放AIコーチ</h1>
+  <p class="hero-sub">ADHDの脳を科学した、実行支援AIコーチ。<br>バランスホイール × ドーパミン・スケジューリング × 個人OS統合で、<br>あなたの才能を解き放つ。</p>
+  <div class="hero-meta">
+    <span>omoshiku Inc.</span>
+    <span>|</span>
+    <span>2026-02-27</span>
+    <span>|</span>
+    <span>6調査 + 市場分析完了</span>
+    <span>|</span>
+    <span><a href="sainou-coach-tech-spec.html" style="color:var(--cyan);text-decoration:none">技術仕様書 &rarr;</a></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LAYOUT ═══════════════════════ -->
+<div class="page-layout">
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar">
+  <h3>Contents</h3>
+  <div class="toc-part">Part 0 — Why</div>
+  <a href="#s01"><span class="toc-num">01</span> Problem</a>
+  <a href="#s02"><span class="toc-num">02</span> Market Opportunity</a>
+  <div class="toc-part">Part 1 — What</div>
+  <a href="#s03"><span class="toc-num">03</span> Product Vision</a>
+  <a href="#s04"><span class="toc-num">04</span> A Day with AI Coach</a>
+  <a href="#s05"><span class="toc-num">05</span> Core Features</a>
+  <a href="#s06"><span class="toc-num">06</span> Unique Algorithms</a>
+  <div class="toc-part">Part 2 — How</div>
+  <a href="#s07"><span class="toc-num">07</span> Tech Architecture</a>
+  <a href="#s08"><span class="toc-num">08</span> AI Hybrid Brain</a>
+  <a href="#s09"><span class="toc-num">09</span> Data Flow</a>
+  <a href="#s10"><span class="toc-num">10</span> ADHD UX Principles</a>
+  <div class="toc-part">Part 3 — When</div>
+  <a href="#s11"><span class="toc-num">11</span> MVP Roadmap</a>
+  <a href="#s12"><span class="toc-num">12</span> Feature Roadmap</a>
+  <a href="#s13"><span class="toc-num">13</span> Prove &rarr; Replicate</a>
+  <div class="toc-part">Part 4 — How Much</div>
+  <a href="#s14"><span class="toc-num">14</span> Cost Structure</a>
+  <a href="#s15"><span class="toc-num">15</span> Revenue Model</a>
+  <a href="#s16"><span class="toc-num">16</span> 5-Year P&amp;L</a>
+  <div class="toc-part">Part 5 — Edge</div>
+  <a href="#s17"><span class="toc-num">17</span> Risk Matrix</a>
+  <a href="#s18"><span class="toc-num">18</span> Why We Win</a>
+  <div class="toc-part">Appendix</div>
+  <a href="#appA">Research Summary</a>
+  <a href="#appB">Competitive Matrix</a>
+  <a href="#appC">Tech Spec &rarr;</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- ═══════════════════ PART 0: WHY ═══════════════════ -->
+<div class="part-divider">
+  <span class="part-badge a">Part 0 — Why Now</span>
+</div>
+
+<!-- S01: PROBLEM -->
+<div class="section" id="s01">
+  <div class="section-eyebrow" style="color:var(--red)">01 — Problem</div>
+  <div class="action-title">ADHDの「実行機能」課題は、既存ツールでは解けない</div>
+  <p class="section-lead">全世界3.66億人の成人ADHDは、「何をすべきかわかっている。でも実行できない」という構造的な課題を抱えている。既存のアプリは個別機能に断片化しており、この課題を根本から解決するものがない。</p>
+
+  <div class="issue-grid">
+    <div class="issue-card critical">
+      <div class="issue-severity">Critical</div>
+      <h4>5アプリの「ツール疲れ」</h4>
+      <p>朝はRoutinery、日中はStructured、感情はBearable、コーチングはShimmer（$345/月）、集中はFocusmate。5つのアプリの使い分け自体がADHD脳にとって最大のハードルになっている。</p>
+    </div>
+    <div class="issue-card critical">
+      <div class="issue-severity">Critical</div>
+      <h4>AIコーチングの空白</h4>
+      <p>12アプリを調査した結果、「ユーザーの全体像を継続的に把握し、パーソナライズされたコーチングを提供する」アプリは<strong style="color:var(--red)">0</strong>。タスク分解AIはあっても、ライフコーチAIは存在しない。</p>
+    </div>
+    <div class="issue-card high">
+      <div class="issue-severity">High</div>
+      <h4>「今日のタスク」止まり</h4>
+      <p>既存アプリは「今日何をするか」にフォーカス。人生全体（8領域）のバランスを俯瞰し、長期的な方向性を提案する仕組みがない。タスク消化の繰り返しに意味を見出せなくなる。</p>
+    </div>
+    <div class="issue-card high">
+      <div class="issue-severity">High</div>
+      <h4>ドーパミン設計の理論化不足</h4>
+      <p>ゲーミフィケーション（チェック音、ストリーク）はあるが、神経科学に基づいた「ドーパミン予測→タスク配置」のアルゴリズムは市場に<strong style="color:var(--amber)">全く存在しない</strong>。</p>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">So What</div>
+    <p><strong>市場は「第2世代」（個別ツール�strong>ADHD特化）で飽和。</strong>「第3世代」= 統合型パーソナルOS × AIコーチングの勝者はまだ誰もいない。これが才能解放AIコーチの機会。</p>
+  </div>
+</div>
+
+<!-- S02: MARKET OPPORTUNITY -->
+<div class="section" id="s02">
+  <div class="section-eyebrow" style="color:var(--amber)">02 — Market Opportunity</div>
+  <div class="action-title">$18.3B TAM × CAGR 15%、しかし「空白地帯」だらけ</div>
+  <p class="section-lead">ADHD App市場は2024年$563M〜$2.2Bの急成長市場。しかし12アプリの競合分析で、3つの決定的な空白地帯を確認。</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-num blue">$18.3B</div>
+      <div class="kpi-label">TAM<br><span style="font-size:11px;color:var(--text-muted)">全世界ADHD成人3.66億人</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num good">$5-8B</div>
+      <div class="kpi-label">SAM<br><span style="font-size:11px;color:var(--text-muted)">先進国スマホ保有者</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision">15.4%</div>
+      <div class="kpi-label">CAGR<br><span style="font-size:11px;color:var(--text-muted)">2026-2035年予測</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num warn">0 / 12</div>
+      <div class="kpi-label">競合カバー率<br><span style="font-size:11px;color:var(--text-muted)">3つの空白領域</span></div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>競合ベンチマーク</th><th>年間収益</th><th>有料ユーザー</th><th>年額</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">Structured</td><td class="t-good">$24.8M</td><td>50万人+</td><td>$19.99</td></tr>
+      <tr><td class="t-name">Tiimo</td><td class="t-good">$13.9M</td><td>5万人</td><td>$54</td></tr>
+      <tr><td class="t-name">Shimmer</td><td class="t-warn">非公開</td><td>非公開</td><td>$1,188〜$4,140</td></tr>
+      <tr><td class="t-name">Routinery</td><td>$1.5M</td><td>非公開</td><td>$27.49</td></tr>
+      <tr><td class="t-name">Inflow</td><td class="t-warn">非公開</td><td>非公開</td><td>$95.99〜$199.99</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <div class="insight-label">Insight</div>
+    <p><strong>Shimmerの$345/月コーチングをAIで民主化する。</strong>才能解放AIコーチは月額¥980〜1,980でShimmerの80%のコーチング価値を提供する。価格差は100倍。これが破壊的イノベーションの本質。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ PART 1: WHAT ═══════════════════ -->
+<div class="part-divider">
+  <span class="part-badge b">Part 1 — What</span>
+</div>
+
+<!-- S03: PRODUCT VISION -->
+<div class="section" id="s03">
+  <div class="section-eyebrow" style="color:var(--cyan)">03 — Product Vision</div>
+  <div class="action-title">「5つのアプリを1つに」では足りない。人生のOSを作る。</div>
+  <p class="section-lead">才能解放AIコーチは、スケジューリング・習慣追跡・感情管理・AIコーチング・人生設計を1つのプラットフォームに統合し、あなたの「個人OS」として機能する。</p>
+
+  <div class="vision-card">
+    <h3>才能解放AIコーチ = あなたの脳の「もう一人の自分」</h3>
+    <p>ADHDの脳が持つ創造性・発想力・情熱を最大化し、実行機能の弱さをAIが補完する。<br>あなたの強み・価値観・生活パターンを深く理解した、世界でただ一人のAIコーチ。</p>
+    <div class="vision-items">
+      <div class="vision-item" style="border-color:rgba(239,68,68,.25)">朝チェックイン</div>
+      <div class="vision-item" style="border-color:rgba(74,125,255,.25)">フォーカスモード</div>
+      <div class="vision-item" style="border-color:rgba(34,211,238,.25)">AIコーチング</div>
+      <div class="vision-item" style="border-color:rgba(52,211,153,.25)">振り返り</div>
+      <div class="vision-item" style="border-color:rgba(167,139,250,.25)">バランスホイール</div>
+    </div>
+  </div>
+</div>
+
+<!-- S04: A DAY WITH -->
+<div class="section" id="s04">
+  <div class="section-eyebrow" style="color:var(--cyan)">04 — A Day with 才能解放AIコーチ</div>
+  <div class="action-title">7:00 から 22:00 まで。あなたの1日を、才能が輝く1日に。</div>
+  <p class="section-lead">朝のチェックインからAI設計の1日プラン、フォーカスモード、振り返りまで。1日のフローを体験してください。</p>
+
+  <div class="timeline">
+    <div class="tl-time">07:00</div>
+    <div class="tl-content">
+      <span class="tl-pill energy">朝チェックイン</span>
+      <span class="tl-label">「おはよう！エネルギーは？」AIが3つの質問で今日の脳状態を把握。1日のプランをAIが設計。</span>
+    </div>
+    <div class="tl-time">08:00</div>
+    <div class="tl-content">
+      <span class="tl-pill focus">集中ブロック①</span>
+      <span class="tl-label">ドーパミンスコアが最も高いタスクを配置。90分ウルトラディアンブロック。</span>
+    </div>
+    <div class="tl-time">09:30</div>
+    <div class="tl-content">
+      <span class="tl-pill rest">回復タイム</span>
+      <span class="tl-label">15分の自動休憩。AIが「次のブロックのエネルギー予測」を提示。</span>
+    </div>
+    <div class="tl-time">10:00</div>
+    <div class="tl-content">
+      <span class="tl-pill focus">集中ブロック②</span>
+      <span class="tl-label">Google Calendar連携。ミーティング前後にバッファ自動挿入。</span>
+    </div>
+    <div class="tl-time">12:00</div>
+    <div class="tl-content">
+      <span class="tl-pill rest">昼休み</span>
+      <span class="tl-label">エネルギー再チェック。午後のプランをAIが微調整。</span>
+    </div>
+    <div class="tl-time">13:00</div>
+    <div class="tl-content">
+      <span class="tl-pill focus">集中ブロック③</span>
+      <span class="tl-label">午後の低ドーパミン帯 → 「新規性」「興味」が高いタスクを自動配置。</span>
+    </div>
+    <div class="tl-time">15:00</div>
+    <div class="tl-content">
+      <span class="tl-pill ai">AIコーチング</span>
+      <span class="tl-label">「集中が切れた？」AIが脳のモード切替を支援。RSD検出時は緊急介入。</span>
+    </div>
+    <div class="tl-time">17:00</div>
+    <div class="tl-content">
+      <span class="tl-pill focus">集中ブロック④</span>
+      <span class="tl-label">1日の最終ブロック。優先度が高いが先延ばししていたタスクをAIが提案。</span>
+    </div>
+    <div class="tl-time">18:30</div>
+    <div class="tl-content">
+      <span class="tl-pill review">振り返り</span>
+      <span class="tl-label">今日の達成・学び・明日への種をAIが構造化。バランスホイールを更新。</span>
+    </div>
+    <div class="tl-time">22:00</div>
+    <div class="tl-content">
+      <span class="tl-pill energy">ジャーナリング</span>
+      <span class="tl-label">音声入力で1日を振り返り。AIが感情パターンを検出し、長期記憶に保存。</span>
+    </div>
+  </div>
+</div>
+
+<!-- S05: CORE FEATURES -->
+<div class="section" id="s05">
+  <div class="section-eyebrow" style="color:var(--cyan)">05 — Core Features</div>
+  <div class="action-title">5つの画面、5つの価値。</div>
+  <p class="section-lead">才能解放AIコーチは5つのコア画面で構成されます。各画面がADHD脳の具体的な課題に直接対応します。</p>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-badge amber">Screen 1</div>
+      <h4>ホーム / Today</h4>
+      <p>今日のエネルギー、AIプラン、バランスホイールミニビュー、直近タスクを1画面に。<strong>15秒で今日の全体像を把握。</strong></p>
+    </div>
+    <div class="card">
+      <div class="card-badge cyan">Screen 2</div>
+      <h4>朝チェックイン</h4>
+      <p>エネルギー（1-10）、気分、睡眠の3質問。AIが1日のプランを自動設計。<strong>ワンタップで朝のルーティン完了。</strong></p>
+    </div>
+    <div class="card">
+      <div class="card-badge blue">Screen 3</div>
+      <h4>フォーカスモード</h4>
+      <p>現在のタスク + 残り時間 + 90分ウルトラディアンタイマー。<strong>「今、これだけに集中」の没入体験。</strong></p>
+    </div>
+    <div class="card">
+      <div class="card-badge green">Screen 4</div>
+      <h4>AIチャット</h4>
+      <p>コーチング対話、タスク相談、感情サポート。RSD検出時は自動で緊急介入モード。<strong>24時間、あなたを知り尽くしたAIコーチ。</strong></p>
+    </div>
+    <div class="card">
+      <div class="card-badge purple">Screen 5</div>
+      <h4>バランスホイール</h4>
+      <p>人生8領域のレーダーチャート。週次/月次のスコア推移。<strong>「今の人生、偏ってない？」を一目で。</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- S06: UNIQUE ALGORITHMS -->
+<div class="section" id="s06">
+  <div class="section-eyebrow" style="color:var(--cyan)">06 — Unique Algorithms</div>
+  <div class="action-title">競合12アプリ中、誰も持っていない3つの独自アルゴリズム</div>
+  <p class="section-lead">才能解放AIコーチの技術的差別化は、3つの独自アルゴリズムに集約されます。いずれも競合12アプリでカバー率0%の「ホワイトスペース」です。</p>
+
+  <!-- 4-Switch -->
+  <div class="card" style="margin-bottom:16px;border-left:4px solid var(--amber)">
+    <div class="card-badge amber">Algorithm 1</div>
+    <h4>4スイッチ・タスクタグ</h4>
+    <p>ADHDの脳は「興味」「新規性」「挑戦」「緊急性」の4つのスイッチでドーパミンを生成する（Dr. William Dodson）。各タスクにこの4スイッチスコア（0-5）を付与し、脳のモードに最適なタスクをAIが提案。</p>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:12px">
+      <div style="background:rgba(239,68,68,.08);padding:8px 14px;border-radius:8px;font-size:13px"><strong style="color:var(--red)">興味</strong><br><span style="color:var(--text-dim)">好奇心が湧くか</span></div>
+      <div style="background:rgba(245,158,11,.08);padding:8px 14px;border-radius:8px;font-size:13px"><strong style="color:var(--amber)">新規性</strong><br><span style="color:var(--text-dim)">新しい体験か</span></div>
+      <div style="background:rgba(74,125,255,.08);padding:8px 14px;border-radius:8px;font-size:13px"><strong style="color:var(--blue)">挑戦</strong><br><span style="color:var(--text-dim)">難しすぎず簡単すぎず</span></div>
+      <div style="background:rgba(167,139,250,.08);padding:8px 14px;border-radius:8px;font-size:13px"><strong style="color:var(--purple)">緊急性</strong><br><span style="color:var(--text-dim)">締切が迫っているか</span></div>
+    </div>
+  </div>
+
+  <!-- Dopamine Scheduling -->
+  <div class="card" style="margin-bottom:16px;border-left:4px solid var(--cyan)">
+    <div class="card-badge cyan">Algorithm 2</div>
+    <h4>ドーパミン・スケジューリング</h4>
+    <p>4スイッチスコアを元に、1日の中でドーパミンが最も効率的に生成される順序でタスクを配置。5段階のサイクルで脳の状態を最適化。</p>
+  </div>
+
+  <div class="cycle">
+    <div class="cycle-step" style="border-color:rgba(239,68,68,.3)">
+      <div class="step-num" style="color:var(--red)">1</div>
+      <div class="step-name">Ignite</div>
+      <div class="step-desc">高スコアタスクで着火</div>
+    </div>
+    <div class="cycle-arrow">&rarr;</div>
+    <div class="cycle-step" style="border-color:rgba(245,158,11,.3)">
+      <div class="step-num" style="color:var(--amber)">2</div>
+      <div class="step-name">Accelerate</div>
+      <div class="step-desc">勢いに乗って加速</div>
+    </div>
+    <div class="cycle-arrow">&rarr;</div>
+    <div class="cycle-step" style="border-color:rgba(74,125,255,.3)">
+      <div class="step-num" style="color:var(--blue)">3</div>
+      <div class="step-name">Sustain</div>
+      <div class="step-desc">フロー状態を維持</div>
+    </div>
+    <div class="cycle-arrow">&rarr;</div>
+    <div class="cycle-step" style="border-color:rgba(52,211,153,.3)">
+      <div class="step-num" style="color:var(--green)">4</div>
+      <div class="step-name">Switch</div>
+      <div class="step-desc">疲労前にモード切替</div>
+    </div>
+    <div class="cycle-arrow">&rarr;</div>
+    <div class="cycle-step" style="border-color:rgba(167,139,250,.3)">
+      <div class="step-num" style="color:var(--purple)">5</div>
+      <div class="step-name">Recover</div>
+      <div class="step-desc">回復＋次サイクル準備</div>
+    </div>
+  </div>
+
+  <!-- Balance Wheel -->
+  <div class="card" style="border-left:4px solid var(--green)">
+    <div class="card-badge green">Algorithm 3</div>
+    <h4>バランスホイール × AI分析</h4>
+    <p>人生の8領域（ADHD Brain, Bio Foundation, AI-Driven, Aesthetics, Interpersonal, Family, Vision, Philosophy）を週次で自己評価。AIが領域間のバランスを分析し、偏りを検出して行動を提案。<strong>「Wheel of Life」評価アプリは存在するが、AIコーチングと統合されたものは皆無。</strong></p>
+  </div>
+
+  <div class="radar-container">
+    <svg width="320" height="320" viewBox="0 0 320 320">
+      <defs>
+        <radialGradient id="rg" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="rgba(34,211,238,.15)"/><stop offset="100%" stop-color="rgba(74,125,255,.05)"/></radialGradient>
+      </defs>
+      <!-- Grid -->
+      <g transform="translate(160,160)">
+        <polygon points="0,-120 84.85,-84.85 120,0 84.85,84.85 0,120 -84.85,84.85 -120,0 -84.85,-84.85" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <polygon points="0,-80 56.57,-56.57 80,0 56.57,56.57 0,80 -56.57,56.57 -80,0 -56.57,-56.57" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <polygon points="0,-40 28.28,-28.28 40,0 28.28,28.28 0,40 -28.28,28.28 -40,0 -28.28,-28.28" fill="none" stroke="rgba(255,255,255,.06)" stroke-width="1"/>
+        <!-- Axes -->
+        <line x1="0" y1="-120" x2="0" y2="120" stroke="rgba(255,255,255,.04)"/>
+        <line x1="-120" y1="0" x2="120" y2="0" stroke="rgba(255,255,255,.04)"/>
+        <line x1="-84.85" y1="-84.85" x2="84.85" y2="84.85" stroke="rgba(255,255,255,.04)"/>
+        <line x1="84.85" y1="-84.85" x2="-84.85" y2="84.85" stroke="rgba(255,255,255,.04)"/>
+        <!-- Data polygon -->
+        <polygon points="0,-96 72,-48 108,0 60,72 0,84 -48,48 -84,0 -60,-72" fill="url(#rg)" stroke="var(--cyan)" stroke-width="2"/>
+        <!-- Dots -->
+        <circle cx="0" cy="-96" r="4" fill="var(--cyan)"/>
+        <circle cx="72" cy="-48" r="4" fill="var(--cyan)"/>
+        <circle cx="108" cy="0" r="4" fill="var(--cyan)"/>
+        <circle cx="60" cy="72" r="4" fill="var(--cyan)"/>
+        <circle cx="0" cy="84" r="4" fill="var(--cyan)"/>
+        <circle cx="-48" cy="48" r="4" fill="var(--cyan)"/>
+        <circle cx="-84" cy="0" r="4" fill="var(--cyan)"/>
+        <circle cx="-60" cy="-72" r="4" fill="var(--cyan)"/>
+      </g>
+      <!-- Labels -->
+      <text x="160" y="30" fill="var(--text-dim)" font-size="10" text-anchor="middle">ADHD Brain</text>
+      <text x="270" y="90" fill="var(--text-dim)" font-size="10" text-anchor="start">AI-Driven</text>
+      <text x="295" y="168" fill="var(--text-dim)" font-size="10" text-anchor="start">Bio Foundation</text>
+      <text x="240" y="260" fill="var(--text-dim)" font-size="10" text-anchor="start">Aesthetics</text>
+      <text x="160" y="305" fill="var(--text-dim)" font-size="10" text-anchor="middle">Interpersonal</text>
+      <text x="50" y="260" fill="var(--text-dim)" font-size="10" text-anchor="end">Family</text>
+      <text x="15" y="168" fill="var(--text-dim)" font-size="10" text-anchor="end">Vision</text>
+      <text x="50" y="90" fill="var(--text-dim)" font-size="10" text-anchor="end">Philosophy</text>
+    </svg>
+  </div>
+</div>
+
+<!-- ═══════════════════ PART 2: HOW ═══════════════════ -->
+<div class="part-divider">
+  <span class="part-badge c">Part 2 — How</span>
+</div>
+
+<!-- S07: TECH ARCHITECTURE -->
+<div class="section" id="s07">
+  <div class="section-eyebrow" style="color:var(--green)">07 — Technology Architecture</div>
+  <div class="action-title">SvelteKit + Capacitor + Supabase。実績ある構成で最速開発。</div>
+  <p class="section-lead">単一コードベースからPWA（Web）とネイティブアプリ（iOS/Android）を同時デプロイ。本番実績のある構成で、MVPを4週間で完成させる。</p>
+
+  <div class="layer-stack">
+    <div class="layer">
+      <div class="layer-badge l1">Layer 1 — Client</div>
+      <h4>SvelteKit SPA + Capacitor</h4>
+      <p>SvelteKit（adapter-static, ssr=false）でSPA構築。Capacitorでネイティブラップ。PWA版はVercelにデプロイ。</p>
+      <div class="tech-pills">
+        <span class="tech-pill">SvelteKit 2.x</span>
+        <span class="tech-pill">Svelte 5 (Runes)</span>
+        <span class="tech-pill">TypeScript 5.x</span>
+        <span class="tech-pill">TailwindCSS 4.x</span>
+        <span class="tech-pill">Capacitor 6.x</span>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-badge l2">Layer 2 — Backend</div>
+      <h4>Supabase（Auth + DB + Realtime + Edge Functions）</h4>
+      <p>認証・データベース・リアルタイム通信・サーバーレス関数を一体型で提供。Free枠で個人利用に十分。</p>
+      <div class="tech-pills">
+        <span class="tech-pill">PostgreSQL + pgvector</span>
+        <span class="tech-pill">Supabase Auth (Google OAuth)</span>
+        <span class="tech-pill">Realtime (WebSocket)</span>
+        <span class="tech-pill">Edge Functions (Deno)</span>
+        <span class="tech-pill">Row Level Security</span>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-badge l3">Layer 3 — AI</div>
+      <h4>Claude API + Gemini Flash（ハイブリッドAI）</h4>
+      <p>コーチング品質が重要な対話はClaude Sonnet/Haiku。ユーティリティ処理（カレンダーパース等）は無料のGemini Flash。</p>
+      <div class="tech-pills">
+        <span class="tech-pill">Claude Haiku 4.5</span>
+        <span class="tech-pill">Claude Sonnet 4.6</span>
+        <span class="tech-pill">Gemini 2.0 Flash</span>
+        <span class="tech-pill">pgvector (RAG)</span>
+      </div>
+    </div>
+    <div class="layer">
+      <div class="layer-badge l4">Layer 4 — External</div>
+      <h4>Google Calendar API + 音声入力</h4>
+      <p>Google Calendar API v3でスケジュール双方向同期。音声入力はWeb Speech API → Capacitorプラグイン → Gemini Liveの段階導入。</p>
+      <div class="tech-pills">
+        <span class="tech-pill">Google Calendar API v3</span>
+        <span class="tech-pill">OAuth 2.0 PKCE</span>
+        <span class="tech-pill">Web Speech API</span>
+        <span class="tech-pill">Push Notifications</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-label">技術仕様書</div>
+    <p>DB スキーマ（9テーブル + RLS）、API設計（6 Edge Functions）、UIワイヤーフレーム、システムプロンプト設計の詳細は<strong><a href="sainou-coach-tech-spec.html" style="color:var(--cyan)">技術仕様書</a></strong>を参照。</p>
+  </div>
+</div>
+
+<!-- S08: AI HYBRID BRAIN -->
+<div class="section" id="s08">
+  <div class="section-eyebrow" style="color:var(--green)">08 — AI Hybrid Brain</div>
+  <div class="action-title">Claude × Gemini。コスト最適化AIルーティング</div>
+  <p class="section-lead">全てのAIリクエストを単一モデルに送るのではなく、用途に応じて最適なモデルにルーティング。月額$2-4に抑えつつ、コーチング品質を最大化。</p>
+
+  <div class="arch-hub">
+    <div style="font-size:12px;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px">AI Routing Architecture</div>
+    <div class="hub-tier">
+      <div class="hub-node" style="background:rgba(239,68,68,.06);border-color:rgba(239,68,68,.25);color:var(--red);font-weight:600">RSD緊急介入<span class="node-sub">自動検出 → 即応答</span></div>
+      <div class="hub-node primary">コーチング対話<span class="node-sub">深い共感 + 心理学基盤</span></div>
+    </div>
+    <div class="hub-connector">↓</div>
+    <div class="hub-core">
+      <div class="hub-core-name">Claude Sonnet 4.6</div>
+      <div class="hub-core-sub">最高品質コーチング</div>
+    </div>
+    <div class="hub-connector">|</div>
+    <div class="hub-core" style="border-color:rgba(74,125,255,.35);background:rgba(74,125,255,.06)">
+      <div class="hub-core-name" style="color:var(--blue)">Claude Haiku 4.5</div>
+      <div class="hub-core-sub">高速 × 低コスト</div>
+    </div>
+    <div class="hub-tier">
+      <div class="hub-node secondary">クイックガイド<span class="node-sub">タスク分解・提案</span></div>
+      <div class="hub-node secondary">チェックイン応答<span class="node-sub">朝/夕のルーティン</span></div>
+    </div>
+    <div class="hub-connector">↓</div>
+    <div class="hub-core" style="border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.06)">
+      <div class="hub-core-name" style="color:var(--green)">Gemini 2.0 Flash</div>
+      <div class="hub-core-sub">無料ユーティリティ</div>
+    </div>
+    <div class="hub-tier">
+      <div class="hub-node" style="background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.25);color:var(--green)">カレンダーパース<span class="node-sub">JSON構造化</span></div>
+      <div class="hub-node" style="background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.25);color:var(--green)">タスク分類<span class="node-sub">4スイッチ自動タグ</span></div>
+      <div class="hub-node" style="background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.25);color:var(--green)">テキスト要約<span class="node-sub">ログ圧縮</span></div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>モデル</th><th>用途</th><th>呼出比率</th><th>コスト/月</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">Claude Sonnet</td><td>RSD緊急、深いコーチング</td><td class="t-warn">~20%</td><td>~$1.5</td></tr>
+      <tr><td class="t-name">Claude Haiku</td><td>クイックガイド、チェックイン</td><td class="t-good">~60%</td><td>~$0.7</td></tr>
+      <tr><td class="t-name">Gemini Flash</td><td>ユーティリティ、分類、パース</td><td>~20%</td><td class="t-good">$0（無料枠）</td></tr>
+    </tbody>
+  </table>
+
+  <div class="insight">
+    <div class="insight-label">コスト最適化</div>
+    <p><strong>AIコスト月額 ~$2.2。</strong>Shimmerの1/150、Inflowの1/10のコストで、AIがパーソナライズされたコーチングを提供。Claude Haikuの高速応答 + Sonnetの深い共感を使い分けることで、品質とコストの最適バランスを実現。</p>
+  </div>
+</div>
+
+<!-- S09: DATA FLOW -->
+<div class="section" id="s09">
+  <div class="section-eyebrow" style="color:var(--green)">09 — Data Flow</div>
+  <div class="action-title">アプリ → Supabase → AI → Google Calendar。全データが繋がる。</div>
+  <p class="section-lead">ユーザーの入力から、AI処理、外部連携、記憶管理まで。才能解放AIコーチのデータフローの全体像。</p>
+
+  <div class="card-grid">
+    <div class="card" style="border-left:4px solid var(--blue)">
+      <div class="card-badge blue">Memory — Short</div>
+      <h4>コンテキストウィンドウ</h4>
+      <p>Claude APIの会話履歴。直近の対話内容を保持。セッション終了で揮発。<strong>FIFO管理。</strong></p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--cyan)">
+      <div class="card-badge cyan">Memory — Medium</div>
+      <h4>Supabase DB</h4>
+      <p>今日のチェックイン、エネルギーログ、タスク状態。<strong>構造化データとして永続保存。</strong></p>
+    </div>
+    <div class="card" style="border-left:4px solid var(--purple)">
+      <div class="card-badge purple">Memory — Long</div>
+      <h4>pgvector（RAG）</h4>
+      <p>過去の対話サマリー、行動パターン、成功体験をベクトル化。<strong>類似度検索で過去の文脈を呼び出し。</strong></p>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-label">Claude Code連携（Phase 3）</div>
+    <p>Supabase → Google Drive → Claude Codeのブリッジにより、<strong>開発者自身がClaude Codeからアプリデータにアクセス</strong>し、プロンプト最適化やデータ分析を実行。「開発もアプリの一部」という設計思想。</p>
+  </div>
+</div>
+
+<!-- S10: ADHD UX PRINCIPLES -->
+<div class="section" id="s10">
+  <div class="section-eyebrow" style="color:var(--green)">10 — ADHD UX Design Principles</div>
+  <div class="action-title">44のソースから抽出した、ADHDユーザーが「使い続ける」6原則</div>
+  <p class="section-lead">ADHD当事者の80%がアプリを1ヶ月以内に離脱する。この壁を突破するために、学術研究と実際のアプリ事例から導出した設計原則。</p>
+
+  <div class="shift-grid">
+    <div class="shift-card">
+      <div class="shift-num">15秒</div>
+      <h4>ルール: 最初の価値体験</h4>
+      <div class="shift-before">従来: アプリを開いて設定画面→チュートリアル→5分後にやっと使える</div>
+      <div class="shift-after">才能解放: 起動→1タップで朝チェックイン→15秒で今日のAIプラン表示</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">3-4個</div>
+      <h4>選択肢の上限</h4>
+      <div class="shift-before">従来: 10個のメニュー、5段階の設定、複数のモード切替</div>
+      <div class="shift-after">才能解放: 常に3-4個の選択肢。AIが最適な選択肢を事前フィルタリング</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">+47%</div>
+      <h4>マイクロゴール効果 <span class="ev rct">RCT</span></h4>
+      <div class="shift-before">従来: 「レポートを書く」→ 大きすぎて着手できない</div>
+      <div class="shift-after">才能解放: AIが自動分解→「目次を5項目書く（3分）」→ 集中時間47%向上</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">0罪悪感</div>
+      <h4>通知設計 <span class="ev pilot">Duolingo事例</span></h4>
+      <div class="shift-before">従来: 「今日のストリークが途切れます！」→ 罪悪感 → アプリ削除</div>
+      <div class="shift-after">才能解放: 「昨日は休んだね。今日は小さく始めてみる？」→ 穏やかな励まし</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">1タップ</div>
+      <h4>Push通知→即応答</h4>
+      <div class="shift-before">従来: 通知→アプリ起動→ログイン→画面遷移→ようやくタスク</div>
+      <div class="shift-after">才能解放: 通知に「はい/あとで/変更」ボタン。タップ1回で完了。</div>
+    </div>
+    <div class="shift-card">
+      <div class="shift-num">90min</div>
+      <h4>ウルトラディアンリズム <span class="ev meta">Meta</span></h4>
+      <div class="shift-before">従来: ポモドーロ25分→ADHDには短すぎてフロー状態に入れない</div>
+      <div class="shift-after">才能解放: 90分ブロック×4回/日。脳の自然な集中サイクルに同期。</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PART 3: WHEN ═══════════════════ -->
+<div class="part-divider">
+  <span class="part-badge d">Part 3 — When</span>
+</div>
+
+<!-- S11: MVP ROADMAP -->
+<div class="section" id="s11">
+  <div class="section-eyebrow" style="color:var(--amber)">11 — MVP Roadmap</div>
+  <div class="action-title">4週間で動くMVP。Claude Code × 1人で開発。</div>
+  <p class="section-lead">Claude Code（AI開発ツール）を活用し、1人の開発者が4週間でMVPを完成させる。各週のゴールと成果物を明確に定義。</p>
+
+  <div class="phase-card">
+    <h3>Week 1: Foundation（基盤構築）</h3>
+    <div class="phase-policy">Goal: アプリの骨格完成</div>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot b"></span>SvelteKit + Capacitor + Supabase初期セットアップ</div>
+      <div class="phase-item"><span class="pi-dot b"></span>Supabase Auth（Google OAuth）+ プロフィールテーブル</div>
+      <div class="phase-item"><span class="pi-dot b"></span>基本UIシェル（ナビゲーション、5画面ルーティング）</div>
+      <div class="phase-item"><span class="pi-dot b"></span>TailwindCSS + デザイントークン定義</div>
+      <div class="phase-item"><span class="pi-dot g"></span>日次チェックイン画面（3質問フォーム）</div>
+    </div>
+  </div>
+
+  <div class="phase-card">
+    <h3>Week 2: AI Core（AI基盤）</h3>
+    <div class="phase-policy">Goal: AIコーチが会話できる</div>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot c"></span>Edge Function: ai-chat（Claude Haiku/Sonnet ルーティング）</div>
+      <div class="phase-item"><span class="pi-dot c"></span>システムプロンプト5レイヤー実装</div>
+      <div class="phase-item"><span class="pi-dot c"></span>AIチャット画面 + ストリーミング応答UI</div>
+      <div class="phase-item"><span class="pi-dot g"></span>朝チェックイン → AI日次プラン生成フロー</div>
+      <div class="phase-item"><span class="pi-dot g"></span>タスクテーブル + 4スイッチスコア計算</div>
+    </div>
+  </div>
+
+  <div class="phase-card">
+    <h3>Week 3: Features（機能実装）</h3>
+    <div class="phase-policy">Goal: 1日のフローが完成</div>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot b"></span>フォーカスモード画面（90分タイマー）</div>
+      <div class="phase-item"><span class="pi-dot b"></span>ドーパミン・スケジューリングアルゴリズム</div>
+      <div class="phase-item"><span class="pi-dot c"></span>Google Calendar API連携（読取 + 書込）</div>
+      <div class="phase-item"><span class="pi-dot g"></span>バランスホイール画面（レーダーチャート）</div>
+      <div class="phase-item"><span class="pi-dot g"></span>振り返りフロー（AI構造化）</div>
+    </div>
+  </div>
+
+  <div class="phase-card">
+    <h3>Week 4: Polish &amp; Deploy（磨き込み＋デプロイ）</h3>
+    <div class="phase-policy">Goal: 本番公開</div>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot c"></span>PWA版デプロイ（Vercel）</div>
+      <div class="phase-item"><span class="pi-dot c"></span>Android APKビルド（Capacitor）</div>
+      <div class="phase-item"><span class="pi-dot g"></span>Push通知設定（Local Notifications）</div>
+      <div class="phase-item"><span class="pi-dot g"></span>エラーハンドリング + ローディングUI</div>
+      <div class="phase-item"><span class="pi-dot p"></span>E2Eテスト（主要フロー5本）</div>
+    </div>
+  </div>
+</div>
+
+<!-- S12: FEATURE ROADMAP -->
+<div class="section" id="s12">
+  <div class="section-eyebrow" style="color:var(--amber)">12 — Feature Roadmap</div>
+  <div class="action-title">4レイヤー × 段階的拡張。MVPから「フルOS」へ。</div>
+
+  <div class="pyramid">
+    <div class="pyramid-tier" style="width:50%;background:linear-gradient(135deg,rgba(167,139,250,.06),rgba(244,114,182,.06));border-color:rgba(167,139,250,.25)">
+      <h4 style="color:var(--purple)">Layer 4: Intelligence（Week 13+）</h4>
+      <p>pgvector RAG記憶、Gemini Live音声対話、パターン学習、予測スケジューリング</p>
+    </div>
+    <div class="pyramid-tier" style="width:65%;background:rgba(52,211,153,.04);border-color:rgba(52,211,153,.25)">
+      <h4 style="color:var(--green)">Layer 3: Integration（Week 9-12）</h4>
+      <p>Google Calendar双方向同期、Push Notification、Haptics、Capacitorネイティブ音声</p>
+    </div>
+    <div class="pyramid-tier" style="width:80%;background:rgba(34,211,238,.04);border-color:rgba(34,211,238,.25)">
+      <h4 style="color:var(--cyan)">Layer 2: Experience（Week 5-8）</h4>
+      <p>ドーパミン・スケジューリング、バランスホイール分析、振り返り自動化、RSD検出</p>
+    </div>
+    <div class="pyramid-tier" style="width:95%;background:rgba(74,125,255,.04);border-color:rgba(74,125,255,.25)">
+      <h4 style="color:var(--blue)">Layer 1: Foundation（Week 1-4）← MVP</h4>
+      <p>認証、5画面UI、AIチャット、朝チェックイン、タスク管理、フォーカスタイマー</p>
+    </div>
+  </div>
+</div>
+
+<!-- S13: PROVE → REPLICATE -->
+<div class="section" id="s13">
+  <div class="section-eyebrow" style="color:var(--amber)">13 — Prove &rarr; Replicate Strategy</div>
+  <div class="action-title">まず自分で証明する。次に、世界に広げる。</div>
+  <p class="section-lead">創業者自身がADHD当事者として才能解放AIコーチを使い倒し、効果を実証する「Prove」フェーズ。その後、同じ課題を持つ人々に広げる「Replicate」フェーズへ。</p>
+
+  <div class="comparison">
+    <div class="comp-side" style="border-top:3px solid var(--amber)">
+      <h4 style="color:var(--amber)">Phase: Prove（Year 1-2）</h4>
+      <ul>
+        <li>創業者1人が毎日使用し、効果を定量測定</li>
+        <li>バランスホイールスコアの推移を公開</li>
+        <li>月額コスト: $2-4（AI API費用のみ）</li>
+        <li>β版を10-50人に限定公開</li>
+        <li>ユーザーフィードバックで機能を研磨</li>
+      </ul>
+    </div>
+    <div class="comp-side" style="border-top:3px solid var(--green)">
+      <h4 style="color:var(--green)">Phase: Replicate（Year 3+）</h4>
+      <ul>
+        <li>有料プラン公開（¥980〜1,980/月）</li>
+        <li>App Store / Google Play正式リリース</li>
+        <li>ADHDコミュニティへのマーケティング</li>
+        <li>コーチ連携プラン（B2B2C）検討</li>
+        <li>グローバル展開（英語対応）</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════ PART 4: HOW MUCH ═══════════════════ -->
+<div class="part-divider">
+  <span class="part-badge e">Part 4 — How Much</span>
+</div>
+
+<!-- S14: COST STRUCTURE -->
+<div class="section" id="s14">
+  <div class="section-eyebrow" style="color:var(--purple)">14 — Cost Structure</div>
+  <div class="action-title">月額$2-4。この衝撃的な低コストが武器になる。</div>
+
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi-card">
+      <div class="kpi-num good">$2-4</div>
+      <div class="kpi-label">月額運用コスト<br><span style="font-size:11px;color:var(--text-muted)">個人利用（Prove Phase）</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num blue">$0</div>
+      <div class="kpi-label">インフラ費用<br><span style="font-size:11px;color:var(--text-muted)">Supabase Free + Vercel Free</span></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision">$200</div>
+      <div class="kpi-label">開発ツール<br><span style="font-size:11px;color:var(--text-muted)">Claude MAX（契約済み）</span></div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>項目</th><th>サービス</th><th>月額</th><th>備考</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">DB + Auth</td><td>Supabase Free</td><td class="t-good">$0</td><td>500MB DB、50K MAU</td></tr>
+      <tr><td class="t-name">ホスティング</td><td>Vercel Free</td><td class="t-good">$0</td><td>100GB帯域</td></tr>
+      <tr><td class="t-name">AI（コーチング）</td><td>Claude API</td><td class="t-warn">~$2.2</td><td>Haiku 80% + Sonnet 20%</td></tr>
+      <tr><td class="t-name">AI（ユーティリティ）</td><td>Gemini Flash</td><td class="t-good">$0</td><td>無料枠内</td></tr>
+      <tr><td class="t-name">音声変換</td><td>Web Speech API</td><td class="t-good">$0</td><td>ブラウザ内蔵</td></tr>
+      <tr><td class="t-name">カレンダー</td><td>Google Calendar API</td><td class="t-good">$0</td><td>無料枠内</td></tr>
+      <tr><td class="t-name" style="font-weight:900">合計</td><td></td><td style="font-weight:900;color:var(--green)">~$2-4</td><td></td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S15: REVENUE MODEL -->
+<div class="section" id="s15">
+  <div class="section-eyebrow" style="color:var(--purple)">15 — Revenue Model</div>
+  <div class="action-title">フリーミアム × サブスクリプション。Shimmerの1/100で同等のコーチング価値。</div>
+
+  <div class="disc-grid">
+    <div class="disc-card">
+      <h4>Free Tier</h4>
+      <p>基本タスク管理、朝チェックイン（3回/週）、AIチャット（5回/日）。アプリの価値を体感してもらうゲート。</p>
+      <div class="disc-opt">転換率目標: 3-5%</div>
+    </div>
+    <div class="disc-card">
+      <h4>Pro — ¥980/月</h4>
+      <p>無制限AIチャット、ドーパミン・スケジューリング、バランスホイール、Google Calendar連携。個人のコアニーズをカバー。</p>
+      <div class="disc-opt">メインの収益源</div>
+    </div>
+    <div class="disc-card">
+      <h4>Pro+ — ¥1,980/月</h4>
+      <p>Claude Sonnet優先アクセス、音声対話（Gemini Live）、RAG長期記憶、データエクスポート。パワーユーザー向け。</p>
+      <div class="disc-opt">ARPU向上ドライバー</div>
+    </div>
+  </div>
+
+  <table class="tbl">
+    <thead><tr><th>ユニットエコノミクス</th><th>保守的</th><th>楽観的</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">月額料金</td><td>¥980</td><td>¥1,980</td></tr>
+      <tr><td class="t-name">フリーミアム転換率</td><td>3%</td><td>6%</td></tr>
+      <tr><td class="t-name">月間チャーン率</td><td>5%</td><td>3%</td></tr>
+      <tr><td class="t-name">平均継続月数</td><td>20ヶ月</td><td>33ヶ月</td></tr>
+      <tr><td class="t-name">LTV</td><td class="t-good">¥19,600</td><td class="t-good">¥65,340</td></tr>
+      <tr><td class="t-name">想定CAC</td><td>¥3,000</td><td>¥5,000</td></tr>
+      <tr><td class="t-name" style="font-weight:900">LTV/CAC</td><td class="t-good" style="font-weight:900">6.5x</td><td class="t-good" style="font-weight:900">13.1x</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S16: 5-YEAR P&L -->
+<div class="section" id="s16">
+  <div class="section-eyebrow" style="color:var(--purple)">16 — 5-Year P&amp;L Projection</div>
+  <div class="action-title">Year 1-2は「証明」、Year 3+は「スケール」。</div>
+
+  <table class="tbl">
+    <thead><tr><th></th><th>Year 1</th><th>Year 2</th><th>Year 3</th><th>Year 4</th><th>Year 5</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">フェーズ</td><td>Prove</td><td>β公開</td><td>有料公開</td><td>スケール</td><td>拡大</td></tr>
+      <tr><td class="t-name">MAU</td><td>1</td><td>200</td><td>2,000</td><td>10,000</td><td>30,000</td></tr>
+      <tr><td class="t-name">有料ユーザー</td><td>0</td><td>8</td><td>80</td><td>400</td><td>1,200</td></tr>
+      <tr><td class="t-name">年間売上</td><td>¥0</td><td>¥142K</td><td class="t-good">¥1.42M</td><td class="t-good">¥7.1M</td><td class="t-good">¥21.3M</td></tr>
+      <tr><td class="t-name">AI APIコスト</td><td class="t-warn">¥600</td><td class="t-warn">¥24K</td><td class="t-warn">¥240K</td><td class="t-warn">¥1.2M</td><td class="t-warn">¥3.6M</td></tr>
+      <tr><td class="t-name">インフラ</td><td>¥0</td><td>¥3.6K</td><td>¥36K</td><td>¥360K</td><td>¥600K</td></tr>
+      <tr><td class="t-name">マーケティング</td><td>¥0</td><td>¥60K</td><td>¥600K</td><td>¥2M</td><td>¥5M</td></tr>
+      <tr><td class="t-name">人件費</td><td>¥0</td><td>¥0</td><td>¥3M</td><td>¥12M</td><td>¥24M</td></tr>
+      <tr><td class="t-name" style="font-weight:900">営業利益</td><td class="t-bad">-¥600</td><td class="t-good">¥55K</td><td class="t-bad">-¥2.5M</td><td class="t-bad">-¥8.5M</td><td class="t-bad">-¥11.9M</td></tr>
+    </tbody>
+  </table>
+
+  <div class="note">
+    <div class="note-label">投資ポイント</div>
+    <p><strong>Year 1-2は月額¥600以下で運用可能。</strong>リスクはほぼゼロ。Year 3以降のスケールフェーズで資金調達を検討。LTV/CAC 6.5〜13.1xのユニットエコノミクスが成立すれば、Year 6以降で黒字化を見込む。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ PART 5: EDGE ═══════════════════ -->
+<div class="part-divider">
+  <span class="part-badge f">Part 5 — Edge</span>
+</div>
+
+<!-- S17: RISK MATRIX -->
+<div class="section" id="s17">
+  <div class="section-eyebrow" style="color:var(--blue)">17 — Risk Matrix</div>
+  <div class="action-title">8つのリスクに対する、具体的な対策。</div>
+
+  <table class="tbl">
+    <thead><tr><th>リスク</th><th>影響度</th><th>確率</th><th>対策</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">ADHD当事者のアプリ離脱</td><td class="t-bad">高</td><td class="t-warn">中</td><td>15秒ルール + ワンタップ + 罪悪感なし設計を徹底</td></tr>
+      <tr><td class="t-name">iOS Safari Web Speech API不安定</td><td class="t-warn">中</td><td class="t-bad">高</td><td>Capacitorネイティブプラグインでフォールバック</td></tr>
+      <tr><td class="t-name">App Store審査却下</td><td class="t-bad">高</td><td class="t-good">低</td><td>Push通知 + Haptics等のネイティブ機能統合</td></tr>
+      <tr><td class="t-name">Claude APIコスト増加</td><td class="t-warn">中</td><td class="t-good">低</td><td>Haiku比率引上げ + キャッシュ活用</td></tr>
+      <tr><td class="t-name">コンテキストウィンドウ枯渇</td><td class="t-warn">中</td><td class="t-warn">中</td><td>RAG + サマリー圧縮で長期記憶を管理</td></tr>
+      <tr><td class="t-name">Supabase Free枠超過</td><td class="t-good">低</td><td class="t-good">低</td><td>個人利用なら500MB DB十分</td></tr>
+      <tr><td class="t-name">Google Calendar APIレート制限</td><td class="t-warn">中</td><td class="t-good">低</td><td>Push Notification利用でポーリング回避</td></tr>
+      <tr><td class="t-name">競合の追随</td><td class="t-warn">中</td><td class="t-warn">中</td><td>個人OSデータの蓄積がネットワーク効果を生む（乗り換えコスト）</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- S18: WHY WE WIN -->
+<div class="section" id="s18">
+  <div class="section-eyebrow" style="color:var(--blue)">18 — Why We Win</div>
+  <div class="action-title">3つの「市場に存在しない」差別化が、参入障壁を作る。</div>
+
+  <div class="success-grid">
+    <div class="success-card">
+      <div class="sc-badge">Moat 1</div>
+      <h4>バランスホイール俯瞰</h4>
+      <p>12アプリ中<strong>0</strong>がカバー。人生全体（8領域）を1画面で可視化し、AIが領域間のバランスを分析・行動提案。「今日のタスク管理」と「人生の方向性」を統合する唯一のアプリ。</p>
+    </div>
+    <div class="success-card">
+      <div class="sc-badge">Moat 2</div>
+      <h4>ドーパミン・スケジューリング</h4>
+      <p>12アプリ中<strong>0</strong>がカバー。ADHD脳の4スイッチモデル（興味/新規性/挑戦/緊急性）に基づき、ドーパミン生成を最適化するタスク配置アルゴリズム。「ドーパミン・スケジューリング」という概念自体がブランディング資産。</p>
+    </div>
+    <div class="success-card">
+      <div class="sc-badge">Moat 3</div>
+      <h4>個人OS統合</h4>
+      <p>12アプリ中<strong>0</strong>がカバー。ユーザーの価値観・強み・行動パターン・成功体験をAIに統合。使えば使うほどコーチングの精度が上がる<strong>ネットワーク効果</strong>。これが最大の乗り換え障壁になる。</p>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">Investment Thesis</div>
+    <p><strong>「Tiimoは今日を見せる。才能解放AIコーチは人生を見せる。」</strong><br>$18.3B TAM × CAGR 15% × 12アプリ中0がカバーする3つの空白。月額$2-4で起動し、LTV/CAC 6.5x以上が成立するユニットエコノミクス。Year 1-2のリスクはほぼゼロ。あとは、作るだけ。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════ APPENDIX ═══════════════════ -->
+<div class="part-divider">
+  <span class="part-badge" style="border-color:var(--text-muted);color:var(--text-muted)">Appendix</span>
+</div>
+
+<!-- APPENDIX A: RESEARCH SUMMARY -->
+<div class="section" id="appA">
+  <div class="section-eyebrow" style="color:var(--text-muted)">Appendix A — Research Summary</div>
+  <div class="action-title">6調査 + 市場分析の成果</div>
+
+  <details class="acc">
+    <summary>01 — ADHD UXベストプラクティス（44ソース）</summary>
+    <div class="acc-body">
+      <h5>主要知見</h5>
+      <ul>
+        <li>15秒ルール: 起動→主要機能まで1タップ</li>
+        <li>選択肢は最大3-4個（決断麻痺回避）</li>
+        <li>マイクロゴール分割で集中持続時間47%向上（RCT）</li>
+        <li>罪悪感なし通知（Duolingo事例で改善確認）</li>
+        <li>ADHD当事者の80%が1ヶ月以内にアプリを離脱</li>
+        <li>「アプリを開くこと」自体がハードル → Push通知ワンタップ設計</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>02 — 競合12アプリ分析</summary>
+    <div class="acc-body">
+      <h5>調査対象</h5>
+      <p>Tiimo, Structured, Routinery, Goblin Tools, Fabulous, Finch, Bearable, Focusmate, Shimmer, Inflow, Replika, Pi</p>
+      <h5>決定的発見</h5>
+      <ul>
+        <li>「バランスホイール俯瞰」カバー: <strong>0/12</strong></li>
+        <li>「ドーパミン・スケジューリング」カバー: <strong>0/12</strong></li>
+        <li>「統合AIコーチング」カバー: <strong>0/12</strong></li>
+        <li>市場は「第2世代」で飽和 → 「第3世代」の勝者は不在</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>03 — 技術スタック検証（SvelteKit + Capacitor + Supabase）</summary>
+    <div class="acc-body">
+      <h5>検証結果: Go判定</h5>
+      <ul>
+        <li>本番実績あり（ジャーナリングアプリ、セルフトラッキングアプリ等）</li>
+        <li>OSSスターターキットも存在</li>
+        <li>制約: SSR不可（SPA化必須）、iOS SafariのWeb Speech不安定</li>
+        <li>対策: adapter-static + ssr=false、Capacitorプラグインフォールバック</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>04 — Google Calendar API統合設計</summary>
+    <div class="acc-body">
+      <h5>アーキテクチャ</h5>
+      <ul>
+        <li>OAuth 2.0 PKCEフローでアクセストークン取得</li>
+        <li>Calendar API v3でイベント読取/書込</li>
+        <li>Google Push Notification → Edge Functions → Realtimeのチェイン</li>
+        <li>FreeBusy APIで空き時間検出</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>05 — 音声入力パイプライン比較</summary>
+    <div class="acc-body">
+      <h5>推奨: 段階的ハイブリッド</h5>
+      <ul>
+        <li>Phase 1: Web Speech API（$0）→ MVP検証</li>
+        <li>Phase 2: @capawesome-team/capacitor-speech-recognition（$0）</li>
+        <li>Phase 3: Gemini Multimodal Live API（音声AI対話）</li>
+        <li>結論: Whisper API不要（コスト高 + リアルタイム非対応）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>06 — AIコーチング設計パターン</summary>
+    <div class="acc-body">
+      <h5>4つの心理学的基盤</h5>
+      <ul>
+        <li>CBT（認知リフレーミング）→ RSD対応</li>
+        <li>動機づけ面接法（内発的動機）→ 低ドーパミンタスク</li>
+        <li>ポジティブ心理学（強み活用）→ バランスホイール</li>
+        <li>ACT（受容と行動）→ 先延ばし後の自己批判</li>
+      </ul>
+      <h5>記憶管理</h5>
+      <ul>
+        <li>短期: コンテキストウィンドウ（FIFO）</li>
+        <li>中期: Supabase DB（今日のログ）</li>
+        <li>長期: pgvector（RAG検索、過去パターン）</li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>07 — 市場調査（TAM/SAM/SOM）</summary>
+    <div class="acc-body">
+      <h5>市場規模</h5>
+      <ul>
+        <li>TAM: $18.3B（全世界ADHD成人3.66億人）</li>
+        <li>SAM: $5-8B（先進国スマホ保有者）</li>
+        <li>CAGR: 15.4%（2026-2035）</li>
+        <li>日本のADHD成人: ~160万人（有病率1.65%）</li>
+      </ul>
+      <h5>競合収益ベンチマーク</h5>
+      <ul>
+        <li>Structured: $24.8M/年（50万有料ユーザー）</li>
+        <li>Tiimo: $13.9M/年（5万有料ユーザー）</li>
+        <li>WTP帯域: $48〜$200/年</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- APPENDIX B: COMPETITIVE MATRIX -->
+<div class="section" id="appB">
+  <div class="section-eyebrow" style="color:var(--text-muted)">Appendix B — Competitive Matrix</div>
+  <div class="action-title">12アプリ × 12機能 比較マトリクス</div>
+
+  <div class="matrix-wrap">
+    <table class="matrix">
+      <thead>
+        <tr>
+          <th>機能 \ アプリ</th>
+          <th>Tiimo</th>
+          <th>Struc.</th>
+          <th>Routi.</th>
+          <th>Goblin</th>
+          <th>Fabu.</th>
+          <th>Finch</th>
+          <th>Bear.</th>
+          <th>Focus.</th>
+          <th>Shim.</th>
+          <th>Inflow</th>
+          <th style="color:var(--cyan);font-weight:900">才能AI</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>ビジュアルスケジュール</td><td class="m-a">A</td><td class="m-a">A</td><td class="m-b">B</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-b">B</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+        <tr><td>AIタスク分解</td><td class="m-a">A</td><td class="m-b">B</td><td class="m-x">-</td><td class="m-a">A</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-b">B</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+        <tr><td>エネルギー追跡</td><td class="m-b">B</td><td class="m-a">A</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-b">B</td><td class="m-a">A</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-b">B</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+        <tr><td>習慣トラッキング</td><td class="m-b">B</td><td class="m-x">-</td><td class="m-a">A</td><td class="m-x">-</td><td class="m-a">A</td><td class="m-a">A</td><td class="m-a">A</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-b">B</td><td class="m-b" style="color:var(--cyan)">B</td></tr>
+        <tr><td>ジャーナリング</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-a">A</td><td class="m-b">B</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-a">A</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+        <tr><td>AIコーチング</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-a">A</td><td class="m-a">A</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+        <tr><td>外部ツール連携</td><td class="m-b">B</td><td class="m-b">B</td><td class="m-b">B</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-b">B</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+        <tr><td style="font-weight:700;color:var(--red)">バランスホイール</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+        <tr><td style="font-weight:700;color:var(--red)">ドーパミンスケジューリング</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+        <tr><td style="font-weight:700;color:var(--red)">個人OS統合</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-x">-</td><td class="m-a" style="font-weight:900;color:var(--cyan)">A</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">空白地帯</div>
+    <p>赤字の3行 =<strong> 12アプリ中、カバー率0%</strong>。才能解放AIコーチだけが「A」を持つ決定的差別化。この3つの機能は、単なるフィーチャーではなく、アプリの<strong>アイデンティティそのもの</strong>。</p>
+  </div>
+</div>
+
+<!-- APPENDIX C: TECH SPEC LINK -->
+<div class="section" id="appC">
+  <div class="section-eyebrow" style="color:var(--text-muted)">Appendix C — Technical Specification</div>
+  <div class="action-title">詳細技術仕様書</div>
+  <p class="section-lead">DBスキーマ（9テーブル + RLS）、API設計（6 Edge Functions）、UIワイヤーフレーム（5画面）、システムプロンプト（5レイヤー）、プロンプトチェイニング（3フロー）、セキュリティ設計、MVP 20日スプリント計画の詳細は技術仕様書を参照してください。</p>
+
+  <div class="vision-card" style="border-color:rgba(34,211,238,.25)">
+    <h3 style="background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent">Technical Specification v1.0</h3>
+    <p>コピペしてすぐ動くレベルの詳細仕様書。エンジニア・技術デューデリジェンス向け。</p>
+    <div class="vision-items">
+      <a href="sainou-coach-tech-spec.html" style="padding:10px 24px;border-radius:8px;background:rgba(34,211,238,.08);border:1px solid rgba(34,211,238,.25);font-size:14px;color:var(--cyan);text-decoration:none;font-weight:600">技術仕様書を開く &rarr;</a>
+    </div>
+  </div>
+</div>
+
+</div><!-- .main-content -->
+</div><!-- .page-layout -->
+
+<div class="footer">
+  <p>才能解放AIコーチ — Business Proposal v1.0 | omoshiku Inc. | 2026-02-27</p>
+  <p style="margin-top:8px"><a href="sainou-coach-tech-spec.html">Technical Specification &rarr;</a></p>
+</div>
+
+</div><!-- .container -->
+</body>
+</html>

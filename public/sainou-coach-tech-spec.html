@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>才能解放AIコーチ — 技術仕様書</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;600;700&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+<style>
+:root{--bg-base:#08080d;--bg-surface:#101018;--bg-raised:#181824;--bg-top:#222234;--border:rgba(255,255,255,.06);--border-focus:rgba(255,255,255,.12);--text:#eaeaf2;--text-dim:#9898ae;--text-muted:#58586e;--blue:#4a7dff;--cyan:#22d3ee;--green:#34d399;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;--pink:#f472b6;--grad-hero:linear-gradient(135deg,#4a7dff 0%,#22d3ee 100%);--grad-success:linear-gradient(135deg,#34d399 0%,#22d3ee 100%);--grad-warn:linear-gradient(135deg,#ef4444 0%,#f59e0b 100%);--grad-vision:linear-gradient(135deg,#a78bfa 0%,#f472b6 100%);--shadow-sm:0 1px 3px rgba(0,0,0,.4);--shadow-md:0 4px 16px rgba(0,0,0,.5);--shadow-lg:0 8px 32px rgba(0,0,0,.6);--font-sans:'Noto Sans JP',-apple-system,sans-serif;--font-mono:'JetBrains Mono','Fira Code',monospace;--font-heading:'Sora','Noto Sans JP',sans-serif}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--bg-base);color:var(--text);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.container{max-width:1080px;margin:0 auto;padding:0 28px}
+.page-layout{display:flex;gap:32px;align-items:flex-start}
+.main-content{flex:1;min-width:0}
+.mono{font-family:var(--font-mono);font-weight:600}
+.headline{font-family:'Playfair Display',Georgia,serif;font-weight:900;letter-spacing:-.02em}
+
+/* TOC Sidebar */
+.toc-sidebar{position:sticky;top:24px;width:250px;flex-shrink:0;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:16px;max-height:calc(100vh - 48px);overflow-y:auto}
+.toc-sidebar h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:3px 0;line-height:1.4;transition:color .15s}
+.toc-sidebar a:hover{color:var(--cyan)}
+.toc-num{color:var(--text-muted);margin-right:4px;font-family:var(--font-mono);font-size:10px}
+.toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-part:first-child{border-top:none;margin-top:0;padding-top:0}
+@media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
+
+/* Hero */
+.hero{padding:72px 0 20px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(74,125,255,.05) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-block;padding:5px 14px;border:1px solid rgba(74,125,255,.25);border-radius:20px;font-size:12px;font-weight:700;color:var(--blue);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;background:rgba(74,125,255,.04)}
+.hero h1{font-size:36px;font-weight:900;line-height:1.4;margin-bottom:14px;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.hero-sub{font-size:15px;color:var(--text-dim);max-width:640px;margin:0 auto 28px;line-height:1.9}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--text-muted)}
+
+/* Sections */
+.section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px}
+.action-title{font-size:24px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
+.section-lead{font-size:15px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
+
+/* Part Divider */
+.part-divider{padding:32px 0 8px;text-align:center}
+.part-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.part-badge.a{border-color:var(--cyan);color:var(--cyan)}
+.part-badge.b{border-color:var(--green);color:var(--green)}
+.part-badge.c{border-color:var(--blue);color:var(--blue)}
+.part-badge.d{border-color:var(--purple);color:var(--purple)}
+.part-badge.e{border-color:var(--amber);color:var(--amber)}
+.part-badge.f{border-color:var(--red);color:var(--red)}
+
+/* Table */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:18px 0;font-size:13px}
+.tbl thead th{background:var(--bg-raised);padding:10px 14px;font-size:11px;font-weight:700;text-align:left;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;background:var(--bg-surface)}
+.tbl tbody tr:last-child td{border-bottom:none}
+.t-name{font-weight:600;color:var(--text)}
+.t-good{color:var(--green);font-weight:500}
+.t-warn{color:var(--amber);font-weight:500}
+.t-bad{color:var(--red);font-weight:500}
+.t-blue{color:var(--blue);font-weight:500}
+.t-cyan{color:var(--cyan);font-weight:500}
+
+/* Cards */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:18px 0}
+@media(max-width:600px){.card-grid{grid-template-columns:1fr}}
+.card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm);transition:transform .15s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.card p{font-size:13px;color:var(--text-dim);line-height:1.8}
+.card-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px}
+.card-badge.green{background:rgba(52,211,153,.08);color:var(--green)}
+.card-badge.blue{background:rgba(74,125,255,.08);color:var(--blue)}
+.card-badge.amber{background:rgba(245,158,11,.08);color:var(--amber)}
+.card-badge.purple{background:rgba(167,139,250,.08);color:var(--purple)}
+.card-badge.pink{background:rgba(244,114,182,.08);color:var(--pink)}
+.card-badge.red{background:rgba(239,68,68,.08);color:var(--red)}
+.card-badge.cyan{background:rgba(34,211,238,.08);color:var(--cyan)}
+
+/* KPI */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 20px}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.kpi-grid{grid-template-columns:1fr}}
+.kpi-card{background:var(--bg-surface);border-radius:12px;padding:20px 14px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:transform .15s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-num{font-family:var(--font-mono);font-size:32px;font-weight:600;margin-bottom:4px}
+.kpi-num.blue{background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.good{background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.vision{background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-num.warn{background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.kpi-label{font-size:13px;color:var(--text-dim);font-weight:500;line-height:1.6}
+
+/* Callouts */
+.sowhat{background:rgba(239,68,68,.03);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.sowhat-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.sowhat p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.sowhat strong{color:#f87171}
+.insight{background:rgba(52,211,153,.03);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.insight-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.insight p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.insight strong{color:var(--green)}
+.note{background:rgba(74,125,255,.03);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.note-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.note p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.note strong{color:var(--blue)}
+
+/* Layer Stack */
+.layer-stack{display:flex;flex-direction:column;gap:14px;margin:20px 0}
+.layer{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:24px;position:relative;box-shadow:var(--shadow-sm)}
+.layer-badge{position:absolute;top:-9px;left:18px;font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:2px 10px;border-radius:4px}
+.layer-badge.l1{background:var(--blue);color:#fff}
+.layer-badge.l2{background:var(--cyan);color:#000}
+.layer-badge.l3{background:var(--green);color:#000}
+.layer-badge.l4{background:var(--purple);color:#fff}
+.layer-badge.l5{background:var(--amber);color:#000}
+.layer-badge.l6{background:var(--red);color:#fff}
+.layer h4{font-size:17px;font-weight:700;margin-bottom:6px;margin-top:4px}
+.layer p{font-size:14px;color:var(--text-dim);margin-bottom:10px;line-height:1.8}
+.tech-pills{display:flex;flex-wrap:wrap;gap:5px}
+.tech-pill{font-size:12px;font-family:var(--font-mono);padding:3px 9px;border-radius:5px;background:var(--bg-top);border:1px solid var(--border);color:var(--text-muted)}
+
+/* Hub Architecture */
+.arch-hub{background:var(--bg-surface);border:1px solid var(--border);border-radius:14px;padding:36px 24px;margin:20px 0;text-align:center;box-shadow:var(--shadow-sm)}
+.hub-tier{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0}
+.hub-connector{font-family:var(--font-mono);font-size:18px;color:var(--text-muted);margin:6px 0}
+.hub-core{display:inline-block;background:rgba(34,211,238,.06);border:2px solid rgba(34,211,238,.35);border-radius:14px;padding:16px 32px;margin:8px 0}
+.hub-core-name{font-size:17px;font-weight:800;color:var(--cyan)}
+.hub-core-sub{font-size:13px;color:var(--text-dim)}
+.hub-node{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid;text-align:center;min-width:88px}
+.hub-node.primary{background:rgba(52,211,153,.06);border-color:rgba(52,211,153,.25);color:var(--green)}
+.hub-node.secondary{background:var(--bg-raised);border-color:var(--border);color:var(--text-dim)}
+.hub-node.migrate{background:rgba(245,158,11,.06);border-color:rgba(245,158,11,.25);color:var(--amber);font-weight:600}
+.hub-node.mcp{background:rgba(74,125,255,.06);border-color:rgba(74,125,255,.25);color:var(--blue);font-weight:600}
+.hub-node .node-sub{font-size:11px;color:var(--text-muted);display:block;margin-top:1px}
+
+/* Code Block */
+.code-block{background:var(--bg-raised);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin:14px 0;overflow-x:auto;font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--text-dim)}
+.code-block .kw{color:var(--purple)}
+.code-block .fn{color:var(--cyan)}
+.code-block .str{color:var(--green)}
+.code-block .cm{color:var(--text-muted);font-style:italic}
+.code-block .tp{color:var(--amber)}
+.code-block .num{color:var(--pink)}
+.code-label{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text-muted);margin-bottom:6px;display:block}
+
+/* ER Diagram */
+.er-diagram{background:var(--bg-raised);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:14px 0;font-family:var(--font-mono);font-size:13px;line-height:1.9;color:var(--text-dim);white-space:pre;overflow-x:auto}
+.er-diagram .er-table{color:var(--cyan);font-weight:700}
+.er-diagram .er-rel{color:var(--text-muted)}
+.er-diagram .er-note{color:var(--purple);font-style:italic}
+
+/* SQL Block */
+.sql-block{background:var(--bg-raised);border:1px solid var(--border);border-radius:10px;padding:18px 20px;margin:14px 0;overflow-x:auto;font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--text-dim);white-space:pre}
+.sql-block .sql-kw{color:var(--purple);font-weight:600}
+.sql-block .sql-fn{color:var(--cyan)}
+.sql-block .sql-str{color:var(--green)}
+.sql-block .sql-cm{color:var(--text-muted);font-style:italic}
+.sql-block .sql-type{color:var(--amber)}
+.sql-block .sql-tbl{color:var(--cyan);font-weight:600}
+
+/* Wireframe */
+.wireframe{background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;padding:20px 24px;margin:14px 0;font-family:var(--font-mono);font-size:11px;line-height:1.5;color:var(--text-dim);white-space:pre;overflow-x:auto}
+.wire-label{font-size:12px;font-weight:700;color:var(--cyan);margin-bottom:8px;font-family:var(--font-sans)}
+
+/* Flow Diagram */
+.flow-diagram{background:var(--bg-raised);border:1px solid var(--border);border-radius:12px;padding:24px;margin:18px 0;font-family:var(--font-mono);font-size:12px;line-height:1.7;color:var(--text-dim);white-space:pre;overflow-x:auto}
+.flow-label{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;font-family:var(--font-sans)}
+.flow-step{color:var(--cyan)}
+.flow-arrow{color:var(--text-muted)}
+.flow-service{color:var(--green)}
+.flow-note{color:var(--purple);font-style:italic}
+
+/* Phase Card */
+.phase-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+.phase-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.phase-policy{font-size:13px;color:var(--cyan);font-weight:600;margin-bottom:8px;padding:5px 12px;background:rgba(34,211,238,.04);border-radius:6px;display:inline-block}
+.phase-card>p{font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.8}
+.phase-items{display:flex;flex-direction:column;gap:4px}
+.phase-item{font-size:12px;color:var(--text-dim);padding:5px 10px;background:var(--bg-raised);border-radius:5px;border:1px solid var(--border);display:flex;align-items:flex-start;gap:7px;line-height:1.5}
+.pi-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:5px}
+.pi-dot.g{background:var(--green)}
+.pi-dot.c{background:var(--cyan)}
+.pi-dot.b{background:var(--blue)}
+.pi-dot.p{background:var(--purple)}
+.pi-dot.r{background:var(--red)}
+.pi-dot.a{background:var(--amber)}
+
+/* Prompt Layer */
+.prompt-layer{background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin:8px 0;box-shadow:var(--shadow-sm);position:relative;border-left:4px solid}
+.prompt-layer.l1{border-left-color:var(--blue)}
+.prompt-layer.l2{border-left-color:var(--cyan)}
+.prompt-layer.l3{border-left-color:var(--green)}
+.prompt-layer.l4{border-left-color:var(--amber)}
+.prompt-layer.l5{border-left-color:var(--purple)}
+.prompt-layer.l6{border-left-color:var(--pink)}
+.prompt-layer h4{font-size:14px;font-weight:700;margin-bottom:4px}
+.prompt-layer p{font-size:13px;color:var(--text-dim);line-height:1.7}
+.prompt-tag{font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;display:inline-block;padding:2px 8px;border-radius:3px;margin-bottom:6px}
+
+/* Directory Tree */
+.dir-tree{background:var(--bg-raised);border:1px solid var(--border);border-radius:10px;padding:20px 24px;margin:14px 0;font-family:var(--font-mono);font-size:12px;line-height:1.6;color:var(--text-dim);white-space:pre;overflow-x:auto}
+.dir-tree .dir-folder{color:var(--cyan);font-weight:600}
+.dir-tree .dir-file{color:var(--text-dim)}
+.dir-tree .dir-comment{color:var(--text-muted);font-style:italic}
+
+/* Accordion */
+details.acc{margin-bottom:6px}
+details.acc summary{cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;color:var(--text);list-style:none;transition:all .15s}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::before{content:'\25B6';font-size:9px;color:var(--text-muted);transition:transform .2s}
+details.acc[open] summary::before{transform:rotate(90deg)}
+details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-raised);border-radius:8px 8px 0 0}
+.acc-body{padding:16px 20px;background:var(--bg-surface);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;font-size:13px;line-height:1.8;color:var(--text-dim)}
+.acc-body h5{font-size:12px;font-weight:700;color:var(--cyan);margin:12px 0 4px;letter-spacing:1px;text-transform:uppercase}
+.acc-body h5:first-child{margin-top:0}
+.acc-body ul{padding-left:18px;margin:4px 0}
+.acc-body li{margin-bottom:3px}
+
+/* Issue Cards */
+.issue-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+@media(max-width:700px){.issue-grid{grid-template-columns:1fr}}
+.issue-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:22px;border-left:4px solid;box-shadow:var(--shadow-sm)}
+.issue-card.critical{border-left-color:var(--red)}
+.issue-card.high{border-left-color:var(--amber)}
+.issue-card.medium{border-left-color:var(--blue)}
+.issue-card.low{border-left-color:var(--green)}
+.issue-severity{font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:2px 8px;border-radius:3px;display:inline-block;margin-bottom:8px}
+.issue-card.critical .issue-severity{background:rgba(239,68,68,.12);color:var(--red)}
+.issue-card.high .issue-severity{background:rgba(245,158,11,.12);color:var(--amber)}
+.issue-card.medium .issue-severity{background:rgba(74,125,255,.12);color:var(--blue)}
+.issue-card.low .issue-severity{background:rgba(52,211,153,.12);color:var(--green)}
+.issue-card h4{font-size:16px;font-weight:700;margin-bottom:6px}
+.issue-card p{font-size:14px;color:var(--text-dim);line-height:1.8}
+
+/* Color Swatch */
+.swatch-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;margin:18px 0}
+.swatch{border-radius:10px;overflow:hidden;border:1px solid var(--border);box-shadow:var(--shadow-sm)}
+.swatch-color{height:48px}
+.swatch-info{padding:8px 10px;background:var(--bg-surface);font-size:11px}
+.swatch-name{font-weight:700;color:var(--text);display:block;margin-bottom:2px}
+.swatch-hex{font-family:var(--font-mono);color:var(--text-muted)}
+
+/* Footer */
+.footer{text-align:center;padding:40px 0 28px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+.footer a{color:var(--blue);text-decoration:none}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ═══════════════════════ HERO ═══════════════════════ -->
+<div class="hero">
+  <div class="hero-badge">Technical Specification v1.0</div>
+  <h1>才能解放AIコーチ</h1>
+  <p class="hero-sub">SvelteKit + Capacitor + Supabase + Claude API<br>MVPスコープ（Layer 1, Week 1-4）の完全技術仕様</p>
+  <div class="hero-meta">
+    <span>omoshiku Inc.</span>
+    <span>|</span>
+    <span>2026-02-27</span>
+    <span>|</span>
+    <span>10テーブル / 6 Edge Functions / 5画面</span>
+    <span>|</span>
+    <span><a href="sainou-coach-proposal.html" style="color:var(--cyan);text-decoration:none">&larr; 企画書</a></span>
+  </div>
+</div>
+
+<!-- ═══════════════════════ LAYOUT ═══════════════════════ -->
+<div class="page-layout">
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar">
+  <h3>Contents</h3>
+  <div class="toc-part">Architecture</div>
+  <a href="#s01"><span class="toc-num">01</span> System Architecture</a>
+  <a href="#s02"><span class="toc-num">02</span> DB Schema</a>
+  <a href="#s03"><span class="toc-num">03</span> API Design</a>
+  <div class="toc-part">Frontend</div>
+  <a href="#s04"><span class="toc-num">04</span> UI/UX Wireframes</a>
+  <div class="toc-part">AI Engine</div>
+  <a href="#s05"><span class="toc-num">05</span> System Prompt Design</a>
+  <a href="#s06"><span class="toc-num">06</span> Prompt Chaining</a>
+  <div class="toc-part">Infrastructure</div>
+  <a href="#s07"><span class="toc-num">07</span> Data Flow</a>
+  <a href="#s08"><span class="toc-num">08</span> Project Structure</a>
+  <a href="#s09"><span class="toc-num">09</span> Security Design</a>
+  <div class="toc-part">Delivery</div>
+  <a href="#s10"><span class="toc-num">10</span> MVP Sprint Plan</a>
+  <div class="toc-part">Appendix</div>
+  <a href="#appA"><span class="toc-num">A</span> Color Palette</a>
+  <a href="#appB"><span class="toc-num">B</span> TypeScript Types</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- ═══════════════════════ PART: ARCHITECTURE ═══════════════════════ -->
+<div class="part-divider"><span class="part-badge a">Architecture</span></div>
+
+<!-- Section 01: System Architecture -->
+<div class="section" id="s01">
+  <div class="section-eyebrow" style="color:var(--cyan)">01 &mdash; System Architecture</div>
+  <h2 class="action-title">全体アーキテクチャ</h2>
+  <p class="section-lead">SvelteKit SPAをCapacitorでネイティブラップし、Supabaseをバックエンドとする3層構成。AI APIはEdge Functions経由で安全にプロキシする。</p>
+
+  <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+    <div class="kpi-card">
+      <div class="kpi-num blue">3</div>
+      <div class="kpi-label">クライアント形態<br><small style="color:var(--text-muted)">PWA / Android / iOS</small></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num good">6</div>
+      <div class="kpi-label">Edge Functions<br><small style="color:var(--text-muted)">AI / Calendar / Export</small></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision">3</div>
+      <div class="kpi-label">外部API<br><small style="color:var(--text-muted)">Claude / Gemini / GCal</small></div>
+    </div>
+  </div>
+
+  <!-- Layer Stack -->
+  <div class="layer-stack">
+    <div class="layer">
+      <span class="layer-badge l1">Layer 1 &mdash; Client</span>
+      <h4>SvelteKit SPA + Capacitor</h4>
+      <p>adapter-static でビルドした静的SPAをCapacitor WebViewでラップ。Vercelにも同時デプロイでPWA提供。</p>
+      <div class="tech-pills">
+        <span class="tech-pill">SvelteKit 2.x</span>
+        <span class="tech-pill">Svelte 5 Runes</span>
+        <span class="tech-pill">TailwindCSS 4.x</span>
+        <span class="tech-pill">TypeScript 5.x</span>
+        <span class="tech-pill">Capacitor 6.x</span>
+      </div>
+    </div>
+    <div class="layer">
+      <span class="layer-badge l2">Layer 2 &mdash; Backend</span>
+      <h4>Supabase (BaaS)</h4>
+      <p>認証・DB・リアルタイム・Edge Functions・Storageを一体提供。APIキーをクライアントに露出させずにAI APIを呼び出す。</p>
+      <div class="tech-pills">
+        <span class="tech-pill">Auth (Google OAuth)</span>
+        <span class="tech-pill">PostgreSQL + pgvector</span>
+        <span class="tech-pill">Realtime WebSocket</span>
+        <span class="tech-pill">Edge Functions (Deno)</span>
+        <span class="tech-pill">Storage</span>
+      </div>
+    </div>
+    <div class="layer">
+      <span class="layer-badge l3">Layer 3 &mdash; AI Engine</span>
+      <h4>Claude API + Gemini Flash</h4>
+      <p>コーチング対話はClaude (Sonnet 20% / Haiku 60%)。タスク分類・カレンダーパースはGemini Flash (無料)。緊急RSD対応はSonnet固定。</p>
+      <div class="tech-pills">
+        <span class="tech-pill">Claude Sonnet 4.6</span>
+        <span class="tech-pill">Claude Haiku 4.5</span>
+        <span class="tech-pill">Gemini 2.0 Flash</span>
+        <span class="tech-pill">pgvector (RAG)</span>
+      </div>
+    </div>
+    <div class="layer">
+      <span class="layer-badge l4">Layer 4 &mdash; External</span>
+      <h4>Google Calendar API v3</h4>
+      <p>OAuth 2.0 PKCEフローでカレンダー連携。Push Notification → Edge Functions → Realtime でリアルタイム同期。</p>
+      <div class="tech-pills">
+        <span class="tech-pill">Calendar API v3</span>
+        <span class="tech-pill">OAuth 2.0 PKCE</span>
+        <span class="tech-pill">Push Notifications</span>
+        <span class="tech-pill">FreeBusy API</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <div class="note-label">Design Decision</div>
+    <p><strong>SSRは不使用</strong>（<code>ssr = false</code>）。Capacitor WebViewではSSR非対応のため、完全SPA化。SEO不要の個人アプリにはデメリットなし。</p>
+  </div>
+</div>
+
+<!-- Section 02: DB Schema -->
+<div class="section" id="s02">
+  <div class="section-eyebrow" style="color:var(--cyan)">02 &mdash; DB Schema</div>
+  <h2 class="action-title">データベース設計</h2>
+  <p class="section-lead">Supabase PostgreSQLに10テーブル。全テーブルにRow Level Security (RLS) を適用し、ユーザーは自分のデータのみアクセス可能。</p>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-num blue">10</div>
+      <div class="kpi-label">テーブル数</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num good">100%</div>
+      <div class="kpi-label">RLS適用率</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num vision">384</div>
+      <div class="kpi-label">ベクトル次元<br><small style="color:var(--text-muted)">pgvector (RAG)</small></div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-num warn">8</div>
+      <div class="kpi-label">バランスホイール<br><small style="color:var(--text-muted)">領域スコア</small></div>
+    </div>
+  </div>
+
+  <!-- ER Diagram -->
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 8px">ER図（概要）</h3>
+  <div class="er-diagram"><span class="er-table">profiles</span> <span class="er-rel">─────&lt;</span> <span class="er-table">daily_checkins</span>
+  <span class="er-rel">│</span>              <span class="er-rel">│</span>
+  <span class="er-rel">│</span>              <span class="er-rel">└────&lt;</span> <span class="er-table">energy_logs</span>
+  <span class="er-rel">│</span>
+  <span class="er-rel">├────&lt;</span> <span class="er-table">tasks</span> <span class="er-rel">─────&lt;</span> <span class="er-table">task_completions</span>
+  <span class="er-rel">│</span>
+  <span class="er-rel">├────&lt;</span> <span class="er-table">conversations</span> <span class="er-rel">─────&lt;</span> <span class="er-table">messages</span>
+  <span class="er-rel">│</span>                               <span class="er-rel">│</span>
+  <span class="er-rel">│</span>                               <span class="er-rel">└────&lt;</span> <span class="er-table">message_embeddings</span> <span class="er-note">(pgvector)</span>
+  <span class="er-rel">│</span>
+  <span class="er-rel">├────&lt;</span> <span class="er-table">balance_scores</span> <span class="er-note">(8領域レーダー)</span>
+  <span class="er-rel">│</span>
+  <span class="er-rel">├────&lt;</span> <span class="er-table">calendar_events</span> <span class="er-note">(GCalキャッシュ)</span>
+  <span class="er-rel">│</span>
+  <span class="er-rel">└────&lt;</span> <span class="er-table">user_settings</span></div>
+
+  <!-- Table Details -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 8px">テーブル定義</h3>
+
+  <details class="acc">
+    <summary>profiles &mdash; ユーザープロファイル（Supabase Auth連携）</summary>
+    <div class="acc-body">
+      <h5>カラム定義</h5>
+      <table class="tbl">
+        <thead><tr><th>カラム</th><th>型</th><th>制約</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td class="t-name">id</td><td><code>UUID</code></td><td>PK, FK → auth.users</td><td>Supabase Auth ID</td></tr>
+          <tr><td class="t-name">display_name</td><td><code>TEXT</code></td><td>NOT NULL</td><td>表示名</td></tr>
+          <tr><td class="t-name">avatar_url</td><td><code>TEXT</code></td><td>NULLABLE</td><td>アバター画像URL</td></tr>
+          <tr><td class="t-name">timezone</td><td><code>TEXT</code></td><td>DEFAULT 'Asia/Tokyo'</td><td>タイムゾーン</td></tr>
+          <tr><td class="t-name">onboarding_completed</td><td><code>BOOLEAN</code></td><td>DEFAULT false</td><td>初期設定完了フラグ</td></tr>
+          <tr><td class="t-name">myos_version</td><td><code>TEXT</code></td><td>DEFAULT '1.0'</td><td>MY OSバージョン</td></tr>
+          <tr><td class="t-name">created_at</td><td><code>TIMESTAMPTZ</code></td><td>DEFAULT now()</td><td>作成日時</td></tr>
+          <tr><td class="t-name">updated_at</td><td><code>TIMESTAMPTZ</code></td><td>DEFAULT now()</td><td>更新日時</td></tr>
+        </tbody>
+      </table>
+      <h5>RLS Policy</h5>
+      <ul>
+        <li>SELECT: <code>auth.uid() = id</code></li>
+        <li>UPDATE: <code>auth.uid() = id</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>daily_checkins &mdash; 朝チェックインデータ</summary>
+    <div class="acc-body">
+      <h5>カラム定義</h5>
+      <table class="tbl">
+        <thead><tr><th>カラム</th><th>型</th><th>制約</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td class="t-name">id</td><td><code>UUID</code></td><td>PK</td><td>自動生成</td></tr>
+          <tr><td class="t-name">user_id</td><td><code>UUID</code></td><td>FK → profiles, NOT NULL</td><td>ユーザーID</td></tr>
+          <tr><td class="t-name">checkin_date</td><td><code>DATE</code></td><td>NOT NULL, UNIQUE(user_id)</td><td>チェックイン日</td></tr>
+          <tr><td class="t-name">energy_level</td><td><code>SMALLINT</code></td><td>CHECK 1-10</td><td>エネルギーレベル</td></tr>
+          <tr><td class="t-name">mood</td><td><code>TEXT</code></td><td>NULLABLE</td><td>great / good / neutral / low / struggling</td></tr>
+          <tr><td class="t-name">sleep_quality</td><td><code>SMALLINT</code></td><td>CHECK 1-5</td><td>睡眠の質</td></tr>
+          <tr><td class="t-name">top_priorities</td><td><code>JSONB</code></td><td>DEFAULT '[]'</td><td>[{task_id, title, reason}]</td></tr>
+          <tr><td class="t-name">ai_daily_plan</td><td><code>JSONB</code></td><td>NULLABLE</td><td>AIが生成した1日のプラン</td></tr>
+          <tr><td class="t-name">reflection_notes</td><td><code>TEXT</code></td><td>NULLABLE</td><td>昨日の振り返り</td></tr>
+        </tbody>
+      </table>
+      <h5>RLS Policy</h5>
+      <ul><li>ALL: <code>auth.uid() = user_id</code></li></ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>tasks &mdash; タスク管理（4スイッチ + ドーパミンスコア）</summary>
+    <div class="acc-body">
+      <h5>カラム定義（主要）</h5>
+      <table class="tbl">
+        <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td class="t-name">id / user_id / title / description</td><td colspan="2">標準フィールド</td></tr>
+          <tr><td class="t-name">status</td><td><code>TEXT</code></td><td>pending / in_progress / completed / cancelled / deferred</td></tr>
+          <tr><td class="t-name">switch_interest</td><td><code>SMALLINT 0-10</code></td><td>🔥 興味・好奇心スイッチ</td></tr>
+          <tr><td class="t-name">switch_novelty</td><td><code>SMALLINT 0-10</code></td><td>🌟 新しさスイッチ</td></tr>
+          <tr><td class="t-name">switch_challenge</td><td><code>SMALLINT 0-10</code></td><td>⚡ 挑戦スイッチ</td></tr>
+          <tr><td class="t-name">switch_urgency</td><td><code>SMALLINT 0-10</code></td><td>⏰ 緊急度スイッチ</td></tr>
+          <tr><td class="t-name">dopamine_score</td><td><code>NUMERIC(4,2)</code></td><td class="t-good">GENERATED: Interest×0.3 + Novelty×0.25 + Challenge×0.25 + Urgency×0.2</td></tr>
+          <tr><td class="t-name">dopamine_phase</td><td><code>TEXT</code></td><td>ignite / accelerate / sustain / switch / recover</td></tr>
+          <tr><td class="t-name">scheduled_block</td><td><code>SMALLINT 1-4</code></td><td>ウルトラディアンブロック番号</td></tr>
+          <tr><td class="t-name">source</td><td><code>TEXT</code></td><td>manual / calendar / ai_suggested</td></tr>
+          <tr><td class="t-name">parent_task_id</td><td><code>UUID</code></td><td>サブタスクの親（自己参照FK）</td></tr>
+        </tbody>
+      </table>
+      <h5>インデックス</h5>
+      <ul>
+        <li><code>idx_tasks_user_status</code> — (user_id, status)</li>
+        <li><code>idx_tasks_user_date</code> — (user_id, due_date)</li>
+        <li><code>idx_tasks_dopamine</code> — (user_id, dopamine_score DESC)</li>
+      </ul>
+      <h5>ドーパミンスコア算出式</h5>
+      <div class="code-block"><span class="cm">-- PostgreSQL GENERATED ALWAYS AS (STORED)</span>
+<span class="kw">dopamine_score</span> = (<span class="fn">switch_interest</span> × <span class="num">0.30</span>)
+               + (<span class="fn">switch_novelty</span> × <span class="num">0.25</span>)
+               + (<span class="fn">switch_challenge</span> × <span class="num">0.25</span>)
+               + (<span class="fn">switch_urgency</span> × <span class="num">0.20</span>)</div>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>conversations / messages &mdash; AI対話セッション</summary>
+    <div class="acc-body">
+      <h5>conversations</h5>
+      <table class="tbl">
+        <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td class="t-name">type</td><td><code>TEXT</code></td><td>morning_checkin / focus_guide / midday_check / evening_review / quick_question / emergency / journal</td></tr>
+          <tr><td class="t-name">ai_model</td><td><code>TEXT</code></td><td>使用モデル（claude-haiku / claude-sonnet / gemini-flash）</td></tr>
+          <tr><td class="t-name">token_count_input / output</td><td><code>INTEGER</code></td><td>トークン消費量（コスト追跡）</td></tr>
+          <tr><td class="t-name">summary</td><td><code>TEXT</code></td><td>AI生成の対話サマリー</td></tr>
+        </tbody>
+      </table>
+      <h5>messages</h5>
+      <table class="tbl">
+        <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td class="t-name">conversation_id</td><td><code>UUID</code></td><td>FK → conversations</td></tr>
+          <tr><td class="t-name">role</td><td><code>TEXT</code></td><td>user / assistant / system</td></tr>
+          <tr><td class="t-name">content</td><td><code>TEXT</code></td><td>メッセージ本文</td></tr>
+          <tr><td class="t-name">metadata</td><td><code>JSONB</code></td><td>構造化データ（タスク提案等）</td></tr>
+        </tbody>
+      </table>
+      <h5>RLS</h5>
+      <ul>
+        <li>messages は conversations 経由で認可: <code>EXISTS (SELECT 1 FROM conversations WHERE user_id = auth.uid())</code></li>
+      </ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>message_embeddings &mdash; RAGベクトル (pgvector)</summary>
+    <div class="acc-body">
+      <table class="tbl">
+        <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td class="t-name">content_summary</td><td><code>TEXT</code></td><td>埋め込み対象テキスト</td></tr>
+          <tr><td class="t-name">embedding</td><td><code>vector(384)</code></td><td>all-MiniLM-L6-v2 (384次元)</td></tr>
+        </tbody>
+      </table>
+      <h5>インデックス</h5>
+      <ul><li><code>ivfflat (embedding vector_cosine_ops)</code> — lists = 100</li></ul>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>balance_scores &mdash; バランスホイール（8領域スコア）</summary>
+    <div class="acc-body">
+      <table class="tbl">
+        <thead><tr><th>カラム</th><th>型</th><th>説明</th></tr></thead>
+        <tbody>
+          <tr><td class="t-name">period</td><td><code>TEXT</code></td><td>daily / weekly / monthly</td></tr>
+          <tr><td class="t-name">adhd_brain</td><td><code>SMALLINT 1-10</code></td><td>ADHD脳管理</td></tr>
+          <tr><td class="t-name">bio_foundation</td><td><code>SMALLINT 1-10</code></td><td>生体基盤（睡眠・運動）</td></tr>
+          <tr><td class="t-name">ai_driven</td><td><code>SMALLINT 1-10</code></td><td>AI活用度</td></tr>
+          <tr><td class="t-name">aesthetics</td><td><code>SMALLINT 1-10</code></td><td>美意識</td></tr>
+          <tr><td class="t-name">interpersonal</td><td><code>SMALLINT 1-10</code></td><td>対人関係</td></tr>
+          <tr><td class="t-name">family</td><td><code>SMALLINT 1-10</code></td><td>家族</td></tr>
+          <tr><td class="t-name">vision</td><td><code>SMALLINT 1-10</code></td><td>ビジョン・事業</td></tr>
+          <tr><td class="t-name">philosophy</td><td><code>SMALLINT 1-10</code></td><td>哲学・価値観</td></tr>
+          <tr><td class="t-name">ai_insights</td><td><code>TEXT</code></td><td>AIによるバランス分析</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </details>
+
+  <details class="acc">
+    <summary>calendar_events / energy_logs / user_settings</summary>
+    <div class="acc-body">
+      <h5>calendar_events（GCalキャッシュ）</h5>
+      <ul>
+        <li><strong>google_event_id</strong> (TEXT UNIQUE) — Google Calendar イベントID</li>
+        <li><strong>summary / start_time / end_time / location</strong> — イベント基本情報</li>
+        <li><strong>synced_at</strong> — 最終同期日時</li>
+      </ul>
+      <h5>energy_logs（エネルギー追跡）</h5>
+      <ul>
+        <li><strong>energy_level</strong> (SMALLINT 1-10) — エネルギー値</li>
+        <li><strong>context</strong> — morning_checkin / midday_check / manual / focus_end</li>
+        <li>UNIQUE(user_id, logged_at) — 同一時刻の重複防止</li>
+      </ul>
+      <h5>user_settings（ユーザー設定）</h5>
+      <ul>
+        <li><strong>通知</strong>: morning_checkin_time (07:00), midday_check_time (12:00), evening_review_time (18:00)</li>
+        <li><strong>AIコーチ</strong>: coach_persona (coach / challenger / analyst), voice_input_enabled</li>
+        <li><strong>ウルトラディアン</strong>: block1-4_start, block_duration_minutes (DEFAULT 90)</li>
+        <li><strong>カレンダー</strong>: google_calendar_id, google_refresh_token (暗号化推奨)</li>
+      </ul>
+    </div>
+  </details>
+</div>
+
+<!-- Section 03: API Design -->
+<div class="section" id="s03">
+  <div class="section-eyebrow" style="color:var(--cyan)">03 &mdash; API Design</div>
+  <h2 class="action-title">API・エンドポイント設計</h2>
+  <p class="section-lead">全てのAI API呼び出しはSupabase Edge Functions経由。APIキーをクライアントに露出させない。クライアントはRLS適用のSupabase直接操作とEdge Functions呼び出しの2系統。</p>
+
+  <!-- Edge Functions Overview -->
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">Edge Functions 一覧</h3>
+  <table class="tbl">
+    <thead><tr><th>Function</th><th>用途</th><th>外部API</th><th>トリガー</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">ai-chat</td><td>Claude API プロキシ（メインAI対話）</td><td class="t-cyan">Claude Sonnet / Haiku</td><td>ユーザーチャット</td></tr>
+      <tr><td class="t-name">ai-classify</td><td>タスク4スイッチ自動分類</td><td class="t-good">Gemini Flash</td><td>タスク作成時</td></tr>
+      <tr><td class="t-name">calendar-sync</td><td>Google Calendar 同期・イベント作成</td><td class="t-blue">Calendar API v3</td><td>朝チェックイン / 手動</td></tr>
+      <tr><td class="t-name">calendar-webhook</td><td>Google Push Notification 受信</td><td class="t-blue">Calendar API v3</td><td>Google Webhook</td></tr>
+      <tr><td class="t-name">daily-export</td><td>日次ログ → Google Drive Markdown</td><td class="t-blue">Drive API</td><td>Cron (毎日 23:00)</td></tr>
+      <tr><td class="t-name">generate-embedding</td><td>テキスト → ベクトル変換</td><td class="t-good">all-MiniLM-L6-v2</td><td>メッセージ保存後</td></tr>
+    </tbody>
+  </table>
+
+  <!-- ai-chat Detail -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">ai-chat — メインAIエンドポイント</h3>
+
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-badge cyan">Request</div>
+      <h4>POST /functions/v1/ai-chat</h4>
+      <div class="code-block"><span class="tp">AIChatRequest</span> {
+  <span class="fn">conversation_id</span>?: <span class="tp">string</span>   <span class="cm">// 既存対話の続き</span>
+  <span class="fn">type</span>: <span class="str">'morning_checkin'</span> | <span class="str">'focus_guide'</span>
+      | <span class="str">'midday_check'</span> | <span class="str">'evening_review'</span>
+      | <span class="str">'quick_question'</span> | <span class="str">'emergency'</span>
+      | <span class="str">'journal'</span>
+  <span class="fn">message</span>: <span class="tp">string</span>
+  <span class="fn">context</span>?: {
+    <span class="fn">energy_level</span>?: <span class="tp">number</span>
+    <span class="fn">current_tasks</span>?: <span class="tp">Task[]</span>
+    <span class="fn">calendar_events</span>?: <span class="tp">CalendarEvent[]</span>
+  }
+}</div>
+    </div>
+    <div class="card">
+      <div class="card-badge green">Response</div>
+      <h4>AIChatResponse</h4>
+      <div class="code-block"><span class="tp">AIChatResponse</span> {
+  <span class="fn">conversation_id</span>: <span class="tp">string</span>
+  <span class="fn">reply</span>: <span class="tp">string</span>
+  <span class="fn">structured_data</span>?: {
+    <span class="fn">suggested_tasks</span>?: <span class="tp">Task[]</span>
+    <span class="fn">daily_plan</span>?: <span class="tp">DailyPlan</span>
+    <span class="fn">energy_assessment</span>?: <span class="tp">string</span>
+    <span class="fn">action_items</span>?: <span class="tp">string[]</span>
+  }
+  <span class="fn">model_used</span>: <span class="tp">string</span>
+}</div>
+    </div>
+  </div>
+
+  <!-- AI Model Routing -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">AIモデル・ルーティングロジック</h3>
+  <div class="arch-hub">
+    <div style="font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:8px">Model Routing</div>
+    <div class="hub-tier">
+      <div class="hub-node migrate">emergency / RSD<span class="node-sub">最高品質で対応</span></div>
+      <div class="hub-node migrate">morning_checkin<span class="node-sub">1日のプラン生成</span></div>
+      <div class="hub-node migrate">evening_review<span class="node-sub">振り返り対話</span></div>
+    </div>
+    <div class="hub-connector">↓</div>
+    <div class="hub-core">
+      <div class="hub-core-name">Claude Sonnet 4.6</div>
+      <div class="hub-core-sub">深い対話・共感・プラン生成（20%）</div>
+    </div>
+    <div class="hub-connector">&nbsp;</div>
+    <div class="hub-tier">
+      <div class="hub-node primary">focus_guide<span class="node-sub">今何に集中？</span></div>
+      <div class="hub-node primary">quick_question<span class="node-sub">サクッと相談</span></div>
+      <div class="hub-node primary">journal<span class="node-sub">ジャーナリング</span></div>
+    </div>
+    <div class="hub-connector">↓</div>
+    <div class="hub-core" style="border-color:rgba(52,211,153,.35);background:rgba(52,211,153,.06)">
+      <div class="hub-core-name" style="color:var(--green)">Claude Haiku 4.5</div>
+      <div class="hub-core-sub">高速応答・コスト最適（60%）</div>
+    </div>
+    <div class="hub-connector">&nbsp;</div>
+    <div class="hub-tier">
+      <div class="hub-node mcp">タスク分類<span class="node-sub">4スイッチ自動タグ</span></div>
+      <div class="hub-node mcp">カレンダーパース<span class="node-sub">イベント構造化</span></div>
+    </div>
+    <div class="hub-connector">↓</div>
+    <div class="hub-core" style="border-color:rgba(74,125,255,.35);background:rgba(74,125,255,.06)">
+      <div class="hub-core-name" style="color:var(--blue)">Gemini 2.0 Flash</div>
+      <div class="hub-core-sub">ユーティリティ（20%・無料）</div>
+    </div>
+  </div>
+
+  <!-- Client API -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">クライアントAPI（Supabase直接操作）</h3>
+  <div class="code-block"><span class="cm">// src/lib/api/index.ts — RLS適用、ユーザーは自分のデータのみ操作可能</span>
+
+<span class="kw">export const</span> api = {
+  <span class="fn">chat</span>: (req) =&gt;
+    supabase.functions.invoke(<span class="str">'ai-chat'</span>, { body: req }),
+
+  <span class="fn">classify</span>: (req) =&gt;
+    supabase.functions.invoke(<span class="str">'ai-classify'</span>, { body: req }),
+
+  <span class="fn">tasks</span>: {
+    <span class="fn">list</span>: (date) =&gt;
+      supabase.from(<span class="str">'tasks'</span>).select(<span class="str">'*'</span>)
+        .eq(<span class="str">'due_date'</span>, date)
+        .order(<span class="str">'dopamine_score'</span>, { ascending: <span class="num">false</span> }),
+    <span class="fn">create</span>: (task) =&gt;
+      supabase.from(<span class="str">'tasks'</span>).insert(task).select().single(),
+    <span class="fn">complete</span>: (id) =&gt;
+      supabase.from(<span class="str">'tasks'</span>).update({
+        status: <span class="str">'completed'</span>,
+        completed_at: <span class="kw">new</span> Date().toISOString()
+      }).eq(<span class="str">'id'</span>, id),
+  },
+
+  <span class="fn">checkin</span>: {
+    <span class="fn">today</span>: () =&gt;
+      supabase.from(<span class="str">'daily_checkins'</span>).select(<span class="str">'*'</span>)
+        .eq(<span class="str">'checkin_date'</span>, today()).maybeSingle(),
+    <span class="fn">save</span>: (data) =&gt;
+      supabase.from(<span class="str">'daily_checkins'</span>).upsert(data).select().single(),
+  },
+
+  <span class="fn">energy</span>: {
+    <span class="fn">log</span>: (level, context, note) =&gt;
+      supabase.from(<span class="str">'energy_logs'</span>).insert({ energy_level: level, context, note }),
+    <span class="fn">todayLogs</span>: () =&gt;
+      supabase.from(<span class="str">'energy_logs'</span>).select(<span class="str">'*'</span>)
+        .gte(<span class="str">'logged_at'</span>, todayStart()).order(<span class="str">'logged_at'</span>),
+  },
+};</div>
+</div>
+
+<!-- Section 04: UI/UX Wireframes -->
+<div class="section" id="s04">
+  <div class="section-eyebrow" style="color:var(--green)">04 &mdash; UI/UX Wireframes</div>
+  <h2 class="action-title">画面設計（MVP 5画面）</h2>
+  <p class="section-lead">ADHD UX原則を徹底適用。起動→メインアクションまでワンタップ、選択肢は最大3-4個、ドーパミンスコア降順のタスク自動ソート。</p>
+
+  <!-- Screen Map -->
+  <table class="tbl">
+    <thead><tr><th>#</th><th>画面</th><th>用途</th><th>トリガー</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">1</td><td class="t-name">ホーム (Today)</td><td>今日の全体像、「今これに集中」カード</td><td>アプリ起動時</td></tr>
+      <tr><td class="mono">2</td><td class="t-name">朝チェックイン</td><td>エネルギー・気分入力 → AI対話 → 1日プラン</td><td>朝の通知タップ</td></tr>
+      <tr><td class="mono">3</td><td class="t-name">フォーカスモード</td><td>タスク集中カード + タイマー</td><td>タスクタップ</td></tr>
+      <tr><td class="mono">4</td><td class="t-name">AI対話</td><td>フリーチャット（テキスト / 音声）</td><td>「聞いてみる」ボタン</td></tr>
+      <tr><td class="mono">5</td><td class="t-name">設定</td><td>通知、ブロック時間、カレンダー連携</td><td>ギアアイコン</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Screen Flow -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">画面フロー</h3>
+  <div class="flow-diagram"><span class="flow-step">[アプリ起動]</span>
+    <span class="flow-arrow">│</span>
+    <span class="flow-arrow">├──</span> チェックイン未完了 <span class="flow-arrow">→</span> <span class="flow-step">[朝チェックイン]</span>
+    <span class="flow-arrow">│</span>                          <span class="flow-arrow">│</span>
+    <span class="flow-arrow">│</span>                          <span class="flow-arrow">└──</span> 完了 <span class="flow-arrow">→</span> <span class="flow-step">[ホーム (Today)]</span>
+    <span class="flow-arrow">│</span>
+    <span class="flow-arrow">└──</span> チェックイン済み <span class="flow-arrow">→</span> <span class="flow-step">[ホーム (Today)]</span>
+                              <span class="flow-arrow">│</span>
+                              <span class="flow-arrow">├──</span> タスクタップ <span class="flow-arrow">→</span> <span class="flow-step">[フォーカスモード]</span> <span class="flow-arrow">→</span> <span class="flow-step">[ホーム]</span>
+                              <span class="flow-arrow">├──</span> 「聞いてみる」 <span class="flow-arrow">→</span> <span class="flow-step">[AI対話]</span> <span class="flow-arrow">→</span> <span class="flow-step">[ホーム]</span>
+                              <span class="flow-arrow">└──</span> 設定アイコン <span class="flow-arrow">→</span> <span class="flow-step">[設定]</span></div>
+
+  <!-- Wireframe 1: Home -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">画面1: ホーム (Today)</h3>
+  <div class="wireframe">┌─────────────────────────────────┐
+│  才能解放AIコーチ          ⚙️   │  ← ヘッダー
+├─────────────────────────────────┤
+│                                  │
+│  ☀️ おはよう、太雄               │  ← 挨拶（時間帯で変化）
+│  エネルギー: ████████░░ 8/10     │  ← 今日のエネルギー
+│                                  │
+├─────────────────────────────────┤
+│  ╔═══════════════════════════╗   │
+│  ║  🎯 今これに集中            ║   │  ← メインカード
+│  ║                            ║   │
+│  ║  キャリスピ広告分析          ║   │     タスク名
+│  ║  🔥 Interest 8  ⚡ Chall 7  ║   │     4スイッチバッジ
+│  ║  ⏱ 残り 47分               ║   │     タイマー
+│  ║                            ║   │
+│  ║  [ 集中開始 ]              ║   │     ← ワンタップ
+│  ╚═══════════════════════════╝   │
+│                                  │
+│  📋 今日のタスク (3/7)           │  ← ドーパミンスコア降順
+│  ✅ 朝チェックイン               │
+│  🔵 キャリスピ広告分析  🔥8      │
+│  ⬜ 提案資料作成       ⚡7       │
+│  ⬜ 請求書処理         ⏰5       │
+│                                  │
+│  📅 次の予定                     │
+│  14:00 - 大和書房 MTG (60min)    │  ← カレンダー連携
+│                                  │
+│  [   💬 聞いてみる   ]          │  ← AIチャット起動
+│                                  │
+└─────────────────────────────────┘
+│  🏠 Today  │  📊 Balance  │  ⚙️  │  ← BottomNav</div>
+
+  <div class="insight">
+    <div class="insight-label">ADHD UX Principles Applied</div>
+    <p><strong>ワンタップで集中開始</strong> — 起動→メインアクションまでの導線を最短化。タスクは<strong>ドーパミンスコア降順</strong>で自動ソート。選択肢は「集中開始」「聞いてみる」「タスクタップ」の<strong>3つだけ</strong>。</p>
+  </div>
+
+  <!-- Wireframe 2: Checkin -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">画面2: 朝チェックイン</h3>
+  <div class="wireframe">┌─────────────────────────────────┐
+│  ← 戻る    朝チェックイン        │
+├─────────────────────────────────┤
+│  🌅 おはよう、太雄。             │
+│  今日のコンディションを教えてね。  │
+│                                  │
+│  ─── エネルギーレベル ───         │
+│  😴 1 2 3 4 5 6 7 8 9 10 🔥     │  ← スライダー
+│                                  │
+│  ─── 睡眠の質 ───                │
+│  😫  😕  😐  😊  😴              │  ← 5段階
+│                                  │
+│  ─── 今の気分 ───                │
+│  [ 絶好調 ] [ まあまあ ]          │  ← 最大4択
+│  [ ふつう ] [ しんどい ]          │
+│                                  │
+│  [      次へ →     ]            │
+├─────────────────────────────────┤
+│  Step 2: AI対話                  │
+│  🤖 エネルギー8、睡眠もバッチリ  │
+│     やな！こんなプランどう？      │
+│                                  │
+│  Block 1 (08-09:30):             │
+│   🔥 キャリスピ広告分析          │
+│  Block 2 (10-11:30):             │
+│   ⚡ 提案資料作成                │
+│                                  │
+│  [ このプランで1日を始める！ ]    │
+└─────────────────────────────────┘</div>
+
+  <!-- Wireframe 3: Focus -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">画面3: フォーカスモード</h3>
+  <div class="wireframe">┌─────────────────────────────────┐
+│                                  │
+│          ⏱ 47:23                │  ← 大きなタイマー
+│       ████████████░░░░           │  ← プログレスバー
+│                                  │
+│  🎯 キャリスピ広告分析            │
+│  🔥 Interest 8  ⚡ Challenge 7   │
+│  🌟 Novelty 5   ⏰ Urgency 6    │
+│                                  │
+│  📝 メモ: "CTR推移を先に..."     │  ← クイックメモ
+│                                  │
+│  ┌───────┐  ┌───────┐           │
+│  │ ⏸ 休憩 │  │ ✅ 完了 │          │  ← 2択のみ
+│  └───────┘  └───────┘           │
+│                                  │
+│  [ 💬 ブロッカーがある ]          │  ← AI相談
+└─────────────────────────────────┘</div>
+
+  <!-- Wireframe 4: Chat -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">画面4: AI対話</h3>
+  <div class="wireframe">┌─────────────────────────────────┐
+│  ← 戻る    💬 AI Coach          │
+├─────────────────────────────────┤
+│  🤖 何でも聞いてや。            │
+│                                  │
+│  ┌─────────────────────────┐    │
+│  │ 午後のMTGの準備が全然     │    │
+│  │ できてない...              │    │  ← ユーザー
+│  └─────────────────────────┘    │
+│                                  │
+│  🤖                              │
+│  ┌─────────────────────────┐    │
+│  │ ほな、残り時間から逆算    │    │
+│  │ してみよか。              │    │
+│  │                          │    │
+│  │ 準備、分解してみるで:     │    │
+│  │ 1. アジェンダ確認 (5分)   │    │
+│  │ 2. 前回議事録チェック(10分)│    │
+│  │ 3. 提案ポイント整理(20分) │    │
+│  │                          │    │
+│  │ 全部で35分。余裕あるで！  │    │
+│  └─────────────────────────┘    │
+│                                  │
+│  [クイック返信]                   │
+│  [ はい、1から ] [ 3から ]        │  ← ワンタップ返信
+│                                  │
+│  [テキスト入力...    ] [🎤] [📤] │
+└─────────────────────────────────┘</div>
+</div>
+
+<!-- Section 05: System Prompt Design -->
+<div class="section" id="s05">
+  <div class="section-eyebrow" style="color:var(--purple)">05 &mdash; System Prompt Design</div>
+  <h2 class="action-title">システムプロンプト設計</h2>
+  <p class="section-lead">6レイヤー構造のシステムプロンプト。固定レイヤー（Identity, Framework, Rules, Style）+ 動的レイヤー（Context, History）で、ユーザーごとに最適化されたAIコーチングを実現。</p>
+
+  <div class="layer-stack">
+    <div class="prompt-layer l1">
+      <span class="prompt-tag" style="background:rgba(74,125,255,.15);color:var(--blue)">Layer 1 &mdash; Fixed</span>
+      <h4>Core Identity</h4>
+      <p>「才能解放AIコーチ」の人格定義。ADHD脳の特性理解、強みとして武器に変える視点、ガネーシャ風口調。緊急時（RSD検知・パニック）は穏やかトーンに自動切替。</p>
+      <div class="code-block"><span class="cm">// 使命</span>
+<span class="str">"毎日最高のパフォーマンスを出し、人生の8領域でバランスよく成長すること"</span>
+<span class="str">"「やるべき」ではなく「やりたい」を引き出すこと"</span>
+<span class="str">"ADHDの特性を活かした戦略で、他の人にはできない成果を出すこと"</span></div>
+    </div>
+
+    <div class="prompt-layer l2">
+      <span class="prompt-tag" style="background:rgba(34,211,238,.15);color:var(--cyan)">Layer 2 &mdash; Fixed</span>
+      <h4>MY OS Framework</h4>
+      <p>バランスホイール（8領域）、4スイッチ・タスクタグ（Interest / Novelty / Challenge / Urgency）、ドーパミン5段階ループ（点火→加速→維持→切替→回復）の完全定義。</p>
+    </div>
+
+    <div class="prompt-layer l3">
+      <span class="prompt-tag" style="background:rgba(52,211,153,.15);color:var(--green)">Layer 3 &mdash; Fixed</span>
+      <h4>Behavioral Rules</h4>
+      <p>ADHD UX 設計ルールに基づく行動原則。「罪悪感を与えない」「選択肢は最大3個」「マイクロゴール分割」「RSD検知時の緊急プロトコル」等。</p>
+    </div>
+
+    <div class="prompt-layer l4">
+      <span class="prompt-tag" style="background:rgba(245,158,11,.15);color:var(--amber)">Layer 4 &mdash; Fixed</span>
+      <h4>Communication Style</h4>
+      <p>ガネーシャ風関西弁（「～やで」「～やろ」「～してみぃ」）。ただしRSD緊急時は標準語の穏やかなトーンに切替。短文中心、箇条書き多用。</p>
+    </div>
+
+    <div class="prompt-layer l5">
+      <span class="prompt-tag" style="background:rgba(167,139,250,.15);color:var(--purple)">Layer 5 &mdash; Dynamic</span>
+      <h4>Dynamic Context（毎回注入）</h4>
+      <p>リクエスト時に自動構築される動的コンテキスト。日時、エネルギーレベル、気分、カレンダー、タスクリスト（4スイッチ付き）、エネルギー推移、バランスホイール最新値、RAG検索結果。</p>
+      <div class="code-block"><span class="cm">// 動的コンテキスト テンプレート</span>
+<span class="str">## 現在の状態</span>
+- 日時: <span class="fn">{YYYY-MM-DD HH:mm}</span> (<span class="fn">{曜日}</span>)
+- エネルギー: <span class="fn">{1-10}</span>/10
+- 気分: <span class="fn">{mood}</span>
+
+<span class="str">## 今日のカレンダー</span>
+<span class="fn">{calendar_events_formatted}</span>
+
+<span class="str">## タスク（ドーパミンスコア順）</span>
+<span class="fn">{tasks_with_4switch}</span>
+
+<span class="str">## エネルギー推移（直近3日）</span>
+<span class="fn">{energy_log_last_3days}</span>
+
+<span class="str">## バランスホイール最新</span>
+<span class="fn">{balance_scores_radar}</span>
+
+<span class="str">## 関連する過去の対話（RAG Top3）</span>
+<span class="fn">{rag_results_top3}</span></div>
+    </div>
+
+    <div class="prompt-layer l6">
+      <span class="prompt-tag" style="background:rgba(244,114,182,.15);color:var(--pink)">Layer 6 &mdash; Dynamic</span>
+      <h4>Conversation History（FIFO）</h4>
+      <p>直近の対話履歴をFIFOで管理。コンテキストウィンドウに収まるよう古いメッセージから順にドロップ。重要な対話はRAG（pgvector）で長期記憶として保持。</p>
+    </div>
+  </div>
+
+  <div class="sowhat">
+    <div class="sowhat-label">Why This Matters</div>
+    <p>汎用ChatGPTとの<strong>決定的な違い</strong>: Layer 1-4の「個人OS」全文脈がシステムプロンプトに常時組み込まれている。ユーザーの8領域の価値観、ADHDの特性パターン、コミュニケーション好みを<strong>すべて理解した上で</strong>コーチングする。</p>
+  </div>
+</div>
+
+<!-- Section 06: Prompt Chaining -->
+<div class="part-divider"><span class="part-badge b">AI Engine</span></div>
+
+<div class="section" id="s06">
+  <div class="section-eyebrow" style="color:var(--purple)">06 &mdash; Prompt Chaining</div>
+  <h2 class="action-title">プロンプトチェイニング全フロー</h2>
+  <p class="section-lead">3つの主要チェイン: 朝チェックイン（6ステップ）、フォーカスガイド（2ステップ）、RSD緊急介入（3ステップ）。並列処理とAIモデル切替を組み合わせて最適なレスポンスを実現。</p>
+
+  <!-- Chain 1: Morning Checkin -->
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">Chain 1: 朝チェックイン</h3>
+  <div class="flow-diagram"><span class="flow-label">Morning Checkin Chain — 6 Steps</span>
+
+<span class="flow-step">[Step 0]</span> ユーザーがチェックイン画面を開く
+    <span class="flow-arrow">│</span>
+    <span class="flow-arrow">├──</span> <span class="flow-note">[並列]</span> <span class="flow-service">Gemini Flash</span>: カレンダー取得 → イベント構造化
+    <span class="flow-arrow">├──</span> <span class="flow-note">[並列]</span> <span class="flow-service">Supabase</span>: 昨日のログ・タスク完了状況取得
+    <span class="flow-arrow">└──</span> <span class="flow-note">[並列]</span> <span class="flow-service">Supabase</span>: 未完了タスク取得
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 1]</span> ユーザーがエネルギー・気分を入力
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 2]</span> <span class="flow-service">Gemini Flash</span>: タスクリストに4スイッチ自動タグ付け
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 3]</span> <span class="flow-service">Claude Sonnet</span>: 動的コンテキスト注入 + 1日プラン生成
+    <span class="flow-arrow">│</span>   <span class="flow-note">「チェックイン結果、カレンダー、タスクを踏まえて</span>
+    <span class="flow-arrow">│</span>   <span class="flow-note"> ドーパミン5段階ループ × ウルトラディアンリズムで配置」</span>
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 4]</span> ユーザーがプランを確認・修正（最大3往復）
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 5]</span> 確定
+    <span class="flow-arrow">├──</span> <span class="flow-service">Supabase</span>: daily_checkins に保存
+    <span class="flow-arrow">├──</span> <span class="flow-service">Supabase</span>: tasks のスケジュール更新
+    <span class="flow-arrow">└──</span> <span class="flow-service">Supabase</span>: energy_logs に記録
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 6]</span> ホーム画面に遷移 → 最初のタスクが「今これに集中」カードに表示</div>
+
+  <!-- Chain 2: Focus Guide -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">Chain 2: フォーカスガイド</h3>
+  <div class="flow-diagram"><span class="flow-label">Focus Guide Chain — 2 Steps (Ultra-fast)</span>
+
+<span class="flow-step">[Step 0]</span> ユーザーが「今何に集中？」をタップ or プッシュ通知応答
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 1]</span> <span class="flow-service">Claude Haiku</span>: 現在時刻 + カレンダー + タスク + エネルギーを考慮
+    <span class="flow-arrow">│</span>   <span class="flow-note">「現在{HH:mm}。次の予定は{next_event}。</span>
+    <span class="flow-arrow">│</span>   <span class="flow-note"> 残りタスクの中で今最適なのは何か？理由を1文で。」</span>
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 2]</span> 「今これに集中」カード更新
+    <span class="flow-note">     所要時間: ~500ms（Haiku高速応答）</span></div>
+
+  <!-- Chain 3: RSD Emergency -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">Chain 3: RSD緊急介入</h3>
+  <div class="flow-diagram"><span class="flow-label">RSD Emergency Chain — 3 Steps</span>
+
+<span class="flow-step">[Step 0]</span> テキストからRSDトリガーキーワード検知
+    <span class="flow-arrow">│</span>   <span class="flow-note">キーワード: "もうダメ" "嫌われた" "失敗した" "最悪"</span>
+    <span class="flow-arrow">│</span>   <span class="flow-note">           "無理" "つらい" "怒られた" "否定された"</span>
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 1]</span> <span class="flow-service">Claude Sonnet</span> (Emergency ペルソナ):
+    <span class="flow-arrow">│</span>   <span class="flow-note">1. 感情を受け止める（共感、ジャッジしない）</span>
+    <span class="flow-arrow">│</span>   <span class="flow-note">2. 呼吸法を提案（4-7-8呼吸）</span>
+    <span class="flow-arrow">│</span>   <span class="flow-note">3. 事実と感情を分離する質問</span>
+    <span class="flow-arrow">│</span>   <span class="flow-note">4. 具体的な次のマイクロアクションを1つだけ提案</span>
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 2]</span> ユーザー応答を待つ（強制しない、沈黙もOK）
+    <span class="flow-arrow">│</span>
+<span class="flow-step">[Step 3]</span> 状況に応じてCoachペルソナに戻る</div>
+
+  <div class="note">
+    <div class="note-label">Safety Design</div>
+    <p>RSD検知時は<strong>口調を自動切替</strong>（関西弁→標準語の穏やかなトーン）。「罪悪感を与えない」「今のあなたは十分頑張っている」を基本姿勢とし、<strong>行動の押し付けはしない</strong>。</p>
+  </div>
+</div>
+
+<!-- Section 07: Data Flow -->
+<div class="part-divider"><span class="part-badge c">Infrastructure</span></div>
+
+<div class="section" id="s07">
+  <div class="section-eyebrow" style="color:var(--blue)">07 &mdash; Data Flow</div>
+  <h2 class="action-title">データフロー・アーキテクチャ</h2>
+  <p class="section-lead">メインフロー（ユーザー操作 → Supabase → AI API）と、Claude Code コンテキスト共有（日次ログ → Google Drive → Claude Code）の2系統。</p>
+
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">メインデータフロー</h3>
+  <div class="flow-diagram"><span class="flow-label">Main Data Flow</span>
+
+<span class="flow-step">[ユーザー操作]</span>
+     <span class="flow-arrow">│</span>
+     <span class="flow-arrow">▼</span>
+<span class="flow-step">[SvelteKit クライアント]</span>
+     <span class="flow-arrow">│</span>
+     <span class="flow-arrow">├───</span> Auth <span class="flow-arrow">──────────────►</span> <span class="flow-service">[Supabase Auth (Google OAuth)]</span>
+     <span class="flow-arrow">│</span>
+     <span class="flow-arrow">├───</span> CRUD <span class="flow-arrow">─────────────►</span> <span class="flow-service">[Supabase PostgreSQL]</span>
+     <span class="flow-arrow">│</span>    (tasks, checkins,      <span class="flow-arrow">│</span>
+     <span class="flow-arrow">│</span>     energy, balance)      <span class="flow-arrow">├──</span> Realtime WS <span class="flow-arrow">──►</span> クライアント更新
+     <span class="flow-arrow">│</span>                           <span class="flow-arrow">└──</span> pgvector <span class="flow-arrow">──►</span> RAG検索結果
+     <span class="flow-arrow">│</span>
+     <span class="flow-arrow">├───</span> AI Chat <span class="flow-arrow">──────────►</span> <span class="flow-service">[Edge Function: ai-chat]</span>
+     <span class="flow-arrow">│</span>                           <span class="flow-arrow">├──</span> <span class="flow-service">Claude API</span> (Haiku/Sonnet)
+     <span class="flow-arrow">│</span>                           <span class="flow-arrow">│</span>     ↑ System Prompt + Dynamic Context
+     <span class="flow-arrow">│</span>                           <span class="flow-arrow">└──</span> メッセージ保存 → PostgreSQL
+     <span class="flow-arrow">│</span>                                               <span class="flow-arrow">└──</span> 非同期: embedding → pgvector
+     <span class="flow-arrow">│</span>
+     <span class="flow-arrow">├───</span> タスク分類 <span class="flow-arrow">────────►</span> <span class="flow-service">[Edge Function: ai-classify]</span>
+     <span class="flow-arrow">│</span>                           <span class="flow-arrow">└──</span> <span class="flow-service">Gemini Flash</span>
+     <span class="flow-arrow">│</span>
+     <span class="flow-arrow">└───</span> カレンダー <span class="flow-arrow">────────►</span> <span class="flow-service">[Edge Function: calendar-sync]</span>
+                                 <span class="flow-arrow">└──</span> <span class="flow-service">Google Calendar API v3</span></div>
+
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">Claude Code コンテキスト共有</h3>
+  <div class="flow-diagram"><span class="flow-label">Daily Log Export (Phase 1)</span>
+
+<span class="flow-step">[才能解放AIコーチ App]</span>
+     <span class="flow-arrow">│</span>
+     <span class="flow-arrow">└──</span> 日次ログ自動エクスポート <span class="flow-note">(Edge Function: daily-export, 23:00 Cron)</span>
+            <span class="flow-arrow">│</span>
+            <span class="flow-arrow">▼</span>
+     <span class="flow-service">[Google Drive]</span>  ── myos-logs/YYYY-MM-DD.md
+            <span class="flow-arrow">│</span>
+            <span class="flow-arrow">▼</span>
+     <span class="flow-service">[Claude Code]</span>  ── Drive MCP ── ログ読み取り</div>
+
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">日次エクスポート形式</h3>
+  <div class="code-block"><span class="cm"># MY OS Daily Log — 2026-02-27</span>
+
+<span class="str">## チェックイン</span>
+- エネルギー: <span class="num">8</span>/10
+- 気分: great
+- 睡眠: <span class="num">4</span>/5
+
+<span class="str">## タスク完了</span>
+- [x] キャリスピ広告分析 (<span class="fn">🔥8 ⚡7</span>) — 85分
+- [x] 提案資料作成 (<span class="fn">⚡7 🌟6</span>) — 60分
+- [ ] 請求書処理 (<span class="fn">⏰5</span>) — 未着手
+
+<span class="str">## エネルギー推移</span>
+08:00 → <span class="num">8</span>, 12:00 → <span class="num">6</span>, 15:00 → <span class="num">5</span>, 18:00 → <span class="num">7</span>
+
+<span class="str">## AI対話ハイライト</span>
+- 午前中に集中系タスクを前倒しする戦略が成功
+- MTG前に10分の準備時間を設けたのが効果的だった</div>
+</div>
+
+<!-- Section 08: Project Structure -->
+<div class="section" id="s08">
+  <div class="section-eyebrow" style="color:var(--blue)">08 &mdash; Project Structure</div>
+  <h2 class="action-title">プロジェクト構成</h2>
+  <p class="section-lead">SvelteKitのファイルベースルーティングに従った構成。lib/ にAPI・ストア・コンポーネント・プロンプトを集約。supabase/ にEdge Functions とマイグレーション。</p>
+
+  <div class="dir-tree"><span class="dir-folder">myos-app/</span>
+<span class="dir-file">├── .env.local</span>                    <span class="dir-comment"># ローカル環境変数</span>
+<span class="dir-file">├── .env.example</span>                  <span class="dir-comment"># テンプレート</span>
+<span class="dir-file">├── capacitor.config.json</span>         <span class="dir-comment"># Capacitor設定 (webDir: "build")</span>
+<span class="dir-file">├── svelte.config.js</span>              <span class="dir-comment"># adapter-static, fallback: 'index.html'</span>
+<span class="dir-file">├── tailwind.config.js</span>
+<span class="dir-file">├── tsconfig.json</span>
+<span class="dir-file">├── package.json</span>
+│
+<span class="dir-folder">├── src/</span>
+│   <span class="dir-file">├── app.html</span>                  <span class="dir-comment"># HTMLテンプレート</span>
+│   <span class="dir-file">├── app.css</span>                   <span class="dir-comment"># Tailwind directives</span>
+│   │
+│   <span class="dir-folder">├── lib/</span>
+│   │   <span class="dir-folder">├── api/</span>
+│   │   │   <span class="dir-file">├── index.ts</span>          <span class="dir-comment"># APIクライアント統合</span>
+│   │   │   <span class="dir-file">├── supabase.ts</span>       <span class="dir-comment"># Supabase初期化</span>
+│   │   │   <span class="dir-file">└── types.ts</span>          <span class="dir-comment"># Supabase型定義（自動生成）</span>
+│   │   │
+│   │   <span class="dir-folder">├── stores/</span>
+│   │   │   <span class="dir-file">├── auth.svelte.ts</span>    <span class="dir-comment"># 認証状態（Svelte 5 runes）</span>
+│   │   │   <span class="dir-file">├── tasks.svelte.ts</span>   <span class="dir-comment"># タスク状態</span>
+│   │   │   <span class="dir-file">├── energy.svelte.ts</span>  <span class="dir-comment"># エネルギー状態</span>
+│   │   │   <span class="dir-file">└── chat.svelte.ts</span>    <span class="dir-comment"># チャット状態</span>
+│   │   │
+│   │   <span class="dir-folder">├── components/</span>
+│   │   │   <span class="dir-file">├── FocusCard.svelte</span>       <span class="dir-comment"># 「今これに集中」カード</span>
+│   │   │   <span class="dir-file">├── TaskList.svelte</span>        <span class="dir-comment"># タスクリスト（ドーパミン順）</span>
+│   │   │   <span class="dir-file">├── EnergySlider.svelte</span>    <span class="dir-comment"># エネルギースライダー</span>
+│   │   │   <span class="dir-file">├── ChatBubble.svelte</span>      <span class="dir-comment"># チャット吹き出し</span>
+│   │   │   <span class="dir-file">├── ChatInput.svelte</span>       <span class="dir-comment"># テキスト+音声入力</span>
+│   │   │   <span class="dir-file">├── Timer.svelte</span>           <span class="dir-comment"># フォーカスタイマー</span>
+│   │   │   <span class="dir-file">├── CalendarPreview.svelte</span> <span class="dir-comment"># カレンダープレビュー</span>
+│   │   │   <span class="dir-file">├── SwitchBadges.svelte</span>    <span class="dir-comment"># 4スイッチバッジ表示</span>
+│   │   │   <span class="dir-file">├── QuickReplies.svelte</span>    <span class="dir-comment"># ワンタップ返信ボタン</span>
+│   │   │   <span class="dir-file">└── BottomNav.svelte</span>       <span class="dir-comment"># ボトムナビゲーション</span>
+│   │   │
+│   │   <span class="dir-folder">├── prompts/</span>
+│   │   │   <span class="dir-file">├── system.ts</span>              <span class="dir-comment"># システムプロンプト（Layer 1-4）</span>
+│   │   │   <span class="dir-file">├── context-builder.ts</span>     <span class="dir-comment"># 動的コンテキスト構築（Layer 5）</span>
+│   │   │   <span class="dir-folder">└── chains/</span>
+│   │   │       <span class="dir-file">├── morning-checkin.ts</span> <span class="dir-comment"># 朝チェックインチェイン</span>
+│   │   │       <span class="dir-file">├── focus-guide.ts</span>     <span class="dir-comment"># フォーカスガイドチェイン</span>
+│   │   │       <span class="dir-file">└── emergency.ts</span>       <span class="dir-comment"># RSD緊急介入チェイン</span>
+│   │   │
+│   │   <span class="dir-folder">└── utils/</span>
+│   │       <span class="dir-file">├── datetime.ts</span>            <span class="dir-comment"># 日付・時間ユーティリティ</span>
+│   │       <span class="dir-file">├── dopamine.ts</span>            <span class="dir-comment"># ドーパミンスコア計算</span>
+│   │       <span class="dir-file">└── speech.ts</span>              <span class="dir-comment"># 音声入力ラッパー</span>
+│   │
+│   <span class="dir-folder">└── routes/</span>
+│       <span class="dir-file">├── +layout.svelte</span>             <span class="dir-comment"># ルートレイアウト</span>
+│       <span class="dir-file">├── +layout.ts</span>                 <span class="dir-comment"># ssr=false + Auth</span>
+│       <span class="dir-file">├── +page.svelte</span>               <span class="dir-comment"># ホーム (Today)</span>
+│       <span class="dir-folder">├── checkin/</span>
+│       │   <span class="dir-file">└── +page.svelte</span>           <span class="dir-comment"># 朝チェックイン</span>
+│       <span class="dir-folder">├── focus/</span>
+│       │   <span class="dir-file">└── +page.svelte</span>           <span class="dir-comment"># フォーカスモード</span>
+│       <span class="dir-folder">├── chat/</span>
+│       │   <span class="dir-file">└── +page.svelte</span>           <span class="dir-comment"># AI対話</span>
+│       <span class="dir-folder">├── settings/</span>
+│       │   <span class="dir-file">└── +page.svelte</span>           <span class="dir-comment"># 設定</span>
+│       <span class="dir-folder">└── auth/</span>
+│           <span class="dir-file">├── login/+page.svelte</span>     <span class="dir-comment"># ログイン</span>
+│           <span class="dir-file">└── callback/+server.ts</span>    <span class="dir-comment"># OAuthコールバック</span>
+│
+<span class="dir-folder">├── supabase/</span>
+│   <span class="dir-folder">├── migrations/</span>
+│   │   <span class="dir-file">└── 001_initial_schema.sql</span>     <span class="dir-comment"># 全テーブル + RLS</span>
+│   <span class="dir-folder">└── functions/</span>
+│       <span class="dir-file">├── ai-chat/index.ts</span>
+│       <span class="dir-file">├── ai-classify/index.ts</span>
+│       <span class="dir-file">├── calendar-sync/index.ts</span>
+│       <span class="dir-file">├── calendar-webhook/index.ts</span>
+│       <span class="dir-file">├── daily-export/index.ts</span>
+│       <span class="dir-file">└── generate-embedding/index.ts</span>
+│
+<span class="dir-folder">├── android/</span>                           <span class="dir-comment"># Capacitor Android (自動生成)</span>
+<span class="dir-folder">├── ios/</span>                               <span class="dir-comment"># Capacitor iOS (自動生成)</span>
+│
+<span class="dir-folder">└── static/</span>
+    <span class="dir-file">├── favicon.png</span>
+    <span class="dir-file">└── manifest.json</span>                  <span class="dir-comment"># PWA マニフェスト</span></div>
+</div>
+
+<!-- Section 09: Security Design -->
+<div class="section" id="s09">
+  <div class="section-eyebrow" style="color:var(--blue)">09 &mdash; Security Design</div>
+  <h2 class="action-title">セキュリティ設計</h2>
+  <p class="section-lead">認証はSupabase Auth (Google OAuth)。全テーブルRLS適用。AI APIキーはEdge Functions内のみ。将来的にジャーナリングデータのE2E暗号化を検討。</p>
+
+  <!-- Auth Flow -->
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">認証フロー</h3>
+  <div class="flow-diagram"><span class="flow-label">Authentication Flow</span>
+
+<span class="flow-step">[ユーザー]</span> <span class="flow-arrow">→</span> <span class="flow-service">[Supabase Auth]</span> <span class="flow-arrow">→</span> <span class="flow-service">[Google OAuth 2.0]</span>
+                                  <span class="flow-arrow">↓</span>
+                           access_token + refresh_token
+                                  <span class="flow-arrow">↓</span>
+                           <span class="flow-service">[Supabase Session Cookie]</span>
+                                  <span class="flow-arrow">↓</span>
+                           全APIリクエストに自動付与</div>
+
+  <!-- Threat Model -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">脅威モデル &amp; 対策</h3>
+  <table class="tbl">
+    <thead><tr><th>脅威</th><th>対策</th><th>実装</th></tr></thead>
+    <tbody>
+      <tr><td class="t-name">APIキー漏洩</td><td>Claude/Gemini APIキーはEdge Functions内のみ</td><td class="t-good">env secret</td></tr>
+      <tr><td class="t-name">他ユーザーのデータアクセス</td><td>全テーブルにRow Level Security (RLS)</td><td class="t-good">auth.uid() = user_id</td></tr>
+      <tr><td class="t-name">XSS</td><td>SvelteのデフォルトHTMLエスケープ + CSP設定</td><td class="t-good">フレームワーク標準</td></tr>
+      <tr><td class="t-name">CSRF</td><td>SameSite Cookie + Supabase自動対策</td><td class="t-good">自動適用</td></tr>
+      <tr><td class="t-name">Google OAuthトークン保管</td><td>refresh_tokenはSupabase DB（暗号化カラム推奨）</td><td class="t-warn">Phase 2 で暗号化</td></tr>
+      <tr><td class="t-name">ジャーナリングデータ</td><td>将来的にE2E暗号化を検討</td><td class="t-warn">Phase 3 以降</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Environment Variables -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">環境変数管理</h3>
+  <div class="card-grid">
+    <div class="card">
+      <div class="card-badge green">Client (.env.local)</div>
+      <h4>公開可能な変数</h4>
+      <div class="code-block"><span class="fn">PUBLIC_SUPABASE_URL</span>=<span class="str">https://xxx.supabase.co</span>
+<span class="fn">PUBLIC_SUPABASE_ANON_KEY</span>=<span class="str">eyJhbGci...</span></div>
+      <p>anon key はRLSで保護されるため公開可能</p>
+    </div>
+    <div class="card">
+      <div class="card-badge red">Edge Functions (Supabase Secrets)</div>
+      <h4>秘匿変数</h4>
+      <div class="code-block"><span class="fn">SUPABASE_SERVICE_ROLE_KEY</span>=<span class="str">eyJhbGci...</span>
+<span class="fn">CLAUDE_API_KEY</span>=<span class="str">sk-ant-...</span>
+<span class="fn">GEMINI_API_KEY</span>=<span class="str">AIza...</span>
+<span class="fn">GOOGLE_CLIENT_ID</span>=<span class="str">xxx.apps.google...</span>
+<span class="fn">GOOGLE_CLIENT_SECRET</span>=<span class="str">GOCSPX-...</span></div>
+      <p>クライアントに絶対に露出しない</p>
+    </div>
+  </div>
+</div>
+
+<!-- Section 10: MVP Sprint Plan -->
+<div class="part-divider"><span class="part-badge d">Delivery</span></div>
+
+<div class="section" id="s10">
+  <div class="section-eyebrow" style="color:var(--amber)">10 &mdash; MVP Sprint Plan</div>
+  <h2 class="action-title">MVP実装ロードマップ（20日間）</h2>
+  <p class="section-lead">4週間スプリントで基盤構築→コア機能→AI統合→仕上げ。Week 1でスケルトンアプリと認証、Week 4でPWA + Androidデプロイまで。</p>
+
+  <!-- Week 1 -->
+  <div class="phase-card">
+    <div class="phase-policy">Week 1: 基盤構築</div>
+    <h3>プロジェクト初期化 → 認証 → タスクCRUD</h3>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot g"></span><strong>Day 1</strong> — プロジェクト初期化（SvelteKit + Tailwind + Capacitor）→ 動作するスケルトンアプリ</div>
+      <div class="phase-item"><span class="pi-dot g"></span><strong>Day 2</strong> — Supabase設定（Auth + DB migration + RLS）→ DB稼働、Google OAuth動作</div>
+      <div class="phase-item"><span class="pi-dot c"></span><strong>Day 3</strong> — 基本レイアウト + ルーティング + BottomNav → 5画面の空ページ遷移</div>
+      <div class="phase-item"><span class="pi-dot c"></span><strong>Day 4</strong> — 認証フロー完成（ログイン → コールバック → ホーム）→ 認証済みアクセス</div>
+      <div class="phase-item"><span class="pi-dot b"></span><strong>Day 5</strong> — タスクCRUD（作成・一覧・完了・削除）→ タスク管理の基本動作</div>
+    </div>
+  </div>
+
+  <!-- Week 2 -->
+  <div class="phase-card">
+    <div class="phase-policy">Week 2: コア機能</div>
+    <h3>AI対話 → チェックイン → カレンダー → フォーカス</h3>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot b"></span><strong>Day 6</strong> — AI Chat Edge Function + チャットUI → AIとのテキスト対話</div>
+      <div class="phase-item"><span class="pi-dot b"></span><strong>Day 7</strong> — 朝チェックイン画面（エネルギー/気分入力 + AI対話）→ チェックインフロー</div>
+      <div class="phase-item"><span class="pi-dot p"></span><strong>Day 8</strong> — Google Calendar連携（OAuth + イベント取得）→ カレンダー表示</div>
+      <div class="phase-item"><span class="pi-dot p"></span><strong>Day 9</strong> — フォーカスモード（タイマー + タスクカード）→ 集中モードUI</div>
+      <div class="phase-item"><span class="pi-dot a"></span><strong>Day 10</strong> — 4スイッチ自動分類（Gemini Flash）→ タスクに4スイッチ付与</div>
+    </div>
+  </div>
+
+  <!-- Week 3 -->
+  <div class="phase-card">
+    <div class="phase-policy">Week 3: AI統合</div>
+    <h3>システムプロンプト → チェイン → アルゴリズム</h3>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot a"></span><strong>Day 11</strong> — システムプロンプト実装 + 動的コンテキスト注入 → MY OS人格のAIコーチ</div>
+      <div class="phase-item"><span class="pi-dot a"></span><strong>Day 12</strong> — 朝チェックインチェイン完成（カレンダー+タスク→AI→プラン）→ 1日設計フロー</div>
+      <div class="phase-item"><span class="pi-dot r"></span><strong>Day 13</strong> — フォーカスガイド（「今何に集中？」リアルタイム提案）→ アダプティブガイド</div>
+      <div class="phase-item"><span class="pi-dot r"></span><strong>Day 14</strong> — ドーパミン・スケジューリングアルゴリズム → タスク自動ソート</div>
+      <div class="phase-item"><span class="pi-dot g"></span><strong>Day 15</strong> — ホーム画面統合（FocusCard + TaskList + Calendar）→ メイン画面完成</div>
+    </div>
+  </div>
+
+  <!-- Week 4 -->
+  <div class="phase-card">
+    <div class="phase-policy">Week 4: 仕上げ</div>
+    <h3>エネルギーログ → 設定 → デプロイ → MVP完成</h3>
+    <div class="phase-items">
+      <div class="phase-item"><span class="pi-dot g"></span><strong>Day 16</strong> — エネルギーログ + 推移表示 → エネルギー可視化</div>
+      <div class="phase-item"><span class="pi-dot c"></span><strong>Day 17</strong> — 設定画面（通知時間、ブロック設定、カレンダー選択）→ カスタマイズ可能</div>
+      <div class="phase-item"><span class="pi-dot b"></span><strong>Day 18</strong> — PWAデプロイ（Vercel）+ 動作確認 → Web版リリース</div>
+      <div class="phase-item"><span class="pi-dot p"></span><strong>Day 19</strong> — Android Capacitorビルド + 動作確認 → Android版動作</div>
+      <div class="phase-item"><span class="pi-dot r"></span><strong>Day 20</strong> — バグ修正 + UX調整 + 日次エクスポート → <strong style="color:var(--green)">MVP完成</strong></div>
+    </div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">Delivery Milestone</div>
+    <p><strong>Day 20でMVP完成</strong>: PWA (Vercel) + Android (Capacitor) の2プラットフォームで動作。朝チェックイン → AI 1日プラン → フォーカスモード → エネルギーログの<strong>コアループが完全に回る状態</strong>。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════ APPENDIX ═══════════════════════ -->
+<div class="part-divider"><span class="part-badge e">Appendix</span></div>
+
+<!-- Appendix A: Color Palette -->
+<div class="section" id="appA">
+  <div class="section-eyebrow" style="color:var(--amber)">Appendix A</div>
+  <h2 class="action-title">カラーパレット</h2>
+  <p class="section-lead">McKinsey Dark テーマ準拠。4段階背景 + セマンティックカラー + 4スイッチ専用カラー。</p>
+
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">背景4段階</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#08080d"></div><div class="swatch-info"><span class="swatch-name">Deepest</span><span class="swatch-hex">#08080d</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#101018"></div><div class="swatch-info"><span class="swatch-name">Deep</span><span class="swatch-hex">#101018</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#181824"></div><div class="swatch-info"><span class="swatch-name">Card</span><span class="swatch-hex">#181824</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#222234"></div><div class="swatch-info"><span class="swatch-name">Elevated</span><span class="swatch-hex">#222234</span></div></div>
+  </div>
+
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">セマンティックカラー</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#4a7dff"></div><div class="swatch-info"><span class="swatch-name">Blue (Accent)</span><span class="swatch-hex">#4a7dff</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#22d3ee"></div><div class="swatch-info"><span class="swatch-name">Cyan (Secondary)</span><span class="swatch-hex">#22d3ee</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#34d399"></div><div class="swatch-info"><span class="swatch-name">Green (Success)</span><span class="swatch-hex">#34d399</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#f59e0b"></div><div class="swatch-info"><span class="swatch-name">Amber (Warning)</span><span class="swatch-hex">#f59e0b</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#ef4444"></div><div class="swatch-info"><span class="swatch-name">Red (Error)</span><span class="swatch-hex">#ef4444</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#a78bfa"></div><div class="swatch-info"><span class="swatch-name">Purple (Vision)</span><span class="swatch-hex">#a78bfa</span></div></div>
+  </div>
+
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">4スイッチカラー</h3>
+  <div class="swatch-grid">
+    <div class="swatch"><div class="swatch-color" style="background:#f97316"></div><div class="swatch-info"><span class="swatch-name">🔥 Interest</span><span class="swatch-hex">#f97316</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#e879f9"></div><div class="swatch-info"><span class="swatch-name">🌟 Novelty</span><span class="swatch-hex">#e879f9</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#4a7dff"></div><div class="swatch-info"><span class="swatch-name">⚡ Challenge</span><span class="swatch-hex">#4a7dff</span></div></div>
+    <div class="swatch"><div class="swatch-color" style="background:#fbbf24"></div><div class="swatch-info"><span class="swatch-name">⏰ Urgency</span><span class="swatch-hex">#fbbf24</span></div></div>
+  </div>
+
+  <div class="code-block"><span class="cm">/* CSS Variables */</span>
+<span class="kw">:root</span> {
+  <span class="cm">/* 4スイッチカラー */</span>
+  <span class="fn">--switch-interest</span>: <span class="str">#f97316</span>;   <span class="cm">/* 🔥 */</span>
+  <span class="fn">--switch-novelty</span>: <span class="str">#e879f9</span>;    <span class="cm">/* 🌟 */</span>
+  <span class="fn">--switch-challenge</span>: <span class="str">#4a7dff</span>;  <span class="cm">/* ⚡ */</span>
+  <span class="fn">--switch-urgency</span>: <span class="str">#fbbf24</span>;   <span class="cm">/* ⏰ */</span>
+}</div>
+</div>
+
+<!-- Appendix B: TypeScript Types -->
+<div class="section" id="appB">
+  <div class="section-eyebrow" style="color:var(--amber)">Appendix B</div>
+  <h2 class="action-title">TypeScript 型定義</h2>
+  <p class="section-lead">src/lib/api/types.ts — Supabase型自動生成の補完として定義。全エンティティの型を網羅。</p>
+
+  <div class="code-block"><span class="cm">// src/lib/api/types.ts</span>
+
+<span class="kw">interface</span> <span class="tp">Task</span> {
+  <span class="fn">id</span>: <span class="tp">string</span>;
+  <span class="fn">user_id</span>: <span class="tp">string</span>;
+  <span class="fn">title</span>: <span class="tp">string</span>;
+  <span class="fn">description</span>?: <span class="tp">string</span>;
+  <span class="fn">status</span>: <span class="str">'pending'</span> | <span class="str">'in_progress'</span> | <span class="str">'completed'</span> | <span class="str">'cancelled'</span> | <span class="str">'deferred'</span>;
+  <span class="fn">switch_interest</span>: <span class="tp">number</span>;    <span class="cm">// 0-10</span>
+  <span class="fn">switch_novelty</span>: <span class="tp">number</span>;     <span class="cm">// 0-10</span>
+  <span class="fn">switch_challenge</span>: <span class="tp">number</span>;   <span class="cm">// 0-10</span>
+  <span class="fn">switch_urgency</span>: <span class="tp">number</span>;    <span class="cm">// 0-10</span>
+  <span class="fn">dopamine_score</span>: <span class="tp">number</span>;    <span class="cm">// GENERATED</span>
+  <span class="fn">dopamine_phase</span>?: <span class="str">'ignite'</span> | <span class="str">'accelerate'</span> | <span class="str">'sustain'</span> | <span class="str">'switch'</span> | <span class="str">'recover'</span>;
+  <span class="fn">estimated_minutes</span>?: <span class="tp">number</span>;
+  <span class="fn">actual_minutes</span>?: <span class="tp">number</span>;
+  <span class="fn">due_date</span>?: <span class="tp">string</span>;
+  <span class="fn">scheduled_block</span>?: <span class="num">1</span> | <span class="num">2</span> | <span class="num">3</span> | <span class="num">4</span>;
+  <span class="fn">source</span>: <span class="str">'manual'</span> | <span class="str">'calendar'</span> | <span class="str">'ai_suggested'</span>;
+  <span class="fn">parent_task_id</span>?: <span class="tp">string</span>;
+  <span class="fn">created_at</span>: <span class="tp">string</span>;
+  <span class="fn">updated_at</span>: <span class="tp">string</span>;
+  <span class="fn">completed_at</span>?: <span class="tp">string</span>;
+}
+
+<span class="kw">interface</span> <span class="tp">DailyCheckin</span> {
+  <span class="fn">id</span>: <span class="tp">string</span>;
+  <span class="fn">user_id</span>: <span class="tp">string</span>;
+  <span class="fn">checkin_date</span>: <span class="tp">string</span>;
+  <span class="fn">energy_level</span>: <span class="tp">number</span>;      <span class="cm">// 1-10</span>
+  <span class="fn">mood</span>: <span class="str">'great'</span> | <span class="str">'good'</span> | <span class="str">'neutral'</span> | <span class="str">'low'</span> | <span class="str">'struggling'</span>;
+  <span class="fn">sleep_quality</span>: <span class="tp">number</span>;     <span class="cm">// 1-5</span>
+  <span class="fn">top_priorities</span>: <span class="tp">Array</span>&lt;{ task_id: <span class="tp">string</span>; title: <span class="tp">string</span>; reason: <span class="tp">string</span> }&gt;;
+  <span class="fn">ai_daily_plan</span>: <span class="tp">DailyPlan</span>;
+  <span class="fn">reflection_notes</span>?: <span class="tp">string</span>;
+}
+
+<span class="kw">interface</span> <span class="tp">DailyPlan</span> {
+  <span class="fn">blocks</span>: <span class="tp">Array</span>&lt;{
+    block_number: <span class="num">1</span> | <span class="num">2</span> | <span class="num">3</span> | <span class="num">4</span>;
+    start_time: <span class="tp">string</span>;
+    tasks: <span class="tp">Array</span>&lt;{
+      task_id: <span class="tp">string</span>;
+      title: <span class="tp">string</span>;
+      dopamine_phase: <span class="tp">string</span>;
+      estimated_minutes: <span class="tp">number</span>;
+    }&gt;;
+  }&gt;;
+  <span class="fn">ignite_tasks</span>: <span class="tp">string[]</span>;
+  <span class="fn">recovery_suggestions</span>: <span class="tp">string[]</span>;
+  <span class="fn">ai_notes</span>: <span class="tp">string</span>;
+}
+
+<span class="kw">interface</span> <span class="tp">CalendarEvent</span> {
+  <span class="fn">id</span>: <span class="tp">string</span>;
+  <span class="fn">google_event_id</span>: <span class="tp">string</span>;
+  <span class="fn">summary</span>: <span class="tp">string</span>;
+  <span class="fn">description</span>?: <span class="tp">string</span>;
+  <span class="fn">start_time</span>: <span class="tp">string</span>;
+  <span class="fn">end_time</span>: <span class="tp">string</span>;
+  <span class="fn">location</span>?: <span class="tp">string</span>;
+  <span class="fn">is_all_day</span>: <span class="tp">boolean</span>;
+  <span class="fn">status</span>: <span class="str">'confirmed'</span> | <span class="str">'tentative'</span> | <span class="str">'cancelled'</span>;
+}
+
+<span class="kw">interface</span> <span class="tp">BalanceScore</span> {
+  <span class="fn">id</span>: <span class="tp">string</span>;
+  <span class="fn">scored_at</span>: <span class="tp">string</span>;
+  <span class="fn">period</span>: <span class="str">'daily'</span> | <span class="str">'weekly'</span> | <span class="str">'monthly'</span>;
+  <span class="fn">adhd_brain</span>: <span class="tp">number</span>;
+  <span class="fn">bio_foundation</span>: <span class="tp">number</span>;
+  <span class="fn">ai_driven</span>: <span class="tp">number</span>;
+  <span class="fn">aesthetics</span>: <span class="tp">number</span>;
+  <span class="fn">interpersonal</span>: <span class="tp">number</span>;
+  <span class="fn">family</span>: <span class="tp">number</span>;
+  <span class="fn">vision</span>: <span class="tp">number</span>;
+  <span class="fn">philosophy</span>: <span class="tp">number</span>;
+  <span class="fn">notes</span>?: <span class="tp">string</span>;
+  <span class="fn">ai_insights</span>?: <span class="tp">string</span>;
+}
+
+<span class="kw">interface</span> <span class="tp">ConversationMessage</span> {
+  <span class="fn">id</span>: <span class="tp">string</span>;
+  <span class="fn">role</span>: <span class="str">'user'</span> | <span class="str">'assistant'</span> | <span class="str">'system'</span>;
+  <span class="fn">content</span>: <span class="tp">string</span>;
+  <span class="fn">metadata</span>?: <span class="tp">Record</span>&lt;<span class="tp">string</span>, <span class="tp">any</span>&gt;;
+  <span class="fn">created_at</span>: <span class="tp">string</span>;
+}</div>
+</div>
+
+<!-- ═══════════════════════ FOOTER ═══════════════════════ -->
+<div class="footer">
+  <p>才能解放AIコーチ — Technical Specification v1.0</p>
+  <p>omoshiku Inc. | 2026-02-27 | <a href="sainou-coach-proposal.html">&larr; 企画書に戻る</a></p>
+</div>
+
+</div><!-- main-content -->
+</div><!-- page-layout -->
+
+</div><!-- container -->
+</body>
+</html>
