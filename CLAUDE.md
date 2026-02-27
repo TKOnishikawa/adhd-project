@@ -25,7 +25,7 @@
 | 2c. MVP設計 | ✅ 完了 | [MVP設計書](https://tkonishikawa.github.io/adhd-project/adhd-mvp-design.html) |
 | 3. ドキュメント棚卸し | ✅ 完了 | [準備マップ](https://tkonishikawa.github.io/adhd-project/adhd-doc-inventory.html) |
 | 4. インフラ構築 | ✅ 完了 | Driveフォルダ34個（omoshiku_drive_utils.py FOLDERS参照） |
-| 5. ドキュメント構築 | 🔄 進行中 | Tier 1（47件）から順次着手 |
+| 5. ドキュメント構築 | ✅ Tier 1完了 | Tier 1 全47件 → omoshiku Drive _templates/ 配下にGoogle Docs配置済み |
 
 ## 重要な意思決定ログ
 
@@ -90,7 +90,15 @@
 - [x] C5: 事前アセスメントキット案内
 - [x] C6: 初回カレンダー（100日間スケジュール）
 
-### カテゴリD: DAY講義（16件）— 未着手
+### カテゴリD: DAY講義（16件）— ✅ 完了（Drive: _templates/lectures/）
+- [x] D1-D2: DAY1 スライド構成案 + ファシリテーターノート（ADHD脳のOS・メタ認知）
+- [x] D3-D4: DAY2 スライド構成案 + ファシリテーターノート（トリガーとパターン・ABC分析）
+- [x] D5-D6: DAY3 スライド構成案 + ファシリテーターノート（環境デザイン・ナッジ理論）
+- [x] D7-D8: DAY4 スライド構成案 + ファシリテーターノート（If-Then自動操縦）
+- [x] D9-D10: DAY5 スライド構成案 + ファシリテーターノート（時間アーキテクチャ）
+- [x] D11-D12: DAY6 スライド構成案 + ファシリテーターノート（証人の力・ボディダブリング）
+- [x] D13-D14: DAY7 スライド構成案 + ファシリテーターノート（強みは本物・セルフコンパッション）
+- [x] D15-D16: DAY8 スライド構成案 + ファシリテーターノート（セルフマニュアル完成・統合）
 
 ### カテゴリE: パーソナルセッション（5件）— ✅ 完了（Drive: _templates/sessions/）
 - [x] E1: PS1 目標設定（Coach, W3）
