@@ -31,6 +31,31 @@ import Search from '../components/Search.astro';
   <!-- Section 3: SNS Strategy Preview -->
   <SnsStrategyPreview />
 
+  <!-- Section 3.5: MY OS — Personal OS Design -->
+  <section class="myos-section">
+    <a href="/adhd-project/my-os-design.html" class="myos-card">
+      <div class="myos-badge">FLAGSHIP DOCUMENT</div>
+      <div class="myos-content">
+        <h2 class="myos-title">MY OS</h2>
+        <p class="myos-subtitle">才能を武器に変える人生設計図</p>
+        <p class="myos-desc">
+          ADHD×AI×哲学 — 8領域・11リサーチを統合した360°パーソナル・オペレーティング・システム。
+          40+のインフォグラフィックで神経科学から事業ビジョンまで完全設計。
+        </p>
+        <div class="myos-tags">
+          <span class="myos-tag" style="--tag-clr: #f97316;">ADHD脳</span>
+          <span class="myos-tag" style="--tag-clr: #22c55e;">生体基盤</span>
+          <span class="myos-tag" style="--tag-clr: #22d3ee;">AI駆動</span>
+          <span class="myos-tag" style="--tag-clr: #3b82f6;">美意識</span>
+          <span class="myos-tag" style="--tag-clr: #e879f9;">対人</span>
+          <span class="myos-tag" style="--tag-clr: #fbbf24;">家族</span>
+          <span class="myos-tag" style="--tag-clr: #a78bfa;">ビジョン</span>
+        </div>
+      </div>
+      <div class="myos-arrow">→</div>
+    </a>
+  </section>
+
   <!-- Section 4: Meetings Preview -->
   <MeetingsPreview />
 
@@ -91,9 +116,130 @@ import Search from '../components/Search.astro';
     margin-bottom: 20px;
   }
 
+  /* MY OS Card */
+  .myos-section {
+    margin-bottom: 64px;
+  }
+
+  .myos-card {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    padding: 28px 32px;
+    background: linear-gradient(135deg, rgba(74, 125, 255, 0.06) 0%, rgba(34, 211, 238, 0.06) 100%);
+    border: 1px solid rgba(74, 125, 255, 0.15);
+    border-radius: 16px;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .myos-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, #f97316, #22d3ee, #22c55e, #e879f9, #3b82f6, #a78bfa);
+  }
+
+  .myos-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(74, 125, 255, 0.3);
+    box-shadow: 0 8px 32px rgba(74, 125, 255, 0.15);
+  }
+
+  .myos-badge {
+    position: absolute;
+    top: 14px;
+    right: 20px;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 2px;
+    color: var(--cyan, #22d3ee);
+    opacity: 0.7;
+  }
+
+  .myos-content {
+    flex: 1;
+  }
+
+  .myos-title {
+    font-size: 28px;
+    font-weight: 900;
+    background: linear-gradient(135deg, #4a7dff 0%, #22d3ee 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin: 0 0 4px;
+    line-height: 1.2;
+  }
+
+  .myos-subtitle {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text, #eaeaf2);
+    margin: 0 0 10px;
+  }
+
+  .myos-desc {
+    font-size: 13px;
+    color: var(--text-dim, #9898ae);
+    line-height: 1.7;
+    margin: 0 0 14px;
+  }
+
+  .myos-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .myos-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--tag-clr) 12%, transparent);
+    color: var(--tag-clr);
+    border: 1px solid color-mix(in srgb, var(--tag-clr) 20%, transparent);
+  }
+
+  .myos-arrow {
+    font-size: 24px;
+    color: var(--text-dim, #9898ae);
+    transition: transform 0.3s ease;
+  }
+
+  .myos-card:hover .myos-arrow {
+    transform: translateX(4px);
+    color: var(--cyan, #22d3ee);
+  }
+
   @media (max-width: 600px) {
     .hero h1 {
       font-size: 24px;
+    }
+
+    .myos-card {
+      flex-direction: column;
+      padding: 24px 20px;
+      text-align: center;
+    }
+
+    .myos-title {
+      font-size: 24px;
+    }
+
+    .myos-tags {
+      justify-content: center;
+    }
+
+    .myos-arrow {
+      display: none;
     }
   }
 </style>

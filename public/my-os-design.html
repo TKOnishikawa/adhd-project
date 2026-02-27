@@ -1,0 +1,2682 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>MY OS — 才能を武器に変える人生設計図 | ADHD×AI×哲学 統合オペレーティングシステム</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700;900&family=JetBrains+Mono:wght@400;600&family=Sora:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   DESIGN SYSTEM — Personal OS Design Document
+   Semantic Color System × McKinsey Dark Theme
+   ============================================ */
+:root {
+  /* Background layers */
+  --bg-base:#08080d;--bg-surface:#101018;--bg-raised:#181824;--bg-top:#222234;
+  --border:rgba(255,255,255,0.06);--border-focus:rgba(255,255,255,0.12);
+  /* Text */
+  --text:#eaeaf2;--text-dim:#9898ae;--text-muted:#58586e;
+  /* Base palette */
+  --blue:#4a7dff;--cyan:#22d3ee;--green:#34d399;--amber:#f59e0b;--red:#ef4444;--purple:#a78bfa;--pink:#f472b6;
+  /* === SEMANTIC DOMAIN COLORS === */
+  --clr-adhd:#f97316;       /* ADHD神経科学/コア概念 — オレンジ */
+  --clr-ai:#22d3ee;         /* AI/テクノロジー — シアン */
+  --clr-health:#22c55e;     /* 生体基盤/健康 — グリーン */
+  --clr-relation:#e879f9;   /* 対人関係 — マゼンタ */
+  --clr-family:#fbbf24;     /* 家族/育児 — ウォームイエロー */
+  --clr-aesthetics:#3b82f6; /* 美意識/哲学 — ブルー */
+  --clr-business:#a78bfa;   /* 事業/ビジョン — パープル（グラデーションのベース） */
+  --clr-risk:#ef4444;       /* 警告/リスク — レッド */
+  /* Gradients */
+  --grad-hero:linear-gradient(135deg,#4a7dff 0%,#22d3ee 100%);
+  --grad-success:linear-gradient(135deg,#34d399 0%,#22d3ee 100%);
+  --grad-warn:linear-gradient(135deg,#ef4444 0%,#f59e0b 100%);
+  --grad-vision:linear-gradient(135deg,#a78bfa 0%,#f472b6 100%);
+  --grad-adhd:linear-gradient(135deg,#f97316 0%,#fbbf24 100%);
+  --grad-ai:linear-gradient(135deg,#22d3ee 0%,#3b82f6 100%);
+  --grad-health:linear-gradient(135deg,#22c55e 0%,#34d399 100%);
+  --grad-relation:linear-gradient(135deg,#e879f9 0%,#a78bfa 100%);
+  --grad-family:linear-gradient(135deg,#fbbf24 0%,#f97316 100%);
+  --grad-aesthetics:linear-gradient(135deg,#3b82f6 0%,#a78bfa 100%);
+  --grad-business:linear-gradient(135deg,#f97316,#22d3ee,#22c55e,#e879f9,#3b82f6);
+  /* Shadows */
+  --shadow-sm:0 1px 3px rgba(0,0,0,0.4);--shadow-md:0 4px 16px rgba(0,0,0,0.5);--shadow-lg:0 8px 32px rgba(0,0,0,0.6);
+  /* Fonts */
+  --font-sans:'Noto Sans JP',-apple-system,sans-serif;
+  --font-mono:'JetBrains Mono','Fira Code',monospace;
+  --font-heading:'Sora','Noto Sans JP',sans-serif;
+  --max-width:1080px;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
+body{font-family:var(--font-sans);background:var(--bg-base);color:var(--text);line-height:1.8;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+.container{max-width:1320px;margin:0 auto;padding:0 28px}
+.mono{font-family:var(--font-mono);font-weight:600}
+
+/* ============ LAYOUT ============ */
+.page-layout{display:flex;gap:32px;align-items:flex-start}
+.main-content{flex:1;min-width:0;max-width:var(--max-width)}
+
+/* ============ TOC SIDEBAR ============ */
+.toc-sidebar{position:sticky;top:24px;width:260px;flex-shrink:0;background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:16px;max-height:calc(100vh - 48px);overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--bg-top) transparent}
+.toc-sidebar::-webkit-scrollbar{width:4px}
+.toc-sidebar::-webkit-scrollbar-thumb{background:var(--bg-top);border-radius:2px}
+.toc-sidebar h3{font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px}
+.toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:3px 0;line-height:1.4;transition:color .15s}
+.toc-sidebar a:hover{color:var(--cyan)}
+.toc-sidebar .toc-num{color:var(--text-muted);margin-right:4px;font-family:var(--font-mono);font-size:10px}
+.toc-sidebar .toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;margin-bottom:4px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-sidebar .toc-part:first-child{border-top:none;margin-top:0;padding-top:0}
+.toc-sidebar .toc-part-dot{display:inline-block;width:6px;height:6px;border-radius:50%;margin-right:4px;vertical-align:middle}
+@media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
+
+/* ============ HERO ============ */
+.hero{padding:72px 0 20px;text-align:center;position:relative}
+.hero::before{content:'';position:absolute;top:-80px;left:50%;transform:translateX(-50%);width:800px;height:800px;background:radial-gradient(circle,rgba(74,125,255,0.05) 0%,transparent 65%);pointer-events:none}
+.hero-badge{display:inline-block;padding:5px 14px;border:1px solid rgba(74,125,255,0.25);border-radius:20px;font-size:12px;font-weight:700;color:var(--blue);letter-spacing:2.5px;text-transform:uppercase;margin-bottom:18px;background:rgba(74,125,255,0.04)}
+.hero h1{font-family:var(--font-heading);font-size:34px;font-weight:900;line-height:1.4;margin-bottom:14px;background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:var(--text-dim);max-width:700px;margin:0 auto 28px;line-height:1.9}
+.hero-meta{display:flex;justify-content:center;gap:20px;flex-wrap:wrap;font-size:13px;color:var(--text-muted)}
+
+/* ============ SECTIONS ============ */
+.section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
+.section:last-of-type{border-bottom:none}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px}
+.action-title{font-size:22px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
+.section-lead{font-size:14px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
+.section p{font-size:14px;color:var(--text-dim);line-height:1.9;margin-bottom:12px}
+.section h4{font-size:16px;font-weight:700;color:var(--text);margin:20px 0 8px}
+.section h5{font-size:14px;font-weight:700;color:var(--text);margin:16px 0 6px}
+.section ul,.section ol{padding-left:20px;margin-bottom:12px}
+.section li{font-size:14px;color:var(--text-dim);line-height:1.8;margin-bottom:4px}
+.section strong{color:var(--text)}
+
+/* Part divider */
+.part-divider{padding:48px 0 8px;text-align:center}
+.part-badge{display:inline-block;padding:8px 24px;border:2px solid;border-radius:24px;font-size:14px;font-weight:700;letter-spacing:2px;text-transform:uppercase;font-family:var(--font-heading)}
+.part-badge.p0{border-color:var(--blue);color:var(--blue)}
+.part-badge.p1{border-color:var(--clr-adhd);color:var(--clr-adhd)}
+.part-badge.p2{border-color:var(--clr-health);color:var(--clr-health)}
+.part-badge.p3{border-color:var(--amber);color:var(--amber)}
+.part-badge.p4{border-color:var(--clr-ai);color:var(--clr-ai)}
+.part-badge.p5{border-color:var(--clr-aesthetics);color:var(--clr-aesthetics)}
+.part-badge.p6{border-color:var(--clr-relation);color:var(--clr-relation)}
+.part-badge.p7{border-color:var(--clr-family);color:var(--clr-family)}
+.part-badge.p8{border-color:var(--clr-business);color:var(--clr-business)}
+.part-title{font-family:var(--font-heading);font-size:26px;font-weight:700;margin-top:12px;line-height:1.5}
+
+/* ============ KPI CARDS ============ */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:24px 0 20px}
+@media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.kpi-grid{grid-template-columns:1fr}}
+.kpi-card{background:var(--bg-surface);border-radius:12px;padding:20px 14px;text-align:center;box-shadow:var(--shadow-sm);border:1px solid var(--border);transition:transform .15s}
+.kpi-card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.kpi-num{font-family:var(--font-mono);font-size:32px;font-weight:600;margin-bottom:4px}
+.kpi-num.warn{background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.good{background:var(--grad-success);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.blue{background:var(--grad-hero);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.vision{background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.adhd{background:var(--grad-adhd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.ai{background:var(--grad-ai);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.health{background:var(--grad-health);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-num.family{background:var(--grad-family);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.kpi-label{font-size:12px;color:var(--text-dim);font-weight:500;line-height:1.5}
+
+/* ============ CALLOUTS ============ */
+.sowhat{background:rgba(239,68,68,0.03);border-left:4px solid var(--red);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.sowhat-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--red);margin-bottom:6px}
+.sowhat p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.sowhat strong{color:#f87171}
+.insight{background:rgba(52,211,153,0.03);border-left:4px solid var(--green);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.insight-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--green);margin-bottom:6px}
+.insight p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.insight strong{color:var(--green)}
+.note{background:rgba(74,125,255,0.03);border-left:4px solid var(--blue);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.note-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--blue);margin-bottom:6px}
+.note p{font-size:14px;line-height:1.9;color:var(--text-dim)}
+.note strong{color:var(--blue)}
+/* Domain-specific callouts */
+.callout-adhd{background:rgba(249,115,22,0.03);border-left:4px solid var(--clr-adhd);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.callout-adhd .callout-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--clr-adhd);margin-bottom:6px}
+.callout-ai{background:rgba(34,211,238,0.03);border-left:4px solid var(--clr-ai);border-radius:0 10px 10px 0;padding:16px 20px;margin:20px 0;box-shadow:var(--shadow-sm)}
+.callout-ai .callout-label{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--clr-ai);margin-bottom:6px}
+
+/* ============ EVIDENCE BADGES ============ */
+.ev{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1px;padding:2px 7px;border-radius:3px;vertical-align:middle;margin-left:4px}
+.ev.rct{background:rgba(52,211,153,0.12);color:var(--green)}
+.ev.meta{background:rgba(74,125,255,0.12);color:var(--blue)}
+.ev.pilot{background:rgba(245,158,11,0.12);color:var(--amber)}
+.ev.expert{background:rgba(167,139,250,0.12);color:var(--purple)}
+.ev.govt{background:rgba(34,211,238,0.12);color:var(--cyan)}
+
+/* ============ TABLES ============ */
+.tbl{width:100%;border-collapse:separate;border-spacing:0;border-radius:10px;overflow:hidden;border:1px solid var(--border);margin:18px 0;font-size:13px}
+.tbl thead th{background:var(--bg-raised);padding:10px 14px;font-size:11px;font-weight:700;text-align:left;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);border-bottom:1px solid var(--border)}
+.tbl tbody td{padding:10px 14px;border-bottom:1px solid var(--border);vertical-align:top;background:var(--bg-surface)}
+.tbl tbody tr:last-child td{border-bottom:none}
+.t-name{font-weight:600;color:var(--text)}
+.t-good{color:var(--green);font-weight:500}
+.t-warn{color:var(--amber);font-weight:500}
+.t-bad{color:var(--red);font-weight:500}
+
+/* ============ CARDS ============ */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;margin:18px 0}
+@media(max-width:600px){.card-grid{grid-template-columns:1fr}}
+.card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;box-shadow:var(--shadow-sm);transition:transform .15s,box-shadow .15s}
+.card:hover{transform:translateY(-2px);box-shadow:var(--shadow-md)}
+.card h4{font-size:15px;font-weight:700;margin-bottom:6px}
+.card p{font-size:13px;color:var(--text-dim);line-height:1.8}
+.card-badge{display:inline-block;font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px}
+.card-badge.orange{background:rgba(249,115,22,0.08);color:var(--clr-adhd)}
+.card-badge.cyan{background:rgba(34,211,238,0.08);color:var(--clr-ai)}
+.card-badge.green{background:rgba(34,197,94,0.08);color:var(--clr-health)}
+.card-badge.magenta{background:rgba(232,121,249,0.08);color:var(--clr-relation)}
+.card-badge.yellow{background:rgba(251,191,36,0.08);color:var(--clr-family)}
+.card-badge.blue{background:rgba(59,130,246,0.08);color:var(--clr-aesthetics)}
+.card-badge.purple{background:rgba(167,139,250,0.08);color:var(--purple)}
+.card-badge.red{background:rgba(239,68,68,0.08);color:var(--red)}
+.card-badge.amber{background:rgba(245,158,11,0.08);color:var(--amber)}
+
+/* ============ ACCORDION ============ */
+details.acc{margin-bottom:6px}
+details.acc summary{cursor:pointer;display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--bg-surface);border:1px solid var(--border);border-radius:8px;font-size:14px;font-weight:600;color:var(--text);list-style:none;transition:all .15s}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary::before{content:'\25B6';font-size:9px;color:var(--text-muted);transition:transform .2s}
+details.acc[open] summary::before{transform:rotate(90deg)}
+details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-raised);border-radius:8px 8px 0 0}
+.acc-body{padding:16px 20px;background:var(--bg-surface);border:1px solid var(--border);border-top:none;border-radius:0 0 8px 8px;font-size:13px;line-height:1.8;color:var(--text-dim)}
+.acc-body h5{font-size:12px;font-weight:700;color:var(--cyan);margin:12px 0 4px;letter-spacing:1px;text-transform:uppercase}
+.acc-body h5:first-child{margin-top:0}
+.acc-body ul{padding-left:18px;margin:4px 0}
+.acc-body li{margin-bottom:3px}
+
+/* ============ TIMELINE ============ */
+.timeline{display:grid;grid-template-columns:70px 1fr;gap:0;margin:18px 0}
+.tl-label{font-family:var(--font-mono);font-size:11px;color:var(--text-muted);padding:8px 0;border-right:2px solid var(--border);text-align:right;padding-right:12px}
+.tl-content{padding:6px 0 6px 16px;display:flex;flex-wrap:wrap;gap:4px;align-items:center}
+.tl-pill{font-size:10px;padding:3px 8px;border-radius:4px;font-weight:600;white-space:nowrap}
+
+/* ============ HUB-SPOKE DIAGRAM ============ */
+.hub-spoke{position:relative;width:100%;max-width:600px;margin:24px auto;aspect-ratio:1;display:flex;align-items:center;justify-content:center}
+.hub-center{position:absolute;width:140px;height:140px;border-radius:50%;display:flex;align-items:center;justify-content:center;text-align:center;font-size:13px;font-weight:700;z-index:2;box-shadow:var(--shadow-lg)}
+.spoke-node{position:absolute;width:120px;padding:10px 8px;border-radius:10px;text-align:center;font-size:11px;font-weight:600;z-index:2;box-shadow:var(--shadow-sm);line-height:1.4}
+.spoke-line{position:absolute;top:50%;left:50%;transform-origin:0 0;height:1px;z-index:1}
+
+/* ============ RADAR CHART (SVG) ============ */
+.radar-container{display:flex;justify-content:center;margin:24px 0}
+.radar-container svg{max-width:480px;width:100%}
+
+/* ============ MATRIX/GRID ============ */
+.matrix-grid{display:grid;gap:2px;margin:18px 0;border-radius:10px;overflow:hidden;border:1px solid var(--border)}
+.matrix-header{background:var(--bg-raised);padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--text-muted);text-align:center}
+.matrix-cell{background:var(--bg-surface);padding:12px 14px;font-size:12px;line-height:1.7;color:var(--text-dim)}
+.matrix-row-header{background:var(--bg-raised);padding:12px 14px;font-size:12px;font-weight:700;color:var(--text);display:flex;align-items:center}
+
+/* ============ PYRAMID/TIER ============ */
+.pyramid{margin:24px 0}
+.pyramid-tier{padding:14px 20px;margin-bottom:2px;border-radius:8px;display:flex;align-items:center;gap:14px}
+.pyramid-tier .tier-num{font-family:var(--font-mono);font-size:22px;font-weight:600;min-width:40px;text-align:center}
+.pyramid-tier .tier-content{flex:1}
+.pyramid-tier .tier-content h5{font-size:13px;font-weight:700;margin-bottom:2px}
+.pyramid-tier .tier-content p{font-size:12px;color:var(--text-dim);line-height:1.6}
+.pyramid-tier.t1{background:rgba(52,211,153,0.06);border:1px solid rgba(52,211,153,0.15)}
+.pyramid-tier.t2{background:rgba(74,125,255,0.06);border:1px solid rgba(74,125,255,0.15)}
+.pyramid-tier.t3{background:rgba(245,158,11,0.06);border:1px solid rgba(245,158,11,0.15)}
+.pyramid-tier.t4{background:rgba(167,139,250,0.06);border:1px solid rgba(167,139,250,0.15)}
+
+/* ============ CYCLE DIAGRAM ============ */
+.cycle{display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;margin:24px 0}
+.cycle-node{padding:12px 16px;border-radius:10px;font-size:12px;font-weight:600;text-align:center;min-width:100px;box-shadow:var(--shadow-sm)}
+.cycle-arrow{font-size:18px;color:var(--text-muted)}
+
+/* ============ COMPARISON (BEFORE/AFTER) ============ */
+.comparison{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+@media(max-width:600px){.comparison{grid-template-columns:1fr}}
+.comp-side{border-radius:12px;padding:20px;box-shadow:var(--shadow-sm)}
+.comp-side.before{background:rgba(239,68,68,0.03);border:1px solid rgba(239,68,68,0.15)}
+.comp-side.after{background:rgba(52,211,153,0.03);border:1px solid rgba(52,211,153,0.15)}
+.comp-side h4{font-size:14px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.comp-side.before h4{color:var(--red)}
+.comp-side.after h4{color:var(--green)}
+.comp-side ul{padding-left:18px}
+.comp-side li{font-size:13px;color:var(--text-dim);line-height:1.7;margin-bottom:4px}
+
+/* ============ PROGRESS BAR ============ */
+.progress-bar{height:8px;background:var(--bg-raised);border-radius:4px;margin:6px 0;overflow:hidden}
+.progress-fill{height:100%;border-radius:4px;transition:width .5s ease}
+
+/* ============ STEP INDICATOR ============ */
+.steps{display:flex;flex-direction:column;gap:12px;margin:18px 0}
+.step{display:flex;gap:14px;align-items:flex-start}
+.step-num{font-family:var(--font-mono);font-size:14px;font-weight:600;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.step-body h5{font-size:14px;font-weight:700;margin-bottom:2px}
+.step-body p{font-size:13px;color:var(--text-dim);line-height:1.7}
+
+/* ============ FLOW DIAGRAM ============ */
+.flow{display:flex;align-items:stretch;gap:8px;margin:18px 0;overflow-x:auto;padding-bottom:8px}
+.flow-node{background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px;min-width:140px;text-align:center;box-shadow:var(--shadow-sm);flex-shrink:0}
+.flow-node h5{font-size:12px;font-weight:700;margin-bottom:4px}
+.flow-node p{font-size:11px;color:var(--text-dim);line-height:1.5}
+.flow-arrow{display:flex;align-items:center;color:var(--text-muted);font-size:20px;flex-shrink:0}
+
+/* ============ PHASE CARDS ============ */
+.phase-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:22px;margin-bottom:12px;box-shadow:var(--shadow-sm)}
+.phase-card h3{font-size:17px;font-weight:700;margin-bottom:6px}
+.phase-card .phase-tag{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;padding:3px 10px;border-radius:4px;margin-bottom:8px;display:inline-block}
+.phase-card>p{font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.8}
+
+/* ============ VISION CARD ============ */
+.vision-card{background:linear-gradient(135deg,rgba(74,125,255,0.04) 0%,rgba(167,139,250,0.04) 100%);border:1px solid rgba(167,139,250,0.18);border-radius:12px;padding:24px;text-align:center;margin-top:16px}
+.vision-card h3{font-size:18px;font-weight:700;margin-bottom:10px;background:var(--grad-vision);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.vision-card p{font-size:14px;color:var(--text-dim);margin-bottom:12px}
+
+/* ============ SYNERGY MAP ============ */
+.synergy-map{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;margin:18px 0;position:relative}
+@media(max-width:768px){.synergy-map{grid-template-columns:1fr}}
+.synergy-node{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;text-align:center;box-shadow:var(--shadow-sm);position:relative}
+.synergy-node h4{font-size:14px;font-weight:700;margin-bottom:6px}
+.synergy-node p{font-size:12px;color:var(--text-dim);line-height:1.6}
+.synergy-arrow{font-size:11px;color:var(--text-muted);text-align:center;padding:4px 0;font-style:italic}
+
+/* ============ FOOTER ============ */
+.footer{text-align:center;padding:40px 0 28px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+
+/* ============ UTILITY ============ */
+.mt-0{margin-top:0}.mt-1{margin-top:8px}.mt-2{margin-top:16px}.mt-3{margin-top:24px}
+.mb-0{margin-bottom:0}.mb-1{margin-bottom:8px}.mb-2{margin-bottom:16px}.mb-3{margin-bottom:24px}
+.text-adhd{color:var(--clr-adhd)}.text-ai{color:var(--clr-ai)}.text-health{color:var(--clr-health)}
+.text-relation{color:var(--clr-relation)}.text-family{color:var(--clr-family)}.text-aesthetics{color:var(--clr-aesthetics)}
+.text-business{color:var(--clr-business)}.text-risk{color:var(--clr-risk)}
+.border-adhd{border-color:var(--clr-adhd)}.border-ai{border-color:var(--clr-ai)}.border-health{border-color:var(--clr-health)}
+.border-relation{border-color:var(--clr-relation)}.border-family{border-color:var(--clr-family)}.border-aesthetics{border-color:var(--clr-aesthetics)}
+.grad-text-adhd{background:var(--grad-adhd);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grad-text-ai{background:var(--grad-ai);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.grad-text-business{background:var(--grad-business);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+</style>
+</head>
+<body>
+<div class="container">
+
+<!-- ================================================ -->
+<!-- HERO -->
+<!-- ================================================ -->
+<div class="hero">
+<div class="hero-badge">MY OS — Personal Operating System v1.0</div>
+<h1>MY OS<br><span style="font-size:0.55em;font-weight:400;color:var(--text-dim)">才能を武器に変える人生設計図</span></h1>
+<p class="hero-sub">ADHD特性・AIテクノロジー・事業ビジョン・人間関係・美意識を統合し、才能とパフォーマンスを最大限に解放するためのオペレーティング・システム。8テーマ×11領域のリサーチを西川太雄個人に最適化した、実装可能な人生設計図。</p>
+<div class="hero-meta">
+<span>Designed for: 西川太雄</span><span>|</span><span>2026-02-27</span><span>|</span><span>Research: 8 ADHD themes + 4 domains</span>
+</div>
+</div>
+
+<!-- ================================================ -->
+<!-- PAGE LAYOUT -->
+<!-- ================================================ -->
+<div class="page-layout">
+
+<!-- TOC SIDEBAR -->
+<nav class="toc-sidebar">
+<h3>Contents</h3>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--blue)"></span>Part 0: Overture</div>
+<a href="#s0-1"><span class="toc-num">0-1</span> バランスホイール360°</a>
+<a href="#s0-2"><span class="toc-num">0-2</span> 従来型 vs ADHD×AI駆動OS</a>
+<a href="#s0-3"><span class="toc-num">0-3</span> 西川太雄プロファイル</a>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--clr-adhd)"></span>Part 1: 自己理解OS</div>
+<a href="#s1-1"><span class="toc-num">1-1</span> 5つの理論モデル統合</a>
+<a href="#s1-2"><span class="toc-num">1-2</span> Interest-Based Nervous System</a>
+<a href="#s1-3"><span class="toc-num">1-3</span> スパイキー・プロファイル</a>
+<a href="#s1-4"><span class="toc-num">1-4</span> Twice-Exceptional（2E）</a>
+<a href="#s1-5"><span class="toc-num">1-5</span> 感情調節不全 & RSD</a>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--clr-health)"></span>Part 2: 生体基盤OS</div>
+<a href="#s2-1"><span class="toc-num">2-1</span> 睡眠アーキテクチャ</a>
+<a href="#s2-2"><span class="toc-num">2-2</span> 運動処方</a>
+<a href="#s2-3"><span class="toc-num">2-3</span> 栄養×サプリ</a>
+<a href="#s2-4"><span class="toc-num">2-4</span> ウルトラディアンリズム</a>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--amber)"></span>Part 3: パフォーマンスOS</div>
+<a href="#s3-1"><span class="toc-num">3-1</span> ドーパミン・スケジューリング</a>
+<a href="#s3-2"><span class="toc-num">3-2</span> ハイパーフォーカス管理</a>
+<a href="#s3-3"><span class="toc-num">3-3</span> 行動科学7フレームワーク</a>
+<a href="#s3-4"><span class="toc-num">3-4</span> セルフコーチング8メソッド</a>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--clr-ai)"></span>Part 4: テクノロジーOS</div>
+<a href="#s4-1"><span class="toc-num">4-1</span> AI認知拡張</a>
+<a href="#s4-2"><span class="toc-num">4-2</span> Claude Code × プロセスリビルド</a>
+<a href="#s4-3"><span class="toc-num">4-3</span> ビジネスAI全面適用</a>
+<a href="#s4-4"><span class="toc-num">4-4</span> エージェンティックAI</a>
+<a href="#s4-5"><span class="toc-num">4-5</span> MCPエコシステム</a>
+<a href="#s4-6"><span class="toc-num">4-6</span> セカンドブレイン</a>
+<a href="#s4-7"><span class="toc-num">4-7</span> AI習熟ロードマップ</a>
+<a href="#s4-8"><span class="toc-num">4-8</span> HITL進化</a>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--clr-aesthetics)"></span>Part 5: 美意識OS</div>
+<a href="#s5-1"><span class="toc-num">5-1</span> AI時代の美意識</a>
+<a href="#s5-2"><span class="toc-num">5-2</span> アート思考</a>
+<a href="#s5-3"><span class="toc-num">5-3</span> テイストの育て方</a>
+<a href="#s5-4"><span class="toc-num">5-4</span> 侘び寂び × ADHD</a>
+<a href="#s5-5"><span class="toc-num">5-5</span> 身体性と創造的主権</a>
+<a href="#s5-6"><span class="toc-num">5-6</span> 体験価値設計</a>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--clr-relation)"></span>Part 6: 対人OS</div>
+<a href="#s6-1"><span class="toc-num">6-1</span> ADHDリーダーシップ</a>
+<a href="#s6-2"><span class="toc-num">6-2</span> コミュニケーション設計</a>
+<a href="#s6-3"><span class="toc-num">6-3</span> 委任フレームワーク</a>
+<a href="#s6-4"><span class="toc-num">6-4</span> 職場での実生活影響</a>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--clr-family)"></span>Part 7: 家族OS</div>
+<a href="#s7-1"><span class="toc-num">7-1</span> 現状の客観的分析</a>
+<a href="#s7-2"><span class="toc-num">7-2</span> 非ADHDバーンアウト</a>
+<a href="#s7-3"><span class="toc-num">7-3</span> 親子ダイナミクス</a>
+<a href="#s7-4"><span class="toc-num">7-4</span> 見えない労働</a>
+<a href="#s7-5"><span class="toc-num">7-5</span> ADHD父親プロトコル</a>
+<a href="#s7-6"><span class="toc-num">7-6</span> マイクロコネクション</a>
+<a href="#s7-7"><span class="toc-num">7-7</span> 夫婦コーチング優先順位</a>
+<a href="#s7-8"><span class="toc-num">7-8</span> 子供の発達への影響</a>
+
+<div class="toc-part"><span class="toc-part-dot" style="background:var(--clr-business)"></span>Part 8: ビジョン実現</div>
+<a href="#s8-1"><span class="toc-num">8-1</span> 3事業統合タイムライン</a>
+<a href="#s8-2"><span class="toc-num">8-2</span> 多動力2.0ムーブメント</a>
+<a href="#s8-3"><span class="toc-num">8-3</span> 財務ガードレール</a>
+<a href="#s8-4"><span class="toc-num">8-4</span> 35+エイジング対策</a>
+<a href="#s8-5"><span class="toc-num">8-5</span> セルフコンパッション</a>
+</nav>
+
+<!-- MAIN CONTENT -->
+<div class="main-content">
+
+<!-- ================================================ -->
+<!-- PART 0: OVERTURE -->
+<!-- ================================================ -->
+<div class="part-divider">
+<span class="part-badge p0">Part 0</span>
+<div class="part-title">OVERTURE — なぜ「自分OS」が必要なのか</div>
+</div>
+
+<!-- 0-1: Balance Wheel -->
+<div class="section" id="s0-1">
+<div class="section-eyebrow" style="color:var(--blue)">0-1 Balance Wheel</div>
+<h2 class="action-title">バランスホイール 360° 現在地マップ</h2>
+<p class="section-lead">8つのライフドメインを定量的に自己評価し、現状と理想のギャップを視覚化する。各領域がどのPARTに対応するかをマッピングし、このドキュメント全体のナビゲーションマップとして機能する。</p>
+
+<!-- 図解①: 8領域レーダーチャート -->
+<div class="radar-container">
+<svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg">
+<!-- Background grid -->
+<g transform="translate(240,240)">
+<!-- Grid circles -->
+<circle cx="0" cy="0" r="180" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<circle cx="0" cy="0" r="144" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<circle cx="0" cy="0" r="108" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<circle cx="0" cy="0" r="72" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<circle cx="0" cy="0" r="36" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<!-- Axis lines -->
+<line x1="0" y1="0" x2="0" y2="-180" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<line x1="0" y1="0" x2="127.3" y2="-127.3" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<line x1="0" y1="0" x2="180" y2="0" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<line x1="0" y1="0" x2="127.3" y2="127.3" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<line x1="0" y1="0" x2="0" y2="180" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<line x1="0" y1="0" x2="-127.3" y2="127.3" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<line x1="0" y1="0" x2="-180" y2="0" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<line x1="0" y1="0" x2="-127.3" y2="-127.3" stroke="rgba(255,255,255,0.06)" stroke-width="1"/>
+<!-- Ideal polygon (10/10 all = outer ring) -->
+<polygon points="0,-162 114.6,-114.6 162,0 114.6,114.6 0,162 -114.6,114.6 -162,0 -114.6,-114.6"
+  fill="rgba(74,125,255,0.05)" stroke="rgba(74,125,255,0.2)" stroke-width="1" stroke-dasharray="4,4"/>
+<!-- Current polygon -->
+<polygon points="0,-126 101.8,-101.8 108,0 50.9,50.9 0,108 -76.4,76.4 -126,0 -63.6,-63.6"
+  fill="rgba(249,115,22,0.08)" stroke="#f97316" stroke-width="2"/>
+<!-- Data points with domain colors -->
+<!-- Career: 7/10 = 126 (top) -->
+<circle cx="0" cy="-126" r="5" fill="#a78bfa"/>
+<text x="0" y="-192" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">Career</text>
+<text x="0" y="-178" text-anchor="middle" fill="#9898ae" font-size="10" font-family="JetBrains Mono">7/10</text>
+<!-- Finance: 8/10 = 101.8, -101.8 (top-right) -->
+<circle cx="101.8" cy="-101.8" r="5" fill="#a78bfa"/>
+<text x="145" y="-140" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">Finance</text>
+<text x="145" y="-126" text-anchor="middle" fill="#9898ae" font-size="10" font-family="JetBrains Mono">8/10</text>
+<!-- Health: 6/10 = 108 (right) -->
+<circle cx="108" cy="0" r="5" fill="#22c55e"/>
+<text x="200" y="-4" text-anchor="middle" fill="#22c55e" font-size="11" font-weight="700">Health</text>
+<text x="200" y="10" text-anchor="middle" fill="#9898ae" font-size="10" font-family="JetBrains Mono">6/10</text>
+<!-- Relationships: 4/10 = 50.9, 50.9 (bottom-right) -->
+<circle cx="50.9" cy="50.9" r="5" fill="#e879f9"/>
+<text x="110" y="125" text-anchor="middle" fill="#e879f9" font-size="11" font-weight="700">Relationships</text>
+<text x="110" y="139" text-anchor="middle" fill="#9898ae" font-size="10" font-family="JetBrains Mono">4/10</text>
+<!-- Family: 6/10 = 108 (bottom) -->
+<circle cx="0" cy="108" r="5" fill="#fbbf24"/>
+<text x="0" y="198" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">Family</text>
+<text x="0" y="212" text-anchor="middle" fill="#9898ae" font-size="10" font-family="JetBrains Mono">6/10</text>
+<!-- Growth: 6/10 = -76.4, 76.4 (bottom-left) -->
+<circle cx="-76.4" cy="76.4" r="5" fill="#3b82f6"/>
+<text x="-130" y="125" text-anchor="middle" fill="#3b82f6" font-size="11" font-weight="700">Growth</text>
+<text x="-130" y="139" text-anchor="middle" fill="#9898ae" font-size="10" font-family="JetBrains Mono">6/10</text>
+<!-- Purpose: 7/10 = -126, 0 (left) -->
+<circle cx="-126" cy="0" r="5" fill="#22d3ee"/>
+<text x="-200" y="-4" text-anchor="middle" fill="#22d3ee" font-size="11" font-weight="700">Purpose</text>
+<text x="-200" y="10" text-anchor="middle" fill="#9898ae" font-size="10" font-family="JetBrains Mono">7/10</text>
+<!-- Fun: 5/10 = -63.6, -63.6 (top-left) -->
+<circle cx="-63.6" cy="-63.6" r="5" fill="#f472b6"/>
+<text x="-130" y="-132" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">Fun</text>
+<text x="-130" y="-118" text-anchor="middle" fill="#9898ae" font-size="10" font-family="JetBrains Mono">5/10</text>
+<!-- Center label -->
+<text x="0" y="4" text-anchor="middle" fill="#58586e" font-size="10" font-weight="600">現在地</text>
+</g>
+<!-- Legend -->
+<g transform="translate(10,450)">
+<line x1="0" y1="0" x2="16" y2="0" stroke="#f97316" stroke-width="2"/>
+<text x="20" y="4" fill="#9898ae" font-size="10">現在スコア</text>
+<line x1="100" y1="0" x2="116" y2="0" stroke="rgba(74,125,255,0.4)" stroke-width="1" stroke-dasharray="4,4"/>
+<text x="120" y="4" fill="#9898ae" font-size="10">理想スコア (9/10)</text>
+</g>
+</svg>
+</div>
+
+<!-- Domain → Part mapping -->
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+<div class="kpi-card">
+<div class="kpi-num adhd">P1</div>
+<div class="kpi-label">自己理解OS<br><small style="color:var(--text-muted)">Career × Growth</small></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num health">P2</div>
+<div class="kpi-label">生体基盤OS<br><small style="color:var(--text-muted)">Health</small></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num" style="background:linear-gradient(135deg,var(--amber),var(--clr-adhd));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">P3</div>
+<div class="kpi-label">パフォーマンスOS<br><small style="color:var(--text-muted)">Career × Purpose</small></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num ai">P4</div>
+<div class="kpi-label">テクノロジーOS<br><small style="color:var(--text-muted)">Purpose × Growth</small></div>
+</div>
+</div>
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+<div class="kpi-card">
+<div class="kpi-num blue">P5</div>
+<div class="kpi-label">美意識OS<br><small style="color:var(--text-muted)">Growth × Fun</small></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num" style="background:var(--grad-relation);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">P6</div>
+<div class="kpi-label">対人OS<br><small style="color:var(--text-muted)">Relationships × Career</small></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num family">P7</div>
+<div class="kpi-label">家族OS<br><small style="color:var(--text-muted)">Family</small></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num vision">P8</div>
+<div class="kpi-label">ビジョン実現<br><small style="color:var(--text-muted)">全ドメイン統合</small></div>
+</div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT</div>
+<p><strong>最大のギャップはRelationships（4/10）とFun（5/10）</strong>。Career/Finance/Purposeは比較的高いが、「出力する人生」に偏り、「受け取る人生」（関係性、楽しみ）が犠牲になっている。このOS設計書は、出力を維持しながら<strong>受容的な領域を意図的に設計</strong>するためのものである。</p>
+</div>
+</div>
+
+<!-- 0-2: 従来型 vs ADHD×AI駆動OS -->
+<div class="section" id="s0-2">
+<div class="section-eyebrow" style="color:var(--blue)">0-2 Paradigm Shift</div>
+<h2 class="action-title">従来の自己管理 vs ADHD×AI駆動パーソナルOS</h2>
+<p class="section-lead">なぜADHD脳に「普通のライフハック」が効かないのか。神経科学的根拠に基づき、意志力依存モデルから環境設計×AI拡張×ドーパミン設計モデルへのパラダイムシフトを提示する。</p>
+
+<!-- 図解②: Before/After比較 -->
+<div class="comparison">
+<div class="comp-side before">
+<h4>&#x2717; 意志力依存モデル（従来型）</h4>
+<ul>
+<li><strong>前提</strong>: 誰でも「頑張れば」できる</li>
+<li>「朝5時起き」→ ADHD概日リズム90分遅延で<strong>生物学的に不整合</strong></li>
+<li>「習慣化」→ ドーパミン報酬系の異常で<strong>新規性が枯れると崩壊</strong></li>
+<li>「To-Doリスト」→ WM欠損で<strong>リスト自体を忘れる</strong></li>
+<li>「気合いで集中」→ 注意制御は<strong>前頭前皮質の神経化学的プロセス</strong></li>
+<li>「反省して改善」→ RSD(拒絶敏感性)で<strong>自己批判が精神的ダメージに直結</strong></li>
+<li style="color:var(--red);font-weight:600">結果: 挫折 → 自己否定 → 再挑戦 → 再挫折のループ</li>
+</ul>
+</div>
+<div class="comp-side after">
+<h4>&#x2713; 環境設計×AI拡張×神経科学モデル</h4>
+<ul>
+<li><strong>前提</strong>: 脳の特性に合わせて<strong>環境を設計</strong>する</li>
+<li>「概日リズム受容」→ 夜型を矯正せず<strong>最適化</strong></li>
+<li>「ノベルティ・ローテーション」→ 1-2週で<strong>システムを入替</strong></li>
+<li>「AI外部記憶」→ WMをClaude/MCPに<strong>外部化</strong></li>
+<li>「ドーパミン設計」→ 興味・新規性・挑戦・緊急性の<strong>4スイッチ操作</strong></li>
+<li>「セルフコンパッション」→ 失敗を<strong>研究データ</strong>として扱う</li>
+<li style="color:var(--green);font-weight:600">結果: 特性活用 → 小さな成功 → 自己効力感 → 持続的成長</li>
+</ul>
+</div>
+</div>
+
+<div class="callout-adhd">
+<div class="callout-label">ADHD神経科学的根拠</div>
+<p>ADHDは<strong>ドーパミン・ノルアドレナリンの調節不全</strong>が根幹にある神経発達症。意志力の問題ではなく、前頭前皮質-線条体回路の構造的・化学的な差異。<span class="ev meta">META</span> 2025年12月Cell論文: ADHD治療薬は「注意回路」ではなく<strong>報酬・覚醒ネットワーク</strong>に作用することが判明。つまりADHDの本質は「注意の問題」ではなく「動機づけ・覚醒の問題」。</p>
+</div>
+
+<!-- 3原則カード -->
+<h4>ADHD×AI駆動OSの3原則</h4>
+<div class="card-grid">
+<div class="card" style="border-top:3px solid var(--clr-adhd)">
+<div class="card-badge orange">原則 1</div>
+<h4>外部化 Externalize</h4>
+<p>脳の中に置くべきものを最小化。記憶・計画・追跡・リマインドをすべてAI+ツールに委ねる。<strong>Barkley理論</strong>: 「ADHDの問題はすべて外部化で改善可能」</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-ai)">
+<div class="card-badge cyan">原則 2</div>
+<h4>自動化 Automate</h4>
+<p>意思決定ポイントを排除。ルーティンはシステムに、判断はフレームワークに、反復はAIに。人間は<strong>創造的跳躍</strong>と<strong>審美的判断</strong>に集中。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-health)">
+<div class="card-badge green">原則 3</div>
+<h4>ドーパミン設計 Design for Dopamine</h4>
+<p>「頑張る」のではなく、4つの起動スイッチ（興味・新規性・挑戦・緊急性）を<strong>意図的に操作</strong>。脳が自然に動き出す条件を環境にビルトインする。</p>
+</div>
+</div>
+</div>
+
+<!-- 0-3: プロファイル -->
+<div class="section" id="s0-3">
+<div class="section-eyebrow" style="color:var(--blue)">0-3 Profile</div>
+<h2 class="action-title">西川太雄のプロファイル</h2>
+<p class="section-lead">このOS設計書の対象者。キャリア・実績・3事業のシナジーを概観し、なぜ「パーソナルOS」が今この人物に必要なのかを示す。</p>
+
+<!-- 経歴サマリー -->
+<h4>キャリアジャーニー</h4>
+<div class="flow">
+<div class="flow-node" style="border-top:3px solid var(--text-muted)">
+<h5>マクロミル</h5>
+<p>マーケティングリサーチ<br>データ分析の原体験</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--blue)">
+<h5>MTG</h5>
+<p>新規事業開発<br>10億円事業立上げ</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--cyan)">
+<h5>アクセンチュア</h5>
+<p>戦略コンサルティング<br>フレームワーク習得</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--green)">
+<h5>スタートアップ</h5>
+<p>DXマネージャー<br>YoY+35%, 生産性3倍</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--purple)">
+<h5>現在: 3事業</h5>
+<p>omoshiku / ADHD<br>コーチング / ミズカラDX</p>
+</div>
+</div>
+
+<!-- 実績KPI -->
+<div class="kpi-grid">
+<div class="kpi-card">
+<div class="kpi-num blue">10<small style="font-size:16px">億円</small></div>
+<div class="kpi-label">新規事業売上（MTG）</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num good">+35<small style="font-size:16px">%</small></div>
+<div class="kpi-label">YoY売上成長</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num ai">3<small style="font-size:16px">倍</small></div>
+<div class="kpi-label">チーム生産性向上</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num vision">3<small style="font-size:16px">事業</small></div>
+<div class="kpi-label">同時並行で推進中</div>
+</div>
+</div>
+
+<!-- 図解③: 3事業シナジーマップ -->
+<h4>3事業シナジーマップ</h4>
+<div class="synergy-map">
+<div class="synergy-node" style="border-top:3px solid var(--clr-ai)">
+<div class="card-badge cyan">事業 1</div>
+<h4>omoshiku</h4>
+<p>DXコンサルティング<br>AI駆動の業務改革<br>「想い」と「仕組み」で「面白く」</p>
+</div>
+<div class="synergy-node" style="border-top:3px solid var(--clr-adhd)">
+<div class="card-badge orange">事業 2</div>
+<h4>ADHDコーチング</h4>
+<p>100日コホート型<br>神経科学×行動科学<br>「多動力2.0」ムーブメント</p>
+</div>
+<div class="synergy-node" style="border-top:3px solid var(--green)">
+<div class="card-badge green">事業 3</div>
+<h4>ミズカラDX</h4>
+<p>社内DX推進<br>AI×業務改革の実証場<br>Claude Code × MCP実装</p>
+</div>
+</div>
+<!-- シナジー矢印（テキスト表現） -->
+<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:8px">
+<div class="synergy-arrow">omoshiku → 実践知の蓄積 → ADHDコーチングにプロダクト化</div>
+<div class="synergy-arrow">ADHDコーチング → 自己変革の体系化 → 「多動力2.0」</div>
+<div class="synergy-arrow">ミズカラDX → AI実証 → omoshikuの事例に</div>
+</div>
+
+<div class="insight">
+<div class="insight-label">INSIGHT</div>
+<p>3事業は独立した「ポートフォリオ」ではなく、<strong>相互に強化し合うフライホイール</strong>。ミズカラDXで実証した手法がomoshikuの提案力を高め、ADHDコーチングで得た自己変革メソッドがすべての事業の「人間側のOS」を支える。このパーソナルOS設計書は、3事業の<strong>共通基盤</strong>である。</p>
+</div>
+</div>
+
+<!-- ================================================ -->
+<!-- PART 1: 自己理解OS -->
+<!-- ================================================ -->
+<div class="part-divider" id="part1">
+<span class="part-badge p1">Part 1</span>
+<div class="part-title" style="color:var(--clr-adhd)">自己理解OS — ADHD脳の取扱説明書</div>
+</div>
+
+<!-- PART 1 CONTENT -->
+<div id="part1-content">
+
+<!-- 1-1: 5つの理論モデル統合マップ -->
+<div class="section" id="s1-1">
+<div class="section-eyebrow" style="color:var(--clr-adhd)">1-1 Theoretical Models</div>
+<h2 class="action-title">ADHD脳の5つの理論モデル — 統合マップ</h2>
+<p class="section-lead">ADHDを説明する主要5モデルは互いに矛盾するのではなく、異なる角度から同じ象を触っている。各モデルの「いつ使うか」を知ることが、自己理解と介入設計の鍵になる。</p>
+
+<!-- 図解④: 5モデル統合ダイアグラム（カード式） -->
+<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+<div class="card" style="border-top:3px solid var(--clr-adhd)">
+<div class="card-badge orange">Model 1</div>
+<h4>Barkley 行動抑制モデル</h4>
+<p><strong>核心</strong>: 行動抑制の障害が4つの実行機能（非言語WM、言語WM、情動調整、再構成）の発達不全に連鎖する。</p>
+<p><strong>処方箋</strong>: 「すべてを外部化せよ」— リマインダー、タイマー、チェックリスト、対話による思考の言語化。</p>
+<p style="font-size:11px;color:var(--text-muted)"><strong>使う場面</strong>: タスク実行の仕組み設計時</p>
+</div>
+<div class="card" style="border-top:3px solid var(--cyan)">
+<div class="card-badge cyan">Model 2</div>
+<h4>Brown 6クラスターモデル</h4>
+<p><strong>核心</strong>: ADHDを6つの認知管理クラスター（活性化・焦点化・努力・情動・記憶・行動）の機能不全として捉える。</p>
+<p><strong>処方箋</strong>: 「今のボトルネックはどのクラスターか」を特定し、的を絞った介入を設計。</p>
+<p style="font-size:11px;color:var(--text-muted)"><strong>使う場面</strong>: 困りごとの原因特定時</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green)">
+<div class="card-badge green">Model 3</div>
+<h4>Sonuga-Barke 三重経路モデル</h4>
+<p><strong>核心</strong>: ADHDの3経路 — Cool（実行機能：前頭-背側線条体）、Hot（報酬感受性：前頭-腹側線条体）、Temporal（時間処理：小脳）。</p>
+<p><strong>処方箋</strong>: どの経路が自分のメイン課題かを見極め、介入の重心を決める。</p>
+<p style="font-size:11px;color:var(--text-muted)"><strong>使う場面</strong>: 個別化した治療・コーチング設計時</p>
+</div>
+<div class="card" style="border-top:3px solid var(--purple)">
+<div class="card-badge purple">Model 4</div>
+<h4>ドーパミン仮説</h4>
+<p><strong>核心</strong>: トニック（持続的）ドーパミンの低下 → 退屈なタスクで集中困難。DAT密度増加 → フェイジック（一時的）報酬信号が早期に再取込。</p>
+<p><strong>処方箋</strong>: 「やる気がない」のではなく「報酬を感じにくい」。タスクのゲーム化、新規性導入、小目標設定。</p>
+<p style="font-size:11px;color:var(--text-muted)"><strong>使う場面</strong>: 動機づけ設計・ドーパミンハック時</p>
+</div>
+<div class="card" style="border-top:3px solid var(--pink)">
+<div class="card-badge" style="background:rgba(244,114,182,0.08);color:var(--pink)">Model 5</div>
+<h4>DMN介入仮説</h4>
+<p><strong>核心</strong>: デフォルトモードネットワーク（空想・内省）がタスク時に適切に抑制されず、タスクポジティブネットワークに「侵入」する。</p>
+<p><strong>処方箋</strong>: DMN侵入を敵ではなく<strong>創造性の源泉</strong>として活用。意図的なマインドワンダリング時間を設計。</p>
+<p style="font-size:11px;color:var(--text-muted)"><strong>使う場面</strong>: 創造的思考の設計時</p>
+</div>
+</div>
+
+<div class="callout-adhd">
+<div class="callout-label">2025年12月 Cell論文 — パラダイムシフト</div>
+<p><span class="ev rct">RCT</span> ADHD薬（メチルフェニデート、アンフェタミン）は従来「注意回路」に作用すると考えられてきたが、実際には<strong>報酬・覚醒ネットワーク</strong>に作用していた。ADHDの本質は「注意の問題」ではなく<strong>「動機づけ・覚醒の問題」</strong>。これは上記5モデルのうち特にドーパミン仮説とSonuga-Barke Hot経路を強く支持する。</p>
+</div>
+
+<!-- 西川太雄への適用 -->
+<h4>西川太雄の場合 — 5モデル統合アセスメント</h4>
+<table class="tbl">
+<thead>
+<tr><th>モデル</th><th>西川太雄の主症状</th><th>最優先介入</th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="t-name">Barkley</td>
+<td>WM故障（複数ステップ指示の蒸発）、行動抑制弱（衝動的発言）</td>
+<td class="t-good">AI外部記憶（Claude MCP）</td>
+</tr>
+<tr>
+<td class="t-name">Brown</td>
+<td>活性化（起動障壁）、情動（RSD）、記憶（WM）が顕著</td>
+<td class="t-good">マイクロステップ分解 + RSDプロトコル</td>
+</tr>
+<tr>
+<td class="t-name">Sonuga-Barke</td>
+<td>Hot経路（即時報酬選好、先延ばし）が最強。Time Blindnessも顕著</td>
+<td class="t-good">ドーパミン・スケジューリング</td>
+</tr>
+<tr>
+<td class="t-name">ドーパミン</td>
+<td>新規プロジェクトへの過剰な興奮 vs ルーティンへの著しい無関心</td>
+<td class="t-warn">ノベルティ・ローテーション</td>
+</tr>
+<tr>
+<td class="t-name">DMN</td>
+<td>会議中の意識離脱、しかしアイデア生成は極めて高い</td>
+<td class="t-good">意図的マインドワンダリング時間の設計</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<!-- 1-2: Interest-Based Nervous System -->
+<div class="section" id="s1-2">
+<div class="section-eyebrow" style="color:var(--clr-adhd)">1-2 Activation System</div>
+<h2 class="action-title">Interest-Based Nervous System — 4つの起動スイッチ</h2>
+<p class="section-lead">ADHD脳は「重要性ベース」ではなく「興味ベース」で動く。意志力は起動条件ではない。4つのスイッチを理解し、意図的に操作することで、脳が自然に動き出す環境を作る。</p>
+
+<!-- 図解⑤: 4スイッチ・ダイアグラム -->
+<div class="card-grid" style="grid-template-columns:repeat(2,1fr)">
+<div class="card" style="border-left:4px solid var(--clr-adhd);background:rgba(249,115,22,0.02)">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<span style="font-family:var(--font-mono);font-size:28px;font-weight:600;color:var(--clr-adhd)">01</span>
+<h4 style="margin:0">Interest（内発的興味）</h4>
+</div>
+<p>純粋に面白いと感じるもの。<strong>ドーパミンが自然に放出</strong>され、努力なしに集中が持続する。</p>
+<p style="font-size:12px"><strong style="color:var(--clr-adhd)">西川太雄の例</strong>: データ分析、AI×業務設計、新規事業戦略、ADHDリサーチ</p>
+</div>
+<div class="card" style="border-left:4px solid var(--cyan);background:rgba(34,211,238,0.02)">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<span style="font-family:var(--font-mono);font-size:28px;font-weight:600;color:var(--cyan)">02</span>
+<h4 style="margin:0">Novelty（新規性）</h4>
+</div>
+<p>目新しいもの、未知のもの。ADHD脳の<strong>新規性追求回路</strong>が強く反応し、探索行動を起動する。</p>
+<p style="font-size:12px"><strong style="color:var(--cyan)">西川太雄の例</strong>: 新しいMCPツール検証、未経験ドメインのDXコンサル、新規クライアント</p>
+</div>
+<div class="card" style="border-left:4px solid var(--green);background:rgba(34,197,94,0.02)">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<span style="font-family:var(--font-mono);font-size:28px;font-weight:600;color:var(--green)">03</span>
+<h4 style="margin:0">Challenge（最適難度）</h4>
+</div>
+<p>「ちょっと難しい」が脳を活性化。簡単すぎも難しすぎもNG。<strong>フロー状態の入口条件</strong>と同じ。</p>
+<p style="font-size:12px"><strong style="color:var(--green)">西川太雄の例</strong>: 複雑なSQLクエリ設計、提案書の戦略構築、アーキテクチャ設計</p>
+</div>
+<div class="card" style="border-left:4px solid var(--red);background:rgba(239,68,68,0.02)">
+<div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+<span style="font-family:var(--font-mono);font-size:28px;font-weight:600;color:var(--red)">04</span>
+<h4 style="margin:0">Urgency（締切圧力）</h4>
+</div>
+<p>締切が迫るとアドレナリンが放出され、一気に起動。<strong>最も強力だが最も消耗する</strong>スイッチ。</p>
+<p style="font-size:12px"><strong style="color:var(--red)">西川太雄の例</strong>: クライアント提出前夜の追い込み、Backlog期限直前のスプリント</p>
+</div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT</div>
+<p>意志力で動かないのは<strong>「怠惰」ではなく「神経化学的に起動条件を満たしていない」</strong>。4つのスイッチのうち少なくとも1つを意図的にONにする環境設計が、ADHD脳の「取扱説明書」の核心。特にUrgencyへの依存度を下げ、<strong>Interest + Noveltyの組み合わせ</strong>で起動できるタスク設計を目指す（→ PART 3で具体化）。</p>
+</div>
+</div>
+
+<!-- 1-3: スパイキー・プロファイル -->
+<div class="section" id="s1-3">
+<div class="section-eyebrow" style="color:var(--clr-adhd)">1-3 Spiky Profile</div>
+<h2 class="action-title">スパイキー・プロファイル — 才能と弱点の地形図</h2>
+<p class="section-lead">ADHDの能力プロファイルは「平坦」ではなく「スパイキー（ギザギザ）」。ある領域では突出し、別の領域では著しく低い。この地形図を正確に把握することで、強みを最大化し弱みを外部化する戦略が立てられる。</p>
+
+<!-- 図解⑥: スパイキー・プロファイル・レーダーチャート -->
+<div class="radar-container">
+<svg viewBox="0 0 480 420" xmlns="http://www.w3.org/2000/svg">
+<g transform="translate(240,200)">
+<!-- Grid -->
+<circle cx="0" cy="0" r="160" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<circle cx="0" cy="0" r="128" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<circle cx="0" cy="0" r="96" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<circle cx="0" cy="0" r="64" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<circle cx="0" cy="0" r="32" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+<!-- 10 axes (strengths + weaknesses) -->
+<!-- 0: 戦略構想力 (9) top -->
+<line x1="0" y1="0" x2="0" y2="-160" stroke="rgba(255,255,255,0.06)"/>
+<!-- 1: データ分析 (9) -->
+<line x1="0" y1="0" x2="97.1" y2="-125.3" stroke="rgba(255,255,255,0.06)"/>
+<!-- 2: 危機対応 (8) -->
+<line x1="0" y1="0" x2="152.2" y2="-49.4" stroke="rgba(255,255,255,0.06)"/>
+<!-- 3: グロース推進 (8) -->
+<line x1="0" y1="0" x2="152.2" y2="49.4" stroke="rgba(255,255,255,0.06)"/>
+<!-- 4: ビジョン語り (9) -->
+<line x1="0" y1="0" x2="97.1" y2="125.3" stroke="rgba(255,255,255,0.06)"/>
+<!-- 5: ルーティン継続 (2) bottom -->
+<line x1="0" y1="0" x2="0" y2="160" stroke="rgba(255,255,255,0.06)"/>
+<!-- 6: 細部管理 (3) -->
+<line x1="0" y1="0" x2="-97.1" y2="125.3" stroke="rgba(255,255,255,0.06)"/>
+<!-- 7: 時間感覚 (2) -->
+<line x1="0" y1="0" x2="-152.2" y2="49.4" stroke="rgba(255,255,255,0.06)"/>
+<!-- 8: 感情制御 (4) -->
+<line x1="0" y1="0" x2="-152.2" y2="-49.4" stroke="rgba(255,255,255,0.06)"/>
+<!-- 9: 家事育児一貫性 (3) -->
+<line x1="0" y1="0" x2="-97.1" y2="-125.3" stroke="rgba(255,255,255,0.06)"/>
+<!-- Polygon: strengths high, weaknesses low -->
+<polygon points="0,-144 87.4,-112.8 121.8,-39.6 121.8,39.6 87.4,112.8 0,32 -29.1,37.6 -91.3,29.6 -60.9,-19.8 -58.3,-75.2"
+  fill="rgba(249,115,22,0.1)" stroke="#f97316" stroke-width="2"/>
+<!-- Data points -->
+<circle cx="0" cy="-144" r="4" fill="#34d399"/>
+<circle cx="87.4" cy="-112.8" r="4" fill="#34d399"/>
+<circle cx="121.8" cy="-39.6" r="4" fill="#34d399"/>
+<circle cx="121.8" cy="39.6" r="4" fill="#34d399"/>
+<circle cx="87.4" cy="112.8" r="4" fill="#34d399"/>
+<circle cx="0" cy="32" r="4" fill="#ef4444"/>
+<circle cx="-29.1" cy="37.6" r="4" fill="#ef4444"/>
+<circle cx="-91.3" cy="29.6" r="4" fill="#ef4444"/>
+<circle cx="-60.9" cy="-19.8" r="4" fill="#f59e0b"/>
+<circle cx="-58.3" cy="-75.2" r="4" fill="#ef4444"/>
+<!-- Labels -->
+<text x="0" y="-168" text-anchor="middle" fill="#34d399" font-size="10" font-weight="700">戦略構想力 9</text>
+<text x="112" y="-130" text-anchor="start" fill="#34d399" font-size="10" font-weight="700">データ分析 9</text>
+<text x="164" y="-44" text-anchor="start" fill="#34d399" font-size="10" font-weight="700">危機対応 8</text>
+<text x="164" y="54" text-anchor="start" fill="#34d399" font-size="10" font-weight="700">グロース推進 8</text>
+<text x="112" y="140" text-anchor="start" fill="#34d399" font-size="10" font-weight="700">ビジョン語り 9</text>
+<text x="0" y="56" text-anchor="middle" fill="#ef4444" font-size="10" font-weight="700">ルーティン 2</text>
+<text x="-112" y="140" text-anchor="end" fill="#ef4444" font-size="10" font-weight="700">細部管理 3</text>
+<text x="-170" y="54" text-anchor="end" fill="#ef4444" font-size="10" font-weight="700">時間感覚 2</text>
+<text x="-170" y="-16" text-anchor="end" fill="#f59e0b" font-size="10" font-weight="700">感情制御 4</text>
+<text x="-112" y="-82" text-anchor="end" fill="#ef4444" font-size="10" font-weight="700">家事一貫性 3</text>
+</g>
+<!-- Legend -->
+<g transform="translate(10,400)">
+<circle cx="6" cy="0" r="4" fill="#34d399"/>
+<text x="16" y="4" fill="#9898ae" font-size="10">強み（7+）</text>
+<circle cx="100" cy="0" r="4" fill="#f59e0b"/>
+<text x="110" y="4" fill="#9898ae" font-size="10">中間（4-6）</text>
+<circle cx="190" cy="0" r="4" fill="#ef4444"/>
+<text x="200" y="4" fill="#9898ae" font-size="10">弱み（1-3）</text>
+</g>
+</svg>
+</div>
+
+<!-- 10の強み研究 -->
+<h4>2025年 Psychological Medicine: ADHDの10の強み <span class="ev meta">META</span></h4>
+<div class="card-grid" style="grid-template-columns:repeat(5,1fr)">
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x1F4A1;</p><p style="font-size:11px;font-weight:600">創造性</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x1F50D;</p><p style="font-size:11px;font-weight:600">ハイパーフォーカス</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x26A1;</p><p style="font-size:11px;font-weight:600">エネルギー</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x1F6E1;</p><p style="font-size:11px;font-weight:600">勇気</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x1F3CB;</p><p style="font-size:11px;font-weight:600">レジリエンス</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x1F60A;</p><p style="font-size:11px;font-weight:600">ユーモア</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x2764;</p><p style="font-size:11px;font-weight:600">共感力</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x1F504;</p><p style="font-size:11px;font-weight:600">適応力</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x1F9E0;</p><p style="font-size:11px;font-weight:600">直感</p></div>
+<div class="card" style="padding:12px;text-align:center"><p style="font-size:20px;margin-bottom:4px">&#x1F50E;</p><p style="font-size:11px;font-weight:600">好奇心</p></div>
+</div>
+
+<div class="note">
+<div class="note-label">弁証法的アプローチ — 「スーパーパワー」言説の正しい扱い方</div>
+<p>「ADHDはスーパーパワー」は<strong>2つの意味で危険</strong>: ①困難を矮小化し支援の必要性を軽視する、②強みが発揮できない時に「自分はADHDなのにスーパーパワーがない」という二重の自己否定を生む。正しいアプローチは<strong>「強みと困難は同じ特性の表裏」</strong>という弁証法的理解。ハイパーフォーカスは危機対応で武器だが、食事を忘れて体調を崩す。衝動性は大胆な決断力だが、後悔する発言の源でもある。<strong>両方を認め、環境設計で強み側を引き出す</strong>。</p>
+</div>
+</div>
+
+<!-- 1-4: Twice-Exceptional（2E） -->
+<div class="section" id="s1-4">
+<div class="section-eyebrow" style="color:var(--clr-adhd)">1-4 Twice-Exceptional</div>
+<h2 class="action-title">Twice-Exceptional（2E）としての自己認識</h2>
+<p class="section-lead">高知能（ギフテッド特性）× ADHDの相互マスキング。「何でもそこそこできる」が隠す本当のコスト。</p>
+
+<p>2E（Twice-Exceptional）とは、<strong>高い知的能力と発達障害を併せ持つ</strong>状態を指す。西川太雄の場合、高い戦略構想力・分析力がADHDの症状を長年マスキング（隠蔽）してきた。</p>
+
+<h4>2Eの相互マスキングメカニズム</h4>
+<div class="comparison">
+<div class="comp-side before" style="background:rgba(167,139,250,0.03);border-color:rgba(167,139,250,0.15)">
+<h4 style="color:var(--purple)">高IQがADHDを隠す</h4>
+<ul>
+<li>知的能力で実行機能の弱さを<strong>補償</strong></li>
+<li>テスト・面接では「問題なし」に見える</li>
+<li>「頭がいいのに怠けている」と誤解される</li>
+<li>本人も「努力不足」と内面化する</li>
+</ul>
+</div>
+<div class="comp-side after" style="background:rgba(249,115,22,0.03);border-color:rgba(249,115,22,0.15)">
+<h4 style="color:var(--clr-adhd)">ADHDが高IQを隠す</h4>
+<ul>
+<li>注意散漫で知的ポテンシャルを<strong>発揮できない</strong></li>
+<li>テスト結果が能力より低く出る</li>
+<li>「平均的」と見なされ、ギフテッド支援を受けられない</li>
+<li>「持っている才能」と「発揮できている才能」にギャップ</li>
+</ul>
+</div>
+</div>
+
+<!-- 図解⑦: マスキング崩壊→再構築の4フェーズ -->
+<h4>マスキング崩壊 → 再構築の4フェーズ</h4>
+<div class="flow">
+<div class="flow-node" style="border-top:3px solid var(--red);min-width:160px">
+<h5 style="color:var(--red)">Phase 1: 安堵</h5>
+<p>「やっとわかった」<br>診断で腑に落ちる感覚。<br>30年の疑問に答えが出る。</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--amber);min-width:160px">
+<h5 style="color:var(--amber)">Phase 2: 怒り/悲嘆</h5>
+<p>「もっと早く知りたかった」<br>失われた時間への怒り。<br>「努力不足」と言われた記憶。</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--cyan);min-width:160px">
+<h5 style="color:var(--cyan)">Phase 3: 再帰属</h5>
+<p>「あの失敗はADHDだった」<br>過去の出来事を神経科学で<br>再解釈する作業。</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--green);min-width:160px">
+<h5 style="color:var(--green)">Phase 4: 受容・統合</h5>
+<p>「ADHDは自分の一部」<br>特性を設計に組込む。<br>このOS設計書はPhase 4の産物。</p>
+</div>
+</div>
+
+<div class="insight">
+<div class="insight-label">INSIGHT</div>
+<p>マスキングの崩壊は「壊れた」のではなく<strong>「成長に必要な危機」</strong>。負荷の増大（キャリア高度化、育児開始、3事業同時運営）が補償能力を超えた時に表面化する。西川太雄の場合、30代半ばでの同時多重負荷が<strong>マスキング限界を超えた可能性</strong>が高い。このOS設計書は、マスキングに頼らない<strong>持続可能な運営システム</strong>への移行を意味する。</p>
+</div>
+</div>
+
+<!-- 1-5: 感情調節不全 & RSD -->
+<div class="section" id="s1-5">
+<div class="section-eyebrow" style="color:var(--clr-adhd)">1-5 Emotional Dysregulation</div>
+<h2 class="action-title">感情調節不全 & RSD（拒絶敏感性不安）</h2>
+<p class="section-lead">DSM-5に未掲載だが臨床的に99%のADHD成人が報告する「第4のコア症状」。感情の強度が定型発達者と桁違いに高く、特にRSD（Rejection Sensitive Dysphoria）が対人関係と自己評価を直撃する。</p>
+
+<p><strong>感情調節不全</strong>とは、感情の発生自体は正常だが、<strong>強度と回復時間</strong>が定型発達者と異なる状態。ADHD脳では前頭前皮質による感情制御が弱く、感情が「フィルターなし」で意識に侵入する。</p>
+
+<!-- 図解⑧: RSD発動メカニズムと介入フロー -->
+<h4>RSD発動メカニズム → 介入フロー</h4>
+<div class="flow" style="flex-wrap:wrap">
+<div class="flow-node" style="border-top:3px solid var(--red);background:rgba(239,68,68,0.03)">
+<h5 style="color:var(--red)">トリガー</h5>
+<p>批判 / 既読スルー<br>SNS無反応<br>妻の無関心</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--amber);background:rgba(245,158,11,0.03)">
+<h5 style="color:var(--amber)">身体反応</h5>
+<p>胸の圧迫感<br>胃の収縮<br>涙が溢れそう</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--clr-adhd);background:rgba(249,115,22,0.03)">
+<h5 style="color:var(--clr-adhd)">認識</h5>
+<p><strong>「これはRSDだ」</strong><br>ラベリングで<br>距離を取る</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--cyan);background:rgba(34,211,238,0.03)">
+<h5 style="color:var(--cyan)">リフレーミング</h5>
+<p>代替解釈を3つ生成<br>「忙しかっただけ」<br>「自分とは無関係」</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--green);background:rgba(52,211,153,0.03)">
+<h5 style="color:var(--green)">回復</h5>
+<p>クールダウン<br>運動 / 深呼吸<br>セルフコンパッション</p>
+</div>
+</div>
+
+<!-- トリガー×対処マトリクス -->
+<h4>西川太雄のRSDトリガーマップ</h4>
+<table class="tbl">
+<thead>
+<tr><th>トリガー場面</th><th>内的反応</th><th>典型的な問題行動</th><th>介入プロトコル</th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="t-name">上司・クライアントのフィードバック</td>
+<td>「自分は無能」という瞬間的確信</td>
+<td class="t-bad">過剰な弁解、防衛的態度</td>
+<td class="t-good">24hルール（即反応しない）+ 書面化</td>
+</tr>
+<tr>
+<td class="t-name">友人・同僚の既読スルー</td>
+<td>「嫌われた」という飛躍</td>
+<td class="t-bad">過剰な確認メッセージ連投</td>
+<td class="t-good">代替解釈3つ生成 + 48h待機</td>
+</tr>
+<tr>
+<td class="t-name">SNS投稿への無反応</td>
+<td>「自分の発信に価値がない」</td>
+<td class="t-bad">投稿削除、SNS離脱</td>
+<td class="t-good">エンゲージメント ≠ 価値の再確認</td>
+</tr>
+<tr>
+<td class="t-name">妻の情緒的距離</td>
+<td>「愛されていない」という恐怖</td>
+<td class="t-bad">過剰な接続要求 or 撤退</td>
+<td class="t-good">→ PART 7 家族OSで詳細設計</td>
+</tr>
+</tbody>
+</table>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT</div>
+<p>RSDは「性格の弱さ」ではなく<strong>神経化学的な感度の高さ</strong>。前頭前皮質のフィルターが弱いため、「拒絶かもしれない」刺激が<strong>物理的な痛み</strong>に近い強度で処理される（fMRI研究で確認）。対策の核心は<strong>①自動反応を遅延させる仕組み</strong>と<strong>②「RSDだ」というラベリングで認知的距離を取る練習</strong>。これは筋トレと同じで、繰り返しで改善する。</p>
+</div>
+</div>
+
+</div><!-- /part1-content -->
+
+<!-- ================================================ -->
+<!-- PART 2: 生体基盤OS -->
+<!-- ================================================ -->
+<div class="part-divider" id="part2">
+<span class="part-badge p2">Part 2</span>
+<div class="part-title" style="color:var(--clr-health)">生体基盤OS — エネルギー×睡眠×運動×栄養</div>
+</div>
+
+<div id="part2-content">
+
+<!-- 2-1: 睡眠アーキテクチャ設計 -->
+<div class="section" id="s2-1">
+<div class="section-eyebrow" style="color:var(--clr-health)">2-1 Sleep Architecture</div>
+<h2 class="action-title">睡眠アーキテクチャ設計</h2>
+<p class="section-lead">ADHD成人の70-80%が睡眠問題を抱える。これは「例外」ではなく「標準」。概日リズム障害の一表現型としてのADHDを理解し、睡眠を最重要インフラとして設計する。</p>
+
+<!-- 図解⑨: ADHD睡眠サイクル比較 -->
+<h4>ADHD vs 定型発達 — 睡眠サイクル比較</h4>
+<div class="comparison">
+<div class="comp-side before" style="background:rgba(239,68,68,0.02);border-color:rgba(239,68,68,0.12)">
+<h4 style="color:var(--red)">ADHD脳の睡眠</h4>
+<ul>
+<li>メラトニン分泌が<strong>90分遅延</strong></li>
+<li>深い徐波睡眠（SWS）が<strong>減少</strong></li>
+<li>浅いステージ2が<strong>増加</strong></li>
+<li>REM潜時が延長</li>
+<li>中途覚醒が頻繁</li>
+<li>78%が「夜型」<span class="ev meta">META</span></li>
+</ul>
+</div>
+<div class="comp-side after" style="background:rgba(52,211,153,0.02);border-color:rgba(52,211,153,0.12)">
+<h4 style="color:var(--green)">定型発達の睡眠</h4>
+<ul>
+<li>メラトニン分泌が就寝2時間前に開始</li>
+<li>徐波睡眠が前半に集中</li>
+<li>ステージ2が適正配分</li>
+<li>REM潜時が正常</li>
+<li>中途覚醒が少ない</li>
+<li>朝型〜中間型が多数派</li>
+</ul>
+</div>
+</div>
+
+<!-- 図解⑩: クロノセラピー・プロトコル -->
+<h4>クロノセラピー・プロトコル（24時間タイムライン）</h4>
+<div class="timeline">
+<div class="tl-label">06:30</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(249,115,22,0.1);color:var(--clr-adhd)">固定起床（週末も±30分以内）</span></div>
+<div class="tl-label">06:45</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(34,197,94,0.1);color:var(--clr-health)">光療法 10,000ルクス 20-30分</span><span class="tl-pill" style="background:rgba(34,211,238,0.1);color:var(--cyan)">朝食プロテインファースト</span></div>
+<div class="tl-label">07:30</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(34,197,94,0.1);color:var(--clr-health)">軽い運動 15分（覚醒促進）</span></div>
+<div class="tl-label">14:00</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(245,158,11,0.1);color:var(--amber)">カフェインカットオフ（半減期6h逆算）</span></div>
+<div class="tl-label">20:00</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(167,139,250,0.1);color:var(--purple)">ブルーライトカット開始</span><span class="tl-pill" style="background:rgba(239,68,68,0.1);color:var(--red)">高強度運動禁止</span></div>
+<div class="tl-label">21:30</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(232,121,249,0.1);color:var(--clr-relation)">シャットダウン・リチュアル開始</span></div>
+<div class="tl-label">22:00</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(34,197,94,0.1);color:var(--clr-health)">低用量メラトニン（DLMO遅延確認済みの場合）</span></div>
+<div class="tl-label">23:00</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(74,125,255,0.1);color:var(--blue)">消灯目標</span></div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT</div>
+<p><strong>ソーシャル・ジェットラグ</strong>（平日と週末の睡眠時刻差）は処理速度、推論能力、言語能力に直撃する<span class="ev rct">RCT</span>。ADHD脳は夜型を矯正するより<strong>受容して最適化</strong>する方が合理的。固定起床時刻＋光療法が最も強いアンカーであり、就寝時刻は「眠気が来た時」でよい。</p>
+</div>
+</div>
+
+<!-- 2-2: 運動処方 -->
+<div class="section" id="s2-2">
+<div class="section-eyebrow" style="color:var(--clr-health)">2-2 Exercise Prescription</div>
+<h2 class="action-title">運動処方 — 「走るだけ」では最弱</h2>
+<p class="section-lead">2025年ネットワークメタ分析が明かした衝撃: 単純有酸素運動（ランニング）はADHD実行機能改善で最弱。認知負荷を伴う運動こそが前頭前皮質-線条体ネットワークを活性化する。</p>
+
+<!-- 図解⑪: 運動タイプ×ADHD実行機能効果マトリクス -->
+<h4>運動タイプ×ADHD実行機能効果ランキング <span class="ev meta">META 2025</span></h4>
+<table class="tbl">
+<thead>
+<tr><th>ランク</th><th>運動タイプ</th><th>最強効果領域</th><th>効果量</th><th>西川太雄への実装</th></tr>
+</thead>
+<tbody>
+<tr>
+<td><span style="font-family:var(--font-mono);font-weight:600;color:var(--green)">1</span></td>
+<td class="t-name">マインドボディ（ヨガ・太極拳）</td>
+<td class="t-good">抑制制御</td>
+<td><span style="font-family:var(--font-mono);color:var(--green)">最高</span></td>
+<td>朝15分のヨガフロー</td>
+</tr>
+<tr>
+<td><span style="font-family:var(--font-mono);font-weight:600;color:var(--green)">2</span></td>
+<td class="t-name">認知負荷型（デュアルタスク）</td>
+<td class="t-good">ワーキングメモリ</td>
+<td><span style="font-family:var(--font-mono);color:var(--green)">SMD 0.72</span></td>
+<td>ポッドキャスト×ウォーキング</td>
+</tr>
+<tr>
+<td><span style="font-family:var(--font-mono);font-weight:600;color:var(--cyan)">3</span></td>
+<td class="t-name">球技（バスケ・卓球）</td>
+<td class="t-good">抑制制御+WM両方</td>
+<td><span style="font-family:var(--font-mono);color:var(--cyan)">高</span></td>
+<td>週末に息子と公園でボール遊び</td>
+</tr>
+<tr>
+<td><span style="font-family:var(--font-mono);font-weight:600;color:var(--amber)">4</span></td>
+<td class="t-name">HIIT（高強度インターバル）</td>
+<td class="t-warn">衝動制御</td>
+<td><span style="font-family:var(--font-mono);color:var(--amber)">中〜高</span></td>
+<td>週2回 20分（過剰にならない範囲）</td>
+</tr>
+<tr>
+<td><span style="font-family:var(--font-mono);font-weight:600;color:var(--red)">5</span></td>
+<td class="t-name">単純有酸素（ランニング）</td>
+<td class="t-bad">持続的注意のみ</td>
+<td><span style="font-family:var(--font-mono);color:var(--red)">最弱</span></td>
+<td>メインにしない。散歩は回復用</td>
+</tr>
+</tbody>
+</table>
+
+<div class="callout-adhd">
+<div class="callout-label">推奨プロトコル</div>
+<p>中強度 × 週3回 × 60分以内。<strong>認知負荷がカギ</strong>。前頭前皮質-線条体ネットワークの活性化には、身体を動かしながら<strong>頭も使う</strong>活動が必要。ヨガのポーズ切替、球技の予測判断、デュアルタスクの認知負荷がBDNF産生を促進し、実行機能を底上げする。</p>
+</div>
+</div>
+
+<!-- 2-3: 栄養×サプリ -->
+<div class="section" id="s2-3">
+<div class="section-eyebrow" style="color:var(--clr-health)">2-3 Nutrition Strategy</div>
+<h2 class="action-title">栄養×サプリ — ドーパミン原料確保戦略</h2>
+<p class="section-lead">エビデンスの階層を明確にし、「効くかもしれない」と「効くと示されている」を厳密に区別する。</p>
+
+<!-- 図解⑫: エビデンスピラミッド -->
+<div class="pyramid">
+<div class="pyramid-tier t1">
+<div class="tier-num" style="color:var(--green)">T1</div>
+<div class="tier-content">
+<h5 style="color:var(--green)">中程度エビデンス <span class="ev meta">META</span></h5>
+<p><strong>オメガ3 EPA/DHA</strong>（4ヶ月以上の継続で効果、即効性なし）。<strong>亜鉛</strong>（ドーパミン調整に関与、メチルフェニデートの効果増強の報告あり）。<strong>朝食プロテインファースト</strong>（チロシン・フェニルアラニン供給 → ドーパミン前駆体。UCLA研究で集中力20-40%延長）。</p>
+</div>
+</div>
+<div class="pyramid-tier t2">
+<div class="tier-num" style="color:var(--blue)">T2</div>
+<div class="tier-content">
+<h5 style="color:var(--blue)">示唆的エビデンス <span class="ev pilot">PILOT</span></h5>
+<p><strong>鉄</strong>（ADHD児の84%が低フェリチン。成人でもフェリチン値の確認推奨）。<strong>マグネシウム</strong>（神経伝達物質の合成に関与するが、ADHDへの直接的な臨床試験は限定的）。</p>
+</div>
+</div>
+<div class="pyramid-tier t3">
+<div class="tier-num" style="color:var(--amber)">T3</div>
+<div class="tier-content">
+<h5 style="color:var(--amber)">研究不足 / 否定的</h5>
+<p><strong style="color:var(--red)">&#x2717; L-チロシン単体サプリ</strong>: 1986年研究で効果なし、以降のRCTなし。ドーパミン前駆体は<strong>食品から摂取</strong>（卵、魚、ナッツ、ギリシャヨーグルト）がベスト。サプリでの補充はフィードバック阻害のリスク。</p>
+</div>
+</div>
+</div>
+
+<div class="note">
+<div class="note-label">実践プロトコル</div>
+<p><strong>朝食</strong>: 卵2個 + ギリシャヨーグルト + ナッツ（チロシン・フェニルアラニン確保）。<strong>昼食</strong>: 魚（EPA/DHA）+ 緑黄色野菜。<strong>サプリ</strong>: オメガ3 (EPA 1000mg+)（必須）、亜鉛 15mg（食事で不足する場合のみ）。<strong>鉄</strong>は必ず血液検査でフェリチン値を確認してから。</p>
+</div>
+</div>
+
+<!-- 2-4: ウルトラディアンリズム -->
+<div class="section" id="s2-4">
+<div class="section-eyebrow" style="color:var(--clr-health)">2-4 Ultradian Rhythm</div>
+<h2 class="action-title">ウルトラディアンリズム × エネルギーブロック設計</h2>
+<p class="section-lead">人間の覚醒度は90-120分周期で波動する（BRAC: Basic Rest-Activity Cycle）。この自然なリズムに逆らわず、エネルギーの波に「乗る」タスク配列を設計する。</p>
+
+<!-- 図解⑬: 理想的1日のエネルギーフロー -->
+<h4>理想的1日のエネルギーフロー（ADHD最適化版）</h4>
+<div class="timeline">
+<div class="tl-label">07:00</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(34,197,94,0.1);color:var(--clr-health)">起床 + 光療法 + 朝食</span>
+<span class="tl-pill" style="background:rgba(249,115,22,0.1);color:var(--clr-adhd)">覚醒上昇中（低負荷）</span>
+</div>
+<div class="tl-label">08:00</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(249,115,22,0.12);color:var(--clr-adhd)">&#x26A1; ブロック1: ディープワーク（90min）</span>
+<span class="tl-pill" style="background:rgba(34,211,238,0.1);color:var(--cyan)">最重要タスク</span>
+</div>
+<div class="tl-label">09:30</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(167,139,250,0.1);color:var(--purple)">回復 15-20min（運動/散歩/スクリーンなし）</span>
+</div>
+<div class="tl-label">10:00</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(74,125,255,0.12);color:var(--blue)">&#x26A1; ブロック2: コラボワーク（90min）</span>
+<span class="tl-pill" style="background:rgba(34,211,238,0.1);color:var(--cyan)">会議/ペアワーク</span>
+</div>
+<div class="tl-label">11:30</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(167,139,250,0.1);color:var(--purple)">回復 + 軽い雑務</span>
+</div>
+<div class="tl-label">12:00</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(34,197,94,0.1);color:var(--clr-health)">昼食（プロテイン確保）+ パワーナップ 20min</span>
+</div>
+<div class="tl-label">13:30</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(249,115,22,0.12);color:var(--clr-adhd)">&#x26A1; ブロック3: クリエイティブワーク（90min）</span>
+<span class="tl-pill" style="background:rgba(34,211,238,0.1);color:var(--cyan)">設計/構想/執筆</span>
+</div>
+<div class="tl-label">15:00</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(167,139,250,0.1);color:var(--purple)">回復 + 運動 15min</span>
+</div>
+<div class="tl-label">15:30</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(245,158,11,0.12);color:var(--amber)">&#x26A1; ブロック4: ルーティンワーク（60min）</span>
+<span class="tl-pill" style="background:rgba(239,68,68,0.1);color:var(--red)">低ドーパミン注意</span>
+</div>
+<div class="tl-label">16:30</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(251,191,36,0.1);color:var(--clr-family)">家庭遷移リチュアル（→ PART 7参照）</span>
+</div>
+<div class="tl-label">17:00</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(251,191,36,0.1);color:var(--clr-family)">家族時間（ドメインオーナーシップ稼働）</span>
+</div>
+<div class="tl-label">21:00</div>
+<div class="tl-content">
+<span class="tl-pill" style="background:rgba(59,130,246,0.1);color:var(--clr-aesthetics)">オプション: 個人プロジェクト/読書</span>
+<span class="tl-pill" style="background:rgba(167,139,250,0.1);color:var(--purple)">シャットダウン準備</span>
+</div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT — ドーパミンタスク配列の鉄則</div>
+<p><strong>「低ドーパミンタスクを2つ連続にしない」</strong>。ルーティン作業（経費精算、メール返信）の後に別のルーティンを入れると、ADHD脳は完全にシャットダウンする。必ず「点火タスク」（高ドーパミン5-10分）を挟む。例: 経費精算 → <strong style="color:var(--clr-adhd)">新しいMCPツール5分検証</strong> → メール返信。これが「キャリーオーバー効果」（先行タスクのドーパミンが次タスクに波及する現象）を活用する設計。</p>
+</div>
+</div>
+
+</div><!-- /part2-content -->
+
+<!-- ================================================ -->
+<!-- PART 3: パフォーマンスOS -->
+<!-- ================================================ -->
+<div class="part-divider" id="part3">
+<span class="part-badge p3">Part 3</span>
+<div class="part-title" style="color:var(--amber)">パフォーマンスOS — 出力最大化×行動科学</div>
+</div>
+
+<div id="part3-content">
+
+<!-- 3-1: ドーパミン・スケジューリング -->
+<div class="section" id="s3-1">
+<div class="section-eyebrow" style="color:var(--amber)">3-1 Dopamine Scheduling</div>
+<h2 class="action-title">ドーパミン・スケジューリング・フレームワーク</h2>
+<p class="section-lead">先延ばし = 「意志の弱さ」ではなく「ドーパミン起動条件の未充足」。点火タスク → キャリーオーバー → 本業 → 完了報酬のサイクルを意図的に設計する。</p>
+
+<!-- 図解⑭: ドーパミン・タスク配列（サイクル） -->
+<div class="cycle">
+<div class="cycle-node" style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);color:var(--clr-adhd)">
+<strong>点火タスク</strong><br><span style="font-size:11px;color:var(--text-dim)">高ドーパミン5-10min<br>新しいツール検証、面白い記事</span>
+</div>
+<div class="cycle-arrow">→</div>
+<div class="cycle-node" style="background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);color:var(--cyan)">
+<strong>キャリーオーバー</strong><br><span style="font-size:11px;color:var(--text-dim)">ドーパミンが残っている<br>ウィンドウ（15-30min）</span>
+</div>
+<div class="cycle-arrow">→</div>
+<div class="cycle-node" style="background:rgba(74,125,255,0.08);border:1px solid rgba(74,125,255,0.2);color:var(--blue)">
+<strong>本業タスク</strong><br><span style="font-size:11px;color:var(--text-dim)">キャリーオーバーの勢いで<br>低ドーパミンタスクに着手</span>
+</div>
+<div class="cycle-arrow">→</div>
+<div class="cycle-node" style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);color:var(--green)">
+<strong>完了報酬</strong><br><span style="font-size:11px;color:var(--text-dim)">小さな達成を祝う<br>チェックリストに✓</span>
+</div>
+<div class="cycle-arrow">→</div>
+<div class="cycle-node" style="background:rgba(167,139,250,0.08);border:1px solid rgba(167,139,250,0.2);color:var(--purple)">
+<strong>回復/次サイクル</strong><br><span style="font-size:11px;color:var(--text-dim)">15-20min回復<br>次のサイクルへ</span>
+</div>
+</div>
+</div>
+
+<!-- 3-2: ハイパーフォーカス管理 -->
+<div class="section" id="s3-2">
+<div class="section-eyebrow" style="color:var(--amber)">3-2 Hyperfocus Management</div>
+<h2 class="action-title">ハイパーフォーカス・マネジメント</h2>
+<p class="section-lead">68%のADHD成人が頻繁にハイパーフォーカスを報告。30%が生産性向上と回答するが、「制御できない没入」は燃え尽きの主因にもなる。入口と出口の両方を設計する。</p>
+
+<!-- 図解⑮: ハイパーフォーカス・ライフサイクル -->
+<div class="flow">
+<div class="flow-node" style="border-top:3px solid var(--clr-adhd)">
+<h5 style="color:var(--clr-adhd)">トリガー検知</h5>
+<p>興味 × 新規性 × 挑戦<br>が重なった瞬間</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--cyan)">
+<h5 style="color:var(--cyan)">意図的没入</h5>
+<p>3条件をセット:<br>環境/タスク/時間</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--green)">
+<h5 style="color:var(--green)">ピーク生産性</h5>
+<p>フロー状態<br>最大アウトプット</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--red);background:rgba(239,68,68,0.03)">
+<h5 style="color:var(--red)">【ここで切る】</h5>
+<p>タイマー60/90min<br>外部割込み設定</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--purple)">
+<h5 style="color:var(--purple)">クールダウン</h5>
+<p>食事チェック<br>身体チェック<br>次タスク確認</p>
+</div>
+</div>
+
+<h4>燃え尽き防止 3チェック</h4>
+<div class="card-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="card" style="border-top:3px solid var(--red);text-align:center">
+<h4 style="color:var(--red)">食事スキップ？</h4>
+<p>ハイパーフォーカス中は空腹を感じない。<strong>タイマーで強制的に食事</strong>。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--amber);text-align:center">
+<h4 style="color:var(--amber)">睡眠犠牲？</h4>
+<p>「あと少しだけ」が3時間になる。<strong>シャットダウンアラーム</strong>設定。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--purple);text-align:center">
+<h4 style="color:var(--purple)">身体無視？</h4>
+<p>姿勢崩壊、水分不足、トイレ我慢。<strong>90分ごとの立ち上がり</strong>。</p>
+</div>
+</div>
+</div>
+
+<!-- 3-3: 行動科学7フレームワーク -->
+<div class="section" id="s3-3">
+<div class="section-eyebrow" style="color:var(--amber)">3-3 Behavioral Science</div>
+<h2 class="action-title">行動科学7フレームワーク × 実装マップ</h2>
+<p class="section-lead">7つの行動科学フレームワークを4層に統合し、「知っている」→「実装できる」への変換を行う。</p>
+
+<!-- 図解⑯: 4層統合モデル（ピラミッド） -->
+<div class="pyramid">
+<div class="pyramid-tier t1" style="background:rgba(249,115,22,0.06);border-color:rgba(249,115,22,0.15)">
+<div class="tier-num" style="color:var(--clr-adhd)">L4</div>
+<div class="tier-content">
+<h5 style="color:var(--clr-adhd)">認知・感情層</h5>
+<p><strong>CBT-Safren</strong>（d=0.89、JAMA RCT）<span class="ev rct">RCT</span> + <strong>ACT</strong>（d=0.47-0.62）<span class="ev meta">META</span>。認知の歪みを修正し、価値に基づく行動を促進。RSD発動時のACT: 戦わず受容 → 価値に基づいて行動選択。</p>
+</div>
+</div>
+<div class="pyramid-tier t2">
+<div class="tier-num" style="color:var(--blue)">L3</div>
+<div class="tier-content">
+<h5 style="color:var(--blue)">動機設計層</h5>
+<p><strong>SDT 自己決定理論</strong>: 自律性（「やらされ感」の除去）× 有能感（適切な難度設定）× 関係性（孤立しない設計）。事業ビジョンへの接続: 「なぜこの作業が『多動力2.0』に繋がるか」を常に可視化。</p>
+</div>
+</div>
+<div class="pyramid-tier t3" style="background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.15)">
+<div class="tier-num" style="color:var(--clr-health)">L2</div>
+<div class="tier-content">
+<h5 style="color:var(--clr-health)">行動習慣層</h5>
+<p><strong>習慣形成科学</strong> + <strong>実装意図 If-Then</strong>（d=0.65、94研究メタ分析）<span class="ev meta">META</span>。「朝コーヒーを入れたら → BQ1クエリ実行」等の具体的If-Thenプラン。ADHD向け: 視覚キュー + 物理的環境トリガー。</p>
+</div>
+</div>
+<div class="pyramid-tier t4" style="background:rgba(34,211,238,0.06);border-color:rgba(34,211,238,0.15)">
+<div class="tier-num" style="color:var(--cyan)">L1</div>
+<div class="tier-content">
+<h5 style="color:var(--cyan)">環境設計層（最重要）</h5>
+<p><strong>ABC分析</strong>（先行条件→行動→結果）+ <strong>ナッジ理論</strong>。仕事部屋の物理設計、スマホ隔離、デスク上の視覚キュー。<strong>環境が行動を決める</strong>。意志力で行動を変えるのではなく、行動が自然に起きる環境を作る。</p>
+</div>
+</div>
+</div>
+
+<div class="insight">
+<div class="insight-label">INSIGHT — なぜ環境設計がLayer 1（土台）か</div>
+<p>認知行動療法（L4）がどれだけ優秀でも、<strong>スマホが手の届く場所にある環境</strong>では効果が半減する。環境が整ってはじめて上位層が機能する。Barkleyの「すべてを外部化せよ」はまさにL1の設計原則。ADHD脳にとって環境設計は「あると便利」ではなく<strong>「生存に必要なインフラ」</strong>。</p>
+</div>
+</div>
+
+<!-- 3-4: セルフコーチング8メソッド -->
+<div class="section" id="s3-4">
+<div class="section-eyebrow" style="color:var(--amber)">3-4 Self-Coaching</div>
+<h2 class="action-title">セルフコーチング8メソッド</h2>
+<p class="section-lead">外部のコーチに依存しない、自分で自分をコーチングする8つの手法。すべてADHD成人に特化した調整済み。</p>
+
+<!-- 図解⑰: 5フェーズ・ロードマップ -->
+<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(220px,1fr))">
+<div class="card" style="border-top:3px solid var(--clr-adhd)">
+<div class="card-badge orange">1</div>
+<h4>当事者研究</h4>
+<p>自分を「患者」ではなく<strong>「研究対象」</strong>として観察。失敗を「データ」として蓄積。受動的→能動的。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--cyan)">
+<div class="card-badge cyan">2</div>
+<h4>MAPs（適応型マインドフルネス）</h4>
+<p>5分から開始。注意が逸れた瞬間を<strong>「失敗」ではなく「気づいた＝成功」</strong>として扱う。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green)">
+<div class="card-badge green">3</div>
+<h4>自己特性言語化</h4>
+<p>「マイADHDマニュアル」の作成と更新。自分のトリガー・パターン・対処法を文書化。<strong>このOS設計書がその体現</strong>。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--blue)">
+<div class="card-badge blue">4</div>
+<h4>メタ認知モニタリング</h4>
+<p>タスク前:「これは何分かかる？」中:「今集中できてる？」後:「見積もりとのズレは？」</p>
+</div>
+<div class="card" style="border-top:3px solid var(--purple)">
+<div class="card-badge purple">5</div>
+<h4>ジャーナリング5形式</h4>
+<p>ブレインダンプ / バレットジャーナル / プロンプト式 / デジタル / <strong>音声メモ</strong>（ADHD最適）。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--pink)">
+<div class="card-badge" style="background:rgba(244,114,182,0.08);color:var(--pink)">6</div>
+<h4>セルフコンパッション</h4>
+<p>3要素: 自己親和（自分に優しく）/ 共通の人間性（「みんなそう」）/ マインドフルネス。→ PART 8で深掘り。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-relation)">
+<div class="card-badge magenta">7</div>
+<h4>ピアサポート</h4>
+<p>オンライン / 対面 / バディシステム / <strong>ボディダブリング</strong>（誰かが近くにいるだけで生産性向上）。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-family)">
+<div class="card-badge yellow">8</div>
+<h4>セルフアドボカシー</h4>
+<p>4レベル: 自己理解 → 権利知識 → 交渉 → リーダーシップ（他者のための声を上げる）。</p>
+</div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT — 5フェーズ・ロードマップ</div>
+<p>8メソッドは一度に全部やる必要はない。<strong>Phase 1: 自己理解</strong>（当事者研究＋自己特性言語化）→ <strong>Phase 2: 受容</strong>（セルフコンパッション＋MAPs）→ <strong>Phase 3: 実践</strong>（メタ認知＋ジャーナリング）→ <strong>Phase 4: 省察</strong>（ピアサポート＋アドボカシー）→ <strong>Phase 5: 成長</strong>（全メソッドの統合＋他者への教授）。西川太雄は現在Phase 3-4に位置。</p>
+</div>
+</div>
+
+</div><!-- /part3-content -->
+
+<!-- ================================================ -->
+<!-- PART 4: テクノロジーOS -->
+<!-- ================================================ -->
+<div class="part-divider" id="part4">
+<span class="part-badge p4">Part 4</span>
+<div class="part-title" style="color:var(--clr-ai)">テクノロジーOS — AI駆動イノベーション×Claude Code</div>
+</div>
+
+<div id="part4-content">
+
+<!-- 4-1: AI認知拡張 -->
+<div class="section" id="s4-1">
+<div class="section-eyebrow" style="color:var(--clr-ai)">4-1 Cognitive Prosthetics</div>
+<h2 class="action-title">AI認知拡張 — コグニティブ・プロステティクス</h2>
+<p class="section-lead">ADHDの実行機能欠損とAI補完の完全対応表。ニューロダイバーシティ×AIは「特に強力な組み合わせ」であり、退屈な反復作業をAIが処理し、創造的跳躍を人間が担当する。</p>
+
+<!-- 図解⑱: 実行機能×AI補完マトリクス -->
+<table class="tbl">
+<thead>
+<tr><th>実行機能欠損</th><th>AI補完</th><th>ツール</th><th>効果</th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="t-name">ワーキングメモリ</td>
+<td>文脈保持・要約・検索</td>
+<td><span style="color:var(--cyan)">Claude + MEMORY.md</span></td>
+<td class="t-good">会話全体の記憶代行</td>
+</tr>
+<tr>
+<td class="t-name">タスク開始（起動障壁）</td>
+<td>マイクロステップ分解</td>
+<td><span style="color:var(--cyan)">Claude / Goblin Tools</span></td>
+<td class="t-good">起動障壁の物理的除去</td>
+</tr>
+<tr>
+<td class="t-name">計画・順序付け</td>
+<td>プロジェクトプラン生成</td>
+<td><span style="color:var(--cyan)">Claude Code + TodoWrite</span></td>
+<td class="t-good">複雑タスクの構造化</td>
+</tr>
+<tr>
+<td class="t-name">文書作成</td>
+<td>ドラフト/編集/構造化</td>
+<td><span style="color:var(--cyan)">Claude + Skills</span></td>
+<td class="t-good">白紙恐怖症の解消</td>
+</tr>
+<tr>
+<td class="t-name">意思決定</td>
+<td>構造化オプション分析</td>
+<td><span style="color:var(--cyan)">Claude + フレームワーク</span></td>
+<td class="t-good">選択肢過多の整理</td>
+</tr>
+<tr>
+<td class="t-name">会議フォロー</td>
+<td>リアルタイム要約</td>
+<td><span style="color:var(--cyan)">Otter.ai / Claude</span></td>
+<td class="t-good">聞き漏らし防止</td>
+</tr>
+<tr>
+<td class="t-name">委任追跡</td>
+<td>ステータス管理</td>
+<td><span style="color:var(--cyan)">Claude + MCP(Backlog/Slack)</span></td>
+<td class="t-good">WM負荷の外部化</td>
+</tr>
+</tbody>
+</table>
+
+<div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="kpi-card">
+<div class="kpi-num ai">+25<small style="font-size:16px">%</small></div>
+<div class="kpi-label">ND労働者のAI満足度<br><span class="ev govt">UK政府</span></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num ai">50<small style="font-size:16px">%</small></div>
+<div class="kpi-label">Anthropic営業のClaude Code週次使用率</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num ai">10<small style="font-size:16px">日</small></div>
+<div class="kpi-label">Claude Coworkの開発期間<br>（Claude Code自身で構築）</div>
+</div>
+</div>
+</div>
+
+<!-- 4-2: Claude Code × プロセスリビルド -->
+<div class="section" id="s4-2">
+<div class="section-eyebrow" style="color:var(--clr-ai)">4-2 Process Rebuild</div>
+<h2 class="action-title">Claude Code × AI駆動プロセスリビルド</h2>
+<p class="section-lead">従来型ワークフローとAI駆動ワークフローの圧倒的な時間差。開発だけでなく、コンサル、分析、会議すべてをリビルドする。</p>
+
+<!-- 図解⑲: Before/After -->
+<div class="comparison">
+<div class="comp-side before">
+<h4>&#x2717; 従来型ワークフロー</h4>
+<ul>
+<li><strong>開発</strong>: 2週間（要件→設計→コーディング→テスト→デプロイ）</li>
+<li><strong>コンサル提案書</strong>: 3日（リサーチ→構造化→ドラフト→レビュー→修正）</li>
+<li><strong>データ分析</strong>: 半日（BQ→加工→分析→可視化→インサイト抽出）</li>
+<li><strong>会議準備</strong>: 1時間（文脈収集→アジェンダ→事前資料作成）</li>
+</ul>
+</div>
+<div class="comp-side after">
+<h4>&#x2713; AI駆動ワークフロー</h4>
+<ul>
+<li><strong>開発</strong>: <span class="mono" style="color:var(--green)">3日</span>（Claude Code × git worktree × MCP × Skills）</li>
+<li><strong>コンサル提案書</strong>: <span class="mono" style="color:var(--green)">3時間</span>（/proposal × copy-auditor × HTML生成）</li>
+<li><strong>データ分析</strong>: <span class="mono" style="color:var(--green)">30分</span>（/analyze × BQ → Connected Sheets）</li>
+<li><strong>会議準備</strong>: <span class="mono" style="color:var(--green)">10分</span>（/meeting-doc × Slack履歴 × アジェンダ生成）</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- 4-3: ビジネスAI全面適用 -->
+<div class="section" id="s4-3">
+<div class="section-eyebrow" style="color:var(--clr-ai)">4-3 Business AI</div>
+<h2 class="action-title">ビジネス×コンサルティングへのAI全面適用</h2>
+<p class="section-lead">omoshiku AI駆動コンサルティングモデル。リサーチからデリバリーまでの全フェーズでAIを活用。</p>
+
+<!-- 図解⑳: omoshiku AI駆動コンサルモデル -->
+<div class="flow">
+<div class="flow-node" style="border-top:3px solid var(--purple)">
+<h5>Phase 1: リサーチ</h5>
+<p>Gemini Deep Research<br>Grok X検索<br>Claude分析</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--blue)">
+<h5>Phase 2: 戦略策定</h5>
+<p>Claude × データ分析<br>フレームワーク適用<br>仮説構築</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--cyan)">
+<h5>Phase 3: 提案書</h5>
+<p>Claude × HTML<br>テンプレート<br>コピー監査</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--green)">
+<h5>Phase 4: 実装</h5>
+<p>Claude Code × MCP<br>自動化パイプライン<br>BQ × Sheets</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--clr-adhd)">
+<h5>Phase 5: 効果測定</h5>
+<p>BQ → Connected<br>Sheets → 自動レポート<br>→ 次サイクル</p>
+</div>
+</div>
+
+<div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="kpi-card">
+<div class="kpi-num good">20<small style="font-size:16px">%</small></div>
+<div class="kpi-label">ソロプレナーが$100K-$300K達成<br>（社員ゼロ）</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num ai">10-25<small style="font-size:16px">%</small></div>
+<div class="kpi-label">AIリーダー企業のEBITDA向上<br><span class="ev expert">McKinsey 2025</span></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num vision">407<small style="font-size:16px">%</small></div>
+<div class="kpi-label">MCPサーバー成長率</div>
+</div>
+</div>
+</div>
+
+<!-- 4-4: エージェンティックAI -->
+<div class="section" id="s4-4">
+<div class="section-eyebrow" style="color:var(--clr-ai)">4-4 Agentic AI</div>
+<h2 class="action-title">エージェンティックAI — マルチエージェント協調</h2>
+<p class="section-lead">エンジニアは「コードを書く」から「エージェントを指揮する」へ。2026年はマルチエージェント協調がプロダクション現実になった年。</p>
+
+<!-- 図解㉑: エージェント・エコシステム -->
+<h4>西川太雄のエージェント・エコシステム構想</h4>
+<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+<div class="card" style="border-top:3px solid var(--cyan)">
+<div class="card-badge cyan">コア</div>
+<h4>Claude Code</h4>
+<p>開発・分析・ドキュメント生成・エージェント統括。Skills + Agent Playbooks + CLAUDE.mdの三層アーキテクチャ。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--blue)">
+<div class="card-badge blue">MCP連携</div>
+<h4>Backlog / Slack / Sheets / BQ</h4>
+<p>プロジェクト管理、チャット、スプレッドシート操作、データ分析をMCPプロトコルで統合。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green)">
+<div class="card-badge green">オーケストレーション</div>
+<h4>n8n 自動化</h4>
+<p>LINE → BQ → Sheets → Slack自動化パイプライン。イベントドリブンのワークフロー。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--purple)">
+<div class="card-badge purple">リサーチ</div>
+<h4>Grok API / Gemini</h4>
+<p>Grok: X検索リアルタイム情報。Gemini: Deep Research多角的調査。Claude: 分析・統合。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-adhd)">
+<div class="card-badge orange">将来（Phase 3）</div>
+<h4>Slack常駐エージェント</h4>
+<p>チーム質問への自動応答、ミーティング要約、タスク自動振り分け。Human-in-the-Loopで品質担保。</p>
+</div>
+</div>
+</div>
+
+<!-- 4-5: MCPエコシステム -->
+<div class="section" id="s4-5">
+<div class="section-eyebrow" style="color:var(--clr-ai)">4-5 MCP Ecosystem</div>
+<h2 class="action-title">MCP（Model Context Protocol）エコシステム</h2>
+<p class="section-lead">2024年11月にAnthropicがオープンソース化 → 2026年に業界標準（OpenAI、Google、MS採用）。AIとエンタープライズシステム間の「ユニバーサルアダプター」。</p>
+
+<h4>西川太雄の現MCP構成</h4>
+<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(200px,1fr))">
+<div class="card" style="padding:14px;text-align:center;border-top:2px solid var(--clr-relation)"><h4 style="font-size:13px">Slack</h4><p style="font-size:11px">チーム連携</p></div>
+<div class="card" style="padding:14px;text-align:center;border-top:2px solid var(--blue)"><h4 style="font-size:13px">Backlog</h4><p style="font-size:11px">課題管理</p></div>
+<div class="card" style="padding:14px;text-align:center;border-top:2px solid var(--green)"><h4 style="font-size:13px">Sheets (mizukara)</h4><p style="font-size:11px">データ操作</p></div>
+<div class="card" style="padding:14px;text-align:center;border-top:2px solid var(--clr-adhd)"><h4 style="font-size:13px">Sheets (omoshiku)</h4><p style="font-size:11px">コンサル用</p></div>
+<div class="card" style="padding:14px;text-align:center;border-top:2px solid var(--purple)"><h4 style="font-size:13px">Gemini Research</h4><p style="font-size:11px">深層調査</p></div>
+<div class="card" style="padding:14px;text-align:center;border-top:2px solid var(--cyan)"><h4 style="font-size:13px">Semantic Scholar</h4><p style="font-size:11px">学術検索</p></div>
+</div>
+</div>
+
+<!-- 4-6: セカンドブレイン -->
+<div class="section" id="s4-6">
+<div class="section-eyebrow" style="color:var(--clr-ai)">4-6 Second Brain</div>
+<h2 class="action-title">セカンドブレイン・アーキテクチャ</h2>
+<p class="section-lead">ADHD脳のWM欠損を補完する「第二の脳」。低摩擦キャプチャ → AI自動分類 → プロアクティブ活用の3層設計。</p>
+
+<!-- 図解㉒: 3層モデル -->
+<div class="pyramid">
+<div class="pyramid-tier t1" style="background:rgba(34,211,238,0.06);border-color:rgba(34,211,238,0.15)">
+<div class="tier-num" style="color:var(--cyan)">OUT</div>
+<div class="tier-content">
+<h5 style="color:var(--cyan)">アウトプット層（能動的活用）</h5>
+<p>意味検索 → プロアクティブなサーフェシング → アクション。Knowledge Base (Astro)で公開、Claude MEMORY.mdで自動参照。<strong>「忘れても、システムが覚えている」</strong>状態。</p>
+</div>
+</div>
+<div class="pyramid-tier t2">
+<div class="tier-num" style="color:var(--blue)">ORG</div>
+<div class="tier-content">
+<h5 style="color:var(--blue)">整理層（AI自動分類）</h5>
+<p>Claude + MEMORY.md + トピック別ファイル。/stock Skillで温度感自動判定（seed→memo→draft→article）。フォルダ階層不要、AI検索で到達。</p>
+</div>
+</div>
+<div class="pyramid-tier t3" style="background:rgba(34,197,94,0.06);border-color:rgba(34,197,94,0.15)">
+<div class="tier-num" style="color:var(--clr-health)">IN</div>
+<div class="tier-content">
+<h5 style="color:var(--clr-health)">インプット層（低摩擦キャプチャ）</h5>
+<p>音声メモ / ブラウザクリップ / Slack自動転送 / Claude会話からの自動抽出。<strong>ADHD向け設計原則</strong>: 「キャプチャの認知コスト ≒ ゼロ」を目指す。</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 4-7: AI習熟ロードマップ -->
+<div class="section" id="s4-7">
+<div class="section-eyebrow" style="color:var(--clr-ai)">4-7 AI Learning Path</div>
+<h2 class="action-title">AI習熟ロードマップ</h2>
+<p class="section-lead">4ステージのラーニングパスと3つのキャリアパス。</p>
+
+<!-- 図解㉓: 4ステージ -->
+<div class="steps">
+<div class="step">
+<div class="step-num" style="background:rgba(34,211,238,0.1);color:var(--cyan)">1</div>
+<div class="step-body">
+<h5 style="color:var(--cyan)">Stage 1: 基盤（1-4週）</h5>
+<p>プロンプトエンジニアリング、コンテキストウィンドウ管理、Python基礎。<strong style="color:var(--green)">✓ 完了済み</strong></p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(74,125,255,0.1);color:var(--blue)">2</div>
+<div class="step-body">
+<h5 style="color:var(--blue)">Stage 2: フレームワーク（5-12週）</h5>
+<p>Claude Code Skills、CLAUDE.md設計、MCP統合、三層アーキテクチャ。<strong style="color:var(--cyan)">← 現在地</strong></p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(167,139,250,0.1);color:var(--purple)">3</div>
+<div class="step-body">
+<h5 style="color:var(--purple)">Stage 3: エージェンティック（13-24週）</h5>
+<p>マルチエージェント設計、エラーハンドリング、メモリ管理、n8n統合。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(249,115,22,0.1);color:var(--clr-adhd)">4</div>
+<div class="step-body">
+<h5 style="color:var(--clr-adhd)">Stage 4: プロダクション（継続）</h5>
+<p>セキュリティ、ヒューマンオーバーサイト、モニタリング、チームへの展開。</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 4-8: HITL進化 -->
+<div class="section" id="s4-8">
+<div class="section-eyebrow" style="color:var(--clr-ai)">4-8 Human-in-the-Loop</div>
+<h2 class="action-title">HITL（Human-in-the-Loop）の進化</h2>
+<p class="section-lead">AIへの委任範囲は年々拡大。何をAIに任せ、何を人間が握るかの判断基準。</p>
+
+<!-- 図解㉔: AI委任マトリクス -->
+<div class="matrix-grid" style="grid-template-columns:1fr 1fr 1fr">
+<div class="matrix-header"></div>
+<div class="matrix-header" style="color:var(--cyan)">AI向き</div>
+<div class="matrix-header" style="color:var(--clr-adhd)">人間向き</div>
+<div class="matrix-row-header">特性</div>
+<div class="matrix-cell">データリッチ、パターン認識、反復的、可逆的、戦術的</div>
+<div class="matrix-cell">不可逆決定、倫理的判断、戦略的ビジョン、人間関係、曖昧さの受容</div>
+<div class="matrix-row-header">西川の実例</div>
+<div class="matrix-cell">BQクエリ生成、Sheets整形、提案書ドラフト、リサーチ要約、コード生成</div>
+<div class="matrix-cell">クライアント関係構築、事業方針、家族への関わり方、美意識の判断</div>
+<div class="matrix-row-header">2026年の境界</div>
+<div class="matrix-cell">ルーティン実行 + サンプリング検証で十分。人間は<strong>意図設定</strong>に集中。</div>
+<div class="matrix-cell">重要出力のみ全レビュー。<strong>決定ゲート</strong>で人間が最終判断。</div>
+</div>
+</div>
+
+</div><!-- /part4-content -->
+
+<!-- ================================================ -->
+<!-- PART 5: 美意識OS -->
+<!-- ================================================ -->
+<div class="part-divider" id="part5">
+<span class="part-badge p5">Part 5</span>
+<div class="part-title" style="color:var(--clr-aesthetics)">美意識OS — 哲学×アート思考×体験価値</div>
+</div>
+
+<div id="part5-content">
+
+<!-- 5-1: AI時代の美意識 -->
+<div class="section" id="s5-1">
+<div class="section-eyebrow" style="color:var(--clr-aesthetics)">5-1 Taste as Bottleneck</div>
+<h2 class="action-title">なぜAI時代に「美意識」がより重要になるか</h2>
+<p class="section-lead">AIが実行を自動化する時代、人間の経済的価値は「上流」にシフトする。専門知識はコモディティ化しつつある。残るのは「何が良いか」を判断する審美眼（Taste）。</p>
+
+<!-- 図解㉕: Tasteのバリューシフト -->
+<h4>Taste（審美眼）のバリューシフト</h4>
+<div class="comparison">
+<div class="comp-side before" style="background:rgba(167,139,250,0.03);border-color:rgba(167,139,250,0.12)">
+<h4 style="color:var(--purple)">AI以前</h4>
+<ul>
+<li><strong>専門知識</strong> = 最高の経済的価値</li>
+<li>弁護士、医師、コンサルタント = 「知っている」ことが競争力</li>
+<li>審美眼 = 「あると良い」付加価値</li>
+<li>実行力 = 差別化要因</li>
+</ul>
+</div>
+<div class="comp-side after" style="background:rgba(59,130,246,0.03);border-color:rgba(59,130,246,0.12)">
+<h4 style="color:var(--clr-aesthetics)">AI時代（2026〜）</h4>
+<ul>
+<li><strong>審美眼（Taste）</strong> = 最高の経済的価値</li>
+<li>AIが専門知識を民主化 → 「知っている」だけでは差別化不能</li>
+<li><strong>「何が良いか」の判断力</strong> = 人間だけの領域</li>
+<li>高審美眼×低専門知識の個人が前例のないレバレッジを獲得</li>
+</ul>
+</div>
+</div>
+
+<div class="callout-ai">
+<div class="callout-label">HBS / HBR 2026の警告</div>
+<p><strong>HBS</strong>: 「AIは決断を下せない。人間の判断がイノベーションを駆動する」。<strong>HBR 2026</strong>: AIが定型業務を処理 → ジュニア社員が判断力を育てる機会を失う → <strong>意図的な判断力構築</strong>が必要。つまり、審美眼は「自然に身につく」ものではなくなり、<strong>意図的に育てるべきスキル</strong>になった。</p>
+</div>
+</div>
+
+<!-- 5-2: アート思考 -->
+<div class="section" id="s5-2">
+<div class="section-eyebrow" style="color:var(--clr-aesthetics)">5-2 Art Thinking</div>
+<h2 class="action-title">アート思考 — Design ThinkingからArt Thinkingへ</h2>
+<p class="section-lead">Design Thinkingは「A地点から既知のB地点へ」。Art Thinkingは「A地点からB地点を発明する」。ADHDの非線形な思考パターンは、Art Thinkingと本質的に親和する。</p>
+
+<!-- 図解㉖: Design Thinking vs Art Thinking比較 -->
+<div class="comparison">
+<div class="comp-side before" style="background:rgba(167,139,250,0.03);border-color:rgba(167,139,250,0.12)">
+<h4 style="color:var(--purple)">Design Thinking</h4>
+<ul>
+<li>A地点 → <strong>既知のB地点</strong></li>
+<li>構造化された共感 → 試作 → 検証</li>
+<li>ユーザーニーズ起点</li>
+<li>収束的思考が中心</li>
+<li>リスク回避・最適化志向</li>
+<li><strong>適材</strong>: 既存改善、UX最適化</li>
+</ul>
+</div>
+<div class="comp-side after" style="background:rgba(59,130,246,0.03);border-color:rgba(59,130,246,0.12)">
+<h4 style="color:var(--clr-aesthetics)">Art Thinking</h4>
+<ul>
+<li>A地点 → <strong>B地点を発明する</strong></li>
+<li>白紙のキャンバスに向き合い、行けるか分からない場所へ</li>
+<li>作者のビジョン起点</li>
+<li>発散的思考が中心</li>
+<li>リスク受容・探索志向</li>
+<li><strong>適材</strong>: 新市場創造、ムーブメント設計</li>
+</ul>
+</div>
+</div>
+
+<p><strong>Amy Whitaker のフレームワーク</strong>:</p>
+<ul>
+<li><strong>Lighthouse Questions</strong>: 可能性に引き寄せる灯台のような問い。「ADHDコーチング×AI×コンサルで、社会はどう変わるか？」</li>
+<li><strong>ポートフォリオアプローチ</strong>: 安定した低リスク部分（ミズカラDX正社員）と、リスキーな創造的探索（omoshiku + ADHDコーチング）のバランス</li>
+</ul>
+
+<div class="insight">
+<div class="insight-label">INSIGHT — ADHDとArt Thinkingの親和性</div>
+<p>Art Thinkingは<strong>非線形、探索的アプローチ</strong>を正当化する → これはADHDの自然な思考パターンそのもの。Design Thinkingの「手順通りに進める」は実行機能を要求するが、Art Thinkingの「直感に従って探索する」はADHDの<strong>Interest-Based Nervous Systemに合致</strong>。ハイパーフォーカス × Art Thinking = 他者が到達できない場所に到達する可能性。</p>
+</div>
+</div>
+
+<!-- 5-3: テイストの育て方 -->
+<div class="section" id="s5-3">
+<div class="section-eyebrow" style="color:var(--clr-aesthetics)">5-3 Cultivating Taste</div>
+<h2 class="action-title">テイスト（審美眼）の育て方 — ヒュームのレシピ</h2>
+<p class="section-lead">18世紀の哲学者David Humeが示した審美眼育成の5ステップは、2026年のAI時代でも有効。</p>
+
+<!-- 図解㉗: 5ステップ -->
+<div class="steps">
+<div class="step">
+<div class="step-num" style="background:rgba(59,130,246,0.1);color:var(--clr-aesthetics)">1</div>
+<div class="step-body">
+<h5 style="color:var(--clr-aesthetics)">Strong Sense — 良質なものへの大量接触</h5>
+<p>読書（哲学、美学、アート）、美術館、建築、音楽、料理。<strong>量が質を育てる</strong>。インプットの幅と深さが審美眼の土台。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(232,121,249,0.1);color:var(--clr-relation)">2</div>
+<div class="step-body">
+<h5 style="color:var(--clr-relation)">Delicate Sentiment — 感情的感受性の涵養</h5>
+<p>「なぜこれに心が動くのか」を言語化する習慣。ADHD的な感情強度は<strong>むしろ有利</strong>（感じ取る力が強い）。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(34,211,238,0.1);color:var(--cyan)">3</div>
+<div class="step-body">
+<h5 style="color:var(--cyan)">Practice — 繰り返しの鑑賞・実践</h5>
+<p>同じ作品を異なる文脈で何度も鑑賞。意図的鑑賞習慣。「初心者の心」の維持。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(34,197,94,0.1);color:var(--clr-health)">4</div>
+<div class="step-body">
+<h5 style="color:var(--clr-health)">Comparison — 対比を通じた違いの認識</h5>
+<p>A vs Bの対比で差異を認識。シミュレーション、ケース学習、段階的責任増加で判断力を構築。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(249,115,22,0.1);color:var(--clr-adhd)">5</div>
+<div class="step-body">
+<h5 style="color:var(--clr-adhd)">Cleared of Prejudice — 先入観からの解放</h5>
+<p>既存のフレームを手放し、作品・体験そのものと向き合う。AIパワーユーザーでありながら<strong>初心を保つ</strong>勇気。</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 5-4: 侘び寂び × ADHD -->
+<div class="section" id="s5-4">
+<div class="section-eyebrow" style="color:var(--clr-aesthetics)">5-4 Wabi-Sabi × ADHD</div>
+<h2 class="action-title">侘び寂び × ADHD — 不完全さの美学</h2>
+<p class="section-lead">侘び寂びは不完全さ・無常・簡素の美を愛でる日本の美学。ADHD的な「完璧でない」脳の機能と深く共鳴する。</p>
+
+<!-- 図解㉘: 共鳴図 -->
+<h4>侘び寂び × ニューロダイバージェンス共鳴ポイント</h4>
+<div class="card-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="card" style="border-top:3px solid var(--clr-aesthetics)">
+<h4 style="color:var(--clr-aesthetics)">規範からの逸脱に美を見出す</h4>
+<p><strong>侘び寂び</strong>: 左右非対称、ひび割れ、風化を「美」とする<br><strong>ADHD</strong>: 非線形な思考、予測不能な行動を「才能」として再解釈</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-adhd)">
+<h4 style="color:var(--clr-adhd)">「今この瞬間」への没入</h4>
+<p><strong>侘び寂び</strong>: 無常への気づき、一期一会<br><strong>ADHD</strong>: ハイパーフォーカスによる完全没入。「今」しか存在しない時間体験</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green)">
+<h4 style="color:var(--green)">完璧主義の解毒剤</h4>
+<p><strong>侘び寂び</strong>: 完璧を目指さない。「十分に良い」の受容<br><strong>ADHD</strong>: 完璧主義-回避スイングの緩和。「80%で出す」許可</p>
+</div>
+</div>
+
+<div class="note">
+<div class="note-label">豪州「Wabi Sabi Psychology」</div>
+<p>ADHD+自閉を専門とする心理臨床実践が、侘び寂びを治療哲学として採用。<strong>不完全さを治療するのではなく、不完全さと共に生きる美しさ</strong>を探求する。これはACT（アクセプタンス&コミットメント・セラピー）の「受容」と深く共鳴する。</p>
+</div>
+</div>
+
+<!-- 5-5: 身体性と創造的主権 -->
+<div class="section" id="s5-5">
+<div class="section-eyebrow" style="color:var(--clr-aesthetics)">5-5 Embodied Creativity</div>
+<h2 class="action-title">身体性と創造的主権</h2>
+<p class="section-lead">AIはコンセプト化を強調し、身体的実現を軽視する傾向がある。しかし人間の創造性の大部分は身体化されている。</p>
+
+<!-- 図解㉙: サイクル -->
+<h4>拡散思考 → AI実行 → 人間の審美的判断 → アウトカム</h4>
+<div class="cycle">
+<div class="cycle-node" style="background:rgba(249,115,22,0.08);border:1px solid rgba(249,115,22,0.2);color:var(--clr-adhd)">
+<strong>ADHD的拡散思考</strong><br><span style="font-size:11px;color:var(--text-dim)">アイデアの爆発<br>DMN活性化<br>非線形な接続</span>
+</div>
+<div class="cycle-arrow">→</div>
+<div class="cycle-node" style="background:rgba(34,211,238,0.08);border:1px solid rgba(34,211,238,0.2);color:var(--cyan)">
+<strong>AIがプロトタイプ化</strong><br><span style="font-size:11px;color:var(--text-dim)">Claude Code実装<br>高速試作<br>複数バリエーション</span>
+</div>
+<div class="cycle-arrow">→</div>
+<div class="cycle-node" style="background:rgba(59,130,246,0.08);border:1px solid rgba(59,130,246,0.2);color:var(--clr-aesthetics)">
+<strong>人間の審美的判断</strong><br><span style="font-size:11px;color:var(--text-dim)">「これは良い」を選別<br>体験的直感<br>Taste発動</span>
+</div>
+<div class="cycle-arrow">→</div>
+<div class="cycle-node" style="background:rgba(52,211,153,0.08);border:1px solid rgba(52,211,153,0.2);color:var(--green)">
+<strong>現実を動かす</strong><br><span style="font-size:11px;color:var(--text-dim)">クライアント提案<br>プロダクト実装<br>ムーブメント設計</span>
+</div>
+</div>
+
+<p><strong>AIとの協働における3つのスタンス</strong>:</p>
+<div class="card-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="card" style="border-top:3px solid var(--blue)">
+<h4>Director（指揮者）</h4>
+<p>ビジョンと制約を設定し、AIに実行を委ねる。CLAUDE.md = 指揮者のスコア。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--cyan)">
+<h4>Dialogic Partner（対話者）</h4>
+<p>AIと反復的に共創。プロンプト→出力→修正→再生成のイテレーション。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-adhd)">
+<h4>Discoverer（発見者）</h4>
+<p>予期せぬAI出力を創造的素材として受容。「エラー」を「インスピレーション」に変換。</p>
+</div>
+</div>
+</div>
+
+<!-- 5-6: 体験価値設計 -->
+<div class="section" id="s5-6">
+<div class="section-eyebrow" style="color:var(--clr-aesthetics)">5-6 Experience Design</div>
+<h2 class="action-title">体験価値 / スキーマの設計</h2>
+<p class="section-lead">AI生成物があふれる時代の「本物の体験」の価値。スキーマ（認知枠組み）の豊かさがAIへの指示の質を決める。</p>
+
+<p><strong>スキーマ</strong>（認知枠組み）の意図的構築: 多様な体験からスキーマを豊かにする → AIへの指示の質が上がる → アウトプットの質が上がる。旅行、対話、失敗、感動 → すべてがスキーマの原料。</p>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT — 分水嶺</div>
+<p>「AIを使いこなす人」と「AIに使われる人」の分水嶺 = <strong>体験の豊かさとスキーマの多様性</strong>。AIは「与えられたパターンの組み合わせ」は得意だが、「パターン自体を生み出す」には人間の体験が不可欠。<strong>体験への投資はAI時代の最高のROI</strong>。これがomoshikuのタグライン「"想い"と"仕組み"で"面白く"」の本質 — "想い"（体験から生まれる）× "仕組み"（AIが実装する）= "面白く"（審美的価値の創出）。</p>
+</div>
+</div>
+
+</div><!-- /part5-content -->
+
+<!-- ================================================ -->
+<!-- PART 6: 対人OS -->
+<!-- ================================================ -->
+<div class="part-divider" id="part6">
+<span class="part-badge p6">Part 6</span>
+<div class="part-title" style="color:var(--clr-relation)">対人OS — リーダーシップ×コミュニケーション設計</div>
+</div>
+
+<div id="part6-content">
+
+<!-- 6-1: ADHDリーダーシップ -->
+<div class="section" id="s6-1">
+<div class="section-eyebrow" style="color:var(--clr-relation)">6-1 ADHD Leadership</div>
+<h2 class="action-title">ADHDリーダーシップ — 強み×リスクマトリクス</h2>
+<p class="section-lead">ADHD特性はリーダーシップにおいて「諸刃の剣」。同じ特性が場面によって武器にも弱点にもなる。各特性の両面を把握し、リスクを構造的に緩和する。</p>
+
+<!-- 図解㉚: ADHDリーダーシップ特性マトリクス -->
+<table class="tbl">
+<thead>
+<tr><th>ADHD特性</th><th>リーダーシップ強み</th><th>リスク</th><th>対策</th></tr>
+</thead>
+<tbody>
+<tr>
+<td class="t-name">ハイパーフォーカス</td>
+<td class="t-good">危機対応・深堀り分析</td>
+<td class="t-bad">日常業務放置</td>
+<td>委任 + AI追跡（MCP）</td>
+</tr>
+<tr>
+<td class="t-name">大局観</td>
+<td class="t-good">ビジョン策定・点の接続</td>
+<td class="t-bad">細部見落とし</td>
+<td>チーム補完 + チェックリスト</td>
+</tr>
+<tr>
+<td class="t-name">リスク耐性</td>
+<td class="t-good">大胆な意思決定</td>
+<td class="t-bad">衝動的決定</td>
+<td>48hルール（重要決定は48h寝かせる）</td>
+</tr>
+<tr>
+<td class="t-name">エネルギー爆発</td>
+<td class="t-good">チーム鼓舞・危機突破</td>
+<td class="t-bad">バーンアウト</td>
+<td>エネルギーOS（PART 2）参照</td>
+</tr>
+<tr>
+<td class="t-name">感情強度</td>
+<td class="t-good">共感力・非言語感知</td>
+<td class="t-bad">感情的反応（RSD）</td>
+<td>RSDプロトコル（1-5）参照</td>
+</tr>
+<tr>
+<td class="t-name">適応力</td>
+<td class="t-good">混沌環境での優位性</td>
+<td class="t-bad">安定性の欠如</td>
+<td>構造化ルーティン + AI自動化</td>
+</tr>
+</tbody>
+</table>
+
+<div class="insight">
+<div class="insight-label">INSIGHT — 創業 vs 維持のパラドクス</div>
+<p>ADHD起業家は衝動性+リスク耐性+新規性追求で<strong>創業フェーズに圧倒的に強い</strong>。しかし維持フェーズ（ルーティン、管理、スケール）は実行機能の弱さが直撃する。解決策: <strong>維持フェーズをAI+チームに委任し、自分は常に「次の創業」フェーズにいる</strong>設計。3事業同時運営はまさにこの設計の体現。</p>
+</div>
+</div>
+
+<!-- 6-2: コミュニケーション設計 -->
+<div class="section" id="s6-2">
+<div class="section-eyebrow" style="color:var(--clr-relation)">6-2 Communication Design</div>
+<h2 class="action-title">コミュニケーション設計</h2>
+<p class="section-lead">ADHDリーダーの典型的コミュニケーション課題と、それを構造的に解決するフレームワーク。</p>
+
+<!-- 図解㉛: フレームワーク -->
+<div class="steps">
+<div class="step">
+<div class="step-num" style="background:rgba(232,121,249,0.1);color:var(--clr-relation)">1</div>
+<div class="step-body">
+<h5>「1メッセージ1アクション」ルール</h5>
+<p>アイデアの「ファイアホース」（優先順位なしの大量放出）→ チーム混乱の防止。1つのメッセージに含めるアクション依頼は<strong>最大1つ</strong>。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(232,121,249,0.1);color:var(--clr-relation)">2</div>
+<div class="step-body">
+<h5>口頭→書面フォロー</h5>
+<p>口頭で話した内容を<strong>AI活用で即座に書面化</strong>（Claude要約→Slack/メール）。「言った言わない」問題を構造的に排除。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(232,121,249,0.1);color:var(--clr-relation)">3</div>
+<div class="step-body">
+<h5>アドホック → 構造化タッチポイント</h5>
+<p>思いついたら即Slackでは<strong>相手のWMを奪う</strong>。定期的なタッチポイントに集約し、非同期で情報を渡す。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(232,121,249,0.1);color:var(--clr-relation)">4</div>
+<div class="step-body">
+<h5>ADHDオープン化戦略</h5>
+<p>チームへの選択的開示。「ADHDです」ではなく<strong>「こういう特性があるので、こういう工夫をしています」</strong>というフレーム。実効性と信頼を両立。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(232,121,249,0.1);color:var(--clr-relation)">5</div>
+<div class="step-body">
+<h5>「共有する前に許可を得る」</h5>
+<p>「ちょっと共有したいことがあるんやけど、いい？」— 相手にレディネスを確認してから話し始める。特に感情的な話題で有効。</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 6-3: 委任フレームワーク -->
+<div class="section" id="s6-3">
+<div class="section-eyebrow" style="color:var(--clr-relation)">6-3 Delegation</div>
+<h2 class="action-title">委任フレームワーク — 認知オフロードとしての委任</h2>
+<p class="section-lead">ADHDリーダーに委任が特に難しい理由: 完璧主義×追跡困難×オールオアナッシング思考。</p>
+
+<!-- 図解㉜ -->
+<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(280px,1fr))">
+<div class="card" style="border-top:3px solid var(--clr-relation)">
+<div class="card-badge magenta">1</div>
+<h4>視覚的委任ボード</h4>
+<p>全委任タスクを一箇所に可視化。BacklogをMCPで自動追跡。「見えないものは存在しない」ADHD脳への対処。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--cyan)">
+<div class="card-badge cyan">2</div>
+<h4>構造化チェックイン</h4>
+<p>予定制、アドホックではなく。週次チェックインで進捗確認。「思い出したら確認する」は<strong>ADHDでは機能しない</strong>。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green)">
+<div class="card-badge green">3</div>
+<h4>成功基準の事前定義</h4>
+<p>「完了」の定義を明確に。曖昧な「いい感じに」は委任破綻の最大原因。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--blue)">
+<div class="card-badge blue">4</div>
+<h4>AI活用追跡</h4>
+<p>Claude + MCP（Backlog/Slack）で委任コンテキスト管理。WM負荷をゼロに。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--purple)">
+<div class="card-badge purple">5</div>
+<h4>戦略的補完パートナー</h4>
+<p>「最も定型的なチームメンバー」への戦略的委任。ADHDの弱み（ルーティン、細部）を補完する人材との連携。</p>
+</div>
+</div>
+</div>
+
+<!-- 6-4: 職場での実生活影響 -->
+<div class="section" id="s6-4">
+<div class="section-eyebrow" style="color:var(--clr-relation)">6-4 Workplace Impact</div>
+<h2 class="action-title">職場での実生活影響と対策</h2>
+<p class="section-lead">時間管理、タスク完了、WM故障 — 職場でのADHD影響と具体的対策。</p>
+
+<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+<div class="card" style="border-left:4px solid var(--red)">
+<h4>タイムブラインドネス</h4>
+<p>慢性遅刻、見積もりミス。対策: <strong>タイムタイマー</strong>（残り時間の視覚化）、バッファ時間の自動挿入、AI見積もりチェック。</p>
+</div>
+<div class="card" style="border-left:4px solid var(--amber)">
+<h4>開始麻痺 + 80%放棄</h4>
+<p>起動障壁で着手できない。80%完了で新規性が枯れ放棄。対策: <strong>マイクロステップ分解</strong>、完了の儀式（チェック✓）、最後の20%をAIに。</p>
+</div>
+<div class="card" style="border-left:4px solid var(--purple)">
+<h4>WM故障</h4>
+<p>複数ステップ指示が蒸発。対策: <strong>堅牢なチェックリスト</strong>、指示の書面化依頼、Claude MEMORY.mdで文脈保持。</p>
+</div>
+</div>
+</div>
+
+</div><!-- /part6-content -->
+
+<!-- ================================================ -->
+<!-- PART 7: 家族OS -->
+<!-- ================================================ -->
+<div class="part-divider" id="part7">
+<span class="part-badge p7">Part 7</span>
+<div class="part-title" style="color:var(--clr-family)">家族OS — 夫婦関係×育児×ADHD父親としての設計</div>
+</div>
+
+<div id="part7-content">
+
+<!-- 7-1: 現状の客観的分析 -->
+<div class="section" id="s7-1">
+<div class="section-eyebrow" style="color:var(--clr-family)">7-1 Situation Analysis</div>
+<h2 class="action-title">現状の客観的分析 — この状況をどう捉えるか</h2>
+<p class="section-lead">産後の夫婦関係満足度低下は統計的に「標準」。感情的距離は「壊れた」のではなく「フェーズ」。客観的データで現状を正確に捉える。</p>
+
+<!-- 図解㉝: 産後夫婦関係満足度曲線 -->
+<h4>産後の夫婦関係満足度曲線</h4>
+<div class="kpi-grid" style="grid-template-columns:repeat(4,1fr)">
+<div class="kpi-card">
+<div class="kpi-num warn">67<small style="font-size:16px">%</small></div>
+<div class="kpi-label">出産後に関係満足度が<br>急落するカップル<br><span class="ev rct">Gottman</span></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num family">1.5<small style="font-size:16px">歳</small></div>
+<div class="kpi-label">現在地 = 統計的<br>ピークゾーン</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num warn">2<small style="font-size:16px">倍</small></div>
+<div class="kpi-label">ADHD影響カップルの<br>離婚率（未治療時）</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num" style="background:var(--grad-warn);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">38<small style="font-size:16px">%</small></div>
+<div class="kpi-label">離婚寸前を経験<br><span class="ev pilot">ADDitude N=1,256</span></div>
+</div>
+</div>
+
+<div class="note">
+<div class="note-label">客観的読み方</div>
+<p>全カップルの67%が出産後に関係満足度が急落する（ゴットマン研究所）。低下は出産後1年が最も急激で、1-3年で継続低下 → 回復に数年かかる。1.5歳時点は<strong>統計的ピークゾーン</strong>。つまりこの感情的距離は「壊れた」のではなく<strong>「フェーズ」</strong>として捉えるべき。ただしADHDの追加負荷（離婚率2倍、コミュニケーション障害が課題No.1）があるため、<strong>意図的な介入なしでの自然回復は期待しにくい</strong>。</p>
+</div>
+</div>
+
+<!-- 7-2: 非ADHDバーンアウト -->
+<div class="section" id="s7-2">
+<div class="section-eyebrow" style="color:var(--clr-family)">7-2 Partner Burnout</div>
+<h2 class="action-title">非ADHD配偶者のバーンアウト・サイクル</h2>
+<p class="section-lead">非ADHD配偶者が辿る6段階のバーンアウトプロセス。現在位置を正確に把握することが、適切な介入の前提条件。</p>
+
+<!-- 図解㉞: 6段階 -->
+<div class="steps">
+<div class="step">
+<div class="step-num" style="background:rgba(34,197,94,0.1);color:var(--clr-health)">1</div>
+<div class="step-body">
+<h5>適応（最初は対応）</h5>
+<p>ADHDパートナーの特性に合わせて自分を調整。「この人はこういう人」と受容しようとする。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(245,158,11,0.1);color:var(--amber)">2</div>
+<div class="step-body">
+<h5>苛立ち増大</h5>
+<p>「なぜ私ばかり」。同じ失敗の繰り返しに対するフラストレーション蓄積。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(249,115,22,0.1);color:var(--clr-adhd)">3</div>
+<div class="step-body">
+<h5>過剰機能 / ナギング</h5>
+<p>親的役割の開始。リマインド、管理、チェックが増加。<strong>親子ダイナミクスの萌芽</strong>。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(239,68,68,0.1);color:var(--red)">4</div>
+<div class="step-body">
+<h5 style="color:var(--red)">疲弊 / バーンアウト ← 妻の推定現在位置</h5>
+<p>精神的余力の枯渇。「もう手助けする気力がない」。感情的投資の回収を諦め始める。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(167,139,250,0.1);color:var(--purple)">5</div>
+<div class="step-body">
+<h5>感情的撤退 ← 一部ここも</h5>
+<p>「自分のことは自分でやって」。自己防衛としての距離取り。<strong>「別に」「お好きにどうぞ」</strong>はこの段階の表現。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(88,88,110,0.2);color:var(--text-muted)">6</div>
+<div class="step-body">
+<h5>離脱 / 離婚検討</h5>
+<p>関係の未来に希望を持てなくなる段階。ここに至る前の介入が決定的に重要。</p>
+</div>
+</div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT — 重要な洞察</div>
+<p>妻の「別に」「お好きにどうぞ」は<strong>敵意ではなく自己防衛</strong>の可能性が高い。親子ダイナミクス（Stage 3: ナグ=母親役）への無意識的拒否であり、これは実は<strong>より健全な反応</strong>（ナギングパターンに陥るよりましの可能性）。彼女は「世話する相手」になることを<strong>正しく拒んでいる</strong>。</p>
+</div>
+</div>
+
+<!-- 7-3: 親子ダイナミクス -->
+<div class="section" id="s7-3">
+<div class="section-eyebrow" style="color:var(--clr-family)">7-3 Parent-Child Dynamic</div>
+<h2 class="action-title">「親子ダイナミクス」パターンの理解と回避</h2>
+<p class="section-lead">ADHD婚姻で最も破壊的なパターン。そしてこのダイナミクスは性的魅力を殺す。</p>
+
+<div class="comparison">
+<div class="comp-side before" style="background:rgba(239,68,68,0.03);border-color:rgba(239,68,68,0.15)">
+<h4 style="color:var(--red)">破壊的パターン</h4>
+<ul>
+<li>非ADHD配偶者 → 「批判的で懲罰的な<strong>親</strong>」役</li>
+<li>ADHD配偶者 → 「無責任で一貫性のない<strong>子供</strong>」役</li>
+<li>このダイナミクスは<strong>性的魅力を殺す</strong></li>
+<li>「世話する相手」には欲望を感じにくい</li>
+<li>相互の尊重が失われる</li>
+</ul>
+</div>
+<div class="comp-side after" style="background:rgba(52,211,153,0.03);border-color:rgba(52,211,153,0.15)">
+<h4 style="color:var(--green)">健全な読み替え</h4>
+<ul>
+<li>妻の現在のスタンスはこのパターンへの<strong>拒否</strong></li>
+<li>「あなたのことは管理しない」= 対等な関係の要求</li>
+<li>これはポジティブに捉えるべき</li>
+<li>「子供扱いしない」= 尊重の一形態</li>
+<li>解決策: <strong>自律的に家庭責任を遂行</strong>して証明する</li>
+</ul>
+</div>
+</div>
+</div>
+
+<!-- 7-4: 見えない労働 -->
+<div class="section" id="s7-4">
+<div class="section-eyebrow" style="color:var(--clr-family)">7-4 Invisible Labor</div>
+<h2 class="action-title">「見えない労働」とADHD父親の認知負荷問題</h2>
+<p class="section-lead">母親が認知的家事の71%を担う。「何かやってほしいことある？」は妻をマネージャーにする行為 — 認知負荷の追加。</p>
+
+<!-- 図解㉟: 認知的家事労働マップ -->
+<div class="kpi-grid" style="grid-template-columns:repeat(2,1fr)">
+<div class="kpi-card">
+<div class="kpi-num warn">71<small style="font-size:16px">%</small></div>
+<div class="kpi-label">母親が担う認知的家事労働<br><span class="ev rct">2024年研究</span></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num" style="background:var(--grad-family);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">29<small style="font-size:16px">%</small></div>
+<div class="kpi-label">父親が担う認知的家事労働</div>
+</div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT</div>
+<p><strong>「何かやってほしいことある？」= 妻をマネージャーにしている</strong>（認知負荷の追加）。正解は「何をする？」と聞くのではなく、<strong>ドメインごと丸ごと認知的にも引き受ける</strong>。ADHD固有の難しさ: 実行機能欠損により「何がタスクとして存在するか」の認知自体が困難。対策: 全家事/育児タスクの<strong>物理的な洗い出し → ドメイン単位の分担</strong>（タスク単位ではなく）。</p>
+</div>
+</div>
+
+<!-- 7-5: ADHD父親プロトコル -->
+<div class="section" id="s7-5">
+<div class="section-eyebrow" style="color:var(--clr-family)">7-5 ADHD Father Protocol</div>
+<h2 class="action-title">ADHD父親の具体的アクション・プロトコル</h2>
+<p class="section-lead">「わかっているけどできない」を「仕組みでできる」に変換する6つの行動原則。</p>
+
+<!-- 図解㊱: 6つの行動原則 -->
+<div class="card-grid" style="grid-template-columns:repeat(auto-fill,minmax(300px,1fr))">
+<div class="card" style="border-top:3px solid var(--clr-family)">
+<div class="card-badge yellow">原則 1</div>
+<h4>ドメインオーナーシップ</h4>
+<p>「お手伝い」ではなく、計画→実行→フォローの<strong>全工程を所有</strong>。例: 「ゴミ出し」ではなく「ゴミ管理ドメイン」（分別ルール把握、曜日管理、ゴミ袋補充含む）。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-adhd)">
+<div class="card-badge orange">原則 2</div>
+<h4>5分ピックアップ</h4>
+<p>タイマー5分で<strong>できる範囲</strong>を片付ける。完璧を目指さない。ADHD脳にとって「5分」は起動障壁が十分低い単位。侘び寂び的「十分に良い」の実践。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green)">
+<div class="card-badge green">原則 3</div>
+<h4>ボディダブリング育児</h4>
+<p>子供の近くで家事をする。子供の存在がアンカー（ADHDの注意を係留）。「一緒にいる」×「生産的」を両立。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--cyan)">
+<div class="card-badge cyan">原則 4</div>
+<h4>ノベルティ・ローテーション</h4>
+<p>家事システムを<strong>1-2週で入れ替え</strong>、新鮮さを維持。同じ方法の継続はADHD脳の天敵。道具、順番、アプローチを定期的に変える。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--red)">
+<div class="card-badge red">原則 5</div>
+<h4>ハイパーフォーカス→家庭遷移</h4>
+<p><strong>ハードストップアラーム</strong> + 遷移リチュアル（着替え、散歩、深呼吸）。仕事モードから家庭モードへの<strong>物理的な切替</strong>を設計。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--blue)">
+<div class="card-badge blue">原則 6</div>
+<h4>育児の「プロジェクト化」</h4>
+<p>寝かしつけルーティンを<strong>最適化可能なシステム</strong>として捉える。Interest-Based Nervous Systemの「Challenge」スイッチを起動。</p>
+</div>
+</div>
+</div>
+
+<!-- 7-6: マイクロコネクション -->
+<div class="section" id="s7-6">
+<div class="section-eyebrow" style="color:var(--clr-family)">7-6 Micro-Connection</div>
+<h2 class="action-title">マイクロコネクション戦略 — 低バンド幅でも関係を維持する</h2>
+<p class="section-lead">妻の精神的余力が枯渇している状態で、大きな「話し合い」は逆効果。小さく、一貫した、負荷の低い接続を積み重ねる。</p>
+
+<!-- 図解㊲: 5原則 -->
+<div class="steps">
+<div class="step">
+<div class="step-num" style="background:rgba(251,191,36,0.1);color:var(--clr-family)">1</div>
+<div class="step-body">
+<h5>彼女のBidに応答する</h5>
+<p>子供の話で盛り上がるなら、その瞬間を全力で。<strong>自分の話に転換しない</strong>。ゴットマン研究: 関係継続カップルは86%のBidに応答、離婚カップルは33%。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(251,191,36,0.1);color:var(--clr-family)">2</div>
+<div class="step-body">
+<h5>負荷軽減 > 接続追求</h5>
+<p>「話し合おう」より「<strong>家事の認知負荷を下げる</strong>」方が効く。行動で示す。言葉は後。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(251,191,36,0.1);color:var(--clr-family)">3</div>
+<div class="step-body">
+<h5>物理的同席（要求なし）</h5>
+<p>同じ部屋にいる。並行活動。関係的ボディダブリング。<strong>「一緒にいるけど何も要求しない」</strong>。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(251,191,36,0.1);color:var(--clr-family)">4</div>
+<div class="step-body">
+<h5>小さく一貫 > 大きく散発</h5>
+<p><strong>毎日のゴミ出し > 月1の花束</strong>。一貫性がADHD脳にとって最も難しく、非ADHD配偶者が最も求めるもの。</p>
+</div>
+</div>
+<div class="step">
+<div class="step-num" style="background:rgba(251,191,36,0.1);color:var(--clr-family)">5</div>
+<div class="step-body">
+<h5>観察として伝える</h5>
+<p>「二人の時間が恋しいな」（観察・感情）≠「話し合わないと」（要求・圧力）。非暴力コミュニケーション（NVC）のI-メッセージ。</p>
+</div>
+</div>
+</div>
+</div>
+
+<!-- 7-7: 夫婦コーチング優先順位 -->
+<div class="section" id="s7-7">
+<div class="section-eyebrow" style="color:var(--clr-family)">7-7 Intervention Sequence</div>
+<h2 class="action-title">夫婦コーチングの優先順位</h2>
+<p class="section-lead">推奨介入シーケンス。重要: 正式なカップルワークは「両者が準備できてから」。現状では個人コーチングが適切。</p>
+
+<!-- 図解㊳: 推奨介入シーケンス -->
+<div class="timeline">
+<div class="tl-label" style="color:var(--green);font-weight:600">Step 1</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(34,197,94,0.1);color:var(--clr-health)">ADHD治療の最適化</span><span style="font-size:11px;color:var(--text-dim);margin-left:8px">投薬レビュー + 個人コーチング</span></div>
+<div class="tl-label" style="color:var(--clr-family);font-weight:600">Step 2</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(251,191,36,0.1);color:var(--clr-family)">家庭ドメインの実証的オーナーシップ</span><span style="font-size:11px;color:var(--text-dim);margin-left:8px">聞かずに引き受ける</span></div>
+<div class="tl-label" style="color:var(--clr-adhd);font-weight:600">Step 3</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(249,115,22,0.1);color:var(--clr-adhd)">2-3ヶ月の一貫性構築</span><span style="font-size:11px;color:var(--text-dim);margin-left:8px">妻は「持続する変化」を見る必要がある</span></div>
+<div class="tl-label" style="color:var(--clr-relation);font-weight:600">Step 4</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(232,121,249,0.1);color:var(--clr-relation)">マイクロコネクション</span><span style="font-size:11px;color:var(--text-dim);margin-left:8px">見返りを求めずに</span></div>
+<div class="tl-label" style="color:var(--blue);font-weight:600">Step 5</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(59,130,246,0.1);color:var(--clr-aesthetics)">両者へのADHD心理教育</span><span style="font-size:11px;color:var(--text-dim);margin-left:8px">カップルワークの準備</span></div>
+<div class="tl-label" style="color:var(--purple);font-weight:600">Step 6</div>
+<div class="tl-content"><span class="tl-pill" style="background:rgba(167,139,250,0.1);color:var(--purple)">正式なカップルワーク</span><span style="font-size:11px;color:var(--text-dim);margin-left:8px">ゴットマン / Orlov / Pera-Robin — 両者が準備できてから</span></div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT — 核心的パラドクス</div>
+<p>夫はより深い繋がりを求めているが、それを得るには<strong>先に与える（見返りなしに）</strong>必要がある。ADHDの脳にとって最も苦手な<strong>「遅延報酬の受容」</strong>が求められる。しかしこれは「不可能」ではなく「意図的な設計が必要」。ドーパミン・スケジューリング（PART 3）をここにも適用: 家事を<strong>「チャレンジ」スイッチで起動</strong>し、子供との遊びを<strong>「Interest」スイッチ</strong>に接続する。</p>
+</div>
+</div>
+
+<!-- 7-8: 子供の発達への影響 -->
+<div class="section" id="s7-8">
+<div class="section-eyebrow" style="color:var(--clr-family)">7-8 Child Development</div>
+<h2 class="action-title">子供の発達への影響</h2>
+<p class="section-lead">夫婦関係の質 → 親子関係の質 → 子供の発達。しかし「完璧な夫婦関係」は不要。「十分に良い」子育てで安全なアタッチメントは形成される。</p>
+
+<div class="card-grid" style="grid-template-columns:repeat(2,1fr)">
+<div class="card" style="border-top:3px solid var(--clr-family)">
+<h4>スピルオーバー効果</h4>
+<p>夫婦関係の質 → 親子関係の質 → 子供の発達に<strong>直接影響</strong>。父親-子供アタッチメント（12-18ヶ月）→ 2.5-3歳の社会情緒的発達を予測。父親の役割は<strong>独立的に重要</strong>。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--green)">
+<h4>「十分に良い」子育て</h4>
+<p>安全なアタッチメントには「完璧な夫婦関係」は<strong>不要</strong>。必要なのは: 感受性、応答性、合理的な一貫性。ウィニコット: <strong>「good enough parent」</strong>で十分。</p>
+</div>
+</div>
+
+<div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="kpi-card">
+<div class="kpi-num family">74-88<small style="font-size:16px">%</small></div>
+<div class="kpi-label">ADHD遺伝率<br><span class="ev meta">META</span></div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num warn">8<small style="font-size:16px">倍</small></div>
+<div class="kpi-label">ADHD親の子供の<br>ADHD発症リスク</div>
+</div>
+<div class="kpi-card">
+<div class="kpi-num good">&#x2713;</div>
+<div class="kpi-label">ADHD親のポジティブ面<br>高エネルギー/遊び心/創造性</div>
+</div>
+</div>
+
+<div class="insight">
+<div class="insight-label">INSIGHT</div>
+<p>ADHD遺伝率74-88% → 子供もADHDの可能性が8倍。自分のシステム構築は<strong>子供のためにもなる</strong>。このOS設計書で確立した仕組み（環境設計、ドーパミン管理、セルフコンパッション）は、将来的に子供にも伝授できる「家族の知的資産」。ADHD親のポジティブ面（高エネルギー、遊び心、創造性、自発性）は子供との関わりで<strong>強み</strong>として発揮される。</p>
+</div>
+</div>
+
+</div><!-- /part7-content -->
+
+<!-- ================================================ -->
+<!-- PART 8: ビジョン実現 -->
+<!-- ================================================ -->
+<div class="part-divider" id="part8">
+<span class="part-badge p8">Part 8</span>
+<div class="part-title"><span class="grad-text-business">ビジョン実現ロードマップ × 持続可能性</span></div>
+</div>
+
+<div id="part8-content">
+
+<!-- 8-1: 3事業統合タイムライン -->
+<div class="section" id="s8-1">
+<div class="section-eyebrow"><span class="grad-text-business">8-1 Integrated Timeline</span></div>
+<h2 class="action-title">3事業の統合タイムライン</h2>
+<p class="section-lead">ミズカラDX（実証場）→ omoshiku（クライアント展開）→ ADHDコーチング（自己変革体系化）の3事業を時間軸で統合する。</p>
+
+<!-- 図解㊴: フェーズ別ロードマップ -->
+<div class="phase-card" style="border-left:4px solid var(--green)">
+<div class="phase-tag" style="background:rgba(34,197,94,0.08);color:var(--clr-health)">Phase 1: 現在</div>
+<h3>基盤構築と実証</h3>
+<p>ミズカラDXでAI駆動開発（Claude Code × MCP × BQ）を実証。omoshiku初期クライアント（大和書房、ニッカホーム）への提案・デリバリー開始。ADHDリサーチの体系化（本ドキュメント）。</p>
+</div>
+<div class="phase-card" style="border-left:4px solid var(--cyan)">
+<div class="phase-tag" style="background:rgba(34,211,238,0.08);color:var(--cyan)">Phase 2: 6ヶ月後</div>
+<h3>コホート開始と事例蓄積</h3>
+<p>100日ADHDコホート第1期。omoshiku事例を3-5件蓄積。AI駆動コンサルのメソドロジーを確立。Knowledge Baseでの発信強化。</p>
+</div>
+<div class="phase-card" style="border-left:4px solid var(--purple)">
+<div class="phase-tag" style="background:rgba(167,139,250,0.08);color:var(--purple)">Phase 3: 1年後</div>
+<h3>コンテンツ × コミュニティ</h3>
+<p>「多動力2.0」ムーブメント始動。コホート2-3期を通じた再現性証明。コンテンツマーケティング（Knowledge Base → SNS → メディア露出）。</p>
+</div>
+<div class="phase-card" style="border-left:4px solid var(--clr-adhd)">
+<div class="phase-tag" style="background:rgba(249,115,22,0.08);color:var(--clr-adhd)">Phase 4: 2年後</div>
+<h3>スケール</h3>
+<p>プロダクト化（オンラインコース、ツール）。チーム拡大（ADHDコーチ認定プログラム）。メディア展開。ミズカラDXの経験をomoshikuのスケーラブルなモデルに転換。</p>
+</div>
+</div>
+
+<!-- 8-2: 多動力2.0ムーブメント -->
+<div class="section" id="s8-2">
+<div class="section-eyebrow"><span class="grad-text-business">8-2 Movement Design</span></div>
+<h2 class="action-title">「多動力2.0」ムーブメント設計</h2>
+<p class="section-lead">「どうせ変わらない」→「やってみよう！」のカルチャー変革。一人の変容を社会的ムーブメントに拡大する3フェーズ。</p>
+
+<!-- 図解㊵: 3フェーズ -->
+<div class="flow">
+<div class="flow-node" style="border-top:3px solid var(--clr-adhd);min-width:200px">
+<h5 style="color:var(--clr-adhd)">Phase 1: Prove（実証）</h5>
+<p>自身で実証。成果 + 変革ストーリー。<br><strong>「西川がやって結果が出た」</strong>というファクト。</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--cyan);min-width:200px">
+<h5 style="color:var(--cyan)">Phase 2: Replicate（再現）</h5>
+<p>コホート → 再現性証明。<br>N=6-8が<strong>「私もできた」</strong>と言える状態。</p>
+</div>
+<div class="flow-arrow">→</div>
+<div class="flow-node" style="border-top:3px solid var(--purple);min-width:200px">
+<h5 style="color:var(--purple)">Phase 3: Movement（運動）</h5>
+<p>コンテンツ × コミュニティ × メディア。<br><strong>社会的認知の変革</strong>。</p>
+</div>
+</div>
+
+<div class="vision-card">
+<h3>「多動力2.0」のビジョン</h3>
+<p>ADHDは「治すべき障害」ではなく「設計すべき特性」。<br>脳の特性を理解し、環境を設計し、AIで拡張することで、<br>ADHD成人が才能を最大限に解放できる社会を作る。</p>
+<p style="font-size:12px;margin-top:8px;color:var(--text-muted)">omoshiku × ADHDコーチング × ミズカラDX — 3事業の統合ビジョン</p>
+</div>
+</div>
+
+<!-- 8-3: 財務ガードレール -->
+<div class="section" id="s8-3">
+<div class="section-eyebrow"><span class="grad-text-business">8-3 Financial Guardrails</span></div>
+<h2 class="action-title">財務×意思決定ガードレール</h2>
+<p class="section-lead">ADHDの財務特性: 日常的・実用的な決定では判断力が低下するが、抽象的・仮説的な決定では問題ない。日常をシステム化する。</p>
+
+<!-- 図解㊶: ADHD財務防衛システム -->
+<div class="card-grid" style="grid-template-columns:repeat(2,1fr)">
+<div class="card" style="border-top:3px solid var(--green)">
+<h4 style="color:var(--green)">自動送金</h4>
+<p>給与日即時 → 貯蓄口座へ自動振替。<strong>意思決定ポイントを排除</strong>。見えないお金は使えない。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--amber)">
+<h4 style="color:var(--amber)">48時間ルール</h4>
+<p>閾値以上の購入（例: 1万円超）は<strong>48h待機</strong>。衝動性フィルターとして機能。48h後も欲しければ購入OK。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--cyan)">
+<h4 style="color:var(--cyan)">「遊びお金」口座</h4>
+<p>週次定額制の衝動買い枠。<strong>罪悪感なしの使い切り</strong>。ADHD的な衝動性に「安全な出口」を提供。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--blue)">
+<h4 style="color:var(--blue)">視覚的支出ダッシュボード</h4>
+<p>隠さない、見える化する。月次のカテゴリ別支出をグラフ化。<strong>BQ → Connected Sheets</strong>で自動更新。</p>
+</div>
+</div>
+</div>
+
+<!-- 8-4: 35+エイジング対策 -->
+<div class="section" id="s8-4">
+<div class="section-eyebrow"><span class="grad-text-business">8-4 Aging Strategy</span></div>
+<h2 class="action-title">35+エイジング対策</h2>
+<p class="section-lead">ADHD × 加齢 = 二重不利。30代半ばから実行機能の自然低下が始まる。認知予備力の意図的構築と、AI依存度の戦略的増加が必要。</p>
+
+<!-- 図解㊷: 認知予備力構築 -->
+<h4>ADHD×加齢 — 認知予備力4本柱</h4>
+<div class="card-grid" style="grid-template-columns:repeat(4,1fr)">
+<div class="card" style="border-top:3px solid var(--clr-health);text-align:center">
+<h4 style="color:var(--clr-health)">運動</h4>
+<p>認知負荷型運動<br>(PART 2参照)<br>BDNF産生促進</p>
+</div>
+<div class="card" style="border-top:3px solid var(--purple);text-align:center">
+<h4 style="color:var(--purple)">睡眠</h4>
+<p>クロノセラピー<br>(PART 2参照)<br>徐波睡眠の確保</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-relation);text-align:center">
+<h4 style="color:var(--clr-relation)">社会参加</h4>
+<p>孤立回避<br>ピアサポート<br>コミュニティ参画</p>
+</div>
+<div class="card" style="border-top:3px solid var(--cyan);text-align:center">
+<h4 style="color:var(--cyan)">AI拡張</h4>
+<p>自然な低下に合わせ<br>AI補完を<strong>段階的に拡大</strong><br>セカンドブレイン強化</p>
+</div>
+</div>
+
+<div class="note">
+<div class="note-label">注意: 誤診リスク</div>
+<p>ADHD症状が軽度認知障害（MCI）や初期認知症と<strong>誤診されるリスク</strong>がある。注意散漫、WM低下、実行機能障害はADHD/MCI/認知症で共通するため、ベースラインとしてのADHD症状の記録が重要。<strong>このOS設計書自体が、将来のベースライン記録</strong>として機能する。</p>
+</div>
+</div>
+
+<!-- 8-5: セルフコンパッション -->
+<div class="section" id="s8-5">
+<div class="section-eyebrow"><span class="grad-text-business">8-5 Self-Compassion</span></div>
+<h2 class="action-title">セルフコンパッション × 持続可能性</h2>
+<p class="section-lead">ADHDの内面化された恥（「怠惰」「努力不足」「しつけの問題」→「自分は欠陥品」）からの解放。このOS全体を支える「地盤」。</p>
+
+<p>ADHDの人は幼少期から「もっと頑張れ」「なぜできないの」を繰り返し受け、<strong>「自分は欠陥品」という信念を内面化</strong>している。ハイパーフォーカスの成功は「まぐれ」感覚（インポスター症候群）と結びつき、失敗は「やっぱり自分はダメ」と確信に転換される。</p>
+
+<h4>Neff セルフコンパッション 3要素</h4>
+<div class="card-grid" style="grid-template-columns:repeat(3,1fr)">
+<div class="card" style="border-top:3px solid var(--clr-adhd)">
+<h4 style="color:var(--clr-adhd)">自己親和</h4>
+<p>自分に<strong>友人に対するように</strong>語りかける。「また失敗した」→「また挑戦した。次はどうする？」</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-relation)">
+<h4 style="color:var(--clr-relation)">共通の人間性</h4>
+<p>「自分だけがこんな苦しみを抱えている」→「<strong>ADHD成人の99%が同じ経験をしている</strong>」。孤立感の解消。</p>
+</div>
+<div class="card" style="border-top:3px solid var(--clr-aesthetics)">
+<h4 style="color:var(--clr-aesthetics)">マインドフルネス</h4>
+<p>感情を判断せずに<strong>観察する</strong>。「今、自分はRSDを感じている」とラベリング。感情に飲み込まれず、距離を取る。</p>
+</div>
+</div>
+
+<div class="sowhat">
+<div class="sowhat-label">SO WHAT — 当事者研究: 受動的「患者」から能動的「研究者」へ</div>
+<p>このパーソナルOS設計書の存在自体が、<strong>当事者研究の体現</strong>。自分を「治療される対象」ではなく「研究する主体」として位置づけ直す行為。ADHDの困難を「個人の欠陥」ではなく「システムの設計課題」として捉え直す。<strong>「マイADHDマニュアル」は生きたドキュメント</strong>として更新し続ける。完璧なシステムは存在しない。侘び寂び的に、不完全さを受容しながら、少しずつ良くしていく。</p>
+</div>
+
+<!-- 最後のビジョンカード -->
+<div class="vision-card" style="margin-top:32px">
+<h3>パーソナルOS — 統合ビジョン</h3>
+<p style="font-size:15px;line-height:2">
+ADHD脳の特性を<strong>理解</strong>し（PART 1）、<br>
+身体を<strong>最適化</strong>し（PART 2）、<br>
+行動を<strong>設計</strong>し（PART 3）、<br>
+AIで<strong>拡張</strong>し（PART 4）、<br>
+美意識で<strong>磨き</strong>（PART 5）、<br>
+人間関係を<strong>設計</strong>し（PART 6）、<br>
+家族を<strong>守り</strong>（PART 7）、<br>
+ビジョンを<strong>実現</strong>する（PART 8）。
+</p>
+<p style="font-size:14px;margin-top:16px"><strong>これは「生きたドキュメント」。更新し続ける限り、進化し続ける。</strong></p>
+</div>
+</div>
+
+</div><!-- /part8-content -->
+
+<!-- FOOTER -->
+<div class="footer">
+<p>西川太雄 パーソナルOS設計書 v1.0 — ADHD × AI × 哲学 統合オペレーティングシステム</p>
+<p style="margin-top:8px;font-size:11px">11 Research Domains | 40+ Infographics | Designed with McKinsey Dark Theme</p>
+</div>
+
+</div><!-- /main-content -->
+</div><!-- /page-layout -->
+</div><!-- /container -->
+</body>
+</html>
