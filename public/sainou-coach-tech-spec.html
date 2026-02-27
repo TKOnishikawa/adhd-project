@@ -286,6 +286,10 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
   <a href="#s09"><span class="toc-num">09</span> セキュリティ設計</a>
   <div class="toc-part">デリバリー</div>
   <a href="#s10"><span class="toc-num">10</span> MVPスプリント計画</a>
+  <div class="toc-part">v1.1 拡張仕様</div>
+  <a href="#ext-db"><span class="toc-num">E1</span> DB拡張（+6テーブル）</a>
+  <a href="#ext-api"><span class="toc-num">E2</span> Edge Functions拡張</a>
+  <a href="#ext-chain"><span class="toc-num">E3</span> プロンプトチェイン</a>
   <div class="toc-part">付録</div>
   <a href="#appA"><span class="toc-num">A</span> カラーパレット</a>
   <a href="#appB"><span class="toc-num">B</span> TypeScript型定義</a>
@@ -1456,9 +1460,544 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 }</div>
 </div>
 
+<!-- ═══════════════════════ V1.1 EXTENSION SPECS ═══════════════════════ -->
+
+<!-- EXT-DB: DB Extension -->
+<div class="section" id="ext-db">
+  <div class="section-eyebrow" style="color:var(--green)">E1 — v1.1 DB拡張</div>
+  <h2 class="action-title">データベース拡張設計（+6テーブル &rarr; 計16テーブル）</h2>
+  <p class="section-lead">GTDインボックス、振り返り、習慣チェッカー、ゴール&amp;マイルストーンの4機能群を支える6つの新テーブルと既存テーブルの変更。</p>
+
+  <!-- ERD Overview -->
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">ER図（拡張部分）</h3>
+  <div style="background:var(--bg-deep);border-radius:8px;padding:20px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.6;color:var(--text-muted);overflow-x:auto">
+<pre style="margin:0;white-space:pre;color:inherit;font:inherit">
+ profiles(id)
+    │
+    ├──&lt; <span style="color:var(--amber)">inbox_items</span> (user_id)
+    │       └── processed_to &rarr; tasks / calendar_events
+    │
+    ├──&lt; <span style="color:var(--cyan)">reviews</span> (user_id)
+    │       └── conversation_id &rarr; conversations
+    │
+    ├──&lt; <span style="color:var(--blue)">goals</span> (user_id)
+    │       ├── parent_goal_id &rarr; goals (自己参照: vision&rarr;outcome&rarr;lead)
+    │       │
+    │       ├──&lt; <span style="color:var(--purple)">milestones</span> (goal_id)
+    │       │
+    │       └──&lt; <span style="color:var(--green)">habits</span> (goal_id)  ← リード指標連携
+    │               │
+    │               └──&lt; <span style="color:var(--green)">habit_logs</span> (habit_id)
+    │
+    ├──&lt; tasks (user_id)
+    │       └── <span style="color:var(--amber)">goal_id &rarr; goals</span>  ← 新規FK
+    │       └── <span style="color:var(--amber)">source += 'inbox'</span>  ← 選択肢追加
+    │
+    └──&lt; user_settings
+            └── <span style="color:var(--amber)">+ weekly_review_day, weekly_review_time</span>
+</pre>
+  </div>
+
+  <!-- Table Definitions -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">テーブル定義</h3>
+
+  <!-- inbox_items -->
+  <details class="acc" style="margin-bottom:8px">
+    <summary><span style="color:var(--amber)">inbox_items</span> &mdash; GTDインボックス</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="kw">CREATE TABLE</span> inbox_items (
+  id <span class="tp">UUID</span> <span class="kw">DEFAULT</span> gen_random_uuid() <span class="kw">PRIMARY KEY</span>,
+  user_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> profiles(id) <span class="kw">NOT NULL</span>,
+  raw_content <span class="tp">TEXT</span> <span class="kw">NOT NULL</span>,
+  content_type <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'text'</span> <span class="kw">CHECK</span> (content_type <span class="kw">IN</span> (<span class="str">'text'</span>,<span class="str">'voice_transcript'</span>)),
+  ai_category <span class="tp">TEXT</span> <span class="kw">CHECK</span> (ai_category <span class="kw">IN</span> (<span class="str">'task'</span>,<span class="str">'idea'</span>,<span class="str">'emotion'</span>,<span class="str">'memo'</span>,<span class="str">'event'</span>,
+    <span class="str">'someday_maybe'</span>,<span class="str">'waiting_for'</span>,<span class="str">'reference'</span>,<span class="str">'unknown'</span>)),
+  ai_category_confidence <span class="tp">NUMERIC</span>(3,2),
+  ai_extracted_data <span class="tp">JSONB</span> <span class="kw">DEFAULT</span> <span class="str">'{}'</span>,
+  <span class="cm">-- フルGTD裏処理</span>
+  ai_context_tags <span class="tp">TEXT[]</span> <span class="kw">DEFAULT</span> <span class="str">'{}'</span>,  <span class="cm">-- @deep_focus, @moving, @phone等</span>
+  ai_project_id <span class="tp">UUID</span>,
+  waiting_for_whom <span class="tp">TEXT</span>,
+  waiting_for_deadline <span class="tp">DATE</span>,
+  tickler_date <span class="tp">DATE</span>,  <span class="cm">-- Tickler File: 遅延実行日</span>
+  status <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'pending'</span> <span class="kw">CHECK</span> (status <span class="kw">IN</span> (<span class="str">'pending'</span>,<span class="str">'processed'</span>,<span class="str">'archived'</span>,
+    <span class="str">'dismissed'</span>,<span class="str">'someday_maybe'</span>,<span class="str">'waiting'</span>)),
+  processed_to <span class="tp">TEXT</span>,  <span class="cm">-- tasks:{id} / calendar_events:{id}</span>
+  created_at <span class="tp">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> now(),
+  reviewed_at <span class="tp">TIMESTAMPTZ</span>
+);</pre></div>
+    </div>
+  </details>
+
+  <!-- reviews -->
+  <details class="acc" style="margin-bottom:8px">
+    <summary><span style="color:var(--cyan)">reviews</span> &mdash; 振り返り</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="kw">CREATE TABLE</span> reviews (
+  id <span class="tp">UUID</span> <span class="kw">DEFAULT</span> gen_random_uuid() <span class="kw">PRIMARY KEY</span>,
+  user_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> profiles(id) <span class="kw">NOT NULL</span>,
+  review_type <span class="tp">TEXT</span> <span class="kw">NOT NULL CHECK</span> (review_type <span class="kw">IN</span> (<span class="str">'daily'</span>,<span class="str">'weekly'</span>)),
+  review_date <span class="tp">DATE</span> <span class="kw">NOT NULL</span>,
+  facts_summary <span class="tp">JSONB</span> <span class="kw">DEFAULT</span> <span class="str">'{}'</span>,
+  reflection_prompts <span class="tp">JSONB</span> <span class="kw">DEFAULT</span> <span class="str">'[]'</span>,
+  user_responses <span class="tp">JSONB</span> <span class="kw">DEFAULT</span> <span class="str">'[]'</span>,
+  ai_insights <span class="tp">TEXT</span>,
+  goal_progress <span class="tp">JSONB</span> <span class="kw">DEFAULT</span> <span class="str">'{}'</span>,
+  conversation_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> conversations(id),
+  created_at <span class="tp">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> now(),
+  <span class="kw">UNIQUE</span>(user_id, review_type, review_date)
+);</pre></div>
+    </div>
+  </details>
+
+  <!-- habits -->
+  <details class="acc" style="margin-bottom:8px">
+    <summary><span style="color:var(--green)">habits</span> &mdash; 習慣マスタ</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="kw">CREATE TABLE</span> habits (
+  id <span class="tp">UUID</span> <span class="kw">DEFAULT</span> gen_random_uuid() <span class="kw">PRIMARY KEY</span>,
+  user_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> profiles(id) <span class="kw">NOT NULL</span>,
+  title <span class="tp">TEXT</span> <span class="kw">NOT NULL</span>,
+  description <span class="tp">TEXT</span>,
+  source <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'manual'</span> <span class="kw">CHECK</span> (source <span class="kw">IN</span> (<span class="str">'manual'</span>,<span class="str">'ai_detected'</span>,<span class="str">'default_adhd'</span>)),
+  frequency <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'daily'</span> <span class="kw">CHECK</span> (frequency <span class="kw">IN</span> (<span class="str">'daily'</span>,<span class="str">'weekdays'</span>,<span class="str">'weekly'</span>,<span class="str">'custom'</span>)),
+  frequency_detail <span class="tp">JSONB</span> <span class="kw">DEFAULT</span> <span class="str">'{}'</span>,  <span class="cm">-- {days: [1,3,5]}</span>
+  preferred_time <span class="tp">TIME</span>,
+  balance_area <span class="tp">TEXT</span>,  <span class="cm">-- バランスホイール8領域</span>
+  goal_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> goals(id),  <span class="cm">-- リード指標としてゴールに紐付け</span>
+  streak_current <span class="tp">INTEGER</span> <span class="kw">DEFAULT</span> 0,
+  streak_best <span class="tp">INTEGER</span> <span class="kw">DEFAULT</span> 0,
+  detection_keywords <span class="tp">TEXT[]</span> <span class="kw">DEFAULT</span> <span class="str">'{}'</span>,  <span class="cm">-- AI検出用キーワード</span>
+  is_active <span class="tp">BOOLEAN</span> <span class="kw">DEFAULT</span> true,
+  created_at <span class="tp">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> now()
+);</pre></div>
+      <p style="margin-top:8px;font-size:11px;color:var(--text-muted)"><strong>source</strong>: manual（手動追加）/ ai_detected（AI対話から3回以上検出→承認）/ default_adhd（科学ベース推奨リスト）</p>
+    </div>
+  </details>
+
+  <!-- habit_logs -->
+  <details class="acc" style="margin-bottom:8px">
+    <summary><span style="color:var(--green)">habit_logs</span> &mdash; 習慣ログ</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="kw">CREATE TABLE</span> habit_logs (
+  id <span class="tp">UUID</span> <span class="kw">DEFAULT</span> gen_random_uuid() <span class="kw">PRIMARY KEY</span>,
+  habit_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> habits(id) <span class="kw">NOT NULL</span>,
+  user_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> profiles(id) <span class="kw">NOT NULL</span>,
+  log_date <span class="tp">DATE</span> <span class="kw">NOT NULL</span>,
+  completed <span class="tp">BOOLEAN</span> <span class="kw">DEFAULT</span> false,
+  completed_at <span class="tp">TIMESTAMPTZ</span>,
+  source <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'manual'</span> <span class="kw">CHECK</span> (source <span class="kw">IN</span> (<span class="str">'manual'</span>,<span class="str">'ai_detected'</span>,<span class="str">'reminder'</span>)),
+  notes <span class="tp">TEXT</span>,
+  <span class="kw">UNIQUE</span>(habit_id, log_date)
+);</pre></div>
+    </div>
+  </details>
+
+  <!-- goals -->
+  <details class="acc" style="margin-bottom:8px">
+    <summary><span style="color:var(--blue)">goals</span> &mdash; 3層ゴール</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="kw">CREATE TABLE</span> goals (
+  id <span class="tp">UUID</span> <span class="kw">DEFAULT</span> gen_random_uuid() <span class="kw">PRIMARY KEY</span>,
+  user_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> profiles(id) <span class="kw">NOT NULL</span>,
+  title <span class="tp">TEXT</span> <span class="kw">NOT NULL</span>,
+  description <span class="tp">TEXT</span>,
+  goal_layer <span class="tp">TEXT</span> <span class="kw">NOT NULL CHECK</span> (goal_layer <span class="kw">IN</span> (<span class="str">'vision'</span>,<span class="str">'outcome'</span>,<span class="str">'lead'</span>)),
+  parent_goal_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> goals(id),  <span class="cm">-- vision→outcome→lead階層</span>
+  balance_area <span class="tp">TEXT</span>,
+  target_date <span class="tp">DATE</span>,  <span class="cm">-- 任意（visionは期限なし可）</span>
+  status <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'active'</span> <span class="kw">CHECK</span> (status <span class="kw">IN</span> (<span class="str">'active'</span>,<span class="str">'achieved'</span>,<span class="str">'paused'</span>,<span class="str">'abandoned'</span>)),
+  progress_pct <span class="tp">INTEGER</span> <span class="kw">DEFAULT</span> 0,
+  target_value <span class="tp">NUMERIC</span>,  <span class="cm">-- 定量目標（例: 3社）</span>
+  current_value <span class="tp">NUMERIC</span> <span class="kw">DEFAULT</span> 0,
+  why_it_matters <span class="tp">TEXT</span>,  <span class="cm">-- 感情的動機（WHY）</span>
+  created_at <span class="tp">TIMESTAMPTZ</span> <span class="kw">DEFAULT</span> now()
+);</pre></div>
+      <p style="margin-top:8px;font-size:11px;color:var(--text-muted)"><strong>3層</strong>: Vision(WHY)→Outcome(WHAT)→Lead(HOW) を parent_goal_id で階層化。Lead層は habits テーブルに goal_id で自動連携。</p>
+    </div>
+  </details>
+
+  <!-- milestones -->
+  <details class="acc" style="margin-bottom:8px">
+    <summary><span style="color:var(--purple)">milestones</span> &mdash; マイルストーン</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="kw">CREATE TABLE</span> milestones (
+  id <span class="tp">UUID</span> <span class="kw">DEFAULT</span> gen_random_uuid() <span class="kw">PRIMARY KEY</span>,
+  goal_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> goals(id) <span class="kw">NOT NULL</span>,
+  user_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> profiles(id) <span class="kw">NOT NULL</span>,
+  title <span class="tp">TEXT</span> <span class="kw">NOT NULL</span>,
+  order_index <span class="tp">SMALLINT</span>,
+  target_date <span class="tp">DATE</span>,
+  status <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'pending'</span> <span class="kw">CHECK</span> (status <span class="kw">IN</span> (<span class="str">'pending'</span>,<span class="str">'in_progress'</span>,<span class="str">'completed'</span>)),
+  completed_at <span class="tp">TIMESTAMPTZ</span>,
+  celebration_message <span class="tp">TEXT</span>  <span class="cm">-- AIが生成する祝福メッセージ</span>
+);</pre></div>
+    </div>
+  </details>
+
+  <!-- Existing Table Changes -->
+  <h3 style="font-size:16px;font-weight:700;margin:24px 0 10px">既存テーブル変更</h3>
+  <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="cm">-- tasks テーブル</span>
+<span class="kw">ALTER TABLE</span> tasks <span class="kw">ADD COLUMN</span> source <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'manual'</span>
+  <span class="kw">CHECK</span> (source <span class="kw">IN</span> (<span class="str">'manual'</span>,<span class="str">'checkin'</span>,<span class="str">'inbox'</span>));
+<span class="kw">ALTER TABLE</span> tasks <span class="kw">ADD COLUMN</span> goal_id <span class="tp">UUID</span> <span class="kw">REFERENCES</span> goals(id);
+
+<span class="cm">-- conversations.type に追加</span>
+<span class="cm">-- 'inbox_triage', 'daily_review', 'weekly_review', 'goal_setting'</span>
+
+<span class="cm">-- user_settings テーブル</span>
+<span class="kw">ALTER TABLE</span> user_settings <span class="kw">ADD COLUMN</span> weekly_review_day <span class="tp">TEXT</span> <span class="kw">DEFAULT</span> <span class="str">'saturday'</span>;
+<span class="kw">ALTER TABLE</span> user_settings <span class="kw">ADD COLUMN</span> weekly_review_time <span class="tp">TIME</span> <span class="kw">DEFAULT</span> <span class="str">'09:00'</span>;</pre></div>
+</div>
+
+<!-- EXT-API: Edge Functions Extension -->
+<div class="section" id="ext-api">
+  <div class="section-eyebrow" style="color:var(--green)">E2 — v1.1 Edge Functions拡張</div>
+  <h2 class="action-title">Edge Functions拡張（+6 &rarr; 計12）</h2>
+  <p class="section-lead">4機能群を支える6つの新規Edge Functions。既存のai-chatとの並列処理やcronトリガーを含む。</p>
+
+  <!-- Overview Table -->
+  <div style="overflow-x:auto;margin:16px 0">
+    <table style="width:100%;border-collapse:collapse;font-size:12px">
+      <thead>
+        <tr style="border-bottom:2px solid var(--border)">
+          <th style="text-align:left;padding:8px 12px;color:var(--cyan);font-size:11px;letter-spacing:.5px">FUNCTION</th>
+          <th style="text-align:left;padding:8px 12px;color:var(--cyan);font-size:11px;letter-spacing:.5px">TRIGGER</th>
+          <th style="text-align:left;padding:8px 12px;color:var(--cyan);font-size:11px;letter-spacing:.5px">AI MODEL</th>
+          <th style="text-align:left;padding:8px 12px;color:var(--cyan);font-size:11px;letter-spacing:.5px">INPUT / OUTPUT</th>
+        </tr>
+      </thead>
+      <tbody style="color:var(--text-dim)">
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:8px 12px;font-family:'JetBrains Mono',monospace;color:var(--amber)">inbox-triage</td>
+          <td style="padding:8px 12px">Inboxアイテム投入時</td>
+          <td style="padding:8px 12px"><span style="color:var(--green)">Gemini Flash</span></td>
+          <td style="padding:8px 12px">raw_content &rarr; カテゴリ分類+GTD裏処理<br><span style="font-size:10px;color:var(--text-muted)">確度0.8以上=自動振り分け / 低確度=pending</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:8px 12px;font-family:'JetBrains Mono',monospace;color:var(--amber)">inbox-review</td>
+          <td style="padding:8px 12px">毎日 20:00 (cron)</td>
+          <td style="padding:8px 12px"><span style="color:var(--purple)">Claude Haiku</span></td>
+          <td style="padding:8px 12px">未処理/放置アイテム &rarr; 棚卸しサマリー+通知</td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:8px 12px;font-family:'JetBrains Mono',monospace;color:var(--cyan)">daily-review</td>
+          <td style="padding:8px 12px">18:30通知 or 手動</td>
+          <td style="padding:8px 12px"><span style="color:var(--green)">Flash</span> &rarr; <span style="color:var(--purple)">Haiku</span> &rarr; <span style="color:var(--blue)">Sonnet</span></td>
+          <td style="padding:8px 12px">今日の全データ &rarr; ファクト+問い+インサイト<br><span style="font-size:10px;color:var(--text-muted)">4ステップチェイン</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:8px 12px;font-family:'JetBrains Mono',monospace;color:var(--cyan)">weekly-review</td>
+          <td style="padding:8px 12px">土曜AM通知 or 手動</td>
+          <td style="padding:8px 12px"><span style="color:var(--green)">Flash</span> &rarr; <span style="color:var(--blue)">Sonnet</span> &times; 2</td>
+          <td style="padding:8px 12px">7日分データ &rarr; パターン+ゴール進捗+来週フォーカス<br><span style="font-size:10px;color:var(--text-muted)">5ステップチェイン</span></td>
+        </tr>
+        <tr style="border-bottom:1px solid var(--border)">
+          <td style="padding:8px 12px;font-family:'JetBrains Mono',monospace;color:var(--green)">habit-detect</td>
+          <td style="padding:8px 12px">ai-chat内 (並列)</td>
+          <td style="padding:8px 12px"><span style="color:var(--green)">Gemini Flash</span></td>
+          <td style="padding:8px 12px">ユーザー発話 &rarr; 習慣的行動検出+仮記録<br><span style="font-size:10px;color:var(--text-muted)">3回以上検出で提案</span></td>
+        </tr>
+        <tr>
+          <td style="padding:8px 12px;font-family:'JetBrains Mono',monospace;color:var(--blue)">goal-coach</td>
+          <td style="padding:8px 12px">ユーザー発話 or 設定</td>
+          <td style="padding:8px 12px"><span style="color:var(--blue)">Claude Sonnet</span> &times; 5</td>
+          <td style="padding:8px 12px">ゴール設定対話 &rarr; MS分解+リード指標+If-Then<br><span style="font-size:10px;color:var(--text-muted)">5フェーズ対話型コーチ</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Interface Definitions -->
+  <h3 style="font-size:16px;font-weight:700;margin:20px 0 10px">インターフェース定義</h3>
+
+  <details class="acc" style="margin-bottom:8px">
+    <summary>inbox-triage &mdash; リクエスト/レスポンス</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="cm">// Request</span>
+<span class="kw">POST</span> /functions/v1/inbox-triage
+{
+  <span class="fn">"raw_content"</span>: <span class="str">"来週の提案書、大和書房向けに修正版必要"</span>,
+  <span class="fn">"content_type"</span>: <span class="str">"text"</span>
+}
+
+<span class="cm">// Response</span>
+{
+  <span class="fn">"id"</span>: <span class="str">"uuid"</span>,
+  <span class="fn">"ai_category"</span>: <span class="str">"task"</span>,
+  <span class="fn">"ai_category_confidence"</span>: <span class="num">0.92</span>,
+  <span class="fn">"ai_extracted_data"</span>: {
+    <span class="fn">"title"</span>: <span class="str">"大和書房向け提案書修正版作成"</span>,
+    <span class="fn">"context_tags"</span>: [<span class="str">"@computer"</span>, <span class="str">"@deep_focus"</span>],
+    <span class="fn">"project_match"</span>: { <span class="fn">"name"</span>: <span class="str">"大和書房DX"</span>, <span class="fn">"confidence"</span>: <span class="num">0.88</span> },
+    <span class="fn">"is_someday_maybe"</span>: <span class="kw">false</span>
+  },
+  <span class="fn">"status"</span>: <span class="str">"processed"</span>,
+  <span class="fn">"processed_to"</span>: <span class="str">"tasks:uuid-xxx"</span>
+}</pre></div>
+    </div>
+  </details>
+
+  <details class="acc" style="margin-bottom:8px">
+    <summary>daily-review &mdash; リクエスト/レスポンス</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="cm">// Request (初期化)</span>
+<span class="kw">POST</span> /functions/v1/daily-review
+{ <span class="fn">"action"</span>: <span class="str">"start"</span> }
+
+<span class="cm">// Response Step 1-2 (ファクト+問い)</span>
+{
+  <span class="fn">"review_id"</span>: <span class="str">"uuid"</span>,
+  <span class="fn">"facts_summary"</span>: {
+    <span class="fn">"tasks_completed"</span>: <span class="num">5</span>,
+    <span class="fn">"energy_avg"</span>: <span class="num">7.2</span>,
+    <span class="fn">"habits_done"</span>: <span class="str">"3/5"</span>,
+    <span class="fn">"inbox_processed"</span>: <span class="num">8</span>
+  },
+  <span class="fn">"reflection_prompts"</span>: [
+    <span class="str">"今日エネルギーが高かった午前中、何がそうさせた？"</span>,
+    <span class="str">"商談準備を後回しにした理由は何だろう？"</span>,
+    <span class="str">"明日、もし1つだけ必ずやるとしたら？"</span>
+  ]
+}
+
+<span class="cm">// Request (回答送信)</span>
+<span class="kw">POST</span> /functions/v1/daily-review
+{
+  <span class="fn">"action"</span>: <span class="str">"respond"</span>,
+  <span class="fn">"review_id"</span>: <span class="str">"uuid"</span>,
+  <span class="fn">"responses"</span>: [<span class="str">"朝散歩で..."</span>, <span class="str">"RSDが..."</span>, <span class="str">"提案書の..."</span>]
+}
+
+<span class="cm">// Response Step 4 (インサイト)</span>
+{
+  <span class="fn">"insight"</span>: <span class="str">"朝の運動がエネルギーの土台を作っている。..."</span>,
+  <span class="fn">"tomorrow_actions"</span>: [<span class="str">"9:00に商談準備25分"</span>, <span class="str">"午後の会議前にインボックス棚卸し"</span>],
+  <span class="fn">"goal_contribution"</span>: { <span class="str">"リピート3社"</span>: <span class="str">"+0.5% (商談準備完了)"</span> }
+}</pre></div>
+    </div>
+  </details>
+
+  <details class="acc" style="margin-bottom:8px">
+    <summary>goal-coach &mdash; 5フェーズインターフェース</summary>
+    <div class="acc-body">
+      <div class="code-block" style="font-size:11px"><pre style="margin:0"><span class="cm">// Request (ゴール設定開始)</span>
+<span class="kw">POST</span> /functions/v1/goal-coach
+{
+  <span class="fn">"action"</span>: <span class="str">"start"</span>,
+  <span class="fn">"initial_goal"</span>: <span class="str">"オモシク事業でリピート受注3社獲得"</span>
+}
+
+<span class="cm">// Response: Phase別に対話を返す</span>
+<span class="cm">// Phase 1: WHY深掘り</span>
+{ <span class="fn">"phase"</span>: <span class="num">1</span>, <span class="fn">"message"</span>: <span class="str">"3社取れたら、何が変わる？どんな気持ちになる？"</span> }
+
+<span class="cm">// Phase 2: マイルストーン分解</span>
+{ <span class="fn">"phase"</span>: <span class="num">2</span>, <span class="fn">"milestones"</span>: [...], <span class="fn">"message"</span>: <span class="str">"3社それぞれ、どう攻める？"</span> }
+
+<span class="cm">// Phase 3: リード指標設計</span>
+{ <span class="fn">"phase"</span>: <span class="num">3</span>, <span class="fn">"lead_indicators"</span>: [...], <span class="fn">"habits_proposed"</span>: [...] }
+
+<span class="cm">// Phase 4: セーフティネット</span>
+{
+  <span class="fn">"phase"</span>: <span class="num">4</span>,
+  <span class="fn">"if_then_plans"</span>: [
+    { <span class="fn">"if"</span>: <span class="str">"3日連続未達"</span>, <span class="fn">"then"</span>: <span class="str">"Challengerペルソナで声がけ"</span> },
+    { <span class="fn">"if"</span>: <span class="str">"1週間停滞"</span>, <span class="fn">"then"</span>: <span class="str">"マイルストーン見直し提案"</span> },
+    { <span class="fn">"if"</span>: <span class="str">"部分達成"</span>, <span class="fn">"then"</span>: <span class="str">"成果再定義で成功体験化"</span> }
+  ]
+}
+
+<span class="cm">// Phase 5: アクションプラン確定</span>
+{
+  <span class="fn">"phase"</span>: <span class="num">5</span>,
+  <span class="fn">"this_week_actions"</span>: [
+    { <span class="fn">"title"</span>: <span class="str">"大和書房フォローアップ電話"</span>, <span class="fn">"goal_id"</span>: <span class="str">"uuid"</span> },
+    { <span class="fn">"title"</span>: <span class="str">"日科ホーム提案書ドラフト"</span>, <span class="fn">"goal_id"</span>: <span class="str">"uuid"</span> },
+    { <span class="fn">"title"</span>: <span class="str">"新規リード3件にDM送信"</span>, <span class="fn">"goal_id"</span>: <span class="str">"uuid"</span> }
+  ],
+  <span class="fn">"message"</span>: <span class="str">"よっしゃ、これで行こう！まず月曜の朝イチ、大和書房に電話や！"</span>
+}</pre></div>
+    </div>
+  </details>
+</div>
+
+<!-- EXT-CHAIN: Prompt Chains -->
+<div class="section" id="ext-chain">
+  <div class="section-eyebrow" style="color:var(--green)">E3 — v1.1 プロンプトチェイン</div>
+  <h2 class="action-title">5つの新規プロンプトチェイン</h2>
+  <p class="section-lead">既存のai-chatチェインに加え、5つの専用チェインを追加。各チェインはマルチモデル構成で、コスト効率と品質を両立。</p>
+
+  <!-- Chain 1: Inbox Triage -->
+  <h3 style="font-size:14px;font-weight:700;margin:20px 0 10px;color:var(--amber)">1. Inbox Triage Chain（自動・バックグラウンド）</h3>
+  <div style="display:flex;gap:8px;align-items:center;margin:12px 0;flex-wrap:wrap">
+    <div style="background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;min-width:120px">
+      <div style="font-size:10px;font-weight:700;color:var(--amber)">INPUT</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px">raw_content<br>+ 既存プロジェクト一覧</div>
+    </div>
+    <div style="color:var(--text-muted);font-size:16px">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid rgba(52,211,153,.3);border-radius:8px;padding:10px 16px;text-align:center;min-width:140px">
+      <div style="font-size:10px;font-weight:700;color:var(--green)">Gemini Flash</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px">構造化分類<br>9カテゴリ+GTD処理</div>
+    </div>
+    <div style="color:var(--text-muted);font-size:16px">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid var(--border);border-radius:8px;padding:10px 16px;text-align:center;min-width:120px">
+      <div style="font-size:10px;font-weight:700;color:var(--cyan)">ROUTE</div>
+      <div style="font-size:11px;color:var(--text-dim);margin-top:4px">&ge;0.8 &rarr; Auto<br>&lt;0.8 &rarr; Pending</div>
+    </div>
+  </div>
+
+  <!-- Chain 2: Daily Review -->
+  <h3 style="font-size:14px;font-weight:700;margin:24px 0 10px;color:var(--cyan)">2. Daily Review Chain（18:30 or 手動）</h3>
+  <div style="display:flex;gap:6px;align-items:center;margin:12px 0;flex-wrap:wrap">
+    <div style="background:var(--bg-deep);border:1px solid rgba(52,211,153,.3);border-radius:8px;padding:10px 14px;text-align:center;flex:1;min-width:100px">
+      <div style="font-size:10px;font-weight:700;color:var(--green)">Step 1</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:4px">Gemini Flash<br>ファクト集約</div>
+    </div>
+    <div style="color:var(--text-muted)">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid rgba(168,85,247,.3);border-radius:8px;padding:10px 14px;text-align:center;flex:1;min-width:100px">
+      <div style="font-size:10px;font-weight:700;color:var(--purple)">Step 2</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:4px">Claude Haiku<br>問い生成&times;3</div>
+    </div>
+    <div style="color:var(--text-muted)">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:10px 14px;text-align:center;flex:1;min-width:100px">
+      <div style="font-size:10px;font-weight:700;color:var(--amber)">Step 3</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:4px">ユーザー回答<br>テキスト/音声</div>
+    </div>
+    <div style="color:var(--text-muted)">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid rgba(74,125,255,.3);border-radius:8px;padding:10px 14px;text-align:center;flex:1;min-width:100px">
+      <div style="font-size:10px;font-weight:700;color:var(--blue)">Step 4</div>
+      <div style="font-size:10px;color:var(--text-dim);margin-top:4px">Claude Sonnet<br>インサイト+明日</div>
+    </div>
+  </div>
+
+  <!-- Chain 3: Weekly Review -->
+  <h3 style="font-size:14px;font-weight:700;margin:24px 0 10px;color:var(--cyan)">3. Weekly Review Chain（土曜AM）</h3>
+  <div style="display:flex;gap:4px;align-items:center;margin:12px 0;flex-wrap:wrap">
+    <div style="background:var(--bg-deep);border:1px solid rgba(52,211,153,.3);border-radius:6px;padding:8px 10px;text-align:center;flex:1;min-width:80px">
+      <div style="font-size:9px;font-weight:700;color:var(--green)">1</div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:2px">Flash<br>7日集約</div>
+    </div>
+    <div style="color:var(--text-muted);font-size:12px">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid rgba(74,125,255,.3);border-radius:6px;padding:8px 10px;text-align:center;flex:1;min-width:80px">
+      <div style="font-size:9px;font-weight:700;color:var(--blue)">2</div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:2px">Sonnet<br>パターン認識</div>
+    </div>
+    <div style="color:var(--text-muted);font-size:12px">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid var(--border);border-radius:6px;padding:8px 10px;text-align:center;flex:1;min-width:80px">
+      <div style="font-size:9px;font-weight:700;color:var(--cyan)">3</div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:2px">バランス<br>+ゴール</div>
+    </div>
+    <div style="color:var(--text-muted);font-size:12px">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid rgba(245,158,11,.3);border-radius:6px;padding:8px 10px;text-align:center;flex:1;min-width:80px">
+      <div style="font-size:9px;font-weight:700;color:var(--amber)">4</div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:2px">ユーザー<br>振り返り</div>
+    </div>
+    <div style="color:var(--text-muted);font-size:12px">&rarr;</div>
+    <div style="background:var(--bg-deep);border:1px solid rgba(74,125,255,.3);border-radius:6px;padding:8px 10px;text-align:center;flex:1;min-width:80px">
+      <div style="font-size:9px;font-weight:700;color:var(--blue)">5</div>
+      <div style="font-size:9px;color:var(--text-dim);margin-top:2px">Sonnet<br>来週Focus</div>
+    </div>
+  </div>
+
+  <!-- Chain 4: Habit Detection -->
+  <h3 style="font-size:14px;font-weight:700;margin:24px 0 10px;color:var(--green)">4. Habit Detection（ai-chat並列サブ処理）</h3>
+  <div style="background:var(--bg-deep);border-radius:8px;padding:16px;border:1px solid var(--border);font-size:11px;line-height:2;color:var(--text-muted);font-family:'JetBrains Mono',monospace">
+    AIチャット受信<br>
+    &nbsp;&nbsp;├── <span style="color:var(--blue)">メインパス</span>: Claude &rarr; コーチング応答（通常通り）<br>
+    &nbsp;&nbsp;└── <span style="color:var(--green)">サブパス（並列）</span>: Gemini Flash &rarr; 習慣検出<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;検出 &rarr; habit_logs 仮記録 (source=<span style="color:var(--amber)">'ai_detected'</span>)<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;3回+ &rarr; 振り返り時: <span style="color:var(--green)">「習慣として追跡する？」</span>
+  </div>
+
+  <!-- Chain 5: Goal Coach -->
+  <h3 style="font-size:14px;font-weight:700;margin:24px 0 10px;color:var(--blue)">5. Goal Coach Session（5フェーズ対話型）</h3>
+  <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin:12px 0">
+    <div style="background:linear-gradient(180deg,rgba(74,125,255,.15),var(--bg-deep));border:1px solid rgba(74,125,255,.3);border-radius:8px;padding:12px 8px;text-align:center">
+      <div style="font-size:18px">&#x1F525;</div>
+      <div style="font-size:9px;font-weight:700;color:var(--blue);margin:4px 0">Phase 1</div>
+      <div style="font-size:9px;color:var(--text-dim)">WHY深掘り</div>
+      <div style="font-size:8px;color:var(--text-muted);margin-top:4px">感情的動機</div>
+    </div>
+    <div style="background:linear-gradient(180deg,rgba(6,182,212,.15),var(--bg-deep));border:1px solid rgba(6,182,212,.3);border-radius:8px;padding:12px 8px;text-align:center">
+      <div style="font-size:18px">&#x1F9E9;</div>
+      <div style="font-size:9px;font-weight:700;color:var(--cyan);margin:4px 0">Phase 2</div>
+      <div style="font-size:9px;color:var(--text-dim)">MS分解</div>
+      <div style="font-size:8px;color:var(--text-muted);margin-top:4px">ステップ策定</div>
+    </div>
+    <div style="background:linear-gradient(180deg,rgba(52,211,153,.15),var(--bg-deep));border:1px solid rgba(52,211,153,.3);border-radius:8px;padding:12px 8px;text-align:center">
+      <div style="font-size:18px">&#x1F4CF;</div>
+      <div style="font-size:9px;font-weight:700;color:var(--green);margin:4px 0">Phase 3</div>
+      <div style="font-size:9px;color:var(--text-dim)">リード指標</div>
+      <div style="font-size:8px;color:var(--text-muted);margin-top:4px">&rarr;習慣連携</div>
+    </div>
+    <div style="background:linear-gradient(180deg,rgba(245,158,11,.15),var(--bg-deep));border:1px solid rgba(245,158,11,.3);border-radius:8px;padding:12px 8px;text-align:center">
+      <div style="font-size:18px">&#x1F6E1;&#xFE0F;</div>
+      <div style="font-size:9px;font-weight:700;color:var(--amber);margin:4px 0">Phase 4</div>
+      <div style="font-size:9px;color:var(--text-dim)">セーフティ</div>
+      <div style="font-size:8px;color:var(--text-muted);margin-top:4px">If-Thenプラン</div>
+    </div>
+    <div style="background:linear-gradient(180deg,rgba(168,85,247,.15),var(--bg-deep));border:1px solid rgba(168,85,247,.3);border-radius:8px;padding:12px 8px;text-align:center">
+      <div style="font-size:18px">&#x1F3C1;</div>
+      <div style="font-size:9px;font-weight:700;color:var(--purple);margin:4px 0">Phase 5</div>
+      <div style="font-size:9px;color:var(--text-dim)">アクション確定</div>
+      <div style="font-size:8px;color:var(--text-muted);margin-top:4px">今週3つ</div>
+    </div>
+  </div>
+  <p style="font-size:12px;color:var(--text-dim);margin-top:8px">全フェーズ <strong>Claude Sonnet (Coach persona)</strong> が対話形式で伴走。ADHD向けセーフティネット（If-Thenプラン）を事前設計し、停滞時の自動介入を仕込む。</p>
+
+  <!-- Periodic Coaching -->
+  <h3 style="font-size:14px;font-weight:700;margin:24px 0 10px;color:var(--blue)">定期ゴールコーチング（自動トリガー）</h3>
+  <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0">
+    <div style="background:var(--bg-deep);border-radius:6px;padding:10px 14px;border:1px solid var(--border);border-left:3px solid var(--cyan)">
+      <div style="font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:4px">WEEKLY（土曜AM振り返り内）</div>
+      <div style="font-size:11px;color:var(--text-dim)">リード指標達成率 + マイルストーン進捗 + 来週フォーカス</div>
+    </div>
+    <div style="background:var(--bg-deep);border-radius:6px;padding:10px 14px;border:1px solid var(--border);border-left:3px solid var(--blue)">
+      <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:4px">MONTHLY（月初）</div>
+      <div style="font-size:11px;color:var(--text-dim)">ゴール全体見直し + マイルストーン再調整 + 新If-Thenプラン</div>
+    </div>
+    <div style="background:var(--bg-deep);border-radius:6px;padding:10px 14px;border:1px solid var(--border);border-left:3px solid var(--green)">
+      <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:4px">ON MILESTONE ACHIEVED</div>
+      <div style="font-size:11px;color:var(--text-dim)">AI祝福メッセージ + 次MSへの橋渡し + バランスホイール更新</div>
+    </div>
+    <div style="background:var(--bg-deep);border-radius:6px;padding:10px 14px;border:1px solid var(--border);border-left:3px solid var(--amber)">
+      <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:4px">ON STAGNATION（2週間未達）</div>
+      <div style="font-size:11px;color:var(--text-dim)">Challengerペルソナで叱咤 or Analystペルソナで冷静分析</div>
+    </div>
+  </div>
+
+  <!-- Cost Impact -->
+  <div class="card" style="margin-top:24px;border-left:4px solid var(--green)">
+    <h4 style="font-size:14px;margin-bottom:8px">AIルーティング更新 &amp; コスト影響</h4>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:12px 0">
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--text-muted);margin-bottom:8px;letter-spacing:.5px">v1.0 ROUTING</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.8">
+          Sonnet: コーチング（20%）<br>
+          Haiku: クイック応答（60%）<br>
+          Flash: ユーティリティ（20%）<br>
+          <span style="color:var(--text-muted)">$2.50-4.00/user/月</span>
+        </div>
+      </div>
+      <div>
+        <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:8px;letter-spacing:.5px">v1.1 ROUTING</div>
+        <div style="font-size:11px;color:var(--text-dim);line-height:1.8">
+          Sonnet: コーチング+振り返り+ゴール（25%）<br>
+          Haiku: 応答+問い生成+棚卸し（45%）<br>
+          Flash: 仕分け+検出+集約（30%）<br>
+          <span style="color:var(--green);font-weight:700">$3.30-5.50/user/月</span> (+$0.80-1.50)
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
 <!-- ═══════════════════════ FOOTER ═══════════════════════ -->
 <div class="footer">
-  <p>才能解放AIコーチ — Technical Specification v1.0</p>
+  <p>才能解放AIコーチ — Technical Specification v1.1</p>
   <p>omoshiku Inc. | 2026-02-27 | <a href="sainou-coach-proposal.html">&larr; 企画書に戻る</a></p>
 </div>
 

@@ -317,6 +317,7 @@ details.acc-slot[open] summary{border-radius:6px 6px 0 0;border-color:var(--bord
   <a href="#s03"><span class="toc-num">03</span> プロダクトビジョン</a>
   <a href="#s04"><span class="toc-num">04</span> 1日の体験フロー</a>
   <a href="#s05"><span class="toc-num">05</span> コア機能</a>
+  <a href="#s-ext"><span class="toc-num">+&alpha;</span> 拡張機能</a>
   <a href="#s06"><span class="toc-num">06</span> 独自アルゴリズム</a>
   <div class="toc-part">どう作るのか</div>
   <a href="#s07"><span class="toc-num">07</span> 技術アーキテクチャ</a>
@@ -895,6 +896,281 @@ MTGのテンションを引きずったまま別のクライアントに入る�
       <div class="card-badge purple">Screen 5</div>
       <h4>バランスホイール</h4>
       <p>人生8領域のレーダーチャート。週次/月次のスコア推移。<strong>「今の人生、偏ってない？」を一目で。</strong></p>
+    </div>
+  </div>
+</div>
+
+<!-- S-EXT: EXTENSION FEATURES -->
+<div class="section" id="s-ext">
+  <div class="section-eyebrow" style="color:var(--green)">+&alpha; — 拡張機能ロードマップ</div>
+  <div class="action-title">5つのコアに、4つの翼を。</div>
+  <p class="section-lead">MVP後の拡張として、4つの機能群を統合します。GTD×ADHD×AIの市場空白を埋め、「計画→実行→記録→振り返り→改善」の完全ループを実現します。</p>
+
+  <!-- Feature 1: GTD Inbox -->
+  <details class="acc" style="margin-bottom:12px">
+    <summary><span style="color:var(--amber)">&#x1F4E5;</span> GTDインボックス &mdash; 見た目ライト、裏でフル</summary>
+    <div class="acc-body">
+      <h5>コンセプト</h5>
+      <p>ユーザーが見るのは<strong>シンプルな放り込み口</strong>だけ。テキスト・音声で何でも投入。<br>裏ではAIがフルGTD処理を自動実行します。</p>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:16px 0">
+        <div style="background:var(--bg-deep);border-radius:8px;padding:16px;border:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:8px;letter-spacing:.5px">USER SEES</div>
+          <div style="font-size:12px;line-height:1.8;color:var(--text-dim)">
+            &bull; 1タップでテキスト/音声入力<br>
+            &bull; カテゴリ別タブ（タスク / アイデア / メモ）<br>
+            &bull; AI提案に「承認 / 編集 / 却下」<br>
+            &bull; 棚卸しモード（1日1回通知）
+          </div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:16px;border:1px solid var(--border)">
+          <div style="font-size:11px;font-weight:700;color:var(--cyan);margin-bottom:8px;letter-spacing:.5px">AI PROCESSES</div>
+          <div style="font-size:12px;line-height:1.8;color:var(--text-dim)">
+            &bull; 9カテゴリ自動分類（確度スコア付き）<br>
+            &bull; コンテキストタグ（@deep_focus等）<br>
+            &bull; プロジェクト自動判定<br>
+            &bull; Waiting For / Someday Maybe / Tickler検出
+          </div>
+        </div>
+      </div>
+
+      <h5>処理フロー</h5>
+      <div style="background:var(--bg-deep);border-radius:8px;padding:16px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.8;color:var(--text-muted)">
+        <span style="color:var(--amber)">User Input</span> &rarr; <span style="color:var(--cyan)">Gemini Flash</span> (構造化分類)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+        confidence &ge; 0.8 &rarr; <span style="color:var(--green)">Auto-route</span> (tasks / calendar / someday_maybe)<br>
+        confidence &lt; 0.8 &rarr; <span style="color:var(--amber)">Pending</span> (棚卸し待ち &rarr; 20:00通知)
+      </div>
+
+      <h5>市場ギャップ</h5>
+      <p>Motion=スケジュール配置のみ。Goblin Tools=タスク分解のみ。<br><strong>「カテゴリ判定→アクション抽出→プロジェクト割当→コンテキスト付与」の全自動は市場に存在しない。</strong></p>
+    </div>
+  </details>
+
+  <!-- Feature 2: AI Review Skills -->
+  <details class="acc" style="margin-bottom:12px">
+    <summary><span style="color:var(--cyan)">&#x1F52E;</span> AI振り返りスキル &mdash; 事実の棚卸し &times; 内省支援</summary>
+    <div class="acc-body">
+      <h5>日次振り返り（18:30 or 手動）</h5>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin:12px 0">
+        <div style="background:var(--bg-deep);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:18px;margin-bottom:4px">&#x1F4CA;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:4px">STEP 1</div>
+          <div style="font-size:11px;color:var(--text-dim)">ファクト集約<br><span style="font-size:10px;color:var(--text-muted)">Gemini Flash</span></div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:18px;margin-bottom:4px">&#x2753;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:4px">STEP 2</div>
+          <div style="font-size:11px;color:var(--text-dim)">内省の問い生成<br><span style="font-size:10px;color:var(--text-muted)">Claude Haiku</span></div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:18px;margin-bottom:4px">&#x1F4DD;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:4px">STEP 3</div>
+          <div style="font-size:11px;color:var(--text-dim)">ユーザー回答<br><span style="font-size:10px;color:var(--text-muted)">テキスト/音声</span></div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:12px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:18px;margin-bottom:4px">&#x1F4A1;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:4px">STEP 4</div>
+          <div style="font-size:11px;color:var(--text-dim)">総合インサイト<br><span style="font-size:10px;color:var(--text-muted)">Claude Sonnet</span></div>
+        </div>
+      </div>
+      <p>AIが今日のファクト（完了タスク、エネルギー推移、習慣達成率）を自動集約。<br>それに基づく<strong>内省の問い3つ</strong>を生成し、回答後に<strong>総合インサイト＋明日のマイクロアクション</strong>を提供。</p>
+
+      <h5>週次振り返り（土曜AM）</h5>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0">
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:10px;font-weight:700;color:var(--cyan)">1</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">7日集約</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:10px;font-weight:700;color:var(--cyan)">2</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">パターン認識</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:10px;font-weight:700;color:var(--cyan)">3</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">バランス + ゴール</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:10px;font-weight:700;color:var(--amber)">4</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">振り返り回答</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;text-align:center;border:1px solid var(--border)">
+          <div style="font-size:10px;font-weight:700;color:var(--green)">5</div>
+          <div style="font-size:10px;color:var(--text-dim);margin-top:4px">来週フォーカス</div>
+        </div>
+      </div>
+      <p>7日分のデータから<strong>週パターン</strong>を認識。ゴール進捗・リード指標達成率を分析し、<strong>来週のフォーカスポイント</strong>と<strong>Someday/Maybe棚卸し</strong>を提案。</p>
+
+      <h5>Progrit設計パターンの取り込み</h5>
+      <p>Progritアプリの「計画&rarr;実行&rarr;記録&rarr;振り返り」ループと行動経済学ベースの通知設計（即時フィードバック＋小さな達成感）を、振り返りチェインに統合。</p>
+    </div>
+  </details>
+
+  <!-- Feature 3: Habit Checker -->
+  <details class="acc" style="margin-bottom:12px">
+    <summary><span style="color:var(--green)">&#x2705;</span> 習慣チェッカー &mdash; AI自動検出 &times; 手動ハイブリッド</summary>
+    <div class="acc-body">
+      <h5>3つの習慣ソース</h5>
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:12px 0">
+        <div style="background:var(--bg-deep);border-radius:8px;padding:14px;border:1px solid var(--border);border-top:3px solid var(--green)">
+          <div style="font-size:11px;font-weight:700;color:var(--green);margin-bottom:6px">AI自動検出</div>
+          <div style="font-size:11px;line-height:1.7;color:var(--text-dim)">対話内から習慣的行動をGemini Flashが並列検出。3回以上で「追跡する？」提案。</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:14px;border:1px solid var(--border);border-top:3px solid var(--amber)">
+          <div style="font-size:11px;font-weight:700;color:var(--amber);margin-bottom:6px">手動追加</div>
+          <div style="font-size:11px;line-height:1.7;color:var(--text-dim)">ユーザーが自由に習慣を登録。頻度（毎日/平日/週次/カスタム）・時間を設定。</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:14px;border:1px solid var(--border);border-top:3px solid var(--cyan)">
+          <div style="font-size:11px;font-weight:700;color:var(--cyan);margin-bottom:6px">ADHDデフォルト</div>
+          <div style="font-size:11px;line-height:1.7;color:var(--text-dim)">ADHD科学ベースの推奨リスト（睡眠7h+、服薬、運動20分+、水分2L等）を初期提案。</div>
+        </div>
+      </div>
+
+      <h5>AI自動検出フロー</h5>
+      <div style="background:var(--bg-deep);border-radius:8px;padding:16px;border:1px solid var(--border);font-family:'JetBrains Mono',monospace;font-size:11px;line-height:1.8;color:var(--text-muted)">
+        <span style="color:var(--amber)">AIチャット中</span> &rarr; <span style="color:var(--cyan)">Gemini Flash</span> (並列で習慣検出)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+        検出 &rarr; habit_logs に仮記録 (<span style="color:var(--text-dim)">source=&apos;ai_detected&apos;</span>)<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+        3回以上検出 &rarr; <span style="color:var(--green)">振り返り時に提案</span>: 「習慣として追跡する？」<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;&darr;<br>
+        承認 &rarr; habits テーブルに正式登録 + カレンダービュー表示
+      </div>
+
+      <h5>カレンダービュー（ヒートマップ + ストリーク）</h5>
+      <div style="background:var(--bg-deep);border-radius:8px;padding:16px;border:1px solid var(--border)">
+        <div style="font-family:'JetBrains Mono',monospace;font-size:10px;color:var(--text-muted);line-height:2">
+          <div style="display:grid;grid-template-columns:80px repeat(7,1fr);gap:2px;text-align:center">
+            <div></div><div>月</div><div>火</div><div>水</div><div>木</div><div>金</div><div>土</div><div>日</div>
+            <div style="text-align:left;color:var(--text-dim)">服薬</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:rgba(52,211,153,.3);border-radius:3px">&check;</div>
+            <div style="background:rgba(52,211,153,.3);border-radius:3px">&check;</div>
+            <div style="text-align:left;color:var(--text-dim)">朝散歩</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:3px">&ndash;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:3px">&ndash;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:3px">&ndash;</div>
+            <div style="text-align:left;color:var(--text-dim)">商談準備</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:3px">&ndash;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:var(--green);border-radius:3px;color:#000">&check;</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:3px">&ndash;</div>
+            <div style="background:rgba(255,255,255,.05);border-radius:3px">&ndash;</div>
+          </div>
+          <div style="margin-top:8px;font-size:10px;color:var(--text-dim)">
+            &#x1F525; 服薬: 14日連続 &nbsp;&nbsp; &#x1F525; 朝散歩: 7日連続 &nbsp;&nbsp; &#x1F525; 商談準備: 4日連続
+          </div>
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- Feature 4: Goals & Milestones -->
+  <details class="acc" style="margin-bottom:12px">
+    <summary><span style="color:var(--blue)">&#x1F3AF;</span> 3層ゴール &amp; AIコーチ &mdash; ビジョンから今日の1歩まで</summary>
+    <div class="acc-body">
+      <h5>3層構造</h5>
+      <div style="margin:12px 0">
+        <!-- Vision Layer -->
+        <div style="background:linear-gradient(135deg,rgba(74,125,255,.15),rgba(74,125,255,.05));border:1px solid rgba(74,125,255,.3);border-radius:10px;padding:16px;margin-bottom:8px">
+          <div style="font-size:10px;font-weight:700;color:var(--blue);letter-spacing:1px;margin-bottom:4px">VISION &mdash; WHY（期限なし可）</div>
+          <div style="font-size:13px;color:var(--text)">「独立して自分の力で稼げる人間になる」</div>
+          <div style="font-size:10px;color:var(--text-muted);margin-top:4px">感情的動機: 「家族に胸を張れる自分でいたい」</div>
+          <!-- Outcome Layer -->
+          <div style="background:rgba(52,211,153,.08);border:1px solid rgba(52,211,153,.25);border-radius:8px;padding:14px;margin-top:12px;margin-left:16px">
+            <div style="font-size:10px;font-weight:700;color:var(--green);letter-spacing:1px;margin-bottom:4px">OUTCOME &mdash; WHAT（期限あり）</div>
+            <div style="font-size:12px;color:var(--text)">「オモシク事業でリピート受注3社獲得」</div>
+            <div style="font-size:10px;color:var(--text-muted);margin-top:2px">期限: 2026-05-31 &nbsp;&nbsp; 進捗: 1/3社（33%）</div>
+            <!-- Lead Indicators -->
+            <div style="background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);border-radius:6px;padding:12px;margin-top:10px;margin-left:12px">
+              <div style="font-size:10px;font-weight:700;color:var(--amber);letter-spacing:1px;margin-bottom:6px">LEAD INDICATORS &mdash; HOW（日次/週次）</div>
+              <div style="font-size:11px;line-height:1.8;color:var(--text-dim)">
+                &bull; 週3件の商談実施 &rarr; <span style="color:var(--green)">習慣チェッカーに自動連携</span><br>
+                &bull; 毎週1件の提案書作成 &rarr; <span style="color:var(--green)">習慣チェッカーに自動連携</span><br>
+                &bull; 毎日30分の事例研究 &rarr; <span style="color:var(--green)">習慣チェッカーに自動連携</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h5>5フェーズ AIゴールコーチ</h5>
+      <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin:12px 0">
+        <div style="background:var(--bg-deep);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border);border-top:3px solid var(--blue)">
+          <div style="font-size:16px;margin-bottom:4px">&#x1F525;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--blue);margin-bottom:4px">Phase 1</div>
+          <div style="font-size:10px;color:var(--text-dim)">WHY<br>深掘り</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border);border-top:3px solid var(--cyan)">
+          <div style="font-size:16px;margin-bottom:4px">&#x1F9E9;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--cyan);margin-bottom:4px">Phase 2</div>
+          <div style="font-size:10px;color:var(--text-dim)">マイルストーン<br>分解</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border);border-top:3px solid var(--green)">
+          <div style="font-size:16px;margin-bottom:4px">&#x1F4CF;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--green);margin-bottom:4px">Phase 3</div>
+          <div style="font-size:10px;color:var(--text-dim)">リード指標<br>設計</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border);border-top:3px solid var(--amber)">
+          <div style="font-size:16px;margin-bottom:4px">&#x1F6E1;&#xFE0F;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--amber);margin-bottom:4px">Phase 4</div>
+          <div style="font-size:10px;color:var(--text-dim)">セーフティ<br>ネット</div>
+        </div>
+        <div style="background:var(--bg-deep);border-radius:8px;padding:10px;text-align:center;border:1px solid var(--border);border-top:3px solid var(--purple)">
+          <div style="font-size:16px;margin-bottom:4px">&#x1F3C1;</div>
+          <div style="font-size:10px;font-weight:700;color:var(--purple);margin-bottom:4px">Phase 5</div>
+          <div style="font-size:10px;color:var(--text-dim)">アクション<br>プラン確定</div>
+        </div>
+      </div>
+      <p>Claude Sonnet（Coachペルソナ）が対話形式で5フェーズを伴走。<br>ADHD向けセーフティネット（<strong>If-Thenプラン</strong>: 3日未達→Challenger声がけ、1週間停滞→マイルストーン見直し、部分達成→再定義）を事前設計。</p>
+
+      <h5>定期コーチング（自動トリガー）</h5>
+      <div style="display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin:12px 0">
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;border:1px solid var(--border);font-size:11px;color:var(--text-dim)">
+          <span style="font-weight:700;color:var(--cyan)">週次</span> 土曜AM振り返り内 &mdash; リード指標達成率 + マイルストーン進捗
+        </div>
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;border:1px solid var(--border);font-size:11px;color:var(--text-dim)">
+          <span style="font-weight:700;color:var(--blue)">月次</span> 月初 &mdash; ゴール全体見直し + 新If-Thenプラン
+        </div>
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;border:1px solid var(--border);font-size:11px;color:var(--text-dim)">
+          <span style="font-weight:700;color:var(--green)">達成時</span> マイルストーン完了 &mdash; AI祝福 + 次MSへの橋渡し
+        </div>
+        <div style="background:var(--bg-deep);border-radius:6px;padding:10px;border:1px solid var(--border);font-size:11px;color:var(--text-dim)">
+          <span style="font-weight:700;color:var(--amber)">停滞時</span> 2週間未達 &mdash; Challengerで叱咤 or Analystで冷静分析
+        </div>
+      </div>
+    </div>
+  </details>
+
+  <!-- DB Extension Summary -->
+  <div class="card" style="margin-top:20px;border-left:4px solid var(--green)">
+    <h4 style="font-size:14px;margin-bottom:8px">拡張による技術変更サマリー</h4>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px">
+      <div>
+        <div style="font-size:24px;font-weight:800;color:var(--green)">+6</div>
+        <div style="font-size:11px;color:var(--text-dim)">新規テーブル<br><span style="font-size:10px;color:var(--text-muted)">inbox_items, reviews, habits, habit_logs, goals, milestones</span></div>
+      </div>
+      <div>
+        <div style="font-size:24px;font-weight:800;color:var(--cyan)">+6</div>
+        <div style="font-size:11px;color:var(--text-dim)">Edge Functions<br><span style="font-size:10px;color:var(--text-muted)">inbox-triage, inbox-review, daily-review, weekly-review, habit-detect, goal-coach</span></div>
+      </div>
+      <div>
+        <div style="font-size:24px;font-weight:800;color:var(--amber)">5</div>
+        <div style="font-size:11px;color:var(--text-dim)">プロンプトチェイン<br><span style="font-size:10px;color:var(--text-muted)">Inbox Triage, Daily Review, Weekly Review, Habit Detection, Goal Coach</span></div>
+      </div>
+    </div>
+    <div style="margin-top:12px;padding-top:12px;border-top:1px solid var(--border);font-size:11px;color:var(--text-muted)">
+      コスト影響: +$0.80-1.50/ユーザー/月 &rarr; 合計 $3.30-5.50/ユーザー/月
     </div>
   </div>
 </div>
