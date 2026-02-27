@@ -21,7 +21,7 @@ body{font-family:var(--font-sans);background:var(--bg-base);color:var(--text);li
 .toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:3px 0;line-height:1.4;transition:color .15s}
 .toc-sidebar a:hover{color:var(--cyan)}
 .toc-num{color:var(--text-muted);margin-right:4px;font-family:var(--font-mono);font-size:10px}
-.toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
 .toc-part:first-child{border-top:none;margin-top:0;padding-top:0}
 @media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
 
@@ -36,13 +36,13 @@ body{font-family:var(--font-sans);background:var(--bg-base);color:var(--text);li
 /* Sections */
 .section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
 .section:last-of-type{border-bottom:none}
-.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px}
 .action-title{font-size:24px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
 .section-lead{font-size:15px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
 
 /* Part Divider */
 .part-divider{padding:32px 0 8px;text-align:center}
-.part-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.part-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:.5px}
 .part-badge.a{border-color:var(--red);color:var(--red)}
 .part-badge.b{border-color:var(--cyan);color:var(--cyan)}
 .part-badge.c{border-color:var(--green);color:var(--green)}
@@ -288,35 +288,35 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- TOC SIDEBAR -->
 <nav class="toc-sidebar">
-  <h3>Contents</h3>
-  <div class="toc-part">Part 0 — Why</div>
-  <a href="#s01"><span class="toc-num">01</span> Problem</a>
-  <a href="#s02"><span class="toc-num">02</span> Market Opportunity</a>
-  <div class="toc-part">Part 1 — What</div>
-  <a href="#s03"><span class="toc-num">03</span> Product Vision</a>
-  <a href="#s04"><span class="toc-num">04</span> A Day with AI Coach</a>
-  <a href="#s05"><span class="toc-num">05</span> Core Features</a>
-  <a href="#s06"><span class="toc-num">06</span> Unique Algorithms</a>
-  <div class="toc-part">Part 2 — How</div>
-  <a href="#s07"><span class="toc-num">07</span> Tech Architecture</a>
-  <a href="#s08"><span class="toc-num">08</span> AI Hybrid Brain</a>
-  <a href="#s09"><span class="toc-num">09</span> Data Flow</a>
-  <a href="#s10"><span class="toc-num">10</span> ADHD UX Principles</a>
-  <div class="toc-part">Part 3 — When</div>
-  <a href="#s11"><span class="toc-num">11</span> MVP Roadmap</a>
-  <a href="#s12"><span class="toc-num">12</span> Feature Roadmap</a>
-  <a href="#s13"><span class="toc-num">13</span> Prove &rarr; Replicate</a>
-  <div class="toc-part">Part 4 — How Much</div>
-  <a href="#s14"><span class="toc-num">14</span> Cost Structure</a>
-  <a href="#s15"><span class="toc-num">15</span> Revenue Model</a>
-  <a href="#s16"><span class="toc-num">16</span> 5-Year P&amp;L</a>
-  <div class="toc-part">Part 5 — Edge</div>
-  <a href="#s17"><span class="toc-num">17</span> Risk Matrix</a>
-  <a href="#s18"><span class="toc-num">18</span> Why We Win</a>
-  <div class="toc-part">Appendix</div>
-  <a href="#appA">Research Summary</a>
-  <a href="#appB">Competitive Matrix</a>
-  <a href="#appC">Tech Spec &rarr;</a>
+  <h3>目次</h3>
+  <div class="toc-part">なぜ今なのか</div>
+  <a href="#s01"><span class="toc-num">01</span> 課題</a>
+  <a href="#s02"><span class="toc-num">02</span> 市場機会</a>
+  <div class="toc-part">何を作るのか</div>
+  <a href="#s03"><span class="toc-num">03</span> プロダクトビジョン</a>
+  <a href="#s04"><span class="toc-num">04</span> 1日の体験フロー</a>
+  <a href="#s05"><span class="toc-num">05</span> コア機能</a>
+  <a href="#s06"><span class="toc-num">06</span> 独自アルゴリズム</a>
+  <div class="toc-part">どう作るのか</div>
+  <a href="#s07"><span class="toc-num">07</span> 技術アーキテクチャ</a>
+  <a href="#s08"><span class="toc-num">08</span> AIハイブリッド頭脳</a>
+  <a href="#s09"><span class="toc-num">09</span> データフロー</a>
+  <a href="#s10"><span class="toc-num">10</span> ADHD UX設計原則</a>
+  <div class="toc-part">いつ・どう実現するか</div>
+  <a href="#s11"><span class="toc-num">11</span> MVPロードマップ</a>
+  <a href="#s12"><span class="toc-num">12</span> 機能ロードマップ</a>
+  <a href="#s13"><span class="toc-num">13</span> 実証 &rarr; 展開 戦略</a>
+  <div class="toc-part">いくらで・どう稼ぐか</div>
+  <a href="#s14"><span class="toc-num">14</span> コスト構造</a>
+  <a href="#s15"><span class="toc-num">15</span> 収益モデル</a>
+  <a href="#s16"><span class="toc-num">16</span> 5年間 損益予測</a>
+  <div class="toc-part">リスクと優位性</div>
+  <a href="#s17"><span class="toc-num">17</span> リスクマトリックス</a>
+  <a href="#s18"><span class="toc-num">18</span> なぜ勝てるのか</a>
+  <div class="toc-part">付録</div>
+  <a href="#appA">リサーチサマリー</a>
+  <a href="#appB">競合マトリックス</a>
+  <a href="#appC">技術仕様書 &rarr;</a>
 </nav>
 
 <!-- MAIN CONTENT -->
@@ -324,12 +324,12 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- ═══════════════════ PART 0: WHY ═══════════════════ -->
 <div class="part-divider">
-  <span class="part-badge a">Part 0 — Why Now</span>
+  <span class="part-badge a">なぜ今、このアプリなのか</span>
 </div>
 
 <!-- S01: PROBLEM -->
 <div class="section" id="s01">
-  <div class="section-eyebrow" style="color:var(--red)">01 — Problem</div>
+  <div class="section-eyebrow" style="color:var(--red)">01 — 課題</div>
   <div class="action-title">ADHDの「実行機能」課題は、既存ツールでは解けない</div>
   <p class="section-lead">全世界3.66億人の成人ADHDは、「何をすべきかわかっている。でも実行できない」という構造的な課題を抱えている。既存のアプリは個別機能に断片化しており、この課題を根本から解決するものがない。</p>
 
@@ -364,7 +364,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S02: MARKET OPPORTUNITY -->
 <div class="section" id="s02">
-  <div class="section-eyebrow" style="color:var(--amber)">02 — Market Opportunity</div>
+  <div class="section-eyebrow" style="color:var(--amber)">02 — 市場機会</div>
   <div class="action-title">$18.3B TAM × CAGR 15%、しかし「空白地帯」だらけ</div>
   <p class="section-lead">ADHD App市場は2024年$563M〜$2.2Bの急成長市場。しかし12アプリの競合分析で、3つの決定的な空白地帯を確認。</p>
 
@@ -406,12 +406,12 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- ═══════════════════ PART 1: WHAT ═══════════════════ -->
 <div class="part-divider">
-  <span class="part-badge b">Part 1 — What</span>
+  <span class="part-badge b">何を作るのか</span>
 </div>
 
 <!-- S03: PRODUCT VISION -->
 <div class="section" id="s03">
-  <div class="section-eyebrow" style="color:var(--cyan)">03 — Product Vision</div>
+  <div class="section-eyebrow" style="color:var(--cyan)">03 — プロダクトビジョン</div>
   <div class="action-title">「5つのアプリを1つに」では足りない。人生のOSを作る。</div>
   <p class="section-lead">才能解放AIコーチは、スケジューリング・習慣追跡・感情管理・AIコーチング・人生設計を1つのプラットフォームに統合し、あなたの「個人OS」として機能する。</p>
 
@@ -430,7 +430,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S04: A DAY WITH -->
 <div class="section" id="s04">
-  <div class="section-eyebrow" style="color:var(--cyan)">04 — A Day with 才能解放AIコーチ</div>
+  <div class="section-eyebrow" style="color:var(--cyan)">04 — 1日の体験フロー</div>
   <div class="action-title">7:00 から 22:00 まで。あなたの1日を、才能が輝く1日に。</div>
   <p class="section-lead">朝のチェックインからAI設計の1日プラン、フォーカスモード、振り返りまで。1日のフローを体験してください。</p>
 
@@ -490,7 +490,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S05: CORE FEATURES -->
 <div class="section" id="s05">
-  <div class="section-eyebrow" style="color:var(--cyan)">05 — Core Features</div>
+  <div class="section-eyebrow" style="color:var(--cyan)">05 — コア機能</div>
   <div class="action-title">5つの画面、5つの価値。</div>
   <p class="section-lead">才能解放AIコーチは5つのコア画面で構成されます。各画面がADHD脳の具体的な課題に直接対応します。</p>
 
@@ -525,7 +525,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S06: UNIQUE ALGORITHMS -->
 <div class="section" id="s06">
-  <div class="section-eyebrow" style="color:var(--cyan)">06 — Unique Algorithms</div>
+  <div class="section-eyebrow" style="color:var(--cyan)">06 — 独自アルゴリズム</div>
   <div class="action-title">競合12アプリ中、誰も持っていない3つの独自アルゴリズム</div>
   <p class="section-lead">才能解放AIコーチの技術的差別化は、3つの独自アルゴリズムに集約されます。いずれも競合12アプリでカバー率0%の「ホワイトスペース」です。</p>
 
@@ -630,12 +630,12 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- ═══════════════════ PART 2: HOW ═══════════════════ -->
 <div class="part-divider">
-  <span class="part-badge c">Part 2 — How</span>
+  <span class="part-badge c">どう作るのか</span>
 </div>
 
 <!-- S07: TECH ARCHITECTURE -->
 <div class="section" id="s07">
-  <div class="section-eyebrow" style="color:var(--green)">07 — Technology Architecture</div>
+  <div class="section-eyebrow" style="color:var(--green)">07 — 技術アーキテクチャ</div>
   <div class="action-title">SvelteKit + Capacitor + Supabase。実績ある構成で最速開発。</div>
   <p class="section-lead">単一コードベースからPWA（Web）とネイティブアプリ（iOS/Android）を同時デプロイ。本番実績のある構成で、MVPを4週間で完成させる。</p>
 
@@ -696,7 +696,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S08: AI HYBRID BRAIN -->
 <div class="section" id="s08">
-  <div class="section-eyebrow" style="color:var(--green)">08 — AI Hybrid Brain</div>
+  <div class="section-eyebrow" style="color:var(--green)">08 — AIハイブリッド頭脳</div>
   <div class="action-title">Claude × Gemini。コスト最適化AIルーティング</div>
   <p class="section-lead">全てのAIリクエストを単一モデルに送るのではなく、用途に応じて最適なモデルにルーティング。月額$2-4に抑えつつ、コーチング品質を最大化。</p>
 
@@ -749,7 +749,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S09: DATA FLOW -->
 <div class="section" id="s09">
-  <div class="section-eyebrow" style="color:var(--green)">09 — Data Flow</div>
+  <div class="section-eyebrow" style="color:var(--green)">09 — データフロー</div>
   <div class="action-title">アプリ → Supabase → AI → Google Calendar。全データが繋がる。</div>
   <p class="section-lead">ユーザーの入力から、AI処理、外部連携、記憶管理まで。才能解放AIコーチのデータフローの全体像。</p>
 
@@ -779,7 +779,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S10: ADHD UX PRINCIPLES -->
 <div class="section" id="s10">
-  <div class="section-eyebrow" style="color:var(--green)">10 — ADHD UX Design Principles</div>
+  <div class="section-eyebrow" style="color:var(--green)">10 — ADHD UX設計原則</div>
   <div class="action-title">44のソースから抽出した、ADHDユーザーが「使い続ける」6原則</div>
   <p class="section-lead">ADHD当事者の80%がアプリを1ヶ月以内に離脱する。この壁を突破するために、学術研究と実際のアプリ事例から導出した設計原則。</p>
 
@@ -825,12 +825,12 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- ═══════════════════ PART 3: WHEN ═══════════════════ -->
 <div class="part-divider">
-  <span class="part-badge d">Part 3 — When</span>
+  <span class="part-badge d">いつ・どう実現するか</span>
 </div>
 
 <!-- S11: MVP ROADMAP -->
 <div class="section" id="s11">
-  <div class="section-eyebrow" style="color:var(--amber)">11 — MVP Roadmap</div>
+  <div class="section-eyebrow" style="color:var(--amber)">11 — MVPロードマップ</div>
   <div class="action-title">4週間で動くMVP。Claude Code × 1人で開発。</div>
   <p class="section-lead">Claude Code（AI開発ツール）を活用し、1人の開発者が4週間でMVPを完成させる。各週のゴールと成果物を明確に定義。</p>
 
@@ -885,7 +885,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S12: FEATURE ROADMAP -->
 <div class="section" id="s12">
-  <div class="section-eyebrow" style="color:var(--amber)">12 — Feature Roadmap</div>
+  <div class="section-eyebrow" style="color:var(--amber)">12 — 機能ロードマップ</div>
   <div class="action-title">4レイヤー × 段階的拡張。MVPから「フルOS」へ。</div>
 
   <div class="pyramid">
@@ -910,7 +910,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S13: PROVE → REPLICATE -->
 <div class="section" id="s13">
-  <div class="section-eyebrow" style="color:var(--amber)">13 — Prove &rarr; Replicate Strategy</div>
+  <div class="section-eyebrow" style="color:var(--amber)">13 — 実証 &rarr; 展開 戦略</div>
   <div class="action-title">まず自分で証明する。次に、世界に広げる。</div>
   <p class="section-lead">創業者自身がADHD当事者として才能解放AIコーチを使い倒し、効果を実証する「Prove」フェーズ。その後、同じ課題を持つ人々に広げる「Replicate」フェーズへ。</p>
 
@@ -940,12 +940,12 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- ═══════════════════ PART 4: HOW MUCH ═══════════════════ -->
 <div class="part-divider">
-  <span class="part-badge e">Part 4 — How Much</span>
+  <span class="part-badge e">いくらで・どう稼ぐか</span>
 </div>
 
 <!-- S14: COST STRUCTURE -->
 <div class="section" id="s14">
-  <div class="section-eyebrow" style="color:var(--purple)">14 — Cost Structure</div>
+  <div class="section-eyebrow" style="color:var(--purple)">14 — コスト構造</div>
   <div class="action-title">月額$2-4。この衝撃的な低コストが武器になる。</div>
 
   <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr)">
@@ -979,7 +979,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S15: REVENUE MODEL -->
 <div class="section" id="s15">
-  <div class="section-eyebrow" style="color:var(--purple)">15 — Revenue Model</div>
+  <div class="section-eyebrow" style="color:var(--purple)">15 — 収益モデル</div>
   <div class="action-title">フリーミアム × サブスクリプション。Shimmerの1/100で同等のコーチング価値。</div>
 
   <div class="disc-grid">
@@ -1016,7 +1016,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S16: 5-YEAR P&L -->
 <div class="section" id="s16">
-  <div class="section-eyebrow" style="color:var(--purple)">16 — 5-Year P&amp;L Projection</div>
+  <div class="section-eyebrow" style="color:var(--purple)">16 — 5年間 損益予測</div>
   <div class="action-title">Year 1-2は「証明」、Year 3+は「スケール」。</div>
 
   <table class="tbl">
@@ -1042,12 +1042,12 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- ═══════════════════ PART 5: EDGE ═══════════════════ -->
 <div class="part-divider">
-  <span class="part-badge f">Part 5 — Edge</span>
+  <span class="part-badge f">リスクと優位性</span>
 </div>
 
 <!-- S17: RISK MATRIX -->
 <div class="section" id="s17">
-  <div class="section-eyebrow" style="color:var(--blue)">17 — Risk Matrix</div>
+  <div class="section-eyebrow" style="color:var(--blue)">17 — リスクマトリックス</div>
   <div class="action-title">8つのリスクに対する、具体的な対策。</div>
 
   <table class="tbl">
@@ -1067,7 +1067,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- S18: WHY WE WIN -->
 <div class="section" id="s18">
-  <div class="section-eyebrow" style="color:var(--blue)">18 — Why We Win</div>
+  <div class="section-eyebrow" style="color:var(--blue)">18 — なぜ勝てるのか</div>
   <div class="action-title">3つの「市場に存在しない」差別化が、参入障壁を作る。</div>
 
   <div class="success-grid">
@@ -1096,12 +1096,12 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- ═══════════════════ APPENDIX ═══════════════════ -->
 <div class="part-divider">
-  <span class="part-badge" style="border-color:var(--text-muted);color:var(--text-muted)">Appendix</span>
+  <span class="part-badge" style="border-color:var(--text-muted);color:var(--text-muted)">付録</span>
 </div>
 
 <!-- APPENDIX A: RESEARCH SUMMARY -->
 <div class="section" id="appA">
-  <div class="section-eyebrow" style="color:var(--text-muted)">Appendix A — Research Summary</div>
+  <div class="section-eyebrow" style="color:var(--text-muted)">付録A — リサーチサマリー</div>
   <div class="action-title">6調査 + 市場分析の成果</div>
 
   <details class="acc">
@@ -1214,7 +1214,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- APPENDIX B: COMPETITIVE MATRIX -->
 <div class="section" id="appB">
-  <div class="section-eyebrow" style="color:var(--text-muted)">Appendix B — Competitive Matrix</div>
+  <div class="section-eyebrow" style="color:var(--text-muted)">付録B — 競合マトリックス</div>
   <div class="action-title">12アプリ × 12機能 比較マトリクス</div>
 
   <div class="matrix-wrap">
@@ -1258,7 +1258,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- APPENDIX C: TECH SPEC LINK -->
 <div class="section" id="appC">
-  <div class="section-eyebrow" style="color:var(--text-muted)">Appendix C — Technical Specification</div>
+  <div class="section-eyebrow" style="color:var(--text-muted)">付録C — 技術仕様書</div>
   <div class="action-title">詳細技術仕様書</div>
   <p class="section-lead">DBスキーマ（9テーブル + RLS）、API設計（6 Edge Functions）、UIワイヤーフレーム（5画面）、システムプロンプト（5レイヤー）、プロンプトチェイニング（3フロー）、セキュリティ設計、MVP 20日スプリント計画の詳細は技術仕様書を参照してください。</p>
 

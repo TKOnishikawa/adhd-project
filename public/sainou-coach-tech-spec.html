@@ -21,7 +21,7 @@ body{font-family:var(--font-sans);background:var(--bg-base);color:var(--text);li
 .toc-sidebar a{display:block;font-size:11px;color:var(--text-dim);text-decoration:none;padding:3px 0;line-height:1.4;transition:color .15s}
 .toc-sidebar a:hover{color:var(--cyan)}
 .toc-num{color:var(--text-muted);margin-right:4px;font-family:var(--font-mono);font-size:10px}
-.toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:1.5px;text-transform:uppercase;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
+.toc-part{font-size:10px;font-weight:700;color:var(--text-muted);letter-spacing:.5px;margin-top:10px;padding-top:8px;border-top:1px solid var(--border)}
 .toc-part:first-child{border-top:none;margin-top:0;padding-top:0}
 @media(max-width:960px){.toc-sidebar{display:none}.page-layout{flex-direction:column}}
 
@@ -36,13 +36,13 @@ body{font-family:var(--font-sans);background:var(--bg-base);color:var(--text);li
 /* Sections */
 .section{padding:48px 0 36px;border-bottom:1px solid var(--border)}
 .section:last-of-type{border-bottom:none}
-.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;margin-bottom:10px}
+.section-eyebrow{font-size:12px;font-weight:700;letter-spacing:1px;margin-bottom:10px}
 .action-title{font-size:24px;font-weight:700;line-height:1.5;margin-bottom:10px;color:var(--text)}
 .section-lead{font-size:15px;color:var(--text-dim);margin-bottom:24px;max-width:740px;line-height:1.9}
 
 /* Part Divider */
 .part-divider{padding:32px 0 8px;text-align:center}
-.part-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:2px;text-transform:uppercase}
+.part-badge{display:inline-block;padding:6px 20px;border:2px solid;border-radius:24px;font-size:13px;font-weight:700;letter-spacing:.5px}
 .part-badge.a{border-color:var(--cyan);color:var(--cyan)}
 .part-badge.b{border-color:var(--green);color:var(--green)}
 .part-badge.c{border-color:var(--blue);color:var(--blue)}
@@ -270,36 +270,36 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- TOC SIDEBAR -->
 <nav class="toc-sidebar">
-  <h3>Contents</h3>
-  <div class="toc-part">Architecture</div>
-  <a href="#s01"><span class="toc-num">01</span> System Architecture</a>
-  <a href="#s02"><span class="toc-num">02</span> DB Schema</a>
-  <a href="#s03"><span class="toc-num">03</span> API Design</a>
-  <div class="toc-part">Frontend</div>
-  <a href="#s04"><span class="toc-num">04</span> UI/UX Wireframes</a>
-  <div class="toc-part">AI Engine</div>
-  <a href="#s05"><span class="toc-num">05</span> System Prompt Design</a>
-  <a href="#s06"><span class="toc-num">06</span> Prompt Chaining</a>
-  <div class="toc-part">Infrastructure</div>
-  <a href="#s07"><span class="toc-num">07</span> Data Flow</a>
-  <a href="#s08"><span class="toc-num">08</span> Project Structure</a>
-  <a href="#s09"><span class="toc-num">09</span> Security Design</a>
-  <div class="toc-part">Delivery</div>
-  <a href="#s10"><span class="toc-num">10</span> MVP Sprint Plan</a>
-  <div class="toc-part">Appendix</div>
-  <a href="#appA"><span class="toc-num">A</span> Color Palette</a>
-  <a href="#appB"><span class="toc-num">B</span> TypeScript Types</a>
+  <h3>目次</h3>
+  <div class="toc-part">アーキテクチャ</div>
+  <a href="#s01"><span class="toc-num">01</span> システムアーキテクチャ</a>
+  <a href="#s02"><span class="toc-num">02</span> データベース設計</a>
+  <a href="#s03"><span class="toc-num">03</span> API設計</a>
+  <div class="toc-part">フロントエンド</div>
+  <a href="#s04"><span class="toc-num">04</span> UI/UX画面設計</a>
+  <div class="toc-part">AIエンジン</div>
+  <a href="#s05"><span class="toc-num">05</span> システムプロンプト設計</a>
+  <a href="#s06"><span class="toc-num">06</span> プロンプトチェイニング</a>
+  <div class="toc-part">インフラストラクチャ</div>
+  <a href="#s07"><span class="toc-num">07</span> データフロー</a>
+  <a href="#s08"><span class="toc-num">08</span> プロジェクト構成</a>
+  <a href="#s09"><span class="toc-num">09</span> セキュリティ設計</a>
+  <div class="toc-part">デリバリー</div>
+  <a href="#s10"><span class="toc-num">10</span> MVPスプリント計画</a>
+  <div class="toc-part">付録</div>
+  <a href="#appA"><span class="toc-num">A</span> カラーパレット</a>
+  <a href="#appB"><span class="toc-num">B</span> TypeScript型定義</a>
 </nav>
 
 <!-- MAIN CONTENT -->
 <div class="main-content">
 
 <!-- ═══════════════════════ PART: ARCHITECTURE ═══════════════════════ -->
-<div class="part-divider"><span class="part-badge a">Architecture</span></div>
+<div class="part-divider"><span class="part-badge a">アーキテクチャ</span></div>
 
 <!-- Section 01: System Architecture -->
 <div class="section" id="s01">
-  <div class="section-eyebrow" style="color:var(--cyan)">01 &mdash; System Architecture</div>
+  <div class="section-eyebrow" style="color:var(--cyan)">01 — システムアーキテクチャ</div>
   <h2 class="action-title">全体アーキテクチャ</h2>
   <p class="section-lead">SvelteKit SPAをCapacitorでネイティブラップし、Supabaseをバックエンドとする3層構成。AI APIはEdge Functions経由で安全にプロキシする。</p>
 
@@ -376,7 +376,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- Section 02: DB Schema -->
 <div class="section" id="s02">
-  <div class="section-eyebrow" style="color:var(--cyan)">02 &mdash; DB Schema</div>
+  <div class="section-eyebrow" style="color:var(--cyan)">02 — データベース設計</div>
   <h2 class="action-title">データベース設計</h2>
   <p class="section-lead">Supabase PostgreSQLに10テーブル。全テーブルにRow Level Security (RLS) を適用し、ユーザーは自分のデータのみアクセス可能。</p>
 
@@ -597,7 +597,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- Section 03: API Design -->
 <div class="section" id="s03">
-  <div class="section-eyebrow" style="color:var(--cyan)">03 &mdash; API Design</div>
+  <div class="section-eyebrow" style="color:var(--cyan)">03 — API設計</div>
   <h2 class="action-title">API・エンドポイント設計</h2>
   <p class="section-lead">全てのAI API呼び出しはSupabase Edge Functions経由。APIキーをクライアントに露出させない。クライアントはRLS適用のSupabase直接操作とEdge Functions呼び出しの2系統。</p>
 
@@ -735,7 +735,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- Section 04: UI/UX Wireframes -->
 <div class="section" id="s04">
-  <div class="section-eyebrow" style="color:var(--green)">04 &mdash; UI/UX Wireframes</div>
+  <div class="section-eyebrow" style="color:var(--green)">04 — UI/UX画面設計</div>
   <h2 class="action-title">画面設計（MVP 5画面）</h2>
   <p class="section-lead">ADHD UX原則を徹底適用。起動→メインアクションまでワンタップ、選択肢は最大3-4個、ドーパミンスコア降順のタスク自動ソート。</p>
 
@@ -890,7 +890,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- Section 05: System Prompt Design -->
 <div class="section" id="s05">
-  <div class="section-eyebrow" style="color:var(--purple)">05 &mdash; System Prompt Design</div>
+  <div class="section-eyebrow" style="color:var(--purple)">05 — システムプロンプト設計</div>
   <h2 class="action-title">システムプロンプト設計</h2>
   <p class="section-lead">6レイヤー構造のシステムプロンプト。固定レイヤー（Identity, Framework, Rules, Style）+ 動的レイヤー（Context, History）で、ユーザーごとに最適化されたAIコーチングを実現。</p>
 
@@ -963,10 +963,10 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 </div>
 
 <!-- Section 06: Prompt Chaining -->
-<div class="part-divider"><span class="part-badge b">AI Engine</span></div>
+<div class="part-divider"><span class="part-badge b">AIエンジン</span></div>
 
 <div class="section" id="s06">
-  <div class="section-eyebrow" style="color:var(--purple)">06 &mdash; Prompt Chaining</div>
+  <div class="section-eyebrow" style="color:var(--purple)">06 — プロンプトチェイニング</div>
   <h2 class="action-title">プロンプトチェイニング全フロー</h2>
   <p class="section-lead">3つの主要チェイン: 朝チェックイン（6ステップ）、フォーカスガイド（2ステップ）、RSD緊急介入（3ステップ）。並列処理とAIモデル切替を組み合わせて最適なレスポンスを実現。</p>
 
@@ -1035,10 +1035,10 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 </div>
 
 <!-- Section 07: Data Flow -->
-<div class="part-divider"><span class="part-badge c">Infrastructure</span></div>
+<div class="part-divider"><span class="part-badge c">インフラストラクチャ</span></div>
 
 <div class="section" id="s07">
-  <div class="section-eyebrow" style="color:var(--blue)">07 &mdash; Data Flow</div>
+  <div class="section-eyebrow" style="color:var(--blue)">07 — データフロー</div>
   <h2 class="action-title">データフロー・アーキテクチャ</h2>
   <p class="section-lead">メインフロー（ユーザー操作 → Supabase → AI API）と、Claude Code コンテキスト共有（日次ログ → Google Drive → Claude Code）の2系統。</p>
 
@@ -1105,7 +1105,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- Section 08: Project Structure -->
 <div class="section" id="s08">
-  <div class="section-eyebrow" style="color:var(--blue)">08 &mdash; Project Structure</div>
+  <div class="section-eyebrow" style="color:var(--blue)">08 — プロジェクト構成</div>
   <h2 class="action-title">プロジェクト構成</h2>
   <p class="section-lead">SvelteKitのファイルベースルーティングに従った構成。lib/ にAPI・ストア・コンポーネント・プロンプトを集約。supabase/ にEdge Functions とマイグレーション。</p>
 
@@ -1196,7 +1196,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <!-- Section 09: Security Design -->
 <div class="section" id="s09">
-  <div class="section-eyebrow" style="color:var(--blue)">09 &mdash; Security Design</div>
+  <div class="section-eyebrow" style="color:var(--blue)">09 — セキュリティ設計</div>
   <h2 class="action-title">セキュリティ設計</h2>
   <p class="section-lead">認証はSupabase Auth (Google OAuth)。全テーブルRLS適用。AI APIキーはEdge Functions内のみ。将来的にジャーナリングデータのE2E暗号化を検討。</p>
 
@@ -1250,10 +1250,10 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 </div>
 
 <!-- Section 10: MVP Sprint Plan -->
-<div class="part-divider"><span class="part-badge d">Delivery</span></div>
+<div class="part-divider"><span class="part-badge d">デリバリー</span></div>
 
 <div class="section" id="s10">
-  <div class="section-eyebrow" style="color:var(--amber)">10 &mdash; MVP Sprint Plan</div>
+  <div class="section-eyebrow" style="color:var(--amber)">10 — MVPスプリント計画</div>
   <h2 class="action-title">MVP実装ロードマップ（20日間）</h2>
   <p class="section-lead">4週間スプリントで基盤構築→コア機能→AI統合→仕上げ。Week 1でスケルトンアプリと認証、Week 4でPWA + Androidデプロイまで。</p>
 
@@ -1316,11 +1316,11 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 </div>
 
 <!-- ═══════════════════════ APPENDIX ═══════════════════════ -->
-<div class="part-divider"><span class="part-badge e">Appendix</span></div>
+<div class="part-divider"><span class="part-badge e">付録</span></div>
 
-<!-- Appendix A: Color Palette -->
+<!-- 付録A: Color Palette -->
 <div class="section" id="appA">
-  <div class="section-eyebrow" style="color:var(--amber)">Appendix A</div>
+  <div class="section-eyebrow" style="color:var(--amber)">付録A</div>
   <h2 class="action-title">カラーパレット</h2>
   <p class="section-lead">McKinsey Dark テーマ準拠。4段階背景 + セマンティックカラー + 4スイッチ専用カラー。</p>
 
@@ -1360,9 +1360,9 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 }</div>
 </div>
 
-<!-- Appendix B: TypeScript Types -->
+<!-- 付録B: TypeScript Types -->
 <div class="section" id="appB">
-  <div class="section-eyebrow" style="color:var(--amber)">Appendix B</div>
+  <div class="section-eyebrow" style="color:var(--amber)">付録B</div>
   <h2 class="action-title">TypeScript 型定義</h2>
   <p class="section-lead">src/lib/api/types.ts — Supabase型自動生成の補完として定義。全エンティティの型を網羅。</p>
 
