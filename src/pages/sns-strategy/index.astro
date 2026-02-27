@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { maturityConfig } from '../../data/taxonomy';
+
+const base = import.meta.env.BASE_URL;
+const entries = (await getCollection('sns-strategy', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+const categoryLabels: Record<string, string> = {
+  strategy: '戦略',
+  platform: 'プラットフォーム',
+  'content-plan': 'コンテンツ企画',
+  benchmark: 'ベンチマーク',
+  report: 'レポート',
+};
+
+const categoryOrder = ['strategy', 'benchmark', 'platform', 'content-plan', 'report'];
+
+const grouped = categoryOrder
+  .map((cat) => ({
+    category: cat,
+    label: categoryLabels[cat] || cat,
+    articles: entries.filter((e) => e.data.category === cat),
+  }))
+  .filter((g) => g.articles.length > 0);
+
+const platformLabels: Record<string, string> = {
+  x: 'X',
+  note: 'note',
+  instagram: 'IG',
+  youtube: 'YT',
+  tiktok: 'TikTok',
+  discord: 'Discord',
+  line: 'LINE',
+};
+---
+
+<BaseLayout title="SNS戦略">
+  <a href={base} class="back-link">&larr; ホーム</a>
+
+  <header class="page-header">
+    <div class="badge" style="color: #ff6b6b;">SNS STRATEGY</div>
+    <h1>SNS戦略</h1>
+    <p class="page-desc">全{entries.length}件のSNS戦略ドキュメント。カテゴリ別に整理。</p>
+  </header>
+
+  {grouped.map((group) => (
+    <section class="cat-group">
+      <div class="group-header">
+        <span class="group-label">{group.label}</span>
+        <span class="group-count">{group.articles.length}</span>
+      </div>
+      <div class="article-list">
+        {group.articles.map((entry) => {
+          const mat = maturityConfig[entry.data.maturity as keyof typeof maturityConfig];
+          return (
+            <a href={`${base}/sns-strategy/${entry.id.replace(/\.md$/, '')}/`} class="article-row">
+              <span class="article-date mono">{entry.data.date.toISOString().slice(0, 10)}</span>
+              <span class="article-title">{entry.data.title}</span>
+              <span class="platform-tags">
+                {entry.data.platforms.map((p: string) => (
+                  <span class="platform-pill">{platformLabels[p] || p}</span>
+                ))}
+              </span>
+              {mat && <span class={`maturity-badge ${entry.data.maturity}`}>{mat.label}</span>}
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  ))}
+
+  {entries.length === 0 && (
+    <div class="empty-msg">
+      <p>SNS戦略ドキュメントはまだありません。</p>
+    </div>
+  )}
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--text-dim);
+    padding: 8px 0;
+    transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--cyan); }
+
+  .page-header {
+    text-align: center;
+    padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 40px;
+  }
+  .page-header h1 { margin: 12px 0 8px; }
+  .page-desc { color: var(--text-muted); font-size: 14px; }
+
+  .cat-group { margin-bottom: 32px; }
+
+  .group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 8px 0;
+    margin-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .group-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: #ff6b6b;
+  }
+
+  .group-count {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--bg-surface);
+    padding: 2px 8px;
+    border-radius: 10px;
+  }
+
+  .article-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .article-row {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .article-row:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-raised);
+  }
+
+  .article-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    min-width: 90px;
+  }
+  .article-title {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+
+  .platform-tags {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+
+  .platform-pill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(34, 211, 238, 0.1);
+    color: var(--cyan);
+  }
+
+  .maturity-badge {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 8px;
+    border-radius: 8px;
+  }
+  .maturity-badge.published { color: var(--green); background: rgba(52, 211, 153, 0.1); }
+  .maturity-badge.draft { color: var(--cyan); background: rgba(34, 211, 238, 0.1); }
+  .maturity-badge.memo { color: var(--purple); background: rgba(167, 139, 250, 0.1); }
+  .maturity-badge.seed { color: var(--amber); background: rgba(245, 158, 11, 0.1); }
+
+  .empty-msg {
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--bg-surface);
+    border-radius: 12px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+
+  @media (max-width: 600px) {
+    .article-row { flex-wrap: wrap; gap: 8px; }
+    .article-date { min-width: auto; }
+    .platform-tags { order: 3; width: 100%; }
+  }
+</style>

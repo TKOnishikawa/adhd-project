@@ -4,6 +4,7 @@ export const contentTypeConfig = {
   meeting:   { label: '議事録',   icon: '\uD83D\uDCDD', color: '#22d3ee' },
   reference: { label: '参照',     icon: '\uD83D\uDCDA', color: '#4a7dff' },
   note:      { label: 'ノート',   icon: '\uD83D\uDCC4', color: '#fb923c' },
+  snsStrategy: { label: 'SNS戦略', icon: '\uD83D\uDCF1', color: '#ff6b6b' },
 } as const;
 
 // Maturity levels

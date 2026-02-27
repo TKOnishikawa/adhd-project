@@ -1,0 +1,135 @@
+---
+import { getCollection } from 'astro:content';
+
+const base = import.meta.env.BASE_URL;
+const entries = (await getCollection('sns-strategy', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
+  .slice(0, 5);
+
+const platformLabels: Record<string, string> = {
+  x: 'X',
+  note: 'note',
+  instagram: 'IG',
+  youtube: 'YT',
+  tiktok: 'TikTok',
+  discord: 'Discord',
+  line: 'LINE',
+};
+---
+
+<section class="sns-preview">
+  <div class="section-eyebrow" style="color: #ff6b6b;">SNS Strategy</div>
+  <div class="preview-header">
+    <h2 class="preview-title">SNS戦略</h2>
+    <a href={`${base}/sns-strategy/`} class="view-all">全一覧 &rarr;</a>
+  </div>
+
+  {entries.length > 0 ? (
+    <div class="entry-list">
+      {entries.map((entry) => (
+        <a href={`${base}/sns-strategy/${entry.id.replace(/\.md$/, '')}/`} class="entry-item">
+          <span class="entry-date mono">{entry.data.date.toISOString().slice(0, 10)}</span>
+          <span class="entry-title">{entry.data.title}</span>
+          <span class="entry-platforms">
+            {entry.data.platforms.map((p: string) => (
+              <span class="platform-pill">{platformLabels[p] || p}</span>
+            ))}
+          </span>
+        </a>
+      ))}
+    </div>
+  ) : (
+    <div class="empty-msg">
+      <p>SNS戦略ドキュメントはまだありません。<a href={`${base}/sns-strategy/`}>一覧ページへ</a></p>
+    </div>
+  )}
+</section>
+
+<style>
+  .sns-preview { margin-bottom: 64px; }
+
+  .section-eyebrow {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .preview-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .preview-title { margin: 0; }
+  .view-all {
+    font-size: 13px;
+    color: var(--text-dim);
+    transition: color 0.15s;
+  }
+  .view-all:hover { color: var(--cyan); }
+
+  .entry-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  .entry-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: var(--bg-surface);
+    border: 1px solid transparent;
+    border-radius: 8px;
+    color: var(--text);
+    text-decoration: none;
+    transition: all 0.15s;
+  }
+  .entry-item:hover {
+    border-color: var(--border-hover);
+    background: var(--bg-raised);
+  }
+
+  .entry-date {
+    font-size: 12px;
+    color: var(--text-muted);
+    white-space: nowrap;
+    min-width: 90px;
+  }
+  .entry-title {
+    font-size: 14px;
+    font-weight: 500;
+    flex: 1;
+  }
+  .entry-platforms {
+    display: flex;
+    gap: 4px;
+    flex-shrink: 0;
+  }
+  .platform-pill {
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+  }
+
+  .empty-msg {
+    text-align: center;
+    padding: 32px 20px;
+    background: var(--bg-surface);
+    border-radius: 12px;
+    color: var(--text-dim);
+    font-size: 14px;
+  }
+  .empty-msg a { color: var(--cyan); }
+
+  @media (max-width: 600px) {
+    .entry-item { flex-wrap: wrap; gap: 8px; }
+    .entry-date { min-width: auto; }
+  }
+</style>

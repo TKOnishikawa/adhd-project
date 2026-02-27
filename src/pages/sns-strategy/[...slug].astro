@@ -1,0 +1,105 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import { getCollection } from 'astro:content';
+
+const platformLabels: Record<string, string> = {
+  x: 'X (Twitter)',
+  note: 'note',
+  instagram: 'Instagram',
+  youtube: 'YouTube',
+  tiktok: 'TikTok',
+  discord: 'Discord',
+  line: 'LINE',
+};
+
+const categoryLabels: Record<string, string> = {
+  strategy: '戦略',
+  platform: 'プラットフォーム',
+  'content-plan': 'コンテンツ企画',
+  benchmark: 'ベンチマーク',
+  report: 'レポート',
+};
+
+export async function getStaticPaths() {
+  const entries = await getCollection('sns-strategy');
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.md$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await entry.render();
+const base = import.meta.env.BASE_URL;
+---
+
+<ArticleLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  date={entry.data.date}
+  maturity={entry.data.maturity}
+  tags={entry.data.tags}
+  backHref={`${base}/sns-strategy/`}
+  backLabel="SNS戦略一覧"
+>
+  <div class="meta-bar">
+    <span class="meta-label">Category:</span>
+    <span class="category-tag">{categoryLabels[entry.data.category] || entry.data.category}</span>
+    {entry.data.platforms.length > 0 && (
+      <>
+        <span class="meta-divider">|</span>
+        <span class="meta-label">Platforms:</span>
+        {entry.data.platforms.map((p: string) => (
+          <span class="platform-tag">{platformLabels[p] || p}</span>
+        ))}
+      </>
+    )}
+  </div>
+
+  <Content />
+</ArticleLayout>
+
+<style>
+  .meta-bar {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin-bottom: 32px;
+    font-size: 13px;
+  }
+
+  .meta-label {
+    font-weight: 700;
+    color: #ff6b6b;
+    font-size: 11px;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .meta-divider {
+    color: var(--text-muted);
+  }
+
+  .category-tag {
+    background: rgba(255, 107, 107, 0.1);
+    color: #ff6b6b;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .platform-tag {
+    background: rgba(34, 211, 238, 0.1);
+    color: var(--cyan);
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 600;
+  }
+</style>

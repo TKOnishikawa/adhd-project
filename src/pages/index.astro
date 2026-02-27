@@ -3,6 +3,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import StatsCards from '../components/StatsCards.astro';
 import ResearchList from '../components/ResearchList.astro';
 import MeetingsPreview from '../components/MeetingsPreview.astro';
+import SnsStrategyPreview from '../components/SnsStrategyPreview.astro';
 import ResearchMap from '../components/ResearchMap.astro';
 import ActivityTimeline from '../components/ActivityTimeline.astro';
 import Search from '../components/Search.astro';
@@ -27,10 +28,13 @@ import Search from '../components/Search.astro';
   <!-- Section 2: Research Articles (1-click access) -->
   <ResearchList />
 
-  <!-- Section 3: Meetings Preview -->
+  <!-- Section 3: SNS Strategy Preview -->
+  <SnsStrategyPreview />
+
+  <!-- Section 4: Meetings Preview -->
   <MeetingsPreview />
 
-  <!-- Section 4: Learning Roadmap -->
+  <!-- Section 5: Learning Roadmap -->
   <section class="roadmap-section">
     <div class="section-eyebrow" style="color: var(--purple);">Learning Roadmap</div>
     <h2 class="roadmap-title">学習ロードマップ</h2>
@@ -38,10 +42,10 @@ import Search from '../components/Search.astro';
     <ResearchMap />
   </section>
 
-  <!-- Section 5: Recent Activity -->
+  <!-- Section 6: Recent Activity -->
   <ActivityTimeline />
 
-  <!-- Section 6: Search -->
+  <!-- Section 7: Search -->
   <Search />
 </BaseLayout>
 
