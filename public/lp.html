@@ -3,874 +3,277 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>100日で、自分の「取扱説明書」を完成させる | ADHD特化コーチングプログラム</title>
-  <meta name="description" content="ADHDの当事者2人が、当事者のために作った100日間のコーチングプログラム。科学的根拠に基づく方法論で、あなただけの「セルフマニュアル」を完成させます。">
+  <title>ADHDの才能を解放する100日間 | 統合プログラム</title>
+  <meta name="description" content="ADHDの脳に合わせて科学したコーチング・実行支援・生活設計の統合プログラム。8つの科学的メソッド、33セッション、14週間で自分だけのセルフマニュアルを完成させます。">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,500;0,700;1,500&display=swap" rel="stylesheet">
   <style>
-    /* ===== Reset & Base ===== */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; font-size: 16px; }
-    body {
-      font-family: 'Noto Sans JP', sans-serif;
-      color: #1c1917;
-      background-color: #fafaf9;
-      line-height: 1.8;
-      font-weight: 400;
-      overflow-x: hidden;
-    }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 16px; }
+body { font-family: 'Noto Sans JP', sans-serif; color: #1c1917; background: #fafaf9; line-height: 1.8; font-weight: 400; overflow-x: hidden; }
+.container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+.text-center { text-align: center; }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
 
-    /* ===== Utility ===== */
-    .container { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-    .text-center { text-align: center; }
-    .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+/* Typography */
+.heading-decorative { font-family: 'Playfair Display', serif; font-weight: 700; font-style: italic; color: #7c3aed; letter-spacing: 0.02em; }
+.section-number { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 700; color: rgba(124,58,237,0.1); line-height: 1; margin-bottom: -8px; }
+.section-label { display: inline-block; font-size: 0.75rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; color: #7c3aed; margin-bottom: 8px; }
+.section-title { font-size: clamp(1.5rem, 4vw, 2.25rem); font-weight: 700; line-height: 1.4; margin-bottom: 16px; }
+.section-subtitle { font-size: clamp(1rem, 2.5vw, 1.125rem); color: #57534e; line-height: 1.8; max-width: 640px; margin: 0 auto; }
 
-    /* ===== Typography ===== */
-    .heading-decorative {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      font-style: italic;
-      color: #7c3aed;
-      letter-spacing: 0.02em;
-    }
-    .section-label {
-      display: inline-block;
-      font-size: 0.75rem;
-      font-weight: 600;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: #7c3aed;
-      margin-bottom: 8px;
-    }
-    .section-title {
-      font-size: clamp(1.5rem, 4vw, 2.25rem);
-      font-weight: 700;
-      line-height: 1.4;
-      margin-bottom: 16px;
-    }
-    .section-subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.125rem);
-      color: #57534e;
-      line-height: 1.8;
-      max-width: 640px;
-      margin: 0 auto;
-    }
+/* Fade-in */
+.fade-in { opacity: 0; transform: translateY(30px); transition: opacity 0.7s ease-out, transform 0.7s ease-out; }
+.fade-in.visible { opacity: 1; transform: translateY(0); }
+.fade-in-delay-1 { transition-delay: 0.1s; }
+.fade-in-delay-2 { transition-delay: 0.2s; }
+.fade-in-delay-3 { transition-delay: 0.3s; }
+.fade-in-delay-4 { transition-delay: 0.4s; }
+.fade-in-delay-5 { transition-delay: 0.5s; }
 
-    /* ===== Fade-in animation ===== */
-    .fade-in {
-      opacity: 0;
-      transform: translateY(30px);
-      transition: opacity 0.7s ease-out, transform 0.7s ease-out;
-    }
-    .fade-in.visible {
-      opacity: 1;
-      transform: translateY(0);
-    }
-    .fade-in-delay-1 { transition-delay: 0.1s; }
-    .fade-in-delay-2 { transition-delay: 0.2s; }
-    .fade-in-delay-3 { transition-delay: 0.3s; }
-    .fade-in-delay-4 { transition-delay: 0.4s; }
+/* Section spacing */
+section { padding: 80px 0; }
+@media (min-width: 768px) { section { padding: 100px 0; } }
 
-    /* ===== Section spacing ===== */
-    section { padding: 80px 0; }
-    @media (min-width: 768px) { section { padding: 100px 0; } }
+/* ── Hero ── */
+.hero { position: relative; min-height: 100vh; display: flex; align-items: center; justify-content: center; text-align: center; padding: 120px 24px 80px; overflow: hidden; }
+.hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse 80% 60% at 20% 20%, rgba(124,58,237,0.08) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(13,148,136,0.06) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 50% 50%, rgba(245,158,11,0.04) 0%, transparent 50%); animation: heroGradient 12s ease-in-out infinite alternate; z-index: 0; }
+@keyframes heroGradient { 0% { opacity: 1; transform: scale(1); } 50% { opacity: 0.8; transform: scale(1.05); } 100% { opacity: 1; transform: scale(1); } }
+.hero-content { position: relative; z-index: 1; max-width: 760px; }
+.hero-badge { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-size: 0.8rem; font-weight: 600; padding: 8px 20px; border-radius: 100px; margin-bottom: 32px; letter-spacing: 0.05em; box-shadow: 0 4px 20px rgba(124,58,237,0.25); }
+.hero-badge::before { content: ''; display: inline-block; width: 8px; height: 8px; border-radius: 50%; background: #f59e0b; animation: pulse 2s ease-in-out infinite; }
+@keyframes pulse { 0%,100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.6; transform: scale(1.3); } }
+.hero-title { font-size: clamp(1.75rem, 5.5vw, 3rem); font-weight: 700; line-height: 1.4; margin-bottom: 20px; }
+.hero-title em { font-style: normal; background: linear-gradient(135deg, #7c3aed, #6d28d9); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+.hero-subtitle { font-size: clamp(1rem, 2.5vw, 1.25rem); color: #57534e; margin-bottom: 40px; line-height: 1.8; }
+.hero-cta { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-size: 1rem; font-weight: 600; padding: 16px 36px; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+.hero-cta:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
 
-    /* ===== Hero ===== */
-    .hero {
-      position: relative;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      padding: 120px 24px 80px;
-      overflow: hidden;
-    }
-    .hero::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 20% 20%, rgba(124,58,237,0.08) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 80%, rgba(13,148,136,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 40% 40% at 50% 50%, rgba(245,158,11,0.04) 0%, transparent 50%);
-      animation: heroGradient 12s ease-in-out infinite alternate;
-      z-index: 0;
-    }
-    @keyframes heroGradient {
-      0% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.8; transform: scale(1.05); }
-      100% { opacity: 1; transform: scale(1); }
-    }
-    .hero-content { position: relative; z-index: 1; max-width: 720px; }
-    .hero-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      color: #fff;
-      font-size: 0.8rem;
-      font-weight: 600;
-      padding: 8px 20px;
-      border-radius: 100px;
-      margin-bottom: 32px;
-      letter-spacing: 0.05em;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.25);
-    }
-    .hero-badge::before {
-      content: '';
-      display: inline-block;
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: #f59e0b;
-      animation: pulse 2s ease-in-out infinite;
-    }
-    @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.6; transform: scale(1.3); }
-    }
-    .hero-title {
-      font-size: clamp(1.75rem, 5.5vw, 3rem);
-      font-weight: 700;
-      line-height: 1.4;
-      margin-bottom: 20px;
-    }
-    .hero-title em {
-      font-style: normal;
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
-    }
-    .hero-subtitle {
-      font-size: clamp(1rem, 2.5vw, 1.25rem);
-      color: #57534e;
-      margin-bottom: 40px;
-      line-height: 1.8;
-    }
-    .hero-cta {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 16px 36px;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.3);
-    }
-    .hero-cta:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(124,58,237,0.4);
-    }
+/* ── Stats Bar ── */
+.stats-bar { background: #fff; border-bottom: 1px solid rgba(0,0,0,0.06); padding: 24px 0; }
+.stats-grid { display: flex; justify-content: center; flex-wrap: wrap; gap: 12px 40px; }
+.stat-item { text-align: center; }
+.stat-number { font-family: 'Playfair Display', serif; font-size: 1.8rem; font-weight: 700; color: #7c3aed; line-height: 1.2; }
+.stat-label { font-size: 0.75rem; color: #a8a29e; font-weight: 500; letter-spacing: 0.05em; }
 
-    /* ===== Problem Section ===== */
-    .problem-section {
-      background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 100%);
-    }
-    .problem-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 16px;
-      margin-top: 48px;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    @media (min-width: 640px) {
-      .problem-grid { grid-template-columns: 1fr 1fr; }
-    }
-    .problem-card {
-      background: #fff;
-      border-radius: 16px;
-      padding: 24px 28px;
-      font-size: 0.95rem;
-      line-height: 1.7;
-      color: #44403c;
-      border: 1px solid rgba(124,58,237,0.08);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      transition: all 0.3s ease;
-      position: relative;
-      padding-left: 48px;
-    }
-    .problem-card::before {
-      content: '';
-      position: absolute;
-      left: 20px;
-      top: 28px;
-      width: 16px;
-      height: 16px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(124,58,237,0.05));
-      border: 2px solid rgba(124,58,237,0.3);
-    }
-    .problem-card:hover {
-      border-color: rgba(124,58,237,0.2);
-      box-shadow: 0 4px 20px rgba(124,58,237,0.08);
-      transform: translateY(-2px);
-    }
+/* ── Problem ── */
+.problem-section { background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 100%); }
+.problem-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto; }
+@media (min-width: 640px) { .problem-grid { grid-template-columns: 1fr 1fr; } }
+.problem-card { background: #fff; border-radius: 16px; padding: 24px 28px 24px 48px; font-size: 0.95rem; line-height: 1.7; color: #44403c; border: 1px solid rgba(124,58,237,0.08); box-shadow: 0 2px 12px rgba(0,0,0,0.04); transition: all 0.3s ease; position: relative; }
+.problem-card::before { content: ''; position: absolute; left: 20px; top: 28px; width: 16px; height: 16px; border-radius: 50%; background: linear-gradient(135deg, rgba(124,58,237,0.15), rgba(124,58,237,0.05)); border: 2px solid rgba(124,58,237,0.3); }
+.problem-card:hover { border-color: rgba(124,58,237,0.2); box-shadow: 0 4px 20px rgba(124,58,237,0.08); transform: translateY(-2px); }
 
-    /* ===== Reframe Section ===== */
-    .reframe-section { background: #fff; }
-    .reframe-content {
-      max-width: 680px;
-      margin: 0 auto;
-      text-align: center;
-    }
-    .reframe-highlight {
-      font-size: clamp(1.1rem, 3vw, 1.35rem);
-      font-weight: 600;
-      color: #7c3aed;
-      margin: 32px 0;
-      padding: 28px 32px;
-      background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(13,148,136,0.04));
-      border-radius: 16px;
-      border-left: 4px solid #7c3aed;
-      text-align: left;
-      line-height: 1.8;
-    }
-    .evidence-callout {
-      display: inline-flex;
-      align-items: center;
-      gap: 12px;
-      background: #fffbeb;
-      border: 1px solid rgba(245,158,11,0.2);
-      border-radius: 12px;
-      padding: 16px 24px;
-      margin-top: 24px;
-      font-size: 0.9rem;
-      color: #78716c;
-    }
-    .evidence-callout strong { color: #b45309; }
-    .evidence-icon {
-      font-size: 1.5rem;
-      flex-shrink: 0;
-    }
+/* ── Reframe ── */
+.reframe-section { background: #fff; }
+.reframe-content { max-width: 680px; margin: 0 auto; text-align: center; }
+.reframe-highlight { font-size: clamp(1.1rem, 3vw, 1.35rem); font-weight: 600; color: #7c3aed; margin: 32px 0; padding: 28px 32px; background: linear-gradient(135deg, rgba(124,58,237,0.06), rgba(13,148,136,0.04)); border-radius: 16px; border-left: 4px solid #7c3aed; text-align: left; line-height: 1.8; }
+.evidence-callout { display: inline-flex; align-items: center; gap: 12px; background: #fffbeb; border: 1px solid rgba(245,158,11,0.2); border-radius: 12px; padding: 16px 24px; margin-top: 24px; font-size: 0.9rem; color: #78716c; }
+.evidence-callout strong { color: #b45309; }
 
-    /* ===== Solution/Curriculum Section ===== */
-    .solution-section {
-      background: linear-gradient(180deg, #f5f0ff 0%, #fafaf9 100%);
-    }
-    .timeline {
-      margin-top: 48px;
-      position: relative;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    .timeline::before {
-      content: '';
-      position: absolute;
-      left: 28px;
-      top: 0;
-      bottom: 0;
-      width: 2px;
-      background: linear-gradient(180deg, #7c3aed, #0d9488);
-      border-radius: 1px;
-    }
-    @media (min-width: 640px) {
-      .timeline::before { left: 36px; }
-    }
-    .timeline-item {
-      position: relative;
-      padding-left: 68px;
-      padding-bottom: 32px;
-    }
-    @media (min-width: 640px) {
-      .timeline-item { padding-left: 84px; }
-    }
-    .timeline-marker {
-      position: absolute;
-      left: 16px;
-      top: 4px;
-      width: 26px;
-      height: 26px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      font-size: 0.65rem;
-      font-weight: 700;
-      box-shadow: 0 2px 8px rgba(124,58,237,0.3);
-    }
-    @media (min-width: 640px) {
-      .timeline-marker {
-        left: 22px;
-        width: 30px;
-        height: 30px;
-        font-size: 0.7rem;
-      }
-    }
-    .timeline-day {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: #7c3aed;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      margin-bottom: 4px;
-    }
-    .timeline-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .timeline-desc {
-      font-size: 0.88rem;
-      color: #78716c;
-      line-height: 1.7;
-    }
-    .timeline-effect {
-      display: inline-block;
-      background: rgba(13,148,136,0.08);
-      color: #0d9488;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 2px 10px;
-      border-radius: 100px;
-      margin-top: 6px;
-    }
+/* ── Program Matrix ── */
+.program-section { background: linear-gradient(180deg, #f5f0ff 0%, #fafaf9 100%); }
+.matrix-scroll { overflow-x: auto; margin-top: 40px; padding-bottom: 16px; -webkit-overflow-scrolling: touch; }
+.program-matrix { display: grid; grid-template-columns: 80px repeat(14, minmax(52px, 1fr)); gap: 3px; min-width: 860px; font-size: 0.72rem; }
+.matrix-label { display: flex; align-items: center; font-weight: 600; font-size: 0.7rem; color: #57534e; padding: 4px 6px; background: #fafaf9; position: sticky; left: 0; z-index: 2; }
+.act-band { text-align: center; font-weight: 700; font-size: 0.68rem; letter-spacing: 0.08em; padding: 6px 4px; border-radius: 6px 6px 0 0; color: #fff; }
+.act-1 { background: linear-gradient(135deg, #7c3aed, #6d28d9); }
+.act-2 { background: linear-gradient(135deg, #0d9488, #0f766e); }
+.act-3 { background: linear-gradient(135deg, #f59e0b, #d97706); }
+.week-num { text-align: center; font-size: 0.65rem; font-weight: 600; color: #a8a29e; padding: 4px 2px; }
+.m-cell { display: flex; align-items: center; justify-content: center; border-radius: 6px; padding: 6px 2px; min-height: 36px; font-weight: 600; text-align: center; line-height: 1.2; }
+.m-day { background: rgba(124,58,237,0.12); color: #7c3aed; }
+.m-group { background: rgba(13,148,136,0.12); color: #0d9488; }
+.m-personal { background: rgba(245,158,11,0.12); color: #b45309; }
+.m-weekly { background: rgba(124,58,237,0.05); color: #a8a29e; font-size: 0.6rem; }
+.m-buddy { background: rgba(59,130,246,0.08); color: #3b82f6; font-size: 0.6rem; }
+.m-empty { background: transparent; }
+.matrix-summary { display: flex; flex-wrap: wrap; justify-content: center; gap: 16px 32px; margin-top: 32px; }
+.matrix-summary-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: #57534e; }
+.summary-dot { width: 10px; height: 10px; border-radius: 3px; }
+.summary-dot.purple { background: #7c3aed; }
+.summary-dot.teal { background: #0d9488; }
+.summary-dot.amber { background: #f59e0b; }
+.summary-dot.blue { background: #3b82f6; }
 
-    /* ===== Features Section ===== */
-    .features-section { background: #fff; }
-    .features-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-      margin-top: 48px;
-    }
-    @media (min-width: 640px) {
-      .features-grid { grid-template-columns: 1fr 1fr; }
-    }
-    .feature-card {
-      background: #fafaf9;
-      border-radius: 20px;
-      padding: 32px 28px;
-      border: 1px solid rgba(0,0,0,0.06);
-      transition: all 0.3s ease;
-    }
-    .feature-card:hover {
-      box-shadow: 0 8px 30px rgba(0,0,0,0.06);
-      transform: translateY(-3px);
-    }
-    .feature-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 16px;
-    }
-    .feature-icon.purple { background: rgba(124,58,237,0.1); }
-    .feature-icon.teal { background: rgba(13,148,136,0.1); }
-    .feature-icon.amber { background: rgba(245,158,11,0.1); }
-    .feature-icon.blue { background: rgba(59,130,246,0.1); }
-    .feature-title {
-      font-size: 1.05rem;
-      font-weight: 600;
-      margin-bottom: 8px;
-    }
-    .feature-desc {
-      font-size: 0.88rem;
-      color: #78716c;
-      line-height: 1.7;
-    }
-    .feature-meta {
-      font-size: 0.8rem;
-      color: #a8a29e;
-      margin-top: 10px;
-    }
-    .extras {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 12px;
-      justify-content: center;
-      margin-top: 32px;
-    }
-    .extra-tag {
-      background: rgba(124,58,237,0.06);
-      color: #7c3aed;
-      font-size: 0.82rem;
-      font-weight: 500;
-      padding: 8px 16px;
-      border-radius: 100px;
-    }
+/* ── DAY Lectures (Timeline) ── */
+.lectures-section { background: #fff; }
+.timeline { margin-top: 48px; position: relative; max-width: 760px; margin-left: auto; margin-right: auto; }
+.timeline::before { content: ''; position: absolute; left: 28px; top: 0; bottom: 0; width: 2px; background: linear-gradient(180deg, #7c3aed, #0d9488); border-radius: 1px; }
+@media (min-width: 640px) { .timeline::before { left: 36px; } }
+.timeline-item { position: relative; padding-left: 68px; padding-bottom: 28px; }
+@media (min-width: 640px) { .timeline-item { padding-left: 84px; } }
+.timeline-marker { position: absolute; left: 16px; top: 4px; width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, #7c3aed, #6d28d9); display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.65rem; font-weight: 700; box-shadow: 0 2px 8px rgba(124,58,237,0.3); }
+@media (min-width: 640px) { .timeline-marker { left: 22px; width: 30px; height: 30px; font-size: 0.7rem; } }
+.timeline-day { font-size: 0.75rem; font-weight: 700; color: #7c3aed; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 4px; }
+.timeline-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 4px; }
+.timeline-desc { font-size: 0.85rem; color: #78716c; line-height: 1.7; }
+.timeline-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 6px; }
+.timeline-effect { display: inline-block; background: rgba(13,148,136,0.08); color: #0d9488; font-size: 0.72rem; font-weight: 600; padding: 2px 10px; border-radius: 100px; }
+.timeline-chapter { display: inline-block; background: rgba(124,58,237,0.06); color: #7c3aed; font-size: 0.72rem; font-weight: 600; padding: 2px 10px; border-radius: 100px; }
 
-    /* ===== Founders Section ===== */
-    .founders-section {
-      background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 50%, #fafaf9 100%);
-    }
-    .founders-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      margin-top: 48px;
-      max-width: 720px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    @media (min-width: 640px) {
-      .founders-grid { grid-template-columns: 1fr 1fr; }
-    }
-    .founder-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 36px 28px;
-      text-align: center;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-    }
-    .founder-avatar {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      margin: 0 auto 16px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2rem;
-    }
-    .founder-avatar.coach {
-      background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04));
-    }
-    .founder-avatar.engineer {
-      background: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(13,148,136,0.04));
-    }
-    .founder-role {
-      font-size: 0.75rem;
-      font-weight: 600;
-      color: #7c3aed;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
-      margin-bottom: 4px;
-    }
-    .founder-name {
-      font-size: 1.15rem;
-      font-weight: 700;
-      margin-bottom: 12px;
-    }
-    .founder-desc {
-      font-size: 0.88rem;
-      color: #78716c;
-      line-height: 1.7;
-    }
-    .founder-badge {
-      display: inline-block;
-      background: rgba(245,158,11,0.1);
-      color: #b45309;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 4px 12px;
-      border-radius: 100px;
-      margin-top: 12px;
-    }
-    .founders-message {
-      max-width: 600px;
-      margin: 40px auto 0;
-      text-align: center;
-      font-size: 1.05rem;
-      color: #57534e;
-      line-height: 1.9;
-      font-style: italic;
-    }
-    .founders-message strong {
-      color: #1c1917;
-      font-style: normal;
-    }
+/* ── Group Sessions ── */
+.group-section { background: linear-gradient(180deg, #fafaf9 0%, #f0fdfa 100%); }
+.gs-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; max-width: 800px; margin-left: auto; margin-right: auto; }
+@media (min-width: 640px) { .gs-grid { grid-template-columns: 1fr 1fr; } }
+@media (min-width: 900px) { .gs-grid { grid-template-columns: 1fr 1fr 1fr; } }
+.gs-card { background: #fff; border-radius: 16px; padding: 24px; border: 1px solid rgba(13,148,136,0.1); box-shadow: 0 2px 12px rgba(0,0,0,0.03); transition: all 0.3s ease; }
+.gs-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(13,148,136,0.08); }
+.gs-week { font-size: 0.7rem; font-weight: 700; color: #0d9488; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.gs-title { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+.gs-format { font-size: 0.78rem; color: #0d9488; font-weight: 500; margin-bottom: 6px; }
+.gs-desc { font-size: 0.82rem; color: #78716c; line-height: 1.6; }
 
-    /* ===== Evidence Section ===== */
-    .evidence-section { background: #fff; }
-    .evidence-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 20px;
-      margin-top: 48px;
-    }
-    @media (min-width: 640px) {
-      .evidence-grid { grid-template-columns: 1fr 1fr; }
-    }
-    .evidence-card {
-      background: #fafaf9;
-      border-radius: 16px;
-      padding: 28px;
-      border: 1px solid rgba(0,0,0,0.06);
-      text-align: center;
-    }
-    .evidence-number {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #7c3aed;
-      line-height: 1.2;
-    }
-    .evidence-metric {
-      font-size: 0.78rem;
-      color: #a8a29e;
-      margin-bottom: 8px;
-    }
-    .evidence-label {
-      font-size: 0.95rem;
-      font-weight: 600;
-      margin-bottom: 6px;
-    }
-    .evidence-detail {
-      font-size: 0.82rem;
-      color: #78716c;
-      line-height: 1.6;
-    }
-    .evidence-explainer {
-      max-width: 640px;
-      margin: 36px auto 0;
-      background: rgba(124,58,237,0.04);
-      border-radius: 12px;
-      padding: 20px 24px;
-      font-size: 0.85rem;
-      color: #57534e;
-      line-height: 1.7;
-    }
-    .evidence-explainer strong { color: #7c3aed; }
-    .evidence-cite {
-      text-align: center;
-      margin-top: 24px;
-      font-size: 0.78rem;
-      color: #a8a29e;
-      line-height: 1.8;
-    }
+/* ── Personal Sessions ── */
+.personal-section { background: #fff; }
+.ps-list { margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto; }
+.ps-item { display: flex; gap: 20px; padding: 24px 0; border-bottom: 1px solid rgba(0,0,0,0.06); }
+.ps-item:last-child { border-bottom: none; }
+.ps-icon { flex-shrink: 0; width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; }
+.ps-icon.coach { background: rgba(124,58,237,0.1); }
+.ps-icon.engineer { background: rgba(13,148,136,0.1); }
+.ps-week { font-size: 0.7rem; font-weight: 700; color: #7c3aed; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 2px; }
+.ps-title { font-size: 1rem; font-weight: 600; margin-bottom: 4px; }
+.ps-lead { font-size: 0.78rem; font-weight: 500; margin-bottom: 4px; }
+.ps-lead.coach-lead { color: #7c3aed; }
+.ps-lead.eng-lead { color: #0d9488; }
+.ps-desc { font-size: 0.82rem; color: #78716c; line-height: 1.6; }
 
-    /* ===== Pricing Section ===== */
-    .pricing-section {
-      background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 100%);
-    }
-    .pricing-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 24px;
-      margin-top: 48px;
-      max-width: 800px;
-      margin-left: auto;
-      margin-right: auto;
-    }
-    @media (min-width: 640px) {
-      .pricing-grid { grid-template-columns: 1fr 1fr; }
-    }
-    .pricing-card {
-      background: #fff;
-      border-radius: 20px;
-      padding: 36px 28px;
-      border: 1px solid rgba(0,0,0,0.06);
-      box-shadow: 0 2px 12px rgba(0,0,0,0.04);
-      position: relative;
-      overflow: hidden;
-    }
-    .pricing-card.featured {
-      border-color: #7c3aed;
-      box-shadow: 0 8px 40px rgba(124,58,237,0.15);
-    }
-    .pricing-card.featured::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #7c3aed, #0d9488);
-    }
-    .pricing-badge {
-      display: inline-block;
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      color: #fff;
-      font-size: 0.72rem;
-      font-weight: 700;
-      padding: 4px 14px;
-      border-radius: 100px;
-      margin-bottom: 16px;
-      letter-spacing: 0.05em;
-    }
-    .pricing-plan {
-      font-size: 1.1rem;
-      font-weight: 700;
-      margin-bottom: 4px;
-    }
-    .pricing-desc {
-      font-size: 0.82rem;
-      color: #a8a29e;
-      margin-bottom: 16px;
-    }
-    .pricing-amount {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.5rem;
-      font-weight: 700;
-      color: #1c1917;
-      line-height: 1.2;
-    }
-    .pricing-amount .yen { font-size: 1.2rem; margin-right: 2px; }
-    .pricing-amount .tax { font-size: 0.78rem; color: #a8a29e; font-family: 'Noto Sans JP', sans-serif; font-weight: 400; margin-left: 4px; }
-    .pricing-original {
-      font-size: 0.88rem;
-      color: #a8a29e;
-      text-decoration: line-through;
-      margin-bottom: 4px;
-    }
-    .pricing-installment {
-      font-size: 0.82rem;
-      color: #78716c;
-      margin-top: 4px;
-      margin-bottom: 20px;
-    }
-    .pricing-features {
-      list-style: none;
-      padding: 0;
-      margin: 0 0 24px;
-    }
-    .pricing-features li {
-      font-size: 0.88rem;
-      color: #57534e;
-      padding: 6px 0;
-      padding-left: 24px;
-      position: relative;
-    }
-    .pricing-features li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 12px;
-      width: 14px;
-      height: 14px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%237c3aed'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E") no-repeat center;
-      background-size: contain;
-    }
-    .pricing-cta {
-      display: block;
-      text-align: center;
-      padding: 14px 24px;
-      border-radius: 12px;
-      font-size: 0.95rem;
-      font-weight: 600;
-      text-decoration: none;
-      transition: all 0.3s ease;
-    }
-    .pricing-cta.primary {
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      color: #fff;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.25);
-    }
-    .pricing-cta.primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(124,58,237,0.35);
-    }
-    .pricing-cta.secondary {
-      background: rgba(124,58,237,0.06);
-      color: #7c3aed;
-    }
-    .pricing-cta.secondary:hover {
-      background: rgba(124,58,237,0.12);
-    }
-    .founding-perks {
-      list-style: none;
-      padding: 0;
-      margin-top: 16px;
-    }
-    .founding-perks li {
-      font-size: 0.82rem;
-      color: #b45309;
-      padding: 3px 0;
-      padding-left: 20px;
-      position: relative;
-    }
-    .founding-perks li::before {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 8px;
-      width: 12px;
-      height: 12px;
-      background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23f59e0b'%3E%3Cpath d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'/%3E%3C/svg%3E") no-repeat center;
-      background-size: contain;
-    }
+/* ── Weekly Rhythm ── */
+.rhythm-section { background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 100%); }
+.rhythm-grid { display: grid; grid-template-columns: 1fr; gap: 16px; margin-top: 48px; max-width: 800px; margin-left: auto; margin-right: auto; }
+@media (min-width: 640px) { .rhythm-grid { grid-template-columns: 1fr 1fr; } }
+.rhythm-card { background: #fff; border-radius: 16px; padding: 28px 24px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 12px rgba(0,0,0,0.03); }
+.rhythm-day { font-size: 0.75rem; font-weight: 700; color: #7c3aed; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 8px; }
+.rhythm-title { font-size: 1.05rem; font-weight: 600; margin-bottom: 8px; }
+.rhythm-desc { font-size: 0.85rem; color: #78716c; line-height: 1.7; }
 
-    /* ===== FAQ Section ===== */
-    .faq-section { background: #fff; }
-    .faq-list {
-      max-width: 720px;
-      margin: 48px auto 0;
-    }
-    .faq-item {
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-    }
-    .faq-question {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 20px 0;
-      background: none;
-      border: none;
-      cursor: pointer;
-      font-family: 'Noto Sans JP', sans-serif;
-      font-size: 0.95rem;
-      font-weight: 600;
-      color: #1c1917;
-      text-align: left;
-      line-height: 1.6;
-      gap: 16px;
-    }
-    .faq-question:hover { color: #7c3aed; }
-    .faq-icon {
-      flex-shrink: 0;
-      width: 24px;
-      height: 24px;
-      border-radius: 50%;
-      background: rgba(124,58,237,0.08);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: transform 0.3s ease;
-    }
-    .faq-icon svg {
-      width: 12px;
-      height: 12px;
-      stroke: #7c3aed;
-      stroke-width: 2.5;
-      fill: none;
-    }
-    .faq-item.open .faq-icon { transform: rotate(45deg); }
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease, padding 0.3s ease;
-    }
-    .faq-item.open .faq-answer {
-      max-height: 300px;
-      padding-bottom: 20px;
-    }
-    .faq-answer p {
-      font-size: 0.88rem;
-      color: #78716c;
-      line-height: 1.8;
-      padding-right: 40px;
-    }
+/* ── Founders ── */
+.founders-section { background: #fff; }
+.founders-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 48px; max-width: 720px; margin-left: auto; margin-right: auto; }
+@media (min-width: 640px) { .founders-grid { grid-template-columns: 1fr 1fr; } }
+.founder-card { background: #fafaf9; border-radius: 20px; padding: 36px 28px; text-align: center; border: 1px solid rgba(0,0,0,0.06); }
+.founder-avatar { width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 16px; display: flex; align-items: center; justify-content: center; font-size: 2rem; }
+.founder-avatar.coach { background: linear-gradient(135deg, rgba(124,58,237,0.12), rgba(124,58,237,0.04)); }
+.founder-avatar.engineer { background: linear-gradient(135deg, rgba(13,148,136,0.12), rgba(13,148,136,0.04)); }
+.founder-role { font-size: 0.75rem; font-weight: 600; color: #7c3aed; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 4px; }
+.founder-name { font-size: 1.15rem; font-weight: 700; margin-bottom: 12px; }
+.founder-desc { font-size: 0.88rem; color: #78716c; line-height: 1.7; }
+.founder-badge { display: inline-block; background: rgba(245,158,11,0.1); color: #b45309; font-size: 0.75rem; font-weight: 600; padding: 4px 12px; border-radius: 100px; margin-top: 12px; }
+.founders-message { max-width: 600px; margin: 40px auto 0; text-align: center; font-size: 1.05rem; color: #57534e; line-height: 1.9; font-style: italic; }
+.founders-message strong { color: #1c1917; font-style: normal; }
 
-    /* ===== Final CTA Section ===== */
-    .final-cta-section {
-      background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 30%, #ede9fe 100%);
-      text-align: center;
-    }
-    .final-cta-title {
-      font-size: clamp(1.3rem, 4vw, 2rem);
-      font-weight: 700;
-      margin-bottom: 24px;
-      line-height: 1.5;
-    }
-    .final-cta-subtitle {
-      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
-      color: #57534e;
-      margin-bottom: 40px;
-      max-width: 540px;
-      margin-left: auto;
-      margin-right: auto;
-      line-height: 1.8;
-    }
-    .cta-buttons {
-      display: flex;
-      flex-direction: column;
-      gap: 16px;
-      align-items: center;
-    }
-    @media (min-width: 480px) {
-      .cta-buttons { flex-direction: row; justify-content: center; }
-    }
-    .btn-primary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: linear-gradient(135deg, #7c3aed, #6d28d9);
-      color: #fff;
-      font-size: 1rem;
-      font-weight: 600;
-      padding: 16px 32px;
-      border-radius: 12px;
-      text-decoration: none;
-      transition: all 0.3s ease;
-      box-shadow: 0 4px 20px rgba(124,58,237,0.3);
-    }
-    .btn-primary:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(124,58,237,0.4);
-    }
-    .btn-secondary {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: #fff;
-      color: #7c3aed;
-      font-size: 0.95rem;
-      font-weight: 600;
-      padding: 14px 28px;
-      border-radius: 12px;
-      text-decoration: none;
-      border: 2px solid rgba(124,58,237,0.2);
-      transition: all 0.3s ease;
-    }
-    .btn-secondary:hover {
-      border-color: #7c3aed;
-      background: rgba(124,58,237,0.04);
-    }
+/* ── Evidence ── */
+.evidence-section { background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 50%, #fafaf9 100%); }
+.evidence-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 48px; }
+@media (min-width: 640px) { .evidence-grid { grid-template-columns: repeat(4, 1fr); } }
+.evidence-card { background: #fff; border-radius: 16px; padding: 24px; border: 1px solid rgba(0,0,0,0.06); text-align: center; }
+.evidence-number { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 700; color: #7c3aed; line-height: 1.2; }
+.evidence-metric { font-size: 0.7rem; color: #a8a29e; margin-bottom: 6px; }
+.evidence-elabel { font-size: 0.88rem; font-weight: 600; margin-bottom: 4px; }
+.evidence-detail { font-size: 0.78rem; color: #78716c; line-height: 1.5; }
+.evidence-explainer { max-width: 640px; margin: 32px auto 0; background: rgba(124,58,237,0.04); border-radius: 12px; padding: 20px 24px; font-size: 0.85rem; color: #57534e; line-height: 1.7; }
+.evidence-explainer strong { color: #7c3aed; }
+.evidence-cite { text-align: center; margin-top: 20px; font-size: 0.75rem; color: #a8a29e; line-height: 1.8; }
 
-    /* ===== Footer ===== */
-    .footer {
-      background: #1c1917;
-      color: #a8a29e;
-      padding: 40px 24px;
-      text-align: center;
-      font-size: 0.82rem;
-      line-height: 2;
-    }
-    .footer a {
-      color: #d6d3d1;
-      text-decoration: none;
-    }
-    .footer a:hover { color: #fff; }
-    .footer-divider {
-      margin: 0 8px;
-      color: #57534e;
-    }
-    .footer-copy {
-      margin-top: 12px;
-      color: #57534e;
-      font-size: 0.75rem;
-    }
+/* ── Pricing ── */
+.pricing-section { background: #fff; }
+.pricing-grid { display: grid; grid-template-columns: 1fr; gap: 24px; margin-top: 48px; max-width: 800px; margin-left: auto; margin-right: auto; }
+@media (min-width: 640px) { .pricing-grid { grid-template-columns: 1fr 1fr; } }
+.pricing-card { background: #fafaf9; border-radius: 20px; padding: 36px 28px; border: 1px solid rgba(0,0,0,0.06); box-shadow: 0 2px 12px rgba(0,0,0,0.04); position: relative; overflow: hidden; }
+.pricing-card.featured { border-color: #7c3aed; box-shadow: 0 8px 40px rgba(124,58,237,0.15); background: #fff; }
+.pricing-card.featured::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #7c3aed, #0d9488); }
+.pricing-badge { display: inline-block; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-size: 0.72rem; font-weight: 700; padding: 4px 14px; border-radius: 100px; margin-bottom: 16px; letter-spacing: 0.05em; }
+.pricing-plan { font-size: 1.1rem; font-weight: 700; margin-bottom: 4px; }
+.pricing-desc { font-size: 0.82rem; color: #a8a29e; margin-bottom: 16px; }
+.pricing-amount { font-family: 'Playfair Display', serif; font-size: 2.5rem; font-weight: 700; color: #1c1917; line-height: 1.2; }
+.pricing-amount .yen { font-size: 1.2rem; margin-right: 2px; }
+.pricing-amount .tax { font-size: 0.78rem; color: #a8a29e; font-family: 'Noto Sans JP', sans-serif; font-weight: 400; margin-left: 4px; }
+.pricing-original { font-size: 0.88rem; color: #a8a29e; text-decoration: line-through; margin-bottom: 4px; }
+.pricing-installment { font-size: 0.82rem; color: #78716c; margin-top: 4px; margin-bottom: 20px; }
+.pricing-features { list-style: none; padding: 0; margin: 0 0 24px; }
+.pricing-features li { font-size: 0.88rem; color: #57534e; padding: 6px 0 6px 24px; position: relative; }
+.pricing-features li::before { content: ''; position: absolute; left: 0; top: 12px; width: 14px; height: 14px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%237c3aed'%3E%3Cpath fill-rule='evenodd' d='M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z' clip-rule='evenodd'/%3E%3C/svg%3E") no-repeat center; background-size: contain; }
+.founding-perks { list-style: none; padding: 0; margin-top: 16px; }
+.founding-perks li { font-size: 0.82rem; color: #b45309; padding: 3px 0 3px 20px; position: relative; }
+.founding-perks li::before { content: ''; position: absolute; left: 0; top: 8px; width: 12px; height: 12px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%23f59e0b'%3E%3Cpath d='M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z'/%3E%3C/svg%3E") no-repeat center; background-size: contain; }
+.pricing-cta { display: block; text-align: center; padding: 14px 24px; border-radius: 12px; font-size: 0.95rem; font-weight: 600; text-decoration: none; transition: all 0.3s ease; }
+.pricing-cta.primary { background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; box-shadow: 0 4px 20px rgba(124,58,237,0.25); }
+.pricing-cta.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.35); }
+.pricing-cta.secondary { background: rgba(124,58,237,0.06); color: #7c3aed; }
+.pricing-cta.secondary:hover { background: rgba(124,58,237,0.12); }
+.pricing-per-session { text-align: center; margin-top: 32px; font-size: 0.85rem; color: #78716c; }
+.pricing-per-session strong { color: #7c3aed; font-size: 1.1rem; }
+
+/* ── FAQ ── */
+.faq-section { background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 100%); }
+.faq-list { max-width: 720px; margin: 48px auto 0; }
+.faq-item { border-bottom: 1px solid rgba(0,0,0,0.06); }
+.faq-question { width: 100%; display: flex; align-items: center; justify-content: space-between; padding: 20px 0; background: none; border: none; cursor: pointer; font-family: 'Noto Sans JP', sans-serif; font-size: 0.95rem; font-weight: 600; color: #1c1917; text-align: left; line-height: 1.6; gap: 16px; }
+.faq-question:hover { color: #7c3aed; }
+.faq-icon { flex-shrink: 0; width: 24px; height: 24px; border-radius: 50%; background: rgba(124,58,237,0.08); display: flex; align-items: center; justify-content: center; transition: transform 0.3s ease; }
+.faq-icon svg { width: 12px; height: 12px; stroke: #7c3aed; stroke-width: 2.5; fill: none; }
+.faq-item.open .faq-icon { transform: rotate(45deg); }
+.faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s ease; }
+.faq-item.open .faq-answer { max-height: 300px; padding-bottom: 20px; }
+.faq-answer p { font-size: 0.88rem; color: #78716c; line-height: 1.8; padding-right: 40px; }
+
+/* ── Final CTA ── */
+.final-cta-section { background: linear-gradient(180deg, #fafaf9 0%, #f5f0ff 30%, #ede9fe 100%); text-align: center; }
+.final-cta-title { font-size: clamp(1.3rem, 4vw, 2rem); font-weight: 700; margin-bottom: 24px; line-height: 1.5; }
+.final-cta-subtitle { font-size: clamp(0.95rem, 2.5vw, 1.1rem); color: #57534e; margin-bottom: 40px; max-width: 540px; margin-left: auto; margin-right: auto; line-height: 1.8; }
+.cta-buttons { display: flex; flex-direction: column; gap: 16px; align-items: center; }
+@media (min-width: 480px) { .cta-buttons { flex-direction: row; justify-content: center; } }
+.btn-primary { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #7c3aed, #6d28d9); color: #fff; font-size: 1rem; font-weight: 600; padding: 16px 32px; border-radius: 12px; text-decoration: none; transition: all 0.3s ease; box-shadow: 0 4px 20px rgba(124,58,237,0.3); }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(124,58,237,0.4); }
+.btn-secondary { display: inline-flex; align-items: center; gap: 8px; background: #fff; color: #7c3aed; font-size: 0.95rem; font-weight: 600; padding: 14px 28px; border-radius: 12px; text-decoration: none; border: 2px solid rgba(124,58,237,0.2); transition: all 0.3s ease; }
+.btn-secondary:hover { border-color: #7c3aed; background: rgba(124,58,237,0.04); }
+
+/* ── Footer ── */
+.footer { background: #1c1917; color: #a8a29e; padding: 40px 24px; text-align: center; font-size: 0.82rem; line-height: 2; }
+.footer a { color: #d6d3d1; text-decoration: none; }
+.footer a:hover { color: #fff; }
+.footer-divider { margin: 0 8px; color: #57534e; }
+.footer-copy { margin-top: 12px; color: #57534e; font-size: 0.75rem; }
+
   </style>
 </head>
 <body>
 
-  <!-- ===== Hero ===== -->
   <section class="hero" id="top">
     <div class="hero-content">
-      <div class="hero-badge fade-in">FOUNDING MEMBER 募集中 &#8212; 先着 4名 限定</div>
+      <div class="hero-badge fade-in">FOUNDING MEMBER &#21215;&#38598;&#20013; &#8212; &#20808;&#30528; 4&#21517; &#38480;&#23450;</div>
       <h1 class="hero-title fade-in fade-in-delay-1">
-        100日で、自分の<br><em>「取扱説明書」</em>を完成させる
+        ADHD&#12398;&#25165;&#33021;&#12434;&#35299;&#25918;&#12377;&#12427;<br><em>100&#26085;&#38291;</em>
       </h1>
       <p class="hero-subtitle fade-in fade-in-delay-2">
-        ADHDの当事者2人が、当事者のために作った<br>100日間のコーチングプログラム
+        ADHD&#12398;&#33075;&#12395;&#21512;&#12431;&#12379;&#12390;&#31185;&#23398;&#12375;&#12383;<br>
+        &#12467;&#12540;&#12481;&#12531;&#12464;&#12539;&#23455;&#34892;&#25903;&#25588;&#12539;&#29983;&#27963;&#35373;&#35336;&#12398;&#32113;&#21512;&#12503;&#12525;&#12464;&#12521;&#12512;
       </p>
       <a href="#program" class="hero-cta fade-in fade-in-delay-3">
-        プログラムの詳細を見る
+        &#12503;&#12525;&#12464;&#12521;&#12512;&#12398;&#20840;&#20307;&#20687;&#12434;&#35211;&#12427;
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M8 3v10M3 8l5 5 5-5"/></svg>
       </a>
     </div>
   </section>
 
-  <!-- ===== Problem Section ===== -->
+
+  <div class="stats-bar">
+    <div class="container">
+      <div class="stats-grid fade-in">
+        <div class="stat-item"><div class="stat-number">33</div><div class="stat-label">SESSIONS</div></div>
+        <div class="stat-item"><div class="stat-number">14</div><div class="stat-label">WEEKS</div></div>
+        <div class="stat-item"><div class="stat-number">8</div><div class="stat-label">RESEARCH-BACKED METHODS</div></div>
+        <div class="stat-item"><div class="stat-number">1</div><div class="stat-label">SELF-MANUAL</div></div>
+      </div>
+    </div>
+  </div>
+
+
   <section class="problem-section" id="problem">
     <div class="container text-center">
+      <div class="section-number fade-in">01</div>
       <span class="section-label fade-in">Problem</span>
       <h2 class="section-title fade-in">こんな経験、ありませんか？</h2>
       <div class="problem-grid">
@@ -879,15 +282,16 @@
         <div class="problem-card fade-in fade-in-delay-2">時間の感覚がない。<br>気づいたら3時間が経っていた。</div>
         <div class="problem-card fade-in fade-in-delay-3">人に迷惑をかけて自己嫌悪。<br>「なぜ自分はダメなのか」と思う。</div>
         <div class="problem-card fade-in fade-in-delay-4">本やアプリを試した。最初は続く。<br>でもいつも3日で終わる。</div>
-        <div class="problem-card fade-in">自分だけが取り残されている<br>気がする。</div>
+        <div class="problem-card fade-in fade-in-delay-5">自分だけが取り残されている<br>気がする。</div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Reframe Section ===== -->
+
   <section class="reframe-section" id="reframe">
     <div class="container">
       <div class="reframe-content">
+        <div class="section-number fade-in">02</div>
         <span class="section-label fade-in">Reframe</span>
         <h2 class="section-title fade-in">それは「意志」の問題ではありません</h2>
         <p class="section-subtitle fade-in" style="margin-bottom:24px;">
@@ -900,130 +304,349 @@
           脳の使い方の<strong>マニュアル</strong>がなかっただけ。
         </div>
         <div class="evidence-callout fade-in">
-          <span class="evidence-icon">&#128218;</span>
-          <span>19の研究中<strong>17（89%）</strong>が、専門的コーチングによるADHD症状の改善を確認しています<br><small style="color:#a8a29e;">Ahmann et al., 2018</small></span>
+          <span style="font-size:1.5rem;flex-shrink:0;">&#128218;</span>
+          <span>19の研究中<strong>17（89%）</strong>が、専門的支援によるADHD症状の改善を確認しています<br><small style="color:#a8a29e;">Ahmann et al., 2018</small></span>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Solution / Curriculum ===== -->
-  <section class="solution-section" id="program">
+
+  <section class="program-section" id="program">
     <div class="container text-center">
-      <span class="section-label fade-in">Program</span>
-      <h2 class="section-title fade-in">100日で作る、あなただけの<br>「セルフマニュアル」</h2>
+      <div class="section-number fade-in">03</div>
+      <span class="section-label fade-in">Program Overview</span>
+      <h2 class="section-title fade-in">100日間の全体像</h2>
       <p class="section-subtitle fade-in">
-        8つのDAY講義を軸に、グループの力と個別サポートで<br>
-        自分だけの「取扱説明書」を完成させます。
+        3つのフェーズで段階的に進む、科学的に設計されたプログラム構成。<br>
+        講義・グループ・パーソナル・週次サポートの4層で、確実に行動変容を実現します。
       </p>
+    </div>
+    <div class="container">
+      <div class="matrix-scroll fade-in">
+        <div class="program-matrix">
+          <div class="matrix-label"></div>
+          <div class="act-band act-1" style="grid-column:span 4;">Act 1: Foundation</div>
+          <div class="act-band act-2" style="grid-column:span 6;">Act 2: Build</div>
+          <div class="act-band act-3" style="grid-column:span 4;">Act 3: Integrate</div>
+          <div class="matrix-label"></div>
+          <div class="week-num">W1</div>
+          <div class="week-num">W2</div>
+          <div class="week-num">W3</div>
+          <div class="week-num">W4</div>
+          <div class="week-num">W5</div>
+          <div class="week-num">W6</div>
+          <div class="week-num">W7</div>
+          <div class="week-num">W8</div>
+          <div class="week-num">W9</div>
+          <div class="week-num">W10</div>
+          <div class="week-num">W11</div>
+          <div class="week-num">W12</div>
+          <div class="week-num">W13</div>
+          <div class="week-num">W14</div>
+          <div class="matrix-label">DAY&#35611;&#32681;</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-day">D1</div>
+          <div class="m-cell m-day">D2</div>
+          <div class="m-cell m-day">D3</div>
+          <div class="m-cell m-day">D4</div>
+          <div class="m-cell m-day">D5</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-day">D6</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-day">D7</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-day">D8</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
+          <div class="matrix-label">&#12464;&#12523;&#12540;&#12503;</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-group">G1</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-group">G2</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-group">G3</div>
+          <div class="m-cell m-group">G4</div>
+          <div class="m-cell m-group">G5</div>
+          <div class="m-cell m-group">G6</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
+          <div class="matrix-label">&#12497;&#12540;&#12477;&#12490;&#12523;</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-personal">P1</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-personal">P2</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-personal">P3</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-personal">P4</div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-empty"></div>
+          <div class="m-cell m-personal">P5</div>
+          <div class="m-cell m-empty"></div>
+          <div class="matrix-label">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="m-cell m-weekly">BD</div>
+          <div class="matrix-label">&#12496;&#12487;&#12451;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy" style="border:1px dashed #3b82f6;">&#32068;&#26367;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+          <div class="m-cell m-buddy">&#10003;</div>
+        </div>
+      </div>
+      <div class="matrix-summary fade-in">
+        <div class="matrix-summary-item"><span class="summary-dot purple"></span>DAY&#35611;&#32681; 8&#22238;</div>
+        <div class="matrix-summary-item"><span class="summary-dot teal"></span>&#12464;&#12523;&#12540;&#12503; 6&#22238;</div>
+        <div class="matrix-summary-item"><span class="summary-dot amber"></span>&#12497;&#12540;&#12477;&#12490;&#12523; 5&#22238;</div>
+        <div class="matrix-summary-item"><span class="summary-dot blue"></span>&#12508;&#12487;&#12451;&#12480;&#12502;&#12522;&#12531;&#12464; 14&#22238;</div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="lectures-section" id="lectures">
+    <div class="container text-center">
+      <div class="section-number fade-in">04</div>
+      <span class="section-label fade-in">8 DAY Lectures</span>
+      <h2 class="section-title fade-in">8つの科学的メソッド</h2>
+      <p class="section-subtitle fade-in">各回60分。心理教育15分 + コアワーク25分 + グループ議論15分 + 課題5分</p>
     </div>
     <div class="container">
       <div class="timeline">
         <div class="timeline-item fade-in">
           <div class="timeline-marker">1</div>
           <div class="timeline-day">Day 1</div>
-          <div class="timeline-title">脳のプロファイル &#8212; 自分のADHDを理解する</div>
-          <div class="timeline-desc">あなたのADHD特性を客観的に把握。注意の配分パターン、エネルギーの波、過集中のトリガーを可視化します。</div>
-          <span class="timeline-effect">自己認識スコア向上</span>
+          <div class="timeline-title">ADHD脳のOS &#8212; 自分の脳を理解する</div>
+          <div class="timeline-desc">ドーパミンシステムと三経路モデルを学び、15シナリオの自己評価で自分のADHDタイプを特定。「脳プロファイルカード」を作成します。</div>
+          <div class="timeline-meta"><span class="timeline-effect">d=0.5-0.7</span><span class="timeline-chapter">Ch.1 脳のプロファイル</span></div>
         </div>
         <div class="timeline-item fade-in">
           <div class="timeline-marker">2</div>
           <div class="timeline-day">Day 2</div>
-          <div class="timeline-title">トリガーマップ &#8212; パターンを見つける</div>
-          <div class="timeline-desc">先延ばし・衝動・感情爆発。それぞれの「引き金」を特定し、対処の地図を作ります。</div>
-          <span class="timeline-effect">セルフコンパッション d=0.4-0.6</span>
+          <div class="timeline-title">トリガーとパターン &#8212; ABC分析で因果を解く</div>
+          <div class="timeline-desc">先延ばし方程式を理解し、過去1週間の実体験からABCワークシート5枚を作成。変えられる条件と受け入れる条件を分類します。</div>
+          <div class="timeline-meta"><span class="timeline-effect">d=0.89</span><span class="timeline-chapter">Ch.2 トリガーマップ</span></div>
         </div>
         <div class="timeline-item fade-in">
           <div class="timeline-marker">3</div>
           <div class="timeline-day">Day 3</div>
-          <div class="timeline-title">環境設計図 &#8212; 暮らしをデザインする</div>
-          <div class="timeline-desc">意志力に頼らない仕組みづくり。物理環境・デジタル環境を「ADHDフレンドリー」に再設計します。</div>
-          <span class="timeline-effect">環境調整による持続効果</span>
+          <div class="timeline-title">環境デザイン &#8212; 意志力に頼らない仕組み</div>
+          <div class="timeline-desc">ADHD向けナッジ理論を学び、物理・デジタル・社会環境30項目を監査。今週実装する3つのナッジを設計し、ライブデモで実践。</div>
+          <div class="timeline-meta"><span class="timeline-effect">d=0.5+</span><span class="timeline-chapter">Ch.3 環境設計図</span></div>
         </div>
         <div class="timeline-item fade-in">
           <div class="timeline-marker">4</div>
           <div class="timeline-day">Day 4</div>
-          <div class="timeline-title">If-Thenプレイブック &#8212; 自動操縦を作る</div>
-          <div class="timeline-desc">「もし〜なら、〜する」のルールを自分用にカスタマイズ。考えずに動ける仕組みを構築します。</div>
-          <span class="timeline-effect">実行機能の外部化</span>
+          <div class="timeline-title">If-Then自動操縦 &#8212; 考えずに動ける仕組み</div>
+          <div class="timeline-desc">94の研究で実証されたImplementation Intentionsを活用。トップ5トリガーに対するIf-Then計画を設計し、バディペアでレビュー。</div>
+          <div class="timeline-meta"><span class="timeline-effect">d=0.65</span><span class="timeline-chapter">Ch.4 プレイブック</span></div>
         </div>
         <div class="timeline-item fade-in">
           <div class="timeline-marker">5</div>
           <div class="timeline-day">Day 5</div>
-          <div class="timeline-title">時間設計 &#8212; 時間を「見える」ようにする</div>
-          <div class="timeline-desc">タイムブラインドネス（時間盲）を克服するツールと戦略。ADHDの脳に合った時間管理法を身につけます。</div>
-          <span class="timeline-effect">タイムマネジメント d=0.89</span>
+          <div class="timeline-title">時間アーキテクチャ &#8212; 時間を「見える」ようにする</div>
+          <div class="timeline-desc">タイムブラインドネスの神経科学を理解し、10タスク見積もりチャレンジに挑戦。エネルギーレベルで色分けした「理想の1週間」をデザイン。</div>
+          <div class="timeline-meta"><span class="timeline-effect">d=0.89</span><span class="timeline-chapter">Ch.5 時間設計</span></div>
         </div>
         <div class="timeline-item fade-in">
           <div class="timeline-marker">6</div>
           <div class="timeline-day">Day 6</div>
-          <div class="timeline-title">サポート設計 &#8212; 仲間の力を使う</div>
-          <div class="timeline-desc">ボディダブリング、バディシステム。一人で頑張らない戦略を、実践の中で身につけます。</div>
-          <span class="timeline-effect">ボディダブリング d=0.5-0.8</span>
+          <div class="timeline-title">証人の力 &#8212; 仲間の存在が変える</div>
+          <div class="timeline-desc">ボディダブリングの科学と社会的促進理論を学び、講義中にライブBD25分を体験。「サポートマップ」で誰に・いつ・どんな助けを求めるかを設計。</div>
+          <div class="timeline-meta"><span class="timeline-effect">d=0.5-0.8</span><span class="timeline-chapter">Ch.6 サポート設計</span></div>
         </div>
         <div class="timeline-item fade-in">
           <div class="timeline-marker">7</div>
           <div class="timeline-day">Day 7</div>
-          <div class="timeline-title">強みインベントリ &#8212; 才能を武器にする</div>
-          <div class="timeline-desc">ADHDの特性を「弱み」ではなく「強み」として活かす。創造性・過集中・直感力を棚卸しします。</div>
-          <span class="timeline-effect">自己効力感 d=0.5-0.7</span>
+          <div class="timeline-title">強みは本物 &#8212; ADHDの才能を武器にする</div>
+          <div class="timeline-desc">2025年最新研究に基づくADHD10の強みを探索。強みカードソートとバディからのフィードバック、セルフコンパッションレターで自己受容を深めます。</div>
+          <div class="timeline-meta"><span class="timeline-effect">d=0.4-0.6</span><span class="timeline-chapter">Ch.7 強みインベントリ</span></div>
         </div>
         <div class="timeline-item fade-in">
           <div class="timeline-marker">8</div>
           <div class="timeline-day">Day 8</div>
-          <div class="timeline-title">運用マニュアル &#8212; 自走する仕組みを完成</div>
-          <div class="timeline-desc">100日で蓄積した知見を1冊の「セルフマニュアル」にまとめます。卒業後も自分で更新し続けられる、一生モノのツールです。</div>
-          <span class="timeline-effect">セルフマニュアル完成</span>
+          <div class="timeline-title">セルフマニュアル完成 &#8212; 一生モノの武器を手に</div>
+          <div class="timeline-desc">当事者研究とセルフコーチングのメソッドで、全8章を統合レビュー。「エレベーターピッチ」練習と「次の100日」プランで卒業後の自走力を確保。</div>
+          <div class="timeline-meta"><span class="timeline-chapter">Ch.8 運用マニュアル</span></div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Features Section ===== -->
-  <section class="features-section" id="features">
+
+  <section class="group-section" id="group">
     <div class="container text-center">
-      <span class="section-label fade-in">What's Included</span>
-      <h2 class="section-title fade-in">プログラムに含まれるもの</h2>
+      <div class="section-number fade-in">05</div>
+      <span class="section-label fade-in">Group Sessions</span>
+      <h2 class="section-title fade-in">6回のグループセッション</h2>
+      <p class="section-subtitle fade-in">75分 / 6-8名のコホート制。「自分だけじゃない」と実感できる安全な場。</p>
     </div>
     <div class="container">
-      <div class="features-grid">
-        <div class="feature-card fade-in">
-          <div class="feature-icon purple">&#128218;</div>
-          <div class="feature-title">8回のDAY講義</div>
-          <div class="feature-desc">隔週で実施するコア講義。科学的根拠に基づくフレームワークを学び、自分のセルフマニュアルに落とし込みます。</div>
-          <div class="feature-meta">隔週水曜 19:00-20:00 / オンライン</div>
+      <div class="gs-grid">
+        <div class="gs-card fade-in">
+          <div class="gs-week">Week 3</div>
+          <div class="gs-title">G1: パターン共有</div>
+          <div class="gs-format">ラウンドロビン + ピアフィードバック</div>
+          <div class="gs-desc">DAY2-3で作成したトリガーマップと環境設計図をシェア。仲間のパターンから自分の気づきを得る。</div>
         </div>
-        <div class="feature-card fade-in fade-in-delay-1">
-          <div class="feature-icon teal">&#128101;</div>
-          <div class="feature-title">6回のグループセッション</div>
-          <div class="feature-desc">6-8名の仲間と、学びを深め合う時間。「自分だけじゃない」と実感できる安全な場です。</div>
-          <div class="feature-meta">75分 / 6-8名のコホート制</div>
+        <div class="gs-card fade-in fade-in-delay-1">
+          <div class="gs-week">Week 5</div>
+          <div class="gs-title">G2: If-Then実践報告</div>
+          <div class="gs-format">ペアワーク &#8594; 全体シェア</div>
+          <div class="gs-desc">1週間のIf-Then実行結果を報告。うまくいったこと・困ったことを共有し、改善策をグループで検討。</div>
         </div>
-        <div class="feature-card fade-in fade-in-delay-2">
-          <div class="feature-icon amber">&#128172;</div>
-          <div class="feature-title">5回のパーソナルセッション</div>
-          <div class="feature-desc">コーチとの1on1で、あなた固有の課題に向き合います。セルフマニュアルの精度を一緒に高めていきます。</div>
-          <div class="feature-meta">1回45分 / 1on1 / オンライン</div>
+        <div class="gs-card fade-in fade-in-delay-2">
+          <div class="gs-week">Week 8</div>
+          <div class="gs-title">G3: 時間管理実践</div>
+          <div class="gs-format">グループブレインストーミング</div>
+          <div class="gs-desc">「理想の週」と見積もりバイアスの結果を共有。グループの知恵で各自の時間設計を改善。</div>
         </div>
-        <div class="feature-card fade-in fade-in-delay-3">
-          <div class="feature-icon blue">&#9201;</div>
-          <div class="feature-title">毎週のボディダブリング</div>
-          <div class="feature-desc">月曜朝に仲間と一緒にオンラインで作業する時間。「誰かがいる」だけで集中力が変わります。</div>
-          <div class="feature-meta">毎週月曜 8:00-9:00 / 任意参加</div>
+        <div class="gs-card fade-in">
+          <div class="gs-week">Week 9</div>
+          <div class="gs-title">G4: 強み共有</div>
+          <div class="gs-format">バディフィードバック + 全体</div>
+          <div class="gs-desc">強みカードソート結果を発表。バディから「あなたに見える強み」のフィードバックで新しい自己像を発見。</div>
         </div>
-      </div>
-      <div class="extras fade-in">
-        <span class="extra-tag">Discord コミュニティ</span>
-        <span class="extra-tag">バディシステム</span>
-        <span class="extra-tag">Weekly Pulse Check</span>
-        <span class="extra-tag">セルフマニュアル テンプレート</span>
+        <div class="gs-card fade-in fade-in-delay-1">
+          <div class="gs-week">Week 10</div>
+          <div class="gs-title">G5: 進捗会議</div>
+          <div class="gs-format">構造化ディスカッション</div>
+          <div class="gs-desc">卒業までの障害を予測し、対処法をグループで検討。仲間の力で最後の壁を越える準備。</div>
+        </div>
+        <div class="gs-card fade-in fade-in-delay-2">
+          <div class="gs-week">Week 11</div>
+          <div class="gs-title">G6: ショーケース</div>
+          <div class="gs-format">プレゼンテーション + 祝福</div>
+          <div class="gs-desc">セルフマニュアルの抜粋を発表。100日間の成長を参加者同士で認め合い、祝福する場。</div>
+        </div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Founders Section ===== -->
+
+  <section class="personal-section" id="personal">
+    <div class="container text-center">
+      <div class="section-number fade-in">06</div>
+      <span class="section-label fade-in">Personal Sessions</span>
+      <h2 class="section-title fade-in">5回のパーソナルセッション</h2>
+      <p class="section-subtitle fade-in">1回45分。Coach&#65288;心理・行動変容&#65289;とEngineer&#65288;ツール・データ&#65289;が交互にサポート。</p>
+    </div>
+    <div class="container">
+      <div class="ps-list">
+        <div class="ps-item fade-in">
+          <div class="ps-icon coach">&#129504;</div>
+          <div>
+            <div class="ps-week">Week 2</div>
+            <div class="ps-title">PS1: ADHDアセスメント &#215; 価値発見</div>
+            <div class="ps-lead coach-lead">Coach</div>
+            <div class="ps-desc">初期アセスメントを実施し、あなた固有のADHD特性を深掘り。セルフマニュアルCh.1「脳のプロファイル」を一緒に完成させます。</div>
+          </div>
+        </div>
+        <div class="ps-item fade-in">
+          <div class="ps-icon engineer">&#128736;</div>
+          <div>
+            <div class="ps-week">Week 5</div>
+            <div class="ps-title">PS2: ツール設定 &#215; デジタルナッジ</div>
+            <div class="ps-lead eng-lead">Engineer</div>
+            <div class="ps-desc">セルフマニュアルビルダーのオンボーディング、スマホ・PC・デスクのデジタルナッジを一緒に設定。環境を「ADHDフレンドリー」に。</div>
+          </div>
+        </div>
+        <div class="ps-item fade-in">
+          <div class="ps-icon coach">&#129504;</div>
+          <div>
+            <div class="ps-week">Week 7-8</div>
+            <div class="ps-title">PS3: 中間振返り &#215; 認知リフレーミング</div>
+            <div class="ps-lead coach-lead">Coach</div>
+            <div class="ps-desc">前半の成果を振返り、目標を調整。認知のリフレーミングで「できていないこと」から「できたこと」にフォーカスをシフト。</div>
+          </div>
+        </div>
+        <div class="ps-item fade-in">
+          <div class="ps-icon engineer">&#128736;</div>
+          <div>
+            <div class="ps-week">Week 10-11</div>
+            <div class="ps-title">PS4: データレビュー &#8212;「あなたの数字」</div>
+            <div class="ps-lead eng-lead">Engineer</div>
+            <div class="ps-desc">パルスチェック・ボディダブリング出席率・If-Then実行率のデータを可視化。数字に基づいてシステムを最適化。</div>
+          </div>
+        </div>
+        <div class="ps-item fade-in">
+          <div class="ps-icon coach">&#129504;</div>
+          <div>
+            <div class="ps-week">Week 13</div>
+            <div class="ps-title">PS5: 卒業準備 &#215; 次の100日プラン</div>
+            <div class="ps-lead coach-lead">Coach</div>
+            <div class="ps-desc">セルフマニュアル完成確認、卒業後のセルフコーチングプロトコルを策定。「次の100日」を自分の力で設計します。</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <section class="rhythm-section" id="rhythm">
+    <div class="container text-center">
+      <div class="section-number fade-in">07</div>
+      <span class="section-label fade-in">Weekly Rhythm</span>
+      <h2 class="section-title fade-in">毎週の仕組みが、あなたを支える</h2>
+      <p class="section-subtitle fade-in">一人で頑張らなくていい。仕組みと仲間が、毎日そばにいます。</p>
+    </div>
+    <div class="container">
+      <div class="rhythm-grid">
+        <div class="rhythm-card fade-in">
+          <div class="rhythm-day">&#127761; &#27598;&#36913;&#26376;&#26332;</div>
+          <div class="rhythm-title">ボディダブリング 50分</div>
+          <div class="rhythm-desc">仲間とカメラONで黙々と作業。「誰かがいる」だけで集中力が変わる。週の始まりを一緒にスタート。</div>
+        </div>
+        <div class="rhythm-card fade-in fade-in-delay-1">
+          <div class="rhythm-day">&#128218; &#27598;&#36913;&#27700;&#26332;</div>
+          <div class="rhythm-title">DAY講義 or グループセッション</div>
+          <div class="rhythm-desc">隔週でDAY講義（60分）とグループセッション（75分）を交互に実施。学びと実践のサイクルを回します。</div>
+        </div>
+        <div class="rhythm-card fade-in fade-in-delay-2">
+          <div class="rhythm-day">&#128172; &#27598;&#36913;&#37329;&#26332;</div>
+          <div class="rhythm-title">非同期の週次振返り</div>
+          <div class="rhythm-desc">Discordで1週間を振返り。テキストでOK、リアクションだけでもOK。「既読スルーを責めない」が合言葉。</div>
+        </div>
+        <div class="rhythm-card fade-in fade-in-delay-3">
+          <div class="rhythm-day">&#9745;&#65039; &#27598;&#26085;</div>
+          <div class="rhythm-title">バディペアの10分チェックイン</div>
+          <div class="rhythm-desc">朝「今日の ONE THING」&#8594; 夜「やった？」の非同期メッセージ。小さな約束が行動を変える。W7で組替え。</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
   <section class="founders-section" id="founders">
     <div class="container text-center">
+      <div class="section-number fade-in">08</div>
       <span class="section-label fade-in">Founders</span>
       <h2 class="section-title fade-in">なぜ私たちが作ったのか</h2>
     </div>
@@ -1032,21 +655,15 @@
         <div class="founder-card fade-in">
           <div class="founder-avatar coach">&#129504;</div>
           <div class="founder-role">Coach</div>
-          <div class="founder-name">&#12304;Coach名&#12305;</div>
-          <div class="founder-desc">
-            ADHD当事者。コーチング資格と心理学のバックグラウンドを持ち、
-            当事者だからこそ寄り添えるサポートを設計。
-          </div>
+          <div class="founder-name">&#12304;Coach&#21517;&#12305;</div>
+          <div class="founder-desc">ADHD当事者。コーチング資格と心理学のバックグラウンドを持ち、当事者だからこそ寄り添えるサポートを設計。</div>
           <span class="founder-badge">ADHD当事者</span>
         </div>
         <div class="founder-card fade-in fade-in-delay-1">
           <div class="founder-avatar engineer">&#128736;</div>
           <div class="founder-role">Engineer</div>
-          <div class="founder-name">&#12304;Engineer名&#12305;</div>
-          <div class="founder-desc">
-            ADHD当事者。テクノロジーと行動科学の知見を組み合わせ、
-            仕組みで自分を動かすツールを作る。
-          </div>
+          <div class="founder-name">&#12304;Engineer&#21517;&#12305;</div>
+          <div class="founder-desc">ADHD当事者。テクノロジーと行動科学の知見を組み合わせ、仕組みで自分を動かすツールを作る。</div>
           <span class="founder-badge">ADHD当事者</span>
         </div>
       </div>
@@ -1058,99 +675,91 @@
     </div>
   </section>
 
-  <!-- ===== Evidence Section ===== -->
+
   <section class="evidence-section" id="evidence">
     <div class="container text-center">
+      <div class="section-number fade-in">09</div>
       <span class="section-label fade-in">Evidence</span>
       <h2 class="section-title fade-in">科学に裏付けられた方法論</h2>
-      <p class="section-subtitle fade-in">
-        このプログラムの全メソッドは、ADHD研究の<br>エビデンスに基づいて設計されています。
-      </p>
+      <p class="section-subtitle fade-in">全8 DAYのメソッドは、ADHD研究のエビデンスに基づいて設計されています。</p>
     </div>
     <div class="container">
       <div class="evidence-grid">
         <div class="evidence-card fade-in">
           <div class="evidence-number">d=0.89</div>
-          <div class="evidence-metric">効果量（Cohen's d）</div>
-          <div class="evidence-label">タイムマネジメントスキル</div>
-          <div class="evidence-detail">コーチングによる時間管理スキルの改善度。<br>「大きな効果」とされる水準です。</div>
+          <div class="evidence-metric">Cohen's d</div>
+          <div class="evidence-elabel">タイムマネジメント</div>
+          <div class="evidence-detail">時間管理スキルの改善度。<br>「大きな効果」の水準。</div>
         </div>
         <div class="evidence-card fade-in fade-in-delay-1">
           <div class="evidence-number">d=0.5-0.7</div>
-          <div class="evidence-metric">効果量（Cohen's d）</div>
-          <div class="evidence-label">自己効力感の向上</div>
-          <div class="evidence-detail">「自分にもできる」という感覚が<br>有意に向上することが確認されています。</div>
+          <div class="evidence-metric">Cohen's d</div>
+          <div class="evidence-elabel">自己効力感</div>
+          <div class="evidence-detail">「自分にもできる」感覚が<br>有意に向上。</div>
         </div>
         <div class="evidence-card fade-in fade-in-delay-2">
           <div class="evidence-number">d=0.5-0.8</div>
-          <div class="evidence-metric">効果量（Cohen's d）</div>
-          <div class="evidence-label">ボディダブリング効果</div>
-          <div class="evidence-detail">誰かと一緒にいるだけで集中力が上がる。<br>ADHDに特に有効な手法です。</div>
+          <div class="evidence-metric">Cohen's d</div>
+          <div class="evidence-elabel">ボディダブリング</div>
+          <div class="evidence-detail">誰かと一緒にいるだけで<br>集中力が向上。</div>
         </div>
         <div class="evidence-card fade-in fade-in-delay-3">
-          <div class="evidence-number">d=0.4-0.6</div>
-          <div class="evidence-metric">効果量（Cohen's d）</div>
-          <div class="evidence-label">セルフコンパッション</div>
-          <div class="evidence-detail">自己批判から自己受容へ。<br>ADHDの二次障害予防にも寄与します。</div>
+          <div class="evidence-number">89%</div>
+          <div class="evidence-metric">19研究中17</div>
+          <div class="evidence-elabel">症状改善の確認率</div>
+          <div class="evidence-detail">専門的支援による<br>ADHD症状の改善。</div>
         </div>
       </div>
       <div class="evidence-explainer fade-in">
         <strong>「d=0.89」ってどういう意味？</strong><br>
-        効果量（Cohen's d）は介入の効果の大きさを示す統計指標です。
-        d=0.2が「小さい効果」、d=0.5が「中程度」、d=0.8以上が「大きい効果」。
+        効果量（Cohen's d）は介入の効果の大きさを示す統計指標。d=0.2が「小」、d=0.5が「中」、d=0.8以上が「大」。
         d=0.89は、<strong>およそ100人中80人以上に改善が見られる水準</strong>を意味します。
       </div>
       <div class="evidence-cite fade-in">
-        Prevatt &amp; Yelland (2015). An Empirical Evaluation of ADHD Coaching in College Students.<br>
+        Prevatt &amp; Yelland (2015). An Empirical Evaluation of ADHD Coaching.<br>
         Ahmann et al. (2018). A Descriptive Review of ADHD Coaching Research.
       </div>
     </div>
   </section>
 
-  <!-- ===== Pricing Section ===== -->
+
   <section class="pricing-section" id="pricing">
     <div class="container text-center">
+      <div class="section-number fade-in">10</div>
       <span class="section-label fade-in">Pricing</span>
       <h2 class="section-title fade-in">Founding Memberとして参加する</h2>
-      <p class="section-subtitle fade-in">
-        最初の1期生として、プログラムの設計に関わりながら参加できます。
-      </p>
+      <p class="section-subtitle fade-in">最初の1期生として、プログラムの設計に関わりながら参加できます。</p>
     </div>
     <div class="container">
       <div class="pricing-grid">
-        <!-- Founding Member -->
         <div class="pricing-card featured fade-in">
           <div class="pricing-badge">先着4名限定</div>
           <div class="pricing-plan">Founding Member</div>
           <div class="pricing-desc">第1期生 &#8212; プログラム共創者</div>
-          <div class="pricing-original">&yen;400,000</div>
-          <div class="pricing-amount">
-            <span class="yen">&yen;</span>300,000<span class="tax">（税込）</span>
-          </div>
+          <div class="pricing-original">&yen;500,000</div>
+          <div class="pricing-amount"><span class="yen">&yen;</span>300,000<span class="tax">（税込）</span></div>
           <div class="pricing-installment">分割払い可（2回 &times; &yen;150,000）</div>
           <ul class="pricing-features">
-            <li>DAY講義 全8回</li>
-            <li>グループセッション 全6回</li>
-            <li>パーソナルセッション 全5回</li>
-            <li>ボディダブリング（毎週）</li>
+            <li>DAY講義 全8回（60分 &times; 8）</li>
+            <li>グループセッション 全6回（75分 &times; 6）</li>
+            <li>パーソナルセッション 全5回（45分 &times; 5）</li>
+            <li>ボディダブリング（毎週 &times; 14回）</li>
+            <li>バディシステム（毎日の相互チェックイン）</li>
             <li>Discord コミュニティ永久アクセス</li>
-            <li>セルフマニュアル テンプレート</li>
+            <li>セルフマニュアル テンプレート全8章</li>
           </ul>
           <ul class="founding-perks">
-            <li>30% OFF（Founding特典）</li>
+            <li>40% OFF（Founding特典）</li>
             <li>次期以降の再参加権（無料）</li>
             <li>プログラム設計へのフィードバック権</li>
           </ul>
           <a href="#" class="pricing-cta primary" style="margin-top:20px;">Founding Memberに申し込む</a>
         </div>
-        <!-- Standard -->
         <div class="pricing-card fade-in fade-in-delay-1">
           <div class="pricing-plan">Standard</div>
           <div class="pricing-desc">第2期以降の参加</div>
-          <div class="pricing-amount" style="margin-top:28px;">
-            <span class="yen">&yen;</span>400,000<span class="tax">（税込）</span>
-          </div>
-          <div class="pricing-installment">分割払い可（2回 &times; &yen;200,000）</div>
+          <div class="pricing-amount" style="margin-top:28px;"><span class="yen">&yen;</span>500,000<span class="tax">（税込）</span></div>
+          <div class="pricing-installment">分割払い可（2回 &times; &yen;250,000）</div>
           <ul class="pricing-features">
             <li>DAY講義 全8回</li>
             <li>グループセッション 全6回</li>
@@ -1162,109 +771,39 @@
           <a href="#" class="pricing-cta secondary" style="margin-top:20px;">第2期の案内を受け取る</a>
         </div>
       </div>
+      <p class="pricing-per-session fade-in">
+        Founding Member価格で<strong>1セッションあたり約&yen;9,100</strong>（33セッション換算）
+      </p>
     </div>
   </section>
 
-  <!-- ===== FAQ Section ===== -->
+
   <section class="faq-section" id="faq">
     <div class="container text-center">
+      <div class="section-number fade-in">11</div>
       <span class="section-label fade-in">FAQ</span>
       <h2 class="section-title fade-in">よくあるご質問</h2>
     </div>
     <div class="container">
       <div class="faq-list">
-
-        <div class="faq-item fade-in">
-          <button class="faq-question" aria-expanded="false">
-            <span>これは医療行為ですか？</span>
-            <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <p>いいえ。本プログラムはコーチングであり、医療行為・治療行為ではありません。診断・投薬・心理療法は含まれません。必要に応じて、医療機関やカウンセリングをご紹介します。</p>
-          </div>
-        </div>
-
-        <div class="faq-item fade-in">
-          <button class="faq-question" aria-expanded="false">
-            <span>ADHDの診断がないと参加できませんか？</span>
-            <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <p>確定診断は必須ではありません。「グレーゾーン」の方も歓迎です。お申し込み後に簡単なスクリーニング（ASRSなど）を実施し、プログラムが適切かどうかを一緒に確認します。</p>
-          </div>
-        </div>
-
-        <div class="faq-item fade-in">
-          <button class="faq-question" aria-expanded="false">
-            <span>途中で辞めたくなったら？</span>
-            <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <p>開始後14日以内であれば全額返金いたします。それ以降は、消化済みセッション分を除いた金額の50%を返金いたします。詳細は特商法に基づく表記をご確認ください。</p>
-          </div>
-        </div>
-
-        <div class="faq-item fade-in">
-          <button class="faq-question" aria-expanded="false">
-            <span>オンラインだけですか？</span>
-            <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <p>はい、完全オンラインです。Zoom（講義・セッション）とDiscord（コミュニティ・ボディダブリング）を使用します。全国どこからでも参加できます。</p>
-          </div>
-        </div>
-
-        <div class="faq-item fade-in">
-          <button class="faq-question" aria-expanded="false">
-            <span>他の参加者に自分のことがバレませんか？</span>
-            <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <p>匿名（ニックネーム）での参加が可能です。本名を開示する必要はありません。守秘義務の合意書に全員が署名し、プライバシーを守ります。</p>
-          </div>
-        </div>
-
-        <div class="faq-item fade-in">
-          <button class="faq-question" aria-expanded="false">
-            <span>薬を飲んでいますが参加できますか？</span>
-            <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <p>もちろん参加できます。薬物療法とコーチングの併用は、むしろ研究で効果が確認されています。薬の処方や調整についてはかかりつけ医にご相談ください。</p>
-          </div>
-        </div>
-
-        <div class="faq-item fade-in">
-          <button class="faq-question" aria-expanded="false">
-            <span>時間の確保が不安です</span>
-            <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <p>週あたりの目安は2〜3時間です。ADHDの特性を踏まえ、短時間集中型で設計しています。すべてのセッションにアーカイブがあり、リアルタイム参加が難しい場合も学びを継続できます。</p>
-          </div>
-        </div>
-
-        <div class="faq-item fade-in">
-          <button class="faq-question" aria-expanded="false">
-            <span>本当に100日で変われますか？</span>
-            <span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span>
-          </button>
-          <div class="faq-answer">
-            <p>「変わる」ことを保証するプログラムではありません。しかし、100日後にはあなたの手元に「セルフマニュアル」という具体的な武器が残ります。自分の脳の特性を理解し、対処法を言語化したこのマニュアルは、100日後も一生使い続けられるものです。</p>
-          </div>
-        </div>
-
+        <div class="faq-item fade-in"><button class="faq-question" aria-expanded="false"><span>これは医療行為ですか？</span><span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span></button><div class="faq-answer"><p>いいえ。本プログラムはコーチングと実行支援であり、医療行為・治療行為ではありません。診断・投薬・心理療法は含まれません。必要に応じて、医療機関やカウンセリングをご紹介します。</p></div></div>
+        <div class="faq-item fade-in"><button class="faq-question" aria-expanded="false"><span>ADHDの診断がないと参加できませんか？</span><span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span></button><div class="faq-answer"><p>確定診断は必須ではありません。「グレーゾーン」の方も歓迎です。お申し込み後に簡単なスクリーニング（ASRSなど）を実施し、プログラムが適切かどうかを一緒に確認します。</p></div></div>
+        <div class="faq-item fade-in"><button class="faq-question" aria-expanded="false"><span>途中で辞めたくなったら？</span><span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span></button><div class="faq-answer"><p>開始後14日以内であれば全額返金いたします。それ以降は、消化済みセッション分を除いた金額の50%を返金いたします。詳細は特商法に基づく表記をご確認ください。</p></div></div>
+        <div class="faq-item fade-in"><button class="faq-question" aria-expanded="false"><span>オンラインだけですか？</span><span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span></button><div class="faq-answer"><p>はい、完全オンラインです。Google Meet（講義・セッション）とDiscord（コミュニティ・ボディダブリング）を使用します。全国どこからでも参加できます。</p></div></div>
+        <div class="faq-item fade-in"><button class="faq-question" aria-expanded="false"><span>他の参加者に自分のことがバレませんか？</span><span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span></button><div class="faq-answer"><p>匿名（ニックネーム）での参加が可能です。本名を開示する必要はありません。守秘義務の合意書に全員が署名し、プライバシーを守ります。</p></div></div>
+        <div class="faq-item fade-in"><button class="faq-question" aria-expanded="false"><span>薬を飲んでいますが参加できますか？</span><span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span></button><div class="faq-answer"><p>もちろん参加できます。薬物療法とコーチングの併用は、むしろ研究で効果が確認されています。薬の処方や調整についてはかかりつけ医にご相談ください。</p></div></div>
+        <div class="faq-item fade-in"><button class="faq-question" aria-expanded="false"><span>時間の確保が不安です</span><span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span></button><div class="faq-answer"><p>週あたりの目安は2〜3時間です。ADHDの特性を踏まえ、短時間集中型で設計しています。すべてのセッションにアーカイブがあり、リアルタイム参加が難しい場合も学びを継続できます。</p></div></div>
+        <div class="faq-item fade-in"><button class="faq-question" aria-expanded="false"><span>本当に100日で変われますか？</span><span class="faq-icon"><svg viewBox="0 0 12 12"><line x1="6" y1="0" x2="6" y2="12"/><line x1="0" y1="6" x2="12" y2="6"/></svg></span></button><div class="faq-answer"><p>「変わる」ことを保証するプログラムではありません。しかし、100日後にはあなたの手元に「セルフマニュアル」という具体的な武器が残ります。自分の脳の特性を理解し、対処法を言語化したこのマニュアルは、一生使い続けられるものです。</p></div></div>
       </div>
     </div>
   </section>
 
-  <!-- ===== Final CTA Section ===== -->
+
   <section class="final-cta-section" id="cta">
     <div class="container">
+      <div class="section-number fade-in">12</div>
       <p class="heading-decorative fade-in" style="font-size:clamp(1rem,3vw,1.3rem);margin-bottom:12px;">Imagine</p>
-      <h2 class="final-cta-title fade-in">
-        100日後の自分を<br>想像してみてください
-      </h2>
+      <h2 class="final-cta-title fade-in">100日後の自分を<br>想像してみてください</h2>
       <p class="final-cta-subtitle fade-in">
         自分の脳の「取扱説明書」を手に、<br>
         「わかっているのにできない」を卒業した自分を。<br>
@@ -1275,86 +814,25 @@
           まずは無料のボディダブリングに参加する
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
         </a>
-        <a href="#" class="btn-secondary">
-          個別相談（Discovery Call）を予約する
-        </a>
+        <a href="#" class="btn-secondary">個別相談（Discovery Call）を予約する</a>
       </div>
     </div>
   </section>
 
-  <!-- ===== Footer ===== -->
+
   <footer class="footer">
     <div class="container">
-      <p>
-        &#12304;事業者名&#12305;
-        <span class="footer-divider">|</span>
-        &#12304;住所&#12305;
-      </p>
-      <p>
-        <a href="#">特定商取引法に基づく表記</a>
-        <span class="footer-divider">|</span>
-        <a href="#">プライバシーポリシー</a>
-      </p>
+      <p>&#12304;事業者名&#12305;<span class="footer-divider">|</span>&#12304;住所&#12305;</p>
+      <p><a href="#">特定商取引法に基づく表記</a><span class="footer-divider">|</span><a href="#">プライバシーポリシー</a></p>
       <p class="footer-copy">&copy; 2026 &#12304;事業者名&#12305; All rights reserved.</p>
     </div>
   </footer>
 
-  <!-- ===== JavaScript ===== -->
+
   <script>
-    // Intersection Observer for fade-in animations
-    (function() {
-      var observer = new IntersectionObserver(function(entries) {
-        entries.forEach(function(entry) {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('visible');
-          }
-        });
-      }, {
-        threshold: 0.1,
-        rootMargin: '0px 0px -40px 0px'
-      });
-
-      document.querySelectorAll('.fade-in').forEach(function(el) {
-        observer.observe(el);
-      });
-    })();
-
-    // FAQ accordion
-    (function() {
-      document.querySelectorAll('.faq-question').forEach(function(btn) {
-        btn.addEventListener('click', function() {
-          var item = this.closest('.faq-item');
-          var isOpen = item.classList.contains('open');
-
-          // Close all others
-          document.querySelectorAll('.faq-item.open').forEach(function(openItem) {
-            openItem.classList.remove('open');
-            openItem.querySelector('.faq-question').setAttribute('aria-expanded', 'false');
-          });
-
-          // Toggle current
-          if (!isOpen) {
-            item.classList.add('open');
-            this.setAttribute('aria-expanded', 'true');
-          }
-        });
-      });
-    })();
-
-    // Smooth scroll for anchor links
-    (function() {
-      document.querySelectorAll('a[href^="#"]').forEach(function(anchor) {
-        anchor.addEventListener('click', function(e) {
-          var targetId = this.getAttribute('href');
-          if (targetId === '#') return;
-          var target = document.querySelector(targetId);
-          if (target) {
-            e.preventDefault();
-            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
-          }
-        });
-      });
-    })();
+    (function(){var o=new IntersectionObserver(function(e){e.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1,rootMargin:'0px 0px -40px 0px'});document.querySelectorAll('.fade-in').forEach(function(e){o.observe(e);});})();
+    (function(){document.querySelectorAll('.faq-question').forEach(function(b){b.addEventListener('click',function(){var i=this.closest('.faq-item'),o=i.classList.contains('open');document.querySelectorAll('.faq-item.open').forEach(function(x){x.classList.remove('open');x.querySelector('.faq-question').setAttribute('aria-expanded','false');});if(!o){i.classList.add('open');this.setAttribute('aria-expanded','true');}});});})();
+    (function(){document.querySelectorAll('a[href^="#"]').forEach(function(a){a.addEventListener('click',function(e){var t=this.getAttribute('href');if(t==='#')return;var el=document.querySelector(t);if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth',block:'start'});}});});})();
   </script>
 
 </body>
