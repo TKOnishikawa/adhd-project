@@ -229,6 +229,47 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 .science-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
 .sci-tag{font-size:10px;font-weight:600;letter-spacing:0.5px;padding:3px 8px;border-radius:4px;background:rgba(34,211,238,0.06);color:var(--cyan);border:1px solid rgba(34,211,238,0.12);cursor:default;transition:background .15s}
 .sci-tag:hover{background:rgba(34,211,238,0.12)}
+
+/* Program Matrix (dark theme adaptation from LP) */
+.matrix-scroll{overflow-x:auto;margin:18px 0;padding-bottom:8px;-webkit-overflow-scrolling:touch}
+.program-matrix{display:grid;grid-template-columns:80px repeat(14,minmax(48px,1fr));gap:2px;min-width:820px;font-size:11px}
+.matrix-label{display:flex;align-items:center;font-weight:600;font-size:11px;color:var(--text-dim);padding:4px 6px;background:var(--bg-raised);position:sticky;left:0;z-index:2}
+.act-band{text-align:center;font-weight:700;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 4px;border-radius:6px 6px 0 0;color:#fff}
+.act-1{background:linear-gradient(135deg,#7c3aed,#6d28d9)}
+.act-2{background:linear-gradient(135deg,#0d9488,#0f766e)}
+.act-3{background:linear-gradient(135deg,#f59e0b,#d97706)}
+.week-num{text-align:center;font-size:10px;font-weight:600;color:var(--text-muted);padding:4px 2px}
+.m-cell{display:flex;align-items:center;justify-content:center;border-radius:5px;padding:5px 2px;min-height:32px;font-weight:600;text-align:center;font-size:10px}
+.m-day{background:rgba(124,58,237,0.15);color:#a78bfa}
+.m-group{background:rgba(13,148,136,0.15);color:#5eead4}
+.m-personal{background:rgba(245,158,11,0.15);color:var(--amber)}
+.m-weekly{background:rgba(167,139,250,0.06);color:var(--text-muted);font-size:9px}
+.m-buddy{background:rgba(34,211,238,0.08);color:var(--cyan);font-size:9px}
+.m-empty{background:transparent}
+.matrix-summary{display:flex;flex-wrap:wrap;justify-content:center;gap:8px 24px;margin-top:12px}
+.matrix-summary-item{display:flex;align-items:center;gap:6px;font-size:11px;color:var(--text-dim)}
+.summary-dot{width:8px;height:8px;border-radius:2px}
+.summary-dot.purple{background:#a78bfa}
+.summary-dot.teal{background:#5eead4}
+.summary-dot.amber{background:var(--amber)}
+.summary-dot.slate{background:var(--text-muted)}
+
+/* Benefit cards for program layers */
+.benefit-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:20px;position:relative;overflow:hidden}
+.benefit-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.benefit-card.bc-day::before{background:linear-gradient(90deg,#7c3aed,#a78bfa)}
+.benefit-card.bc-group::before{background:linear-gradient(90deg,#0d9488,#5eead4)}
+.benefit-card.bc-personal::before{background:linear-gradient(90deg,var(--amber),#fbbf24)}
+.benefit-card.bc-body::before{background:linear-gradient(90deg,var(--purple),#c4b5fd)}
+.benefit-label{font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:4px}
+.benefit-label.bl-day{color:#a78bfa}
+.benefit-label.bl-group{color:#5eead4}
+.benefit-label.bl-personal{color:var(--amber)}
+.benefit-label.bl-body{color:var(--purple)}
+.benefit-role{font-size:13px;font-weight:600;color:var(--text);margin-bottom:8px}
+.benefit-format{font-size:11px;color:var(--text-muted);margin-bottom:10px;padding:4px 8px;background:var(--bg-raised);border-radius:4px;display:inline-block}
+.benefit-desc{font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:10px}
+.benefit-diff{font-size:11px;color:var(--cyan);padding:8px 10px;background:rgba(34,211,238,0.04);border-left:2px solid var(--cyan);border-radius:0 4px 4px 0;line-height:1.7}
 </style>
 </head>
 <body>
@@ -551,8 +592,105 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <div class="section-eyebrow" style="color:var(--cyan)">04 &mdash; Program Timeline</div>
 <div class="action-title">3幕構成 — 基盤 → 構築 → 統合</div>
 <div class="science-tags"><span class="sci-tag">S1: 報酬即時化</span><span class="sci-tag">S3: 3経路個別化</span></div>
-<p class="section-lead">週2回の同期タッチポイント（月曜ボディダブリング + 水曜DAY講義/グループ）。金曜は非同期の週次振返り。ADHDに必要な「構造」を与えつつ、「詰め込みすぎない」を両立。</p>
+<p class="section-lead">講義・グループ・パーソナル・もくもく会の4層で「構造」を与えつつ、「詰め込みすぎない」を両立。週2回の同期（月曜ボディダブリング + 水曜DAY/グループ）+ 金曜非同期振返り。</p>
 
+<!-- ① プログラムマトリクス（LP移植・ダーク版） -->
+<h4 style="margin:24px 0 8px;font-size:14px">100日間の全体像</h4>
+<div class="matrix-scroll">
+<div class="program-matrix">
+<!-- Act bands -->
+<div class="matrix-label"></div>
+<div class="act-band act-1" style="grid-column:span 4">Act 1: Foundation</div>
+<div class="act-band act-2" style="grid-column:span 6">Act 2: Build</div>
+<div class="act-band act-3" style="grid-column:span 4">Act 3: Integrate</div>
+<!-- Week numbers -->
+<div class="matrix-label"></div>
+<div class="week-num">W1</div><div class="week-num">W2</div><div class="week-num">W3</div><div class="week-num">W4</div>
+<div class="week-num">W5</div><div class="week-num">W6</div><div class="week-num">W7</div><div class="week-num">W8</div>
+<div class="week-num">W9</div><div class="week-num">W10</div><div class="week-num">W11</div><div class="week-num">W12</div>
+<div class="week-num">W13</div><div class="week-num">W14</div>
+<!-- DAY講義 -->
+<div class="matrix-label">DAY講義</div>
+<div class="m-cell m-empty"></div><div class="m-cell m-day">D1</div><div class="m-cell m-day">D2</div><div class="m-cell m-day">D3</div>
+<div class="m-cell m-day">D4</div><div class="m-cell m-day">D5</div><div class="m-cell m-empty"></div><div class="m-cell m-day">D6</div>
+<div class="m-cell m-empty"></div><div class="m-cell m-day">D7</div><div class="m-cell m-empty"></div><div class="m-cell m-day">D8</div>
+<div class="m-cell m-empty"></div><div class="m-cell m-empty"></div>
+<!-- グループ -->
+<div class="matrix-label">グループ</div>
+<div class="m-cell m-empty"></div><div class="m-cell m-empty"></div><div class="m-cell m-group">G1</div><div class="m-cell m-empty"></div>
+<div class="m-cell m-group">G2</div><div class="m-cell m-empty"></div><div class="m-cell m-empty"></div><div class="m-cell m-group">G3</div>
+<div class="m-cell m-group">G4</div><div class="m-cell m-group">G5</div><div class="m-cell m-group">G6</div><div class="m-cell m-empty"></div>
+<div class="m-cell m-empty"></div><div class="m-cell m-empty"></div>
+<!-- パーソナル -->
+<div class="matrix-label">パーソナル</div>
+<div class="m-cell m-empty"></div><div class="m-cell m-personal">P1</div><div class="m-cell m-empty"></div><div class="m-cell m-personal">P2</div>
+<div class="m-cell m-empty"></div><div class="m-cell m-personal">P3</div><div class="m-cell m-empty"></div><div class="m-cell m-personal">P4</div>
+<div class="m-cell m-empty"></div><div class="m-cell m-empty"></div><div class="m-cell m-empty"></div><div class="m-cell m-personal">P5</div>
+<div class="m-cell m-empty"></div><div class="m-cell m-empty"></div>
+<!-- もくもく会 -->
+<div class="matrix-label">もくもく会</div>
+<div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div>
+<div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div>
+<div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div>
+<div class="m-cell m-weekly">BD</div><div class="m-cell m-weekly">BD</div>
+<!-- バディ -->
+<div class="matrix-label">バディ</div>
+<div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy">&#10003;</div>
+<div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy" style="border:1px dashed var(--cyan)">組替</div><div class="m-cell m-buddy">&#10003;</div>
+<div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy">&#10003;</div>
+<div class="m-cell m-buddy">&#10003;</div><div class="m-cell m-buddy">&#10003;</div>
+</div>
+</div>
+<div class="matrix-summary">
+<div class="matrix-summary-item"><span class="summary-dot purple"></span>DAY講義 8回</div>
+<div class="matrix-summary-item"><span class="summary-dot teal"></span>グループ 6回</div>
+<div class="matrix-summary-item"><span class="summary-dot amber"></span>パーソナル 5回</div>
+<div class="matrix-summary-item"><span class="summary-dot slate"></span>もくもく会 14回</div>
+</div>
+
+<!-- ② 4層ベネフィット整理 -->
+<h4 style="margin:32px 0 12px;font-size:14px">4つの介入レイヤーと役割</h4>
+<div class="card-grid">
+
+<div class="benefit-card bc-day">
+<div class="benefit-label bl-day">DAY講義 &mdash; 8回</div>
+<div class="benefit-role">ADHD脳の科学的理解 → 具体的スキル習得</div>
+<div class="benefit-format">60分（心理教育15分 + コアワーク25分 + 議論15分 + 課題5分）</div>
+<div class="benefit-desc">「なぜ自分はこうなのか」を脳科学で理解する。科学的に「自分のせいじゃない」と分かることが、<strong>自責を手放す転機</strong>になる。毎回「ADHDセルフマニュアル」の1章が完成。8回で自分だけの「脳の取扱説明書」が完成する。</div>
+<div class="benefit-diff"><strong>一般コーチングとの差分:</strong> 一般コーチングは「やり方」から入る。本プログラムは「脳の仕組み」から入るので、「なぜ今まで上手くいかなかったか」が腑に落ちてから行動に移せる。</div>
+</div>
+
+<div class="benefit-card bc-group">
+<div class="benefit-label bl-group">グループセッション &mdash; 6回</div>
+<div class="benefit-role">ピア学習 × アカウンタビリティ × 安全な実験場</div>
+<div class="benefit-format">75分・隔週・テーマ固定・6-8名</div>
+<div class="benefit-desc">「自分だけじゃなかった」の実感が最大の薬。他のメンバーの成功パターンから学ぶ<strong>加速装置</strong>。ADHD当事者だけの安全な場だから、失敗も共有できる。ラウンドロビン形式で全員が発言する設計。</div>
+<div class="benefit-diff"><strong>一般コーチングとの差分:</strong> 孤独な自助努力 → 仲間の目が行動を引き出す社会的促進。「来週のグループで報告する」が最強の締切になる。</div>
+</div>
+
+<div class="benefit-card bc-personal">
+<div class="benefit-label bl-personal">パーソナルセッション &mdash; 5回</div>
+<div class="benefit-role">認知科学コーチング × 自己機能の深掘り × 現状の外側のゴール設定</div>
+<div class="benefit-format">45分・たかひろ主導・4本柱（自己理解 → ゴール → 決断 → 実行 → 統合）</div>
+<div class="benefit-desc">
+<strong>自己機能の「見える化」:</strong> 自分の認知パターン・強み・トリガーを客観的に構造化。「なんとなく苦手」を「この条件で発動する」に変換。<br>
+<strong>現状の外側のゴール:</strong> 「今の延長線上」ではなく「本当はどうなりたいか」を認知科学的に引き出す。ADHDの人は過去の失敗体験から目標を矮小化しがち — その認知の壁を科学的に超える。<br>
+<strong>実行の橋渡し:</strong> 「わかる → できる」の間にあるEFギャップを、If-Then形式の具体的プランに落とし込む。</div>
+<div class="benefit-diff"><strong>一般コーチングとの差分:</strong> 一般コーチング＝「目標を決めて実行」。本プログラム＝ADHD脳の認知特性（時間盲目性・遅延回避・EF障害）を前提にゴールを設計するので、<strong>実行可能性が段違いに高い</strong>。</div>
+</div>
+
+<div class="benefit-card bc-body">
+<div class="benefit-label bl-body">もくもく会（ボディダブリング） &mdash; 14回</div>
+<div class="benefit-role">社会的促進 × DMN抑制 × 週の起動装置</div>
+<div class="benefit-format">毎週月曜50分・たかお主催・Zoom・カメラON</div>
+<div class="benefit-desc">「やらなきゃ」を「やってる」に変える<strong>最小コスト介入</strong>。カフェで勉強がはかどるあの現象を、毎週の仕組みに。出席するだけで脳のボーッとモード（DMN）が抑制され、タスクに入れる。週の開始を「一緒に」始めることで、フレッシュスタート効果を全員で共有。</div>
+<div class="benefit-diff"><strong>一般コーチングとの差分:</strong> 意志力ゼロで動ける仕組み。「頑張って始める」ではなく「環境が始めさせる」設計。スタッフ時間ゼロで毎週回る。</div>
+</div>
+
+</div>
+
+<!-- ③ 週別タイムライン詳細 -->
+<h4 style="margin:32px 0 8px;font-size:14px">週別アジェンダ詳細</h4>
 <div class="timeline">
 <div class="tl-act">Act 1: Foundation &mdash; 基盤（W1-4）</div>
 <div class="tl-week">W1</div><div class="tl-content"><span class="tl-pill day">キックオフ 90分</span><span class="tl-pill day">DAY1 ADHD脳のOS</span><span class="tl-pill buddy">バディペアリング</span></div>
