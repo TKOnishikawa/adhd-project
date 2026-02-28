@@ -321,6 +321,18 @@ details.bp-item[open] summary { border-color: var(--border-focus); background: v
 .vision-items { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
 .vision-item { padding: 8px 16px; border-radius: 8px; background: var(--bg-surface); border: 1px solid var(--border); font-size: 13px; color: var(--text-dim); }
 
+/* ── Science Detail Section ── */
+.sci-detail { background: var(--bg-surface); border: 1px solid var(--border); border-radius: 12px; padding: 24px; margin-bottom: 16px; }
+.sci-detail h4 { font-size: 16px; font-weight: 700; margin-bottom: 8px; }
+.sci-detail .sci-id-badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 11px; font-weight: 700; color: var(--cyan); background: rgba(34,211,238,0.08); padding: 2px 8px; border-radius: 4px; margin-right: 8px; }
+.sci-detail .sci-claim-full { font-size: 14px; font-weight: 500; color: var(--text); margin-bottom: 12px; line-height: 1.8; }
+.sci-detail .sci-evidence-full { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 12px; padding: 12px 16px; background: var(--bg-raised); border-radius: 8px; border-left: 3px solid var(--cyan); }
+.sci-detail .sci-implication { font-size: 13px; color: var(--text-dim); line-height: 1.8; margin-bottom: 8px; }
+.sci-detail .sci-implication strong { color: var(--green); }
+.sci-detail .sci-refs { font-size: 11px; color: var(--text-muted); line-height: 1.6; }
+.sci-detail .sci-refs a { color: var(--cyan); text-decoration: underline; }
+.sci-effect-badge { display: inline-block; font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; color: var(--green); background: rgba(52,211,153,0.08); padding: 3px 10px; border-radius: 4px; margin-left: 8px; }
+
 /* ── Footer ── */
 .footer { text-align: center; padding: 40px 0 28px; color: var(--text-muted); font-size: 13px; border-top: 1px solid var(--border); margin-top: 40px; }
 </style>
@@ -360,6 +372,7 @@ details.bp-item[open] summary { border-color: var(--border-focus); background: v
   <a href="#sec9"><span class="toc-num">09</span> コミュニティ設計</a>
   <a href="#sec10"><span class="toc-num">10</span> テクノロジー</a>
   <a href="#sec11"><span class="toc-num">11</span> タイプ別設計</a>
+  <a href="#science" style="color:var(--cyan);font-weight:600"><span class="toc-num" style="color:var(--cyan)">★</span> 科学的根拠（詳細）</a>
   <a href="#sec12"><span class="toc-num">12</span> ロードマップ</a>
 </nav>
 
@@ -1086,6 +1099,172 @@ details.bp-item[open] summary { border-color: var(--border-focus); background: v
 </div>
 
 <!-- ═══════════════════════════════════════════ -->
+<!-- SCIENCE: 科学的根拠 詳細解説               -->
+<!-- ═══════════════════════════════════════════ -->
+<div class="section" id="science">
+  <div class="section-eyebrow" style="color: var(--cyan);">★ &mdash; Scientific Evidence Base</div>
+  <div class="action-title">ADHD脳の科学的根拠 — プログラム設計を支えるエビデンス詳細</div>
+  <p class="section-lead">本セクションは<a href="adhd-mvp-design.html#s0a" style="color:var(--cyan);text-decoration:underline">MVP設計書の7ポイント</a>の詳細解説。理想形ベースで押さえるべき科学的ポイントを網羅する。各ポイントは「主張→エビデンス→プログラムへの示唆→参照」の4層構造で記述。</p>
+
+  <!-- S1 -->
+  <div class="sci-detail" id="s1-reward">
+    <h4><span class="sci-id-badge">S1</span>報酬即時化の必須性</h4>
+    <div class="sci-claim-full">ADHDの脳は「重要性」ではなく「興味」で駆動される。Dodsonの INCUP モデル（Interest / Novelty / Challenge / Urgency / Passion）が示すように、定型発達者の「重要度→優先順位」という回路がADHDでは機能しない。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・Dodson (INCUP Model): ADHDの注意活性化は5要素（興味・新奇性・挑戦・緊急性・情熱）に依存。従来の「やるべきことリスト」が機能しないのは怠慢ではなく神経学的構造<br>
+      ・ドーパミン仮説: ADHDの報酬系（側坐核-前頭前野回路）はベースラインのドーパミントーンが低く、即時報酬への感受性が過剰。遅延報酬の価値が急激に減衰する（遅延割引の増大）<br>
+      ・Sonuga-Barke: 遅延回避経路 — 待つこと自体が嫌悪刺激。「10分後の大きな報酬」より「今の小さな報酬」を選ぶのは合理的選択（主観的価値関数が異なる）
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> DAY講義は60分に短縮（15+25+15+5構造）。ストリーク報酬、進捗バッジ、パルスチェックの即時フィードバックを設計。「重要だからやる」ではなく「面白いからやる」構造を全タッチポイントに。</div>
+    <div class="sci-refs">参照: Theme B §4.2 | Dodson, W. (2022). ADHD 2.0 | Sonuga-Barke et al. (2010). Trends in Cognitive Sciences</div>
+  </div>
+
+  <!-- S2 -->
+  <div class="sci-detail" id="s2-external">
+    <h4><span class="sci-id-badge">S2</span>外部化原則（External Scaffolding）</h4>
+    <div class="sci-claim-full">実行機能（EF）の弱さは「内部の意志力強化」ではなく「外部足場の構築」で代替する。これはバークレーモデルの中核的主張であり、ADHD介入の設計原則。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・Barkley EFモデル: 行動抑制の障害→①非言語的作業記憶 ②内言（言語的作業記憶）③感情の自己制御 ④再構成の4つのEF連鎖不全。これは「頑張れば直る」類のものではなく、神経生物学的な制約<br>
+      ・外部化の原理: メモ、リスト、カレンダー、リマインダー、環境配置、視覚的手がかり等で「脳の外に」EFを配置する。これはADHDの「松葉杖」ではなく「義肢」— 恒久的に使うべきツール<br>
+      ・Diamond (2013): EFは訓練で改善可能だが、ADHDの場合は改善幅に限界。外部足場との併用が最適解
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> セルフマニュアルビルダー（外部記憶装置）、ナッジBot（外部リマインダー）、環境デザインDAY（外部手がかり設計）、パルスチェック（外部自己監視）— すべて「外部化」の具現化。</div>
+    <div class="sci-refs">参照: Theme B §2.1 | Barkley, R.A. (2015). ADHD and the Nature of Self-Control | Diamond, A. (2013). Annual Review of Psychology</div>
+  </div>
+
+  <!-- S3 -->
+  <div class="sci-detail" id="s3-pathway">
+    <h4><span class="sci-id-badge">S3</span>3経路の個別化（Heterogeneity Model）</h4>
+    <div class="sci-claim-full">ADHDは単一の障害ではなく、少なくとも3つの独立した神経経路が存在する。同じ「ADHD」でも主経路が異なれば、効く介入も異なる。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・Sonuga-Barke 3経路モデル:<br>
+      &nbsp;&nbsp;①実行機能障害経路（前頭前野）: 計画・組織化・作業記憶の困難<br>
+      &nbsp;&nbsp;②遅延回避経路（報酬系）: 待てない、即時報酬選好<br>
+      &nbsp;&nbsp;③時間処理障害経路（小脳）: 時間感覚のずれ、見積もり困難<br>
+      ・各経路は独立して存在しうる。例えば「計画は得意だが待てない」（②優位）や「時間がわからないが衝動性は低い」（③優位）<br>
+      ・Castellanos &amp; Tannock (2002): ADHDの異質性を認めた上での個別化介入の必要性を主張
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> DAY1「脳プロファイルカード」で主経路を特定。P1（自己理解）で3経路のどれが自分の主パターンかを明確化。以降のDAY講義の「重点」が参加者ごとに異なる個別化設計。</div>
+    <div class="sci-refs">参照: Theme B §2.3 | Sonuga-Barke, E.J.S. (2005). Biological Psychiatry | Castellanos &amp; Tannock (2002). Nature Reviews Neuroscience</div>
+  </div>
+
+  <!-- S4 -->
+  <div class="sci-detail" id="s4-ifthen">
+    <h4><span class="sci-id-badge">S4</span>実装意図の効果（Implementation Intentions）<span class="sci-effect-badge">d=0.65</span></h4>
+    <div class="sci-claim-full">「いつ・どこで・どうする」を事前に決めておくだけで、行動開始が自動化される。意志力を使わずに行動を起こす、ADHD脳にとって最も実用的なテクニック。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・Gollwitzer (1999): Implementation Intentions（If-Thenプラン）の原著論文。「If [状況X], then I will [行動Y]」形式の事前決定が、目標追求を自動化する<br>
+      ・94研究のメタ分析（Gollwitzer &amp; Sheeran, 2006）: 効果量 d=0.65（中〜大）。健康行動、学業、運動等で一貫して効果<br>
+      ・ADHDへの適用: 「開始困難」はADHDの中核症状。Implementation Intentionsは「開始のトリガー」を外部に設定することで、開始に必要な意志力を迂回する<br>
+      ・ハビットスタッキング（Clear, 2018）: 既存の習慣に新行動をリンクすることで、さらにトリガーを強化
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> DAY4が完全にIf-Thenプランに特化。各参加者がDAY2のトリガーマップからIf-Thenプラン5本+コンティンジェンシー5本を作成。ナッジBotが月曜朝に「今週のIf-Thenプランをチェック！」とリマインド。</div>
+    <div class="sci-refs">参照: Theme D §3 | Gollwitzer, P.M. (1999). American Psychologist | Gollwitzer &amp; Sheeran (2006). Advances in Experimental Social Psychology</div>
+  </div>
+
+  <!-- S5 -->
+  <div class="sci-detail" id="s5-cbt">
+    <h4><span class="sci-id-badge">S5</span>CBT複合介入の実績（Safrenモデル）<span class="sci-effect-badge">d=0.89</span></h4>
+    <div class="sci-claim-full">ADHD特化CBT（認知行動療法）が、薬物療法への追加介入として最大級の効果量を記録。スキル訓練+認知再構成+タスク管理の三位一体。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・Safren et al. (2010) JAMA: 薬物療法 + CBT群 vs 薬物療法 + リラクゼーション群。CBT群の効果量 d=0.89（大）<br>
+      ・Safren CBTの3コンポーネント:<br>
+      &nbsp;&nbsp;①行動スキル訓練: 時間管理、組織化、計画<br>
+      &nbsp;&nbsp;②認知再構成: 「自分はダメだ」「どうせできない」の自動思考への介入<br>
+      &nbsp;&nbsp;③問題解決・タスク管理: 実際の課題を使ったスキル適用<br>
+      ・Solanto et al. (2010): メタ認知的療法もd=0.83。いずれもADHD特化の構造化プログラムが高効果<br>
+      ・重要: 汎用CBTではなくADHD特化CBTが効果的。ADHDの神経学的特性を前提とした設計が必要
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> DAY講義の構造（心理教育+コアワーク+グループ議論+セルフマニュアル課題）はSafren CBTの3コンポーネントを翻訳したもの。DAY7のセルフコンパッションは認知再構成要素。全8DAYで「スキル→実践→振返り」のZimmermanサイクルを回す。</div>
+    <div class="sci-refs">参照: Theme E §2.3 | Safren, S.A. et al. (2010). JAMA, 304(8) | Solanto, M.V. et al. (2010). American Journal of Psychiatry</div>
+  </div>
+
+  <!-- S6 -->
+  <div class="sci-detail" id="s6-bodydouble">
+    <h4><span class="sci-id-badge">S6</span>ボディダブリングの社会的促進<span class="sci-effect-badge">d=0.5-0.8</span></h4>
+    <div class="sci-claim-full">他者の存在がタスク維持を促進する。バーチャル環境でも有効。ADHDのデフォルトモードネットワーク（DMN）過活動を抑制する外部アンカー。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・社会的促進理論（Zajonc, 1965）: 他者の存在が覚醒水準を上げ、単純タスクのパフォーマンスを向上<br>
+      ・ADHD × DMN: ADHDでは安静時のDMN活動が過剰 → タスク中にマインドワンダリングが発生。他者の存在がDMNの抑制を補助<br>
+      ・Focusmateの実践データ: 50分のバーチャルコワーキングでタスク完遂率が有意に向上。「見られている」感覚が外部的な注意アンカーとして機能<br>
+      ・SDT（自己決定理論）の「関係性」ニーズ: つながりの感覚が内発的動機づけを支える。ADHDのRSD（拒絶感受性不全）を考慮すると、安全な関係性の構築が特に重要
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> 毎週月曜のボディダブリング（Engineer主催50分Zoom）。バディペアの毎日10分チェックイン。LINEオープンチャットの存在そのものが「常時ボディダブリング」環境。これらは「スタッフ時間ゼロ」で回る設計。</div>
+    <div class="sci-refs">参照: Theme E §3.1 | Zajonc, R.B. (1965). Science | Deci &amp; Ryan (2000). Psychological Inquiry | Castellanos et al. (2008). DMN in ADHD</div>
+  </div>
+
+  <!-- S7 -->
+  <div class="sci-detail" id="s7-strengths">
+    <h4><span class="sci-id-badge">S7</span>強みベースの「諸刃の剣」<span class="sci-effect-badge">中〜高</span></h4>
+    <div class="sci-claim-full">ADHDの強みは科学的に検証されているが、困難と表裏一体。「スーパーパワー」レトリックは有害になりうる — 強みを活かしつつ困難を正直に認める両面アプローチが必要。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・2025 Psychological Medicine 体系的レビュー: ADHD当事者の10の強み（創造性、ハイパーフォーカス、レジリエンス、エネルギー、起業家精神、ユーモア、共感、直感、冒険心、柔軟性）が科学的に検証<br>
+      ・過集中（Hyperfocus）: 興味のある活動への没入は高い生産性を生むが、必要なタスクからの注意転換困難と表裏一体<br>
+      ・創造性: 発散的思考はADHDで高いが、収束的思考（まとめ・仕上げ）の困難と共存<br>
+      ・起業家精神: リスクテイキング・新奇性追求はイノベーションに繋がるが、計画不足・飽きによる中断リスクも<br>
+      ・「スーパーパワー」批判: Sedgwick et al. (2019) — 強みの一面的強調は困難の否認や自己責任論に繋がるリスク
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> DAY7「強みは本物」でVIA強み+ADHD固有10強みのカードソート実施。バディフィードバックで他者視点を統合。ただしDAY7はセルフコンパッション（Neff）も同時に扱い、「強みの影」（課題側面）にも誠実に向き合う設計。</div>
+    <div class="sci-refs">参照: Theme C §2 | Sedgwick et al. (2019). Psychiatry Research | Mahdi et al. (2025). Psychological Medicine | Neff, K. (2011). Self-Compassion</div>
+  </div>
+
+  <!-- S8: 追加ポイント（理想形ベース） -->
+  <div class="sci-detail" id="s8-dopamine">
+    <h4><span class="sci-id-badge">S8</span>ドーパミンシステムと動機づけ</h4>
+    <div class="sci-claim-full">ADHDの動機づけ障害は「やる気がない」のではなく、ドーパミンの調節異常。基底レベルが低く、報酬に対する反応パターンが定型発達者と異なる。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・Volkow et al. (2009): PETイメージングでADHD成人の線条体ドーパミン輸送体・受容体の異常を確認<br>
+      ・報酬予測エラー: ADHDでは期待した報酬が得られた時の快感は正常だが、報酬を「予測する」段階（前頭前野）の活性化が弱い<br>
+      ・薬理学的根拠: メチルフェニデート（リタリン等）はドーパミン再取り込み阻害 → ベースラインのドーパミンレベルを上げることで注意の持続が改善
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> 即時フィードバックループの設計（ストリーク、進捗バッジ、ナッジBot）。長期目標を短期マイルストーンに分解（P2 ゴール設定セッション）。薬物療法との併用を前提とした設計（コーチングは薬の代替ではない）。</div>
+    <div class="sci-refs">参照: Theme B §3 | Volkow, N.D. et al. (2009). JAMA | Tripp &amp; Wickens (2008). Dopamine transfer deficit model</div>
+  </div>
+
+  <!-- S9: 追加ポイント -->
+  <div class="sci-detail" id="s9-emotional">
+    <h4><span class="sci-id-badge">S9</span>感情制御と拒絶感受性（RSD）</h4>
+    <div class="sci-claim-full">感情の制御困難はADHDの中核特性。特にRSD（Rejection Sensitive Dysphoria）は対人関係と自己評価に深刻な影響を与える。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・Barkleyモデルでの感情制御: EF障害の4要素の1つとして「感情の自己制御」が位置づけ。ADHDの感情反応は強度が大きく、回復に時間がかかる<br>
+      ・RSD: 拒絶・批判への過敏反応。ADHDの70-80%が経験するとされるが、DSM-5の診断基準には含まれていない<br>
+      ・Shaw et al. (2014): 感情制御の神経基盤（前帯状皮質-扁桃体回路）がADHDで構造的に異なる
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> RSD配慮ルール（既読スルーを責めない、サンドイッチフィードバック、参加しない自由の保証）。DAY7のセルフコンパッション。コミュニティの「感情的安全性」を設計レベルで担保。</div>
+    <div class="sci-refs">参照: Theme B §2.1 | Barkley (2015) | Dodson, W. — RSD概念 | Shaw et al. (2014). Biological Psychiatry</div>
+  </div>
+
+  <!-- S10: 追加ポイント -->
+  <div class="sci-detail" id="s10-coaching">
+    <h4><span class="sci-id-badge">S10</span>ADHDコーチングの有効性エビデンス</h4>
+    <div class="sci-claim-full">ADHDコーチングは新興分野だが、構造化されたプログラムにおいて有意な効果が報告されている。ただしRCTは限られ、エビデンスレベルの向上が課題。</div>
+    <div class="sci-evidence-full">
+      <strong>エビデンス:</strong><br>
+      ・Kubik (2010) レビュー: ADHDコーチングの効果研究をレビュー。自己効力感、時間管理、ウェルビーイングの改善を報告<br>
+      ・Prevatt &amp; Yelland (2015): 大学生ADHDコーチングのRCT。学業スキル、自己評価、ADHD症状で有意な改善<br>
+      ・制約: RCTが少ない、サンプルサイズが小さい、盲検化が困難（コーチング介入の性質上）<br>
+      ・ICF（国際コーチ連盟）: ADHDコーチングは専門分野として認知されつつあるが、統一基準はまだ発展途上
+    </div>
+    <div class="sci-implication"><strong>プログラムへの示唆:</strong> MVP自体がRCTデータの収集機会。パルスチェック（週次定量データ）、セルフマニュアル完成率、NPS、卒業後3ヶ月のフォローアップで、自プログラムのエビデンスを蓄積する設計。</div>
+    <div class="sci-refs">参照: Theme E §2 | Kubik, J.A. (2010). Journal of Attention Disorders | Prevatt &amp; Yelland (2015). Journal of Postsecondary Education and Disability</div>
+  </div>
+
+  <div class="insight">
+    <div class="insight-label">エビデンスの活用方針</div>
+    <p><strong>「エビデンスに基づく」とは「論文をコピペする」ことではない。</strong>上記10ポイントを「自分たちの経験と統合し、参加者が体感できる形に翻訳する」のがこのプログラムの本質。科学が示す方向に、当事者の経験が肉付けする。それが「2人のADHD当事者が作るエビデンスベースコーチング」の意味。</p>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════ -->
 <!-- SEC 12: ROADMAP                            -->
 <!-- ═══════════════════════════════════════════ -->
 <div class="section" id="sec12">
@@ -1171,7 +1350,7 @@ details.bp-item[open] summary { border-color: var(--border-focus); background: v
 <!-- ── Footer ── -->
 <div class="footer">
   omoshiku Inc. &mdash; ADHD x キャリスピ2.0 サービス設計論点整理<br>
-  <span>Generated: 2026-02-26 | Research Themes A-H 統合 | McKinsey Quality Framework</span>
+  <span>Updated: 2026-02-28 | Research Themes A-H 統合 | McKinsey Quality Framework | 科学的根拠セクション追加</span>
 </div>
 
 </div><!-- /container -->

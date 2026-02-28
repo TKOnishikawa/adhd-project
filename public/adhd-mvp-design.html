@@ -174,6 +174,60 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 /* Footer */
 .footer{text-align:center;padding:40px 0 28px;color:var(--text-muted);font-size:13px;border-top:1px solid var(--border);margin-top:40px}
+
+/* Executive Summary */
+.exec-summary{background:linear-gradient(135deg,rgba(245,158,11,0.03) 0%,rgba(239,68,68,0.03) 100%);border:1px solid rgba(245,158,11,0.12);border-radius:16px;padding:32px 28px;margin:24px 0 8px}
+.exec-summary h2{font-size:12px;font-weight:700;letter-spacing:3.5px;text-transform:uppercase;color:var(--amber);margin-bottom:20px}
+.exec-what{font-size:16px;font-weight:700;line-height:1.7;margin-bottom:18px;color:var(--text)}
+.exec-whom{font-size:13px;color:var(--text-dim);margin-bottom:18px;padding:8px 14px;background:var(--bg-surface);border-radius:8px;border:1px solid var(--border)}
+.exec-whom strong{color:var(--cyan)}
+.exec-benefits{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:18px}
+@media(max-width:768px){.exec-benefits{grid-template-columns:1fr}}
+.exec-benefit{background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;padding:14px 16px}
+.exec-benefit .eb-num{font-family:'JetBrains Mono',monospace;font-size:20px;font-weight:600;margin-bottom:4px}
+.exec-benefit .eb-num.g{color:var(--green)}.exec-benefit .eb-num.c{color:var(--cyan)}.exec-benefit .eb-num.p{color:var(--purple)}
+.exec-benefit h4{font-size:13px;font-weight:700;margin-bottom:3px}
+.exec-benefit p{font-size:12px;color:var(--text-dim);line-height:1.6}
+.exec-goal{font-size:13px;color:var(--text-dim);line-height:1.8;margin-bottom:16px;padding:12px 16px;background:var(--bg-surface);border-radius:8px;border-left:3px solid var(--amber)}
+.exec-goal strong{color:var(--amber)}
+.exec-numbers{display:flex;justify-content:center;gap:16px;flex-wrap:wrap;font-size:13px;font-weight:600;color:var(--text-muted)}
+.exec-numbers span{padding:4px 12px;background:var(--bg-raised);border-radius:6px;border:1px solid var(--border)}
+.exec-numbers .en-val{font-family:'JetBrains Mono',monospace;color:var(--amber)}
+
+/* Science Foundation */
+.science-section{padding:36px 0 28px;border-bottom:1px solid var(--border)}
+.sci-card{background:var(--bg-surface);border:1px solid var(--border);border-radius:10px;margin-bottom:8px;overflow:hidden;transition:all .15s}
+.sci-card:hover{border-color:var(--border-focus);box-shadow:var(--shadow-sm)}
+.sci-header{display:flex;align-items:center;gap:10px;padding:12px 16px;cursor:pointer;list-style:none}
+.sci-header::-webkit-details-marker{display:none}
+.sci-header::before{content:'\25B6';font-size:9px;color:var(--text-muted);transition:transform .2s;flex-shrink:0}
+details.sci-card[open] .sci-header::before{transform:rotate(90deg)}
+details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px solid var(--border)}
+.sci-id{font-family:'JetBrains Mono',monospace;font-size:11px;font-weight:700;color:var(--cyan);background:rgba(34,211,238,0.08);padding:2px 7px;border-radius:4px;flex-shrink:0}
+.sci-name{font-size:14px;font-weight:600;color:var(--text);flex:1}
+.sci-effect{font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600;color:var(--green);background:rgba(52,211,153,0.08);padding:2px 8px;border-radius:4px;flex-shrink:0}
+.sci-body{padding:14px 16px;font-size:13px;color:var(--text-dim);line-height:1.8}
+.sci-body .sci-claim{font-size:13px;font-weight:500;color:var(--text);margin-bottom:8px}
+.sci-body .sci-evidence{font-size:12px;color:var(--text-dim);padding:6px 10px;background:var(--bg-raised);border-radius:6px;margin-bottom:6px}
+.sci-body .sci-source{font-size:11px;color:var(--text-muted)}
+.sci-body .sci-source a{color:var(--cyan);text-decoration:underline}
+
+/* Scope Matrix */
+.scope-matrix{display:grid;grid-template-columns:minmax(100px,0.8fr) 1.2fr 1.2fr 1.2fr;gap:0;border:1px solid var(--border);border-radius:12px;overflow:hidden;margin:18px 0;font-size:12px}
+@media(max-width:768px){.scope-matrix{grid-template-columns:1fr;}.scope-matrix .sm-head{display:none}}
+.sm-head{padding:10px 14px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;background:var(--bg-raised);border-bottom:1px solid var(--border)}
+.sm-head.ideal{color:var(--purple)}.sm-head.mvp{color:var(--green)}.sm-head.future{color:var(--text-muted)}
+.sm-cat{padding:10px 14px;font-weight:700;font-size:12px;color:var(--text);background:var(--bg-raised);border-bottom:1px solid var(--border);border-right:1px solid var(--border);display:flex;align-items:center}
+.sm-cell{padding:10px 14px;border-bottom:1px solid var(--border);color:var(--text-dim);line-height:1.6;background:var(--bg-surface)}
+.sm-cell.ideal{background:rgba(167,139,250,0.02)}.sm-cell.mvp{background:rgba(52,211,153,0.03);border-left:2px solid rgba(52,211,153,0.2);border-right:2px solid rgba(52,211,153,0.2)}.sm-cell.future{background:rgba(255,255,255,0.01)}
+.sm-cell ul{padding-left:14px;margin:0}.sm-cell li{margin-bottom:2px}
+.scope-matrix .sm-row:last-child .sm-cat,.scope-matrix .sm-row:last-child .sm-cell{border-bottom:none}
+.phase-tag{font-size:9px;font-weight:700;letter-spacing:1px;padding:1px 5px;border-radius:3px;background:rgba(255,255,255,0.06);color:var(--text-muted);margin-left:4px}
+
+/* Science Tags (for existing sections) */
+.science-tags{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.sci-tag{font-size:10px;font-weight:600;letter-spacing:0.5px;padding:3px 8px;border-radius:4px;background:rgba(34,211,238,0.06);color:var(--cyan);border:1px solid rgba(34,211,238,0.12);cursor:default;transition:background .15s}
+.sci-tag:hover{background:rgba(34,211,238,0.12)}
 </style>
 </head>
 <body>
@@ -195,10 +249,36 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 <div class="kpi-card"><div class="kpi-num vision">¥30-50万</div><div class="kpi-label">参加費（税込）</div></div>
 </div>
 
+<!-- SEC 00: Executive Summary -->
+<div class="exec-summary" id="s0">
+<h2>Executive Summary</h2>
+<div class="exec-what">ADHDの脳に合わせて科学した、100日間の統合コーチングプログラム。<br>8章の「セルフマニュアル（脳の取扱説明書）」を完成させ、自走できる仕組みを構築する。</div>
+<div class="exec-whom"><strong>For:</strong> 診断済み or グレーゾーンの成人ADHD当事者（6-8名/コホート）</div>
+
+<div class="exec-benefits">
+<div class="exec-benefit"><div class="eb-num g">01</div><h4>脳の取扱説明書</h4><p>8章のセルフマニュアル完成。自分の言葉で、エビデンスに基づいた「私だけの操作マニュアル」</p></div>
+<div class="exec-benefit"><div class="eb-num c">02</div><h4>実行する仕組み</h4><p>環境設計 + If-Then自動操縦 + ナッジBotで「意志力に頼らない」自走システムを構築</p></div>
+<div class="exec-benefit"><div class="eb-num p">03</div><h4>仲間と伴走</h4><p>バディペア + コミュニティ + ボディダブリングで孤独ゼロ。「一人で頑張る」からの卒業</p></div>
+</div>
+
+<div class="exec-goal"><strong>MVP Goal — 6つの仮説を100日で検証:</strong><br>DAY講義量・パーソナルセッション数・ボディダブリング効果・セルフマニュアル価値・価格妥当性・2人体制の持続性</div>
+
+<div class="exec-numbers">
+<span><span class="en-val">2</span>人体制</span>
+<span><span class="en-val">6-8</span>名/コホート</span>
+<span><span class="en-val">100</span>日間</span>
+<span>¥<span class="en-val">30-50</span>万</span>
+<span><span class="en-val">8</span>メソッド</span>
+</div>
+</div>
+
 <div class="page-layout">
 
 <nav class="toc-sidebar">
 <h3>Contents</h3>
+<a href="#s0" style="color:var(--amber);font-weight:600"><span class="toc-num" style="color:var(--amber)">00</span> Executive Summary</a>
+<a href="#s0a"><span class="toc-num">0A</span> 科学的前提（7ポイント）</a>
+<a href="#s0b"><span class="toc-num">0B</span> スコープマトリクス</a>
 <div class="toc-part">Part A: MVP Overview</div>
 <a href="#s1"><span class="toc-num">01</span> MVPコンセプト</a>
 <a href="#s2"><span class="toc-num">02</span> 体制（2人の役割分担）</a>
@@ -221,29 +301,138 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 
 <div class="main-content">
 
+<!-- SEC 0A: ADHD脳の科学的前提 -->
+<div class="science-section" id="s0a">
+<div class="section-eyebrow" style="color:var(--cyan)">00-A &mdash; Scientific Foundation</div>
+<div class="action-title">ADHD脳の科学的前提 — 本プログラムを支える7つのエビデンス</div>
+<p class="section-lead">全プログラム設計はADHD研究の最新エビデンスに基づく。以下の7ポイントが「なぜこの構造なのか」の科学的根拠。各ポイントの詳細解説は<a href="adhd-careerspi-ronten.html#science" style="color:var(--cyan);text-decoration:underline">論点整理書・科学的根拠セクション</a>を参照。</p>
+
+<details class="sci-card" open>
+<summary class="sci-header"><span class="sci-id">S1</span><span class="sci-name">報酬即時化の必須性</span></summary>
+<div class="sci-body">
+<div class="sci-claim">ADHDの脳は「重要性」ではなく「興味」で駆動される — Interest / Novelty / Challenge / Urgency の4トリガーモデル</div>
+<div class="sci-evidence">Dodson (INCUP Model): ADHDの注意は「重要度」ではなく「興味・新奇性・挑戦・緊急性・情熱」の5要素で活性化。従来の優先順位付けが機能しない脳の報酬システム</div>
+<div class="sci-source">Theme B §4.2 — <a href="adhd-careerspi-ronten.html#s1-reward">詳細解説</a></div>
+</div>
+</details>
+
+<details class="sci-card">
+<summary class="sci-header"><span class="sci-id">S2</span><span class="sci-name">外部化原則</span></summary>
+<div class="sci-body">
+<div class="sci-claim">実行機能の弱さは「外部足場」で神経生物学的に代替する — 内部の意志力ではなく、環境・ツール・仕組みで補う</div>
+<div class="sci-evidence">Barkley EFモデル: 行動抑制障害→①作業記憶 ②内言 ③感情制御 ④再構成の4つのEF連鎖不全。解決策は「内部EFの強化」ではなく「外部足場の構築」</div>
+<div class="sci-source">Theme B §2.1 — <a href="adhd-careerspi-ronten.html#s2-external">詳細解説</a></div>
+</div>
+</details>
+
+<details class="sci-card">
+<summary class="sci-header"><span class="sci-id">S3</span><span class="sci-name">3経路の個別化</span></summary>
+<div class="sci-body">
+<div class="sci-claim">ADHDの異質性を3つの神経経路で理解し、介入を個別化する — 同じADHDでも「効く介入」が違う</div>
+<div class="sci-evidence">Sonuga-Barke 3経路モデル: ①実行機能障害（前頭前野）②遅延回避（報酬系）③時間処理障害（小脳）。各参加者がどの経路が主経路かで、DAY講義の重点が変わる</div>
+<div class="sci-source">Theme B §2.3 — <a href="adhd-careerspi-ronten.html#s3-pathway">詳細解説</a></div>
+</div>
+</details>
+
+<details class="sci-card">
+<summary class="sci-header"><span class="sci-id">S4</span><span class="sci-name">実装意図の効果</span><span class="sci-effect">d=0.65</span></summary>
+<div class="sci-body">
+<div class="sci-claim">「いつ・どこで・どうする」の事前決定が行動開始を自動化する — 意志力バイパス</div>
+<div class="sci-evidence">Gollwitzer (1999) + 94研究のメタ分析: Implementation Intentions（If-Thenプラン）が目標達成を中〜大の効果量で一貫して促進。ADHD脳の「開始困難」を迂回する最有力エビデンス</div>
+<div class="sci-source">Theme D §3 — <a href="adhd-careerspi-ronten.html#s4-ifthen">詳細解説</a></div>
+</div>
+</details>
+
+<details class="sci-card">
+<summary class="sci-header"><span class="sci-id">S5</span><span class="sci-name">CBT複合介入の実績</span><span class="sci-effect">d=0.89</span></summary>
+<div class="sci-body">
+<div class="sci-claim">ADHD特化CBTが最大の効果量を記録 — スキル訓練+認知再構成+タスク管理の三位一体</div>
+<div class="sci-evidence">Safren et al. CBTプログラム: 薬物療法に加えたCBT群がコントロール群に対しd=0.89の効果量。本プログラムのDAY講義構造はSafrenモデルの構成要素をADHD日常文脈に翻訳したもの</div>
+<div class="sci-source">Theme E §2.3 — <a href="adhd-careerspi-ronten.html#s5-cbt">詳細解説</a></div>
+</div>
+</details>
+
+<details class="sci-card">
+<summary class="sci-header"><span class="sci-id">S6</span><span class="sci-name">ボディダブリングの社会的促進</span><span class="sci-effect">d=0.5-0.8</span></summary>
+<div class="sci-body">
+<div class="sci-claim">他者の存在がタスク維持を促進する — バーチャルでも有効、DMN（デフォルトモードネットワーク）抑制効果</div>
+<div class="sci-evidence">社会的促進理論 × ADHD: 他者の存在がDMNの過活動を抑制し、タスク関連ネットワークの活性化を維持。Focusmateの実践データでも「他者の存在」がタスク完遂率を有意に向上</div>
+<div class="sci-source">Theme E §3.1 — <a href="adhd-careerspi-ronten.html#s6-bodydouble">詳細解説</a></div>
+</div>
+</details>
+
+<details class="sci-card">
+<summary class="sci-header"><span class="sci-id">S7</span><span class="sci-name">強みベースの「諸刃の剣」</span><span class="sci-effect">中〜高</span></summary>
+<div class="sci-body">
+<div class="sci-claim">ADHDの強みは科学的に検証されているが、困難と表裏一体 — 過集中・創造性・起業家精神</div>
+<div class="sci-evidence">2025 Psychological Medicine: ADHD当事者の創造性・過集中・レジリエンス等を体系的レビュー。ただし「スーパーパワー神話」は有害 — 強みを活かしつつ困難を正直に認める両面アプローチが重要</div>
+<div class="sci-source">Theme C §2 — <a href="adhd-careerspi-ronten.html#s7-strengths">詳細解説</a></div>
+</div>
+</details>
+
+</div>
+
+<!-- SEC 0B: 理想形 × MVPスコープマトリクス -->
+<div class="science-section" id="s0b">
+<div class="section-eyebrow" style="color:var(--purple)">00-B &mdash; Scope Matrix</div>
+<div class="action-title">理想形 × MVPスコープ — 何をやり、何をやらないか</div>
+<p class="section-lead"><a href="adhd-service-design.html" style="color:var(--cyan);text-decoration:underline">理想形設計書</a>の全体像から、MVPで扱う範囲と将来フェーズを明示。緑ハイライトが「今ここ」。</p>
+
+<div class="scope-matrix">
+<div class="sm-head">カテゴリ</div>
+<div class="sm-head ideal">理想形（Full Design）</div>
+<div class="sm-head mvp">MVP（本書）</div>
+<div class="sm-head future">スコープ外（将来）</div>
+
+<div class="sm-row" style="display:contents">
+<div class="sm-cat">プログラム構造</div>
+<div class="sm-cell ideal"><ul><li>16 DAY × 90分講義</li><li>4回パーソナル</li><li>12回グループ</li><li>REBOOST統合</li></ul></div>
+<div class="sm-cell mvp"><ul><li>8 DAY × 60分講義</li><li>5回パーソナル（4本柱）</li><li>6回グループ</li><li>REBOOST外部紹介</li></ul></div>
+<div class="sm-cell future"><ul><li>REBOOST ADHD版</li><li>タイプ別分岐DAY</li><li>上級者向け応用DAY</li></ul></div>
+</div>
+
+<div class="sm-row" style="display:contents">
+<div class="sm-cat">コーチ体制</div>
+<div class="sm-cell ideal"><ul><li>5コーチ × 4チーム</li><li>L1-L5全レイヤー研修</li><li>スーパーバイザー常設</li></ul></div>
+<div class="sm-cell mvp"><ul><li>2人（Coach + Engineer）</li><li>L1-L2相当の実践</li><li>外部アドバイザー月1</li></ul></div>
+<div class="sm-cell future"><ul><li>コーチ養成・認定制度</li><li>L3-L5研修プログラム</li><li>3人目採用</li></ul></div>
+</div>
+
+<div class="sm-row" style="display:contents">
+<div class="sm-cat">テクノロジー</div>
+<div class="sm-cell ideal"><ul><li>6ツール統合プラットフォーム</li><li>AIチャットボット</li><li>LMS + 動画配信</li></ul></div>
+<div class="sm-cell mvp"><ul><li>自作3ツール + 既存4サービス</li><li>セルフマニュアルビルダー</li><li>パルスチェック + ナッジBot</li></ul></div>
+<div class="sm-cell future"><ul><li>才能解放AIコーチ（アプリ）<span class="phase-tag">Phase 3+</span></li><li>AI振り返り・RAG長期記憶</li><li>統合ダッシュボード</li></ul></div>
+</div>
+
+<div class="sm-row" style="display:contents">
+<div class="sm-cat">ウェルネス</div>
+<div class="sm-cell ideal"><ul><li>運動 × 3回/週</li><li>MAPs瞑想プログラム</li><li>睡眠衛生セッション</li></ul></div>
+<div class="sm-cell mvp"><ul><li>セルフマニュアル内で言及</li><li>環境デザインDAYで扱う</li></ul></div>
+<div class="sm-cell future"><ul><li>フィジカルウェルネス専用セッション</li><li>ADHD×運動プログラム</li></ul></div>
+</div>
+
+<div class="sm-row" style="display:contents">
+<div class="sm-cat">スケール</div>
+<div class="sm-cell ideal"><ul><li>20名/コホート</li><li>年4コホート</li><li>複数同時運営</li></ul></div>
+<div class="sm-cell mvp"><ul><li>6-8名/コホート</li><li>年2コホート</li><li>1コホート集中</li></ul></div>
+<div class="sm-cell future"><ul><li>3人目採用→10名/コホート</li><li>女性専用コホート</li><li>グローバル展開</li></ul></div>
+</div>
+</div>
+
+<div class="mvp-callout">
+<div class="mvp-callout-label">スコープ判断基準</div>
+<p><strong>「2人で、6-8名に、100日で、確実に価値を届けられるか？」</strong>がMVPスコープの唯一の判断基準。理想形の設計思想は維持しつつ、創業チーム2人のキャパシティとADHD特性（過集中→燃え尽きリスク）を考慮した最小構造。</p>
+</div>
+</div>
+
 <div class="part-divider"><span class="part-badge a">Part A &mdash; MVP Overview</span></div>
 
 <!-- SEC 1 -->
 <div class="section" id="s1">
 <div class="section-eyebrow" style="color:var(--amber)">01 &mdash; MVP Concept</div>
-<div class="action-title">理想形を「2人で回せる最小構造」に再設計する</div>
-<p class="section-lead">理想形（20名×5コーチ×16DAY）の設計思想は維持しつつ、2人のADHD当事者が1コホートを直接運営できる構造に絞り込む。「自分たちが使って効果を実感した仕組みだけを提供する」がMVPの原則。</p>
-
-<table class="tbl">
-<thead><tr><th>項目</th><th class="t-ideal">理想形</th><th class="t-mvp">MVP</th><th>変更理由</th></tr></thead>
-<tbody>
-<tr><td class="t-name">参加者数</td><td>20名（5チーム×4名）</td><td class="t-mvp">6-8名（1グループ）</td><td>2人で直接対応可能な上限</td></tr>
-<tr><td class="t-name">スタッフ</td><td>5コーチ + 0.5 CS</td><td class="t-mvp">2人（Coach + Engineer）</td><td>創業チームのみ</td></tr>
-<tr><td class="t-name">DAY講義</td><td>16 DAY（90分）</td><td class="t-mvp">8 DAY（60分）</td><td>効果量トップ6介入に集中</td></tr>
-<tr><td class="t-name">パーソナル</td><td>4回/人（Coach担当）</td><td class="t-mvp">5回/人（全回Coach主導）</td><td>4本柱: 自己理解→ゴール設定→決断→アクションプラン + 統合</td></tr>
-<tr><td class="t-name">グループ</td><td>12回（4人チーム）</td><td class="t-mvp">6回（全員1グループ）</td><td>チーム分割不要</td></tr>
-<tr><td class="t-name">REBOOST</td><td>2日間（VIP/BT）</td><td class="t-mvp">外部紹介のみ</td><td>IP部分利用のため</td></tr>
-<tr><td class="t-name">コンテンツ</td><td>キャリスピ2.0派生</td><td class="t-mvp">完全独自（リサーチA-Hベース）</td><td>IP独立</td></tr>
-<tr><td class="t-name">ツール</td><td>外部SaaS 6カテゴリ</td><td class="t-mvp">自作3ツール + 既存4サービス</td><td>Claude Code活用</td></tr>
-<tr><td class="t-name">価格</td><td>¥580,800〜1,051,600</td><td class="t-mvp">¥300,000〜500,000</td><td>MVP検証価格</td></tr>
-<tr><td class="t-name">売上/コホート</td><td>¥14,000,000</td><td class="t-mvp">¥1,800,000〜4,000,000</td><td>規模に比例</td></tr>
-</tbody>
-</table>
+<div class="action-title">なぜMVPか — 3つの意思決定原則</div>
+<p class="section-lead">理想形と MVPの構造比較は<a href="#s0b" style="color:var(--cyan);text-decoration:underline">スコープマトリクス（Section 0B）</a>を参照。ここではMVPの設計判断を支える3つの原則と、IP境界を定義する。</p>
 
 <div class="card-grid">
 <div class="card"><div class="card-badge amber">MVP原則1</div><h4>当事者が最大の差別化</h4><p>2人ともADHD当事者。「先生→生徒」ではなく「仲間→仲間」のピアコーチングモデル。自分たちが使って効果を実感した仕組みだけを提供する。</p></div>
@@ -360,6 +549,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 <div class="section" id="s4">
 <div class="section-eyebrow" style="color:var(--cyan)">04 &mdash; Program Timeline</div>
 <div class="action-title">3幕構成 — 基盤 → 構築 → 統合</div>
+<div class="science-tags"><span class="sci-tag">S1: 報酬即時化</span><span class="sci-tag">S3: 3経路個別化</span></div>
 <p class="section-lead">週2回の同期タッチポイント（月曜ボディダブリング + 水曜DAY講義/グループ）。金曜は非同期の週次振返り。ADHDに必要な「構造」を与えつつ、「詰め込みすぎない」を両立。</p>
 
 <div class="timeline">
@@ -397,6 +587,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 <div class="section" id="s5">
 <div class="section-eyebrow" style="color:var(--cyan)">05 &mdash; 8 DAY Lectures</div>
 <div class="action-title">効果量トップ6の介入 × 独自コンテンツ × セルフマニュアル連動</div>
+<div class="science-tags"><span class="sci-tag">S1: 報酬即時化</span><span class="sci-tag">S2: 外部化</span><span class="sci-tag">S3: 3経路</span><span class="sci-tag">S4: 実装意図</span><span class="sci-tag">S5: CBT</span><span class="sci-tag">S6: ボディダブリング</span><span class="sci-tag">S7: 強みベース</span></div>
 <p class="section-lead">各DAY 60分（15分心理教育 + 25分コアワーク + 15分グループ議論 + 5分セルフマニュアル課題）。全コンテンツ独自開発。各DAYで「ADHDセルフマニュアル」の1章が完成する。</p>
 
 <details class="acc" open>
@@ -507,6 +698,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 <div class="section" id="s6">
 <div class="section-eyebrow" style="color:var(--cyan)">06 &mdash; Sessions Design</div>
 <div class="action-title">パーソナル5回（4本柱 + 統合）+ グループ6回 — 少数精鋭の濃密設計</div>
+<div class="science-tags"><span class="sci-tag">S5: CBT複合介入</span><span class="sci-tag">S3: 個別化</span></div>
 
 <h4 style="margin:16px 0 8px;font-size:14px">グループセッション6回（75分）</h4>
 <table class="tbl">
@@ -538,6 +730,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 <div class="section" id="s7">
 <div class="section-eyebrow" style="color:var(--cyan)">07 &mdash; Buddy &amp; Community</div>
 <div class="action-title">バディペア × LINEオープンチャット — スタッフ時間ゼロの日常アカウンタビリティ</div>
+<div class="science-tags"><span class="sci-tag">S6: ボディダブリング</span><span class="sci-tag">S2: 外部化</span></div>
 
 <div class="card-grid">
 <div class="card"><div class="card-badge cyan">バディシステム</div><h4>毎日10分の非同期チェックイン</h4><p>3-4組のペア。朝「今日のONE THING」→ 夜「やった？」をボイスメッセージorテキストで。<strong>W7でペア組替え</strong>（新鮮さ=ADHD脳に効く）。スタッフ時間: 0h/週。</p></div>
@@ -571,6 +764,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 <div class="section" id="s8">
 <div class="section-eyebrow" style="color:var(--green)">08 &mdash; Build vs Buy</div>
 <div class="action-title">競争優位を生むものだけ自作。あとは借りる。</div>
+<div class="science-tags"><span class="sci-tag">S2: 外部化</span><span class="sci-tag">S4: 実装意図</span></div>
 
 <table class="tbl">
 <thead><tr><th>カテゴリ</th><th>選択</th><th>ツール</th><th>コスト</th></tr></thead>
@@ -600,6 +794,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 <div class="section" id="s9">
 <div class="section-eyebrow" style="color:var(--green)">09 &mdash; Self-Manual Builder</div>
 <div class="action-title">MVPの中核プロダクト — 100日で「脳の取扱説明書」を構築するWeb App</div>
+<div class="science-tags"><span class="sci-tag">S2: 外部化</span><span class="sci-tag">S7: 強みベース</span></div>
 
 <div class="card-grid">
 <div class="card"><div class="card-badge green">機能1</div><h4>テンプレート駆動の8章</h4><p>各DAY講義がセルフマニュアルの1章をアンロック。構造化された質問に答えていくだけで、章が完成する。空白のページを渡さない（ADHD向け）。</p></div>
@@ -618,6 +813,7 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 <div class="section" id="s10">
 <div class="section-eyebrow" style="color:var(--green)">10 &mdash; Dashboard &amp; Nudge Bot</div>
 <div class="action-title">データで「見える化」し、Botで「忘れない化」する</div>
+<div class="science-tags"><span class="sci-tag">S1: 報酬即時化</span><span class="sci-tag">S4: 実装意図</span></div>
 
 <h4 style="margin:16px 0 8px;font-size:14px">週次パルスチェック（5問）</h4>
 <table class="tbl">
@@ -812,8 +1008,8 @@ details.acc[open] summary{border-color:var(--border-focus);background:var(--bg-r
 </div><!-- /page-layout -->
 
 <div class="footer">
-ADHD特化コーチング — MVPパイロット設計書 v1<br>
-<span>Generated: 2026-02-27 | Base: <a href="adhd-service-design.html" style="color:var(--cyan)">理想形設計書v1</a> + <a href="adhd-careerspi-ronten.html" style="color:var(--cyan)">論点整理v1</a> | Research Themes A-H</span>
+ADHD特化コーチング — MVPパイロット設計書 v1.1<br>
+<span>Updated: 2026-02-28 | Base: <a href="adhd-service-design.html" style="color:var(--cyan)">理想形設計書v1</a> + <a href="adhd-careerspi-ronten.html" style="color:var(--cyan)">論点整理v1</a> | Research Themes A-H | 科学的前提・スコープマトリクス追加</span>
 <br><a href="adhd-doc-inventory.html" style="color:var(--cyan)">&#128196; ドキュメント準備マップ</a>
 </div>
 
