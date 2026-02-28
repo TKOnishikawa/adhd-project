@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ADHD脳の取扱説明書 — ブランドセットアップガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700;900&family=JetBrains+Mono:wght@400;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --purple: #7c3aed;
+  --purple-light: #a78bfa;
+  --purple-dark: #5b21b6;
+  --teal: #0d9488;
+  --teal-light: #2dd4bf;
+  --amber: #f59e0b;
+  --amber-light: #fbbf24;
+  --rose: #e11d48;
+  --blue: #3b82f6;
+  --bg-darkest: #08080d;
+  --bg-dark: #101018;
+  --bg-mid: #181824;
+  --bg-card: #222234;
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --border: #334155;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg-darkest);
+  color: var(--text-primary);
+  line-height: 1.8;
+  min-height: 100vh;
+}
+
+.hero {
+  background: linear-gradient(135deg, #1a0033 0%, var(--purple) 50%, var(--teal) 100%);
+  padding: 60px 24px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 30% 50%, rgba(124,58,237,0.3), transparent 60%),
+              radial-gradient(circle at 70% 50%, rgba(13,148,136,0.2), transparent 60%);
+}
+.hero-content { position: relative; z-index: 1; max-width: 800px; margin: 0 auto; }
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(28px, 5vw, 42px);
+  font-weight: 700;
+  margin-bottom: 12px;
+  letter-spacing: 0.02em;
+}
+.hero .subtitle {
+  font-size: 16px;
+  color: rgba(255,255,255,0.8);
+  margin-bottom: 20px;
+}
+.hero .meta-badges {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.hero .badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,0.12);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 20px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.hero .badge.confirmed { border-color: var(--teal-light); color: var(--teal-light); }
+
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 40px 24px 80px;
+}
+
+.section {
+  margin-bottom: 48px;
+}
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+  padding-bottom: 12px;
+  border-bottom: 2px solid var(--purple);
+}
+.section-number {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--purple-light);
+  background: rgba(124,58,237,0.15);
+  border-radius: 8px;
+  padding: 4px 10px;
+  min-width: 32px;
+  text-align: center;
+}
+.section-title {
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+.card-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--purple-light);
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 16px 0;
+  font-size: 14px;
+}
+th {
+  background: var(--bg-mid);
+  padding: 10px 14px;
+  text-align: left;
+  font-weight: 700;
+  color: var(--purple-light);
+  border-bottom: 2px solid var(--purple);
+  font-size: 13px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+tr:hover td { background: rgba(124,58,237,0.05); }
+
+.color-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.swatch {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  border: 1px solid rgba(255,255,255,0.15);
+  display: inline-block;
+  vertical-align: middle;
+}
+
+code, .mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  background: var(--bg-mid);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--teal-light);
+}
+
+.layout-preview {
+  background: var(--bg-darkest);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 20px;
+  margin: 16px 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--text-secondary);
+  overflow-x: auto;
+  white-space: pre;
+}
+
+.profile-block {
+  background: var(--bg-darkest);
+  border-left: 3px solid var(--purple);
+  border-radius: 0 8px 8px 0;
+  padding: 20px 24px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 2;
+  white-space: pre-line;
+}
+
+.platform-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 700;
+  font-size: 15px;
+  margin-bottom: 8px;
+  padding: 4px 12px;
+  border-radius: 6px;
+  background: var(--bg-mid);
+}
+.platform-label.x { border-left: 3px solid #1da1f2; }
+.platform-label.yt { border-left: 3px solid #ff0000; }
+.platform-label.note { border-left: 3px solid #41c9b4; }
+.platform-label.ig { border-left: 3px solid #e1306c; }
+.platform-label.tt { border-left: 3px solid #ffffff; }
+
+.checklist {
+  list-style: none;
+  padding: 0;
+}
+.checklist li {
+  padding: 8px 0 8px 32px;
+  position: relative;
+  border-bottom: 1px solid rgba(51,65,85,0.5);
+  font-size: 14px;
+}
+.checklist li::before {
+  content: '';
+  position: absolute;
+  left: 4px;
+  top: 12px;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--text-muted);
+  border-radius: 3px;
+}
+
+.step-header {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--amber);
+  margin: 24px 0 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.step-header .step-badge {
+  background: var(--amber);
+  color: var(--bg-darkest);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+.step-header .step-time {
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 400;
+}
+
+.brand-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 16px;
+}
+.brand-item {
+  background: var(--bg-mid);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.brand-item .label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  font-weight: 700;
+}
+.brand-item .value {
+  font-size: 15px;
+  font-weight: 700;
+}
+
+.color-palette {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin: 16px 0;
+}
+.color-card {
+  width: 120px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.color-card .preview {
+  height: 60px;
+}
+.color-card .info {
+  background: var(--bg-mid);
+  padding: 8px 10px;
+  font-size: 12px;
+}
+.color-card .info .name { font-weight: 700; margin-bottom: 2px; }
+.color-card .info .hex {
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-muted);
+  font-size: 11px;
+}
+
+.avoid-list {
+  list-style: none;
+  padding: 0;
+}
+.avoid-list li {
+  padding: 6px 0;
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.linktree-preview {
+  background: var(--bg-darkest);
+  border-radius: 16px;
+  padding: 32px 24px;
+  max-width: 360px;
+  margin: 20px auto;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.lt-avatar {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--purple), var(--teal));
+  margin: 0 auto 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 32px;
+}
+.lt-name { font-weight: 700; font-size: 16px; margin-bottom: 4px; }
+.lt-bio { font-size: 12px; color: var(--text-muted); margin-bottom: 20px; }
+.lt-btn {
+  display: block;
+  padding: 14px 20px;
+  border-radius: 8px;
+  margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 14px;
+  text-align: center;
+  border: 1px solid var(--border);
+}
+.lt-btn.primary { background: var(--teal); border-color: var(--teal); }
+.lt-btn.secondary { background: var(--purple); border-color: var(--purple); }
+
+.theme-tags {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 12px 0;
+}
+.theme-tag {
+  padding: 6px 14px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.toc {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px 28px;
+  margin-bottom: 40px;
+}
+.toc-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  margin-bottom: 16px;
+}
+.toc-list {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 8px;
+}
+.toc-list li a {
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 6px 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.2s;
+}
+.toc-list li a:hover { color: var(--purple-light); }
+.toc-list li a .num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--purple);
+  font-weight: 700;
+}
+
+@media (max-width: 640px) {
+  .hero { padding: 40px 16px 32px; }
+  .container { padding: 24px 16px 60px; }
+  .card { padding: 16px; }
+  .brand-grid { grid-template-columns: 1fr; }
+  .color-palette { justify-content: center; }
+  .toc-list { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-content">
+    <div style="font-size:48px; margin-bottom:16px;">🧠</div>
+    <h1>ADHD脳の取扱説明書</h1>
+    <p class="subtitle">ブランドセットアップガイド — 全プラットフォーム統一設計</p>
+    <div class="meta-badges">
+      <span class="badge confirmed">✓ @adhd_brain_manual 確定</span>
+      <span class="badge">📅 2026-02-28</span>
+      <span class="badge">🔬 科学の翻訳者ポジション</span>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+<nav class="toc">
+  <div class="toc-title">Contents</div>
+  <ul class="toc-list">
+    <li><a href="#sec1"><span class="num">01</span> プロフィール画像</a></li>
+    <li><a href="#sec2"><span class="num">02</span> バナー / ヘッダー</a></li>
+    <li><a href="#sec3"><span class="num">03</span> 投稿テンプレート</a></li>
+    <li><a href="#sec4"><span class="num">04</span> TikTok サムネイル</a></li>
+    <li><a href="#sec5"><span class="num">05</span> プロフィール文</a></li>
+    <li><a href="#sec6"><span class="num">06</span> Linktree 設定</a></li>
+    <li><a href="#sec7"><span class="num">07</span> セットアップチェックリスト</a></li>
+    <li><a href="#sec8"><span class="num">08</span> ブランドガイドライン</a></li>
+  </ul>
+</nav>
+
+<!-- ==================== Section 1 ==================== -->
+<section class="section" id="sec1">
+  <div class="section-header">
+    <span class="section-number">01</span>
+    <h2 class="section-title">プロフィール画像（全PF共通）</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎨 デザイン仕様</div>
+    <table>
+      <tr><th>項目</th><th>設定</th></tr>
+      <tr><td>サイズ</td><td>400x400px以上（円形トリミング対応）</td></tr>
+      <tr><td>モチーフ</td><td>脳のシルエット + 回路パターン</td></tr>
+      <tr><td>スタイル</td><td>ミニマル・ラインアート（親しみ × クリーン）</td></tr>
+      <tr><td>メインカラー</td><td><span class="color-swatch"><span class="swatch" style="background:#7c3aed"></span><code>#7c3aed</code> パープル</span></td></tr>
+      <tr><td>アクセント</td><td><span class="color-swatch"><span class="swatch" style="background:#0d9488"></span><code>#0d9488</code> ティール（回路ライン / ノード）</span></td></tr>
+      <tr><td>背景</td><td><span class="color-swatch"><span class="swatch" style="background:#08080d"></span><code>#08080d</code> ダーク or 透過</span></td></tr>
+      <tr><td>フォーマット</td><td>PNG（透過あり）</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🛠️ Canva制作手順</div>
+    <ol style="padding-left:20px; font-size:14px; line-height:2.2;">
+      <li>Canvaで<strong>ロゴテンプレート</strong>を開く（400x400px）</li>
+      <li>素材検索: <code>brain icon</code> <code>brain circuit</code> <code>neural network icon</code></li>
+      <li><strong>ラインアート系</strong>のシンプルな脳アイコンを選択</li>
+      <li>カラー変更: メインライン → <code>#7c3aed</code>、アクセント → <code>#0d9488</code></li>
+      <li>背景: <code>#08080d</code>（ダーク）に設定</li>
+      <li>円形に収まることを確認 → PNG書き出し</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <div class="card-title" style="color:var(--rose);">⚠️ 避けるべきスタイル</div>
+    <ul class="avoid-list">
+      <li>❌ リアルな脳の写真（気持ち悪い）</li>
+      <li>❌ 可愛すぎるイラスト（科学的権威が下がる）</li>
+      <li>❌ 色が多すぎる（2色+背景で統一）</li>
+      <li>❌ 文字入りアイコン（小さくて読めない）</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== Section 2 ==================== -->
+<section class="section" id="sec2">
+  <div class="section-header">
+    <span class="section-number">02</span>
+    <h2 class="section-title">バナー / ヘッダー</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📝 共通コンテンツ</div>
+    <table>
+      <tr><th>要素</th><th>テキスト</th></tr>
+      <tr><td>メインコピー</td><td><strong>ADHD脳の取扱説明書</strong></td></tr>
+      <tr><td>サブコピー</td><td>科学ベース × 当事者体験 × 最新海外研究</td></tr>
+      <tr><td>効果量バッジ</td><td><span style="color:var(--amber);font-weight:700;">d=0.89</span> — 10人中8人に効果が確認された水準</td></tr>
+      <tr><td>CTA</td><td>無料Discord「ADHD Labs」参加はプロフリンクから</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎨 カラー & フォント</div>
+    <div class="color-palette">
+      <div class="color-card">
+        <div class="preview" style="background:linear-gradient(135deg,#1a0033,#7c3aed);"></div>
+        <div class="info"><div class="name">背景</div><div class="hex">#1a0033 → #7c3aed</div></div>
+      </div>
+      <div class="color-card">
+        <div class="preview" style="background:#ffffff;"></div>
+        <div class="info"><div class="name">メインテキスト</div><div class="hex">#ffffff</div></div>
+      </div>
+      <div class="color-card">
+        <div class="preview" style="background:#d1d5db;"></div>
+        <div class="info"><div class="name">サブテキスト</div><div class="hex">#d1d5db</div></div>
+      </div>
+      <div class="color-card">
+        <div class="preview" style="background:#f59e0b;"></div>
+        <div class="info"><div class="name">効果量バッジ</div><div class="hex">#f59e0b</div></div>
+      </div>
+      <div class="color-card">
+        <div class="preview" style="background:#0d9488;"></div>
+        <div class="info"><div class="name">CTAボタン</div><div class="hex">#0d9488</div></div>
+      </div>
+    </div>
+    <table>
+      <tr><th>要素</th><th>フォント</th><th>サイズ</th></tr>
+      <tr><td>メインコピー</td><td>Noto Sans JP Bold</td><td>48-64pt</td></tr>
+      <tr><td>サブコピー</td><td>Noto Sans JP Regular</td><td>20-28pt</td></tr>
+      <tr><td>効果量</td><td>JetBrains Mono Bold</td><td>24pt</td></tr>
+      <tr><td>CTA</td><td>Noto Sans JP Medium</td><td>18-22pt</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📐 X（Twitter）: 1500 x 500px</div>
+    <div class="layout-preview">┌──────────────────────────────────────────────────┐
+│                                           [空白] │  ← 右1/3はプロフ画像で隠れる
+│  ADHD脳の取扱説明書                               │
+│  ─────────────────                               │
+│  科学ベース × 当事者体験 × 最新海外研究            │
+│                                                  │
+│  [d=0.89]  ────────  [ADHD Labs 参加▶]           │
+│                                           [空白] │
+└──────────────────────────────────────────────────┘</div>
+    <p style="font-size:13px;color:var(--amber);">⚠️ テキストは左2/3に寄せる。右1/3はプロフィール画像に隠れる。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📐 YouTube: 2560 x 1440px</div>
+    <div class="layout-preview">┌────────────────────────────────────────────────────┐
+│                   [セーフゾーン外]                    │
+│   ┌────────────────────────────────────────────┐   │
+│   │       ADHD脳の取扱説明書                    │   │
+│   │  科学ベース × 当事者体験 × 最新海外研究      │   │
+│   │                                            │   │
+│   │  [d=0.89]    [毎週更新]    [ADHD Labs]      │   │
+│   └────────────────────────────────────────────┘   │
+│                   [セーフゾーン外]                    │
+└────────────────────────────────────────────────────┘</div>
+    <p style="font-size:13px;color:var(--amber);">⚠️ モバイル安全領域は中央 1546x423px のみ。全テキストをここに収める。</p>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📐 note: 1280 x 670px（OGP兼用）</div>
+    <div class="layout-preview">┌────────────────────────────────────┐
+│                                    │
+│     ADHD脳の取扱説明書              │
+│                                    │
+│  科学ベース × 当事者体験            │
+│  × 最新海外研究                     │
+│                                    │
+│     [d=0.89]                       │
+│                                    │
+└────────────────────────────────────┘</div>
+    <p style="font-size:13px;color:var(--amber);">⚠️ OGPプレビューで使われるため、文字は大きめ（タイトル60pt以上）。</p>
+  </div>
+</section>
+
+<!-- ==================== Section 3 ==================== -->
+<section class="section" id="sec3">
+  <div class="section-header">
+    <span class="section-number">03</span>
+    <h2 class="section-title">投稿テンプレート（インフォグラフィック用）</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📱 基本レイアウト（1080 x 1350px — IG/X共通）</div>
+    <div class="layout-preview">┌──────────────────────────────┐
+│  [テーマカラーバー ─────────] │  ← パープル or ティール
+│                              │
+│  テーマアイコン               │
+│  タイトル（2行以内）          │  ← Noto Sans JP Bold / 36pt
+│  ───────────                 │
+│                              │
+│  コンテンツ本文               │  ← Noto Sans JP Regular / 22pt
+│  （箇条書き or 図解）         │
+│                              │
+│                              │
+│  [出典: 〇〇大学, 202X]      │  ← ティール / 14pt
+│                              │
+│  🧠 @adhd_brain_manual       │  ← ブランドフッター
+└──────────────────────────────┘</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🎨 テーマ別カラーバリエーション</div>
+    <div class="theme-tags">
+      <span class="theme-tag" style="background:rgba(124,58,237,0.2);color:var(--purple-light);border:1px solid var(--purple);">🧠 脳科学・メカニズム</span>
+      <span class="theme-tag" style="background:rgba(13,148,136,0.2);color:var(--teal-light);border:1px solid var(--teal);">📊 エビデンス・研究</span>
+      <span class="theme-tag" style="background:rgba(245,158,11,0.2);color:var(--amber-light);border:1px solid var(--amber);">⚡ 強み・ポジティブ</span>
+      <span class="theme-tag" style="background:rgba(225,29,72,0.2);color:#fb7185;border:1px solid var(--rose);">💭 あるある・共感</span>
+      <span class="theme-tag" style="background:rgba(59,130,246,0.2);color:#93c5fd;border:1px solid var(--blue);">🔧 ツール・実践</span>
+    </div>
+    <table>
+      <tr><th>テーマ</th><th>バーカラー</th><th>HEX</th></tr>
+      <tr><td>🧠 脳科学・メカニズム</td><td><span class="color-swatch"><span class="swatch" style="background:#7c3aed"></span> パープル</span></td><td><code>#7c3aed</code></td></tr>
+      <tr><td>📊 エビデンス・研究</td><td><span class="color-swatch"><span class="swatch" style="background:#0d9488"></span> ティール</span></td><td><code>#0d9488</code></td></tr>
+      <tr><td>⚡ 強み・ポジティブ</td><td><span class="color-swatch"><span class="swatch" style="background:#f59e0b"></span> アンバー</span></td><td><code>#f59e0b</code></td></tr>
+      <tr><td>💭 あるある・共感</td><td><span class="color-swatch"><span class="swatch" style="background:#e11d48"></span> ローズ</span></td><td><code>#e11d48</code></td></tr>
+      <tr><td>🔧 ツール・実践</td><td><span class="color-swatch"><span class="swatch" style="background:#3b82f6"></span> ブルー</span></td><td><code>#3b82f6</code></td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== Section 4 ==================== -->
+<section class="section" id="sec4">
+  <div class="section-header">
+    <span class="section-number">04</span>
+    <h2 class="section-title">TikTok / Shorts サムネイル</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">📱 サムネイルレイアウト（1080 x 1920px）</div>
+    <div class="layout-preview">┌────────────────────┐
+│                    │
+│                    │
+│  [大テキスト]       │  ← 黄 #FFD700 / Bold
+│  1日70,000回       │     画面の40%を占める
+│                    │
+│  [サブテキスト]     │  ← 白 / Regular
+│  ADHDの脳が        │
+│  思考する回数       │
+│                    │
+│                    │
+│  🧠 脳の取扱説明書  │  ← ブランドフッター
+└────────────────────┘
+
+背景: ダーク #1a1a2e</div>
+  </div>
+</section>
+
+<!-- ==================== Section 5 ==================== -->
+<section class="section" id="sec5">
+  <div class="section-header">
+    <span class="section-number">05</span>
+    <h2 class="section-title">プロフィール文（コピー確定版）</h2>
+  </div>
+
+  <div class="card">
+    <div class="platform-label x">𝕏 X（Twitter）— 160字</div>
+    <div class="profile-block">🧠 ADHD脳の取扱説明書
+ADHDは脳のOSが違うだけ。怠けじゃない、設計の問題。
+📊 査読済み研究（d=0.89）ベースでADHDの「強み」を科学する
+🔬 海外最新論文を毎日わかりやすく
+👇 無料コミュニティ「ADHD Labs」</div>
+  </div>
+
+  <div class="card">
+    <div class="platform-label yt">▶️ YouTube チャンネル概要欄</div>
+    <div class="profile-block" style="font-size:13px;line-height:1.9;">【ADHD脳の取扱説明書】
+
+ADHDは壊れているんじゃない。使い方を知らないだけ。
+
+このチャンネルでは、海外の最新研究論文をベースに
+ADHDの脳の仕組みと「強みの活かし方」を科学的に解説します。
+
+■ コンテンツ方針
+- 査読済み研究論文ベース（効果量d値を毎回引用）
+- 海外最新研究の日本語初解説（Stanford, Cambridge, UCI等）
+- 「困りごと」ではなく「強みの証明」にフォーカス
+
+■ テーマ
+ADHD脳のOS / ドーパミンシステム / 実行機能 / タイムブラインドネス
+環境デザイン / ボディダブリング / ハイパーフォーカス活用 / 強みの科学
+
+■ 更新頻度
+Shorts: 週2-3本（30-60秒）
+Long-Form: 週1本（8-15分）
+
+■ 無料コミュニティ「ADHD Labs」（Discord）
+毎週月曜21:00 オンラインもくもく会（ボディダブリング）
+→ プロフィールのリンクから参加できます
+
+■ ADHD 100日プログラム（コーチング）
+科学ベースの100日間コーチングプログラムを開発中。
+詳細はプロフィールのリンクから。
+
+※このコンテンツはコーチング・教育目的であり、医療ではありません。
+診断・治療については必ず医師にご相談ください。
+
+#ADHD #ADHDコーチング #ADHD当事者 #脳科学 #発達障害 #ADHDの強み #大人のADHD</div>
+  </div>
+
+  <div class="card">
+    <div class="platform-label note">📝 note — 160字</div>
+    <div class="profile-block">ADHD当事者。「怠け」じゃなくて「脳のOSが違う」だけ。
+査読済み研究（効果量d=0.89）をベースに、ADHDの強みを科学する記事を毎週2-3本。
+海外最新論文の日本語初解説｜ADHD Labs（Discord無料コミュニティ）運営中</div>
+  </div>
+
+  <div class="card">
+    <div class="platform-label ig">📷 Instagram — 150字</div>
+    <div class="profile-block">🧠 ADHD脳の取扱説明書
+科学（d=0.89）で証明するADHDの「強み」
+📊 海外最新研究を図解で解説
+🔬 当事者×エビデンス
+⬇️ 無料Discord & 100日プログラム</div>
+  </div>
+
+  <div class="card">
+    <div class="platform-label tt">🎵 TikTok — 80字</div>
+    <div class="profile-block">🧠 ADHDは壊れてない。使い方を知らないだけ
+科学ベースでADHD脳の強みを解説
+↓ 無料Discord「ADHD Labs」</div>
+  </div>
+</section>
+
+<!-- ==================== Section 6 ==================== -->
+<section class="section" id="sec6">
+  <div class="section-header">
+    <span class="section-number">06</span>
+    <h2 class="section-title">Linktree 設定</h2>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔗 linktr.ee/adhd_brain_manual</div>
+
+    <div class="linktree-preview">
+      <div class="lt-avatar">🧠</div>
+      <div class="lt-name">ADHD脳の取扱説明書</div>
+      <div class="lt-bio">科学ベースでADHDの強みを解説 | 当事者×エビデンス</div>
+      <div class="lt-btn primary">🧪 無料参加 — ADHD Labs（Discord）</div>
+      <div class="lt-btn secondary">📘 100日プログラムの詳細</div>
+      <div class="lt-btn">📝 note — 無料記事一覧</div>
+      <div class="lt-btn">🎥 YouTube チャンネル</div>
+    </div>
+
+    <table style="margin-top:20px;">
+      <tr><th>設定項目</th><th>値</th></tr>
+      <tr><td>背景</td><td><span class="color-swatch"><span class="swatch" style="background:#08080d"></span><code>#08080d</code></span></td></tr>
+      <tr><td>テキスト</td><td><span class="color-swatch"><span class="swatch" style="background:#fff;border-color:#555"></span><code>#ffffff</code></span></td></tr>
+      <tr><td>プロフィール画像</td><td>ブランドアイコン（Section 1と同じ）</td></tr>
+      <tr><td>表示名</td><td>ADHD脳の取扱説明書</td></tr>
+    </table>
+  </div>
+</section>
+
+<!-- ==================== Section 7 ==================== -->
+<section class="section" id="sec7">
+  <div class="section-header">
+    <span class="section-number">07</span>
+    <h2 class="section-title">セットアップチェックリスト</h2>
+  </div>
+
+  <div class="card">
+    <div class="step-header"><span class="step-badge">STEP 1</span> ハンドル確保 <span class="step-time">即日</span></div>
+    <ul class="checklist">
+      <li>X: <code>@adhd_brain_manual</code> でアカウント作成</li>
+      <li>YouTube: <code>@adhd_brain_manual</code> でチャンネル作成</li>
+      <li>Instagram: <code>@adhd_brain_manual</code> でアカウント作成</li>
+      <li>TikTok: 既存アカウントを <code>@adhd_brain_manual</code> にリネーム</li>
+      <li>note: <code>adhd_brain_manual</code> でアカウント作成</li>
+      <li>Discord: 「ADHD Labs」サーバー作成</li>
+    </ul>
+
+    <div class="step-header"><span class="step-badge">STEP 2</span> ビジュアル制作 <span class="step-time">1-2日</span></div>
+    <ul class="checklist">
+      <li>プロフィールアイコン制作（Canva / 400x400px）</li>
+      <li>X バナー制作（1500x500px）</li>
+      <li>YouTube バナー制作（2560x1440px）</li>
+      <li>note ヘッダー制作（1280x670px）</li>
+      <li>投稿テンプレート 5種（テーマ別カラー）</li>
+      <li>Instagram ハイライトカバー 5種</li>
+    </ul>
+
+    <div class="step-header"><span class="step-badge">STEP 3</span> プロフィール設定 <span class="step-time">1日</span></div>
+    <ul class="checklist">
+      <li>各PFにプロフィール文を入力（Section 5のコピーを貼り付け）</li>
+      <li>各PFにプロフィール画像を設定</li>
+      <li>各PFにバナー/ヘッダーを設定</li>
+      <li>Linktree作成・設定（Section 6参照）</li>
+      <li>各PFのバイオリンクにLinktree URLを設定</li>
+      <li>YouTube概要欄・note自己紹介に免責文を記載</li>
+    </ul>
+
+    <div class="step-header"><span class="step-badge">STEP 4</span> 構造設定 <span class="step-time">1日</span></div>
+    <ul class="checklist">
+      <li>YouTube: プレイリスト4本作成</li>
+      <li>Instagram: ハイライト5個設定（カバーアイコン付き）</li>
+      <li>note: マガジン3本作成</li>
+      <li>X: ピン投稿（ローンチスレッド）準備</li>
+      <li>TikTok: プロフィール動画設定</li>
+    </ul>
+
+    <div class="step-header"><span class="step-badge">STEP 5</span> 初回コンテンツ投稿 <span class="step-time">v1 Week 1</span></div>
+    <ul class="checklist">
+      <li>TikTok #001 投稿（台本作成済み）</li>
+      <li>X ローンチスレッド投稿</li>
+      <li>note 創業ストーリー記事</li>
+      <li>Instagram 自己紹介カルーセル（10枚）</li>
+      <li>YouTube チャンネル紹介（スライド形式）</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ==================== Section 8 ==================== -->
+<section class="section" id="sec8">
+  <div class="section-header">
+    <span class="section-number">08</span>
+    <h2 class="section-title">ブランドガイドライン早見表</h2>
+  </div>
+
+  <div class="brand-grid">
+    <div class="brand-item">
+      <span class="label">ハンドル</span>
+      <span class="value" style="font-family:'JetBrains Mono',monospace;">@adhd_brain_manual</span>
+    </div>
+    <div class="brand-item">
+      <span class="label">表示名</span>
+      <span class="value">ADHD脳の取扱説明書</span>
+    </div>
+    <div class="brand-item">
+      <span class="label">タグライン</span>
+      <span class="value" style="font-size:14px;">ADHDは壊れてない。使い方を知らないだけ。</span>
+    </div>
+    <div class="brand-item">
+      <span class="label">ポジション</span>
+      <span class="value">科学の翻訳者</span>
+    </div>
+    <div class="brand-item">
+      <span class="label">看板</span>
+      <span class="value" style="font-size:14px;">海外研究の日本語初解説</span>
+    </div>
+    <div class="brand-item">
+      <span class="label">ブランドシンボル</span>
+      <span class="value" style="font-family:'JetBrains Mono',monospace;color:var(--amber);">d=0.89</span>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:20px;">
+    <div class="card-title">🎨 カラーパレット</div>
+    <div class="color-palette">
+      <div class="color-card">
+        <div class="preview" style="background:#7c3aed;"></div>
+        <div class="info"><div class="name">パープル</div><div class="hex">#7c3aed</div></div>
+      </div>
+      <div class="color-card">
+        <div class="preview" style="background:#0d9488;"></div>
+        <div class="info"><div class="name">ティール</div><div class="hex">#0d9488</div></div>
+      </div>
+      <div class="color-card">
+        <div class="preview" style="background:#f59e0b;"></div>
+        <div class="info"><div class="name">アンバー</div><div class="hex">#f59e0b</div></div>
+      </div>
+      <div class="color-card">
+        <div class="preview" style="background:#08080d;"></div>
+        <div class="info"><div class="name">ダーク背景</div><div class="hex">#08080d</div></div>
+      </div>
+      <div class="color-card">
+        <div class="preview" style="background:#ffffff;"></div>
+        <div class="info"><div class="name">ホワイト</div><div class="hex">#ffffff</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">🔤 タイポグラフィ</div>
+    <table>
+      <tr><th>用途</th><th>フォント</th></tr>
+      <tr><td>見出し</td><td style="font-weight:700;">Noto Sans JP Bold</td></tr>
+      <tr><td>本文</td><td>Noto Sans JP Regular</td></tr>
+      <tr><td>数値・コード</td><td style="font-family:'JetBrains Mono',monospace;font-weight:700;">JetBrains Mono Bold</td></tr>
+    </table>
+  </div>
+
+  <div class="card">
+    <div class="card-title">⚖️ 免責文テンプレート</div>
+    <div class="profile-block" style="border-left-color:var(--rose);font-size:13px;">※このコンテンツはコーチング・教育目的であり、医療ではありません。
+診断・治療については必ず医師にご相談ください。</div>
+    <p style="font-size:12px;color:var(--text-muted);margin-top:8px;">YouTube概要欄・note自己紹介・LP の末尾に記載</p>
+  </div>
+</section>
+
+</div>
+
+<footer style="text-align:center;padding:32px;color:var(--text-muted);font-size:12px;border-top:1px solid var(--border);">
+  🧠 ADHD脳の取扱説明書 — Brand Setup Guide v1.0 — 2026-02-28
+</footer>
+
+</body>
+</html>
