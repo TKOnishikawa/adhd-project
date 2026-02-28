@@ -86,7 +86,7 @@ const snsStrategy = defineCollection({
       'report',
     ]).default('strategy'),
     platforms: z.array(z.enum([
-      'x', 'note', 'instagram', 'youtube', 'tiktok', 'discord', 'line'
+      'x', 'note', 'instagram', 'youtube', 'youtube-short', 'tiktok', 'discord', 'line'
     ])).default([]),
     relatedThemes: z.array(themeId).optional(),
     maturity: z.enum(['seed', 'memo', 'draft', 'published']).default('seed'),
