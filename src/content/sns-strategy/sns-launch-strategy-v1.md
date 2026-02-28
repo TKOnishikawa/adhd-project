@@ -9,6 +9,52 @@ maturity: "draft"
 summary: "v1からの主要変更: Discord→LINEオープンチャット、X最優先→TikTok/YouTube/note中心、論文ベース権威性チャンネル戦略、ハイブリッド型コンテンツ制作フロー"
 ---
 
+<!-- Marketing Funnel Summary -->
+<div style="background:rgba(245,158,11,0.03);border:1px solid rgba(245,158,11,0.12);border-radius:16px;padding:28px 24px;margin:0 0 32px">
+<div style="font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:#f59e0b;margin-bottom:16px">MARKETING FUNNEL</div>
+<div style="display:flex;justify-content:center;gap:12px;flex-wrap:wrap;margin-bottom:8px">
+<div style="background:#101018;border:1px solid rgba(255,255,255,0.06);border-top:3px solid #f472b6;border-radius:10px;padding:14px 18px;text-align:center;min-width:100px">
+<div style="font-size:24px;margin-bottom:4px">&#x1F3B5;</div>
+<div style="font-size:12px;font-weight:700;color:#f472b6">TikTok</div>
+<div style="font-size:10px;color:#9898ae;font-family:monospace">5,000</div>
+</div>
+<div style="background:#101018;border:1px solid rgba(255,255,255,0.06);border-top:3px solid #ef4444;border-radius:10px;padding:14px 18px;text-align:center;min-width:100px">
+<div style="font-size:24px;margin-bottom:4px">&#x25B6;&#xFE0F;</div>
+<div style="font-size:12px;font-weight:700;color:#ef4444">YouTube</div>
+<div style="font-size:10px;color:#9898ae;font-family:monospace">500</div>
+</div>
+<div style="background:#101018;border:1px solid rgba(255,255,255,0.06);border-top:3px solid #34d399;border-radius:10px;padding:14px 18px;text-align:center;min-width:100px">
+<div style="font-size:24px;margin-bottom:4px">&#x1F4DD;</div>
+<div style="font-size:12px;font-weight:700;color:#34d399">note</div>
+<div style="font-size:10px;color:#9898ae;font-family:monospace">25K PV</div>
+</div>
+</div>
+<div style="text-align:center;color:#58586e;font-size:16px;padding:4px 0">&#x25BC; &#x25BC; &#x25BC;</div>
+<div style="max-width:340px;margin:0 auto">
+<div style="background:#101018;border:1px solid rgba(255,255,255,0.06);border-left:3px solid #f59e0b;border-radius:8px;padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:10px">
+<span style="font-size:20px">&#x2728;</span>
+<div><div style="font-size:13px;font-weight:700;color:#f59e0b">ADHD才能解放ワーク</div><div style="font-size:10px;color:#9898ae">フロント商材（無料ウェビナー）</div></div>
+</div>
+<div style="text-align:center;color:#58586e;font-size:14px;padding:2px 0">&#x25BC;</div>
+<div style="background:#101018;border:1px solid rgba(255,255,255,0.06);border-left:3px solid #34d399;border-radius:8px;padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:10px">
+<span style="font-size:20px">&#x1F4AC;</span>
+<div><div style="font-size:13px;font-weight:700;color:#34d399">LINE登録</div><div style="font-size:10px;color:#9898ae">ADHD Labs（150名目標）</div></div>
+</div>
+<div style="text-align:center;color:#58586e;font-size:14px;padding:2px 0">&#x25BC;</div>
+<div style="background:#101018;border:1px solid rgba(255,255,255,0.06);border-left:3px solid #22d3ee;border-radius:8px;padding:10px 16px;margin-bottom:6px;display:flex;align-items:center;gap:10px">
+<span style="font-size:20px">&#x1F3AF;</span>
+<div><div style="font-size:13px;font-weight:700;color:#22d3ee">体験コーチング</div><div style="font-size:10px;color:#9898ae">ディスカバリーコール15分</div></div>
+</div>
+<div style="text-align:center;color:#58586e;font-size:14px;padding:2px 0">&#x25BC;</div>
+<div style="background:linear-gradient(135deg,rgba(74,125,255,0.08),rgba(34,211,238,0.08));border:1px solid rgba(74,125,255,0.3);border-radius:8px;padding:12px 16px;display:flex;align-items:center;gap:10px">
+<span style="font-size:20px">&#x1F3C6;</span>
+<div><div style="font-size:14px;font-weight:700;background:linear-gradient(135deg,#4a7dff,#22d3ee);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">成約: ADHD特化コーチング</div><div style="font-size:10px;color:#4a7dff;font-family:monospace">6-8名 / 期 (&#xA5;300K-400K)</div></div>
+</div>
+</div>
+</div>
+
+> **この記事は、上記ファネルの「認知 → 関与」フェーズを担うSNS発信の12週間戦略です。** TikTok/YouTube/noteを起点に、LINEオープンチャット「ADHD Labs」へ集約し、無料ボディダブリングで価値実証 → 有料コーチングへ転換する全体設計の詳細を記述しています。
+
 ## 1. エグゼクティブサマリー
 
 ### v2.0 変更サマリー（v1.0比較）
@@ -126,7 +172,7 @@ summary: "v1からの主要変更: Discord→LINEオープンチャット、X最
 **1. 当事者性 × ハイパフォーマー経歴**
 
 「ADHDの当事者がコーチ」は海外にはいるが、日本にはいない。さらに：
-- アクセンチュアでマネージャー3年
+- アクセンチュアでアソシエイトマネージャー3年
 - 25億スタートアップでDXチームマネージャー
 - AI駆動開発で生産性3倍
 - 外資ペットフードD2Cで売上YoY+35%（20億→27億）
@@ -161,7 +207,7 @@ TikTokのADHDコンテンツの50%がミスリーディング（UBC 2023研究�
 - **得意コンテンツ**: 論文解説×当事者体験、キャリア×ADHD、Before-After分析
 
 **プロフィール案（v2更新）**:
-> 🧠 ADHD当事者 | アクセンチュア→スタートアップDXマネージャー
+> 🧠 ADHD当事者 | アクセンチュア→スタートアップDX責任者
 > 📊 海外最新論文ベースの「ADHDの強み」| 効果量d=0.89の科学
 > 🔥 100日で「脳の取扱説明書」を作るプログラム開発中
 > 👇 ADHD Labs（LINEオープンチャット・無料）
@@ -345,7 +391,7 @@ YouTube長尺収録
 3. **Before-After**: 「Implementation Intentions導入前 vs 後」
 4. **脳科学解説**: 「ドーパミンが足りないとこうなる（30秒で解説）」
 5. **Tips速射**: 「ADHD的タスク管理3つのハック」
-6. **Day in the life**: 「ADHDのDXマネージャーの1日」
+6. **Day in the life**: 「ADHDのDX責任者の1日」
 
 ### 4.6 X 詳細戦略（Tier 3）
 
@@ -522,8 +568,8 @@ ADHDのSNS発信者の多くは「生きづらさ」「困りごと」にフォ�
 
 ### SNSでの活用方法（v2更新）
 
-- **TikTok**: 「ADHDのDXマネージャーの1日」「キャリアのターニングポイント30秒」
-- **YouTube長尺**: 「アクセンチュアでマネージャーをやりながらADHDと診断された話（フル）」
+- **TikTok**: 「ADHDのDX責任者の1日」「キャリアのターニングポイント30秒」
+- **YouTube長尺**: 「アクセンチュアでアソシエイトマネージャーをやりながらADHDと診断された話（フル）」
 - **note**: 「創業ストーリー全文 + References」
 - **X**: 「{実績数値}は全てADHDが原動力だった（1-2行シェア）」
 
@@ -578,7 +624,7 @@ ADHD純粋層だけでなく「健康×生産性」層を取り込む:
 
 ```
 【フック 0-3秒】
-「ADHDのDXマネージャーがコーチングを作る理由」
+「ADHDのDX責任者がコーチングを作る理由」
 
 【本編 3-27秒】
 ・アクセンチュア → 25億スタートアップ
@@ -594,7 +640,7 @@ Source: [研究名] [年]（テロップ）
 ### 9.2 X (Twitter) — ローンチスレッド（v2更新版）
 
 ```
-1/ 35歳。アクセンチュアでマネージャーをやっていた。
+1/ 35歳。アクセンチュアでアソシエイトマネージャーをやっていた。
    25億円のスタートアップでDXチームを率い、
    AI駆動開発でチームの生産性を3倍にした。
 
@@ -646,7 +692,7 @@ Source: [研究名] [年]（テロップ）
 
 ### 9.3 note — 創業ストーリー記事（v2更新版）
 
-**タイトル**: 「アクセンチュア→25億スタートアップDXマネージャーの僕が、ADHDコーチングを作る理由」
+**タイトル**: 「アクセンチュア→25億スタートアップDX責任者の僕が、ADHDコーチングを作る理由」
 
 **構成**（3,000-5,000字）:
 1. **冒頭フック**: 「35歳、キャリアの絶頂期にADHDと診断された」

@@ -270,6 +270,20 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 .benefit-format{font-size:11px;color:var(--text-muted);margin-bottom:10px;padding:4px 8px;background:var(--bg-raised);border-radius:4px;display:inline-block}
 .benefit-desc{font-size:12px;color:var(--text-dim);line-height:1.8;margin-bottom:10px}
 .benefit-diff{font-size:11px;color:var(--cyan);padding:8px 10px;background:rgba(34,211,238,0.04);border-left:2px solid var(--cyan);border-radius:0 4px 4px 0;line-height:1.7}
+/* Marketing Funnel */
+.funnel-wrap{margin:24px 0}
+.funnel-sources{display:flex;justify-content:center;gap:14px;margin-bottom:0;flex-wrap:wrap}
+.funnel-node{background:var(--bg-surface);border:1px solid var(--border);border-radius:12px;padding:16px 20px;text-align:center;min-width:110px}
+.funnel-node .fn-icon{font-size:28px;display:block;margin-bottom:6px}
+.funnel-node .fn-label{font-size:13px;font-weight:700}
+.funnel-node .fn-metric{font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--text-dim);margin-top:4px}
+.funnel-arrow{text-align:center;padding:8px 0;color:var(--text-muted);font-size:18px}
+.funnel-arrow .fa-lines{display:flex;justify-content:center;gap:60px}
+.funnel-stage{max-width:400px;margin:0 auto}
+.funnel-stage .funnel-node{width:100%}
+.funnel-hero{background:linear-gradient(135deg,rgba(74,125,255,0.08),rgba(34,211,238,0.08));border-color:rgba(74,125,255,0.3)}
+.funnel-hero .fn-label{background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;font-size:15px}
+@media(max-width:600px){.funnel-sources{flex-direction:column;align-items:center;gap:8px}.funnel-sources .funnel-node{width:200px}}
 </style>
 </head>
 <body>
@@ -1068,6 +1082,72 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <tr><td class="t-name">紹介（1期後）</td><td>卒業生の体験談（動画・テキスト）。「友達紹介」で双方¥50,000 OFF</td><td>2期の30%をリファラルで</td></tr>
 </tbody>
 </table>
+
+<h4 style="margin:24px 0 8px;font-size:14px">マーケティングファネル全体像</h4>
+<div class="funnel-wrap">
+<div class="funnel-sources">
+<div class="funnel-node" style="border-top:3px solid var(--pink)">
+<span class="fn-icon">&#x1F3B5;</span>
+<span class="fn-label" style="color:var(--pink)">TikTok</span>
+<span class="fn-metric">5,000 followers</span>
+</div>
+<div class="funnel-node" style="border-top:3px solid var(--red)">
+<span class="fn-icon">&#x25B6;&#xFE0F;</span>
+<span class="fn-label" style="color:var(--red)">YouTube</span>
+<span class="fn-metric">500 subscribers</span>
+</div>
+<div class="funnel-node" style="border-top:3px solid var(--green)">
+<span class="fn-icon">&#x1F4DD;</span>
+<span class="fn-label" style="color:var(--green)">note</span>
+<span class="fn-metric">25,000 PV</span>
+</div>
+</div>
+<div class="funnel-arrow"><div class="fa-lines"><span>&#x25BC;</span><span>&#x25BC;</span><span>&#x25BC;</span></div></div>
+<div class="funnel-stage">
+<div class="funnel-node" style="border-top:3px solid var(--amber)">
+<span class="fn-icon">&#x2728;</span>
+<span class="fn-label" style="color:var(--amber)">ADHD才能解放ワーク（フロント商材）</span>
+<span class="fn-metric">無料ウェビナー 150-200名</span>
+</div>
+</div>
+<div class="funnel-arrow">&#x25BC;</div>
+<div class="funnel-stage">
+<div class="funnel-node" style="border-top:3px solid var(--green)">
+<span class="fn-icon">&#x1F4AC;</span>
+<span class="fn-label" style="color:var(--green)">LINE登録（ADHD Labs）</span>
+<span class="fn-metric">150 members</span>
+</div>
+</div>
+<div class="funnel-arrow">&#x25BC;</div>
+<div class="funnel-stage">
+<div class="funnel-node" style="border-top:3px solid var(--cyan)">
+<span class="fn-icon">&#x1F3AF;</span>
+<span class="fn-label" style="color:var(--cyan)">体験コーチング（ディスカバリーコール）</span>
+<span class="fn-metric">Pipeline ~20名</span>
+</div>
+</div>
+<div class="funnel-arrow">&#x25BC;</div>
+<div class="funnel-stage">
+<div class="funnel-node funnel-hero">
+<span class="fn-icon">&#x1F3C6;</span>
+<span class="fn-label">成約: ADHD特化コーチング 100日間</span>
+<span class="fn-metric" style="color:var(--blue)">6-8名 / 期</span>
+</div>
+</div>
+</div>
+
+<div class="mvp-callout">
+<div class="mvp-callout-label">集客の二本柱 + 広告検討</div>
+<p>初期は <strong>たかひろの既存顧客ネットワーク</strong> と <strong>SNSオーガニック集客</strong> の二本柱で立ち上げる。
+コンテンツマーケで認知が安定した段階（TikTok 3,000+フォロワー目安）で、<strong>少額広告配信（Meta/TikTok Ads）</strong>も検討。
+広告は「コンテンツが刺さった投稿をブースト」するリターゲティング型から開始し、CPA検証で拡大判断する。</p>
+</div>
+
+<div class="note">
+<div class="note-label">SNS戦略 詳細ドキュメント</div>
+<p>12週間のSNS発信戦略（プラットフォーム別施策・KPI・コンテンツカレンダー）は別途策定済み。<br>
+<a href="https://tkonishikawa.github.io/adhd-project/sns-strategy/sns-launch-strategy-v1/" style="color:var(--cyan);text-decoration:underline;font-weight:600">&#x1F4C4; ADHD特化コーチング SNS発信戦略 v2.0 &rarr;</a></p>
+</div>
 
 <div class="insight">
 <div class="insight-label">トロイの木馬: 無料ボディダブリング</div>
