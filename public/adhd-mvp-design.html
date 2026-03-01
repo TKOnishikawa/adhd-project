@@ -457,8 +457,8 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <div class="sm-row" style="display:contents">
 <div class="sm-cat">テクノロジー</div>
 <div class="sm-cell ideal"><ul><li>6ツール統合プラットフォーム</li><li>AIチャットボット</li><li>LMS + 動画配信</li></ul></div>
-<div class="sm-cell mvp"><ul><li>自作3ツール + 既存4サービス</li><li>セルフマニュアルビルダー</li><li>パルスチェック + ナッジBot</li></ul></div>
-<div class="sm-cell future"><ul><li>才能解放AIコーチ（アプリ）<span class="phase-tag">Phase 3+</span></li><li>AI振り返り・RAG長期記憶</li><li>統合ダッシュボード</li></ul></div>
+<div class="sm-cell mvp"><ul><li>自作3ツール + 既存4サービス</li><li>セルフマニュアルビルダー</li><li>パルスチェック + ナッジBot</li><li><strong>才能解放AIコーチ（PWA）</strong><span class="phase-tag" style="background:rgba(74,125,255,0.15);color:var(--blue)">GTD統合</span></li></ul></div>
+<div class="sm-cell future"><ul><li>AI振り返り・RAG長期記憶（高度版）</li><li>統合ダッシュボード</li><li>ネイティブアプリ化</li></ul></div>
 </div>
 
 <div class="sm-row" style="display:contents">
@@ -709,21 +709,21 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 </div>
 <h4 style="margin:32px 0 8px;font-size:14px">週別アジェンダ詳細</h4>
 <div class="timeline">
-<div class="tl-act">Act 1: Foundation &mdash; 基盤（W1-4 / 3/22-4/12）</div>
-<div class="tl-week">W1</div><div class="tl-content"><span class="tl-pill day">日 キックオフ+DAY1 [H]</span><span class="tl-pill body">月 BD [O]</span><span class="tl-pill buddy">バディペアリング</span></div>
+<div class="tl-act">Act 1: Foundation &mdash; 基盤（W1-4 / 3/22-4/12）<span style="margin-left:12px;background:rgba(74,125,255,0.15);color:var(--blue);padding:2px 10px;border-radius:4px;font-size:10px;font-weight:600">GTD: Capture（収集）特化</span></div>
+<div class="tl-week">W1</div><div class="tl-content"><span class="tl-pill day">日 キックオフ+DAY1 [H]</span><span class="tl-pill body">月 BD [O]</span><span class="tl-pill buddy">バディペアリング</span><span class="tl-pill" style="background:rgba(74,125,255,0.15);color:var(--blue)">📥 Inbox+Today+AIチャット解放</span></div>
 <div class="tl-week">W2</div><div class="tl-content"><span class="tl-pill day">日 DAY2 トリガーとパターン [O]</span><span class="tl-pill body">月 BD [H]</span><span class="tl-pill personal">P1 自己理解 [H]</span></div>
 <div class="tl-week">W3</div><div class="tl-content"><span class="tl-pill day">日 DAY3 環境デザイン + G1 [H]</span><span class="tl-pill body">月 BD [O]</span></div>
 <div class="tl-week">W4</div><div class="tl-content"><span class="tl-pill day">日 DAY4 If-Then自動操縦 [O]</span><span class="tl-pill body">月 BD [H]</span><span class="tl-pill personal">P2 ゴール設定 [O]</span></div>
 
-<div class="tl-act">Act 2: Build &mdash; 構築（W5-10 / 4/19-5/24）</div>
-<div class="tl-week">W5</div><div class="tl-content"><span class="tl-pill group">日 G2 If-Then実践報告 [H]</span><span class="tl-pill body">月 BD [O]</span><span class="tl-pill reflect">週次振返り</span></div>
+<div class="tl-act">Act 2: Build &mdash; 構築（W5-10 / 4/19-5/24）<span style="margin-left:12px;background:rgba(34,211,238,0.15);color:var(--cyan);padding:2px 10px;border-radius:4px;font-size:10px;font-weight:600">GTD: + Clarify（処理）+ Reflect（振り返り）</span></div>
+<div class="tl-week">W5</div><div class="tl-content"><span class="tl-pill group">日 G2 If-Then実践報告 [H]</span><span class="tl-pill body">月 BD [O]</span><span class="tl-pill reflect">週次振返り</span><span class="tl-pill" style="background:rgba(34,211,238,0.15);color:var(--cyan)">🔓 AI分類+MVR アンロック</span></div>
 <div class="tl-week">W6</div><div class="tl-content"><span class="tl-pill day">日 DAY5 時間アーキテクチャ [O]</span><span class="tl-pill body">月 BD [H]</span><span class="tl-pill personal">P3 決断 [H]</span></div>
 <div class="tl-week">W7</div><div class="tl-content"><span class="tl-pill day">日 DAY6 証人の力 [H]</span><span class="tl-pill body">月 BD [O]</span><span class="tl-pill buddy">バディ組替え</span></div>
 <div class="tl-week">W8</div><div class="tl-content"><span class="tl-pill group">日 G3 時間管理実践 [O]</span><span class="tl-pill body">月 BD [H]</span><span class="tl-pill personal">P4 アクションプラン [O]</span></div>
-<div class="tl-week">W9</div><div class="tl-content"><span class="tl-pill day">日 DAY7 強みは本物 + G4 [H]</span><span class="tl-pill body">月 BD [O]</span></div>
+<div class="tl-week">W9</div><div class="tl-content"><span class="tl-pill day">日 DAY7 強みは本物 + G4 [H]</span><span class="tl-pill body">月 BD [O]</span><span class="tl-pill" style="background:rgba(245,158,11,0.15);color:var(--amber)">🔓 Projects+Focus アンロック</span></div>
 <div class="tl-week">W10</div><div class="tl-content"><span class="tl-pill group">日 G5 進捗会議 [O]</span><span class="tl-pill body">月 BD [H]</span><span class="tl-pill reflect">週次振返り</span></div>
 
-<div class="tl-act">Act 3: Integrate &mdash; 統合（W11-14 / 5/31-6/28）</div>
+<div class="tl-act">Act 3: Integrate &mdash; 統合（W11-14 / 5/31-6/28）<span style="margin-left:12px;background:rgba(245,158,11,0.15);color:var(--amber);padding:2px 10px;border-radius:4px;font-size:10px;font-weight:600">GTD: フル稼働 — 外部脳完成</span></div>
 <div class="tl-week">W11</div><div class="tl-content"><span class="tl-pill group">日 G6 ショーケース [H]</span><span class="tl-pill body">月 BD [O]</span></div>
 <div class="tl-week">W12</div><div class="tl-content"><span class="tl-pill day">日 DAY8 セルフマニュアル完成 [O]</span><span class="tl-pill body">月 BD [H]</span><span class="tl-pill personal">P5 統合 [H]</span></div>
 <div class="tl-week">W13</div><div class="tl-content"><span class="tl-pill day">日 最終振返り [H]</span><span class="tl-pill body">月 BD [O]</span></div>
@@ -752,9 +752,9 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <summary><span style="color:var(--blue);margin-right:6px">DAY 1</span> ADHD脳のOS <span class="ev meta">d=0.5-0.7</span></summary>
 <div class="acc-body">
 <h5>心理教育</h5>
-<ul><li>ドーパミンシステム入門: 「頑張れ」が機能しない脳科学的理由</li><li>Sonuga-Barke三経路: 抑制 / 遅延回避 / 時間処理</li><li>自分のADHD「タイプ」: 信号不足 vs 信号過多 vs 時間盲目</li></ul>
+<ul><li>ドーパミンシステム入門: 「頑張れ」が機能しない脳科学的理由</li><li>Sonuga-Barke三経路: 抑制 / 遅延回避 / 時間処理</li><li>自分のADHD「タイプ」: 信号不足 vs 信号過多 vs 時間盲目</li><li style="color:var(--cyan)"><strong>🆕 「脳のRAM vs HDD」メタファー</strong>: ワーキングメモリ＝RAM（少ない）→ 外部HDD（アプリ）に保存 → RAMが空く → 不安解消。GTD Capture（収集 = 頭の中を全部外に出すこと）の概念導入</li></ul>
 <h5>コアワーク</h5>
-<ul><li>「脳プロファイルカード」: 15シナリオ自己評価（各経路5問）→ 自分のパターン特定</li></ul>
+<ul><li>「脳プロファイルカード」: 15シナリオ自己評価（各経路5問）→ 自分のパターン特定</li><li style="color:var(--cyan)"><strong>🆕 初回ブレインダンプ体験</strong>: 10分間で頭の中のモヤモヤを全部アプリのInboxにぶちこむ。「外に出すだけで楽になる」を体感</li></ul>
 <h5>セルフマニュアル</h5>
 <ul><li>Ch.1「私の脳のプロファイル」（主経路、副経路、日常での現れ方）</li></ul>
 </div>
@@ -778,11 +778,11 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <summary><span style="color:var(--blue);margin-right:6px">DAY 3</span> 環境デザイン <span class="ev expert">d=0.5+</span></summary>
 <div class="acc-body">
 <h5>心理教育</h5>
-<ul><li>ADHD向けナッジ（＝"そっと肘でつつく"ような仕掛け。例: お菓子を棚の奥に置くだけで摂取が減る）理論: デフォルト設計、摩擦の追加/除去、視覚キュー</li><li>物理環境監査: デスク、自宅、スマホ、通知</li><li>選択アーキテクチャ（＝選びやすい環境をデザインすること）: 1日の中から「判断」を減らす設計</li></ul>
+<ul><li>ADHD向けナッジ（＝"そっと肘でつつく"ような仕掛け。例: お菓子を棚の奥に置くだけで摂取が減る）理論: デフォルト設計、摩擦の追加/除去、視覚キュー</li><li>物理環境監査: デスク、自宅、スマホ、通知</li><li>選択アーキテクチャ（＝選びやすい環境をデザインすること）: 1日の中から「判断」を減らす設計</li><li style="color:var(--cyan)"><strong>🆕 デジタル環境の核 = アプリ</strong>: Capture（収集）の習慣化 → 「If 頭に浮かんだら → Then 即アプリにCapture」をデジタル環境のデフォルト設計として組込む</li></ul>
 <h5>コアワーク</h5>
-<ul><li>環境監査チェックリスト（物理/デジタル/社会 30項目）</li><li>今週実装する3つのナッジを設計</li><li>たかおによるライブデモ: スマホ設定、デスク整理、デジタルツール</li></ul>
+<ul><li>環境監査チェックリスト（物理/デジタル/社会 30項目）</li><li>今週実装する3つのナッジを設計</li><li>たかおによるライブデモ: スマホ設定、デスク整理、デジタルツール</li><li style="color:var(--cyan)"><strong>🆕 アプリ活用ワーク</strong>: ホーム画面にアプリ配置 + ウィジェット設定 + 通知カスタマイズ。ゼロ摩擦Capture環境の構築</li></ul>
 <h5>セルフマニュアル</h5>
-<ul><li>Ch.3「私の環境設計図」（現状、3ナッジ、目標状態）</li></ul>
+<ul><li>Ch.3「私の環境設計図」（現状、3ナッジ、目標状態、<span style="color:var(--cyan)">デジタル環境=アプリ設定</span>）</li></ul>
 </div>
 </details>
 
@@ -799,14 +799,14 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 </details>
 
 <details class="acc">
-<summary><span style="color:var(--blue);margin-right:6px">DAY 5</span> 時間アーキテクチャ <span class="ev rct">d=0.89</span></summary>
+<summary><span style="color:var(--blue);margin-right:6px">DAY 5</span> 時間アーキテクチャ <span class="ev rct">d=0.89</span> <span style="background:rgba(74,125,255,0.15);color:var(--blue);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600">🔓 AI Clarify + MVR アンロック</span></summary>
 <div class="acc-body">
 <h5>心理教育</h5>
-<ul><li>時間盲目性（＝時計を見ても"あと何分"が体感できない状態。「5分のつもりが30分経ってた」が日常）の深掘り: 神経学的現象であり、道徳の問題ではない</li><li>時間見積もりエクササイズ: 予想 vs 実際（ライブデモ）</li><li>タイムコンテナ: ADHDに適応したポモドーロ（＝25分作業+5分休憩のタイマー式集中法）を柔軟にアレンジ</li><li>タスク切替の管理: 最も困難な瞬間への対処</li></ul>
+<ul><li>時間盲目性（＝時計を見ても"あと何分"が体感できない状態。「5分のつもりが30分経ってた」が日常）の深掘り: 神経学的現象であり、道徳の問題ではない</li><li>時間見積もりエクササイズ: 予想 vs 実際（ライブデモ）</li><li>タイムコンテナ: ADHDに適応したポモドーロ（＝25分作業+5分休憩のタイマー式集中法）を柔軟にアレンジ</li><li>タスク切替の管理: 最も困難な瞬間への対処</li><li style="color:var(--cyan)"><strong>🆕 2分ルール（GTD）</strong>: Clarify（処理 = 「これ何？次にやることは？」をAIが自動判断するステップ）の概念導入。AIが分類したタスクを「今やる / 後で」の2択で処理。2分以内のタスクはタイマー付きで即実行</li></ul>
 <h5>コアワーク</h5>
-<ul><li>タイム見積もりチャレンジ（10タスク、見積もり→計測）</li><li>「理想の1週間」デザイン（エネルギーレベルで色分け）</li><li>ナッジBotの時間系リマインダー3つを設定</li></ul>
+<ul><li>タイム見積もりチャレンジ（10タスク、見積もり→計測）</li><li>「理想の1週間」デザイン（エネルギーレベルで色分け）</li><li>ナッジBotの時間系リマインダー3つを設定</li><li style="color:var(--cyan)"><strong>🆕 AI Clarifyの初体験</strong>: W1-4で溜まったInboxをAI分類で一気に処理。「判断しなくていい！」を体感</li><li style="color:var(--cyan)"><strong>🆕 MVR（Minimum Viable Review）初体験</strong>: Reflect（振り返り = 週に1回、全体を見渡すステップ）の簡易版を全員で実施。AIが質問 → 答えるだけの15分ミニレビュー</li></ul>
 <h5>セルフマニュアル</h5>
-<ul><li>Ch.5「私の時間設計」（見積もりバイアス、理想の週、切替プロトコル）</li></ul>
+<ul><li>Ch.5「私の時間設計」（見積もりバイアス、理想の週、切替プロトコル、<span style="color:var(--cyan)">2分ルール活用法</span>）</li></ul>
 </div>
 </details>
 
@@ -823,14 +823,14 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 </details>
 
 <details class="acc">
-<summary><span style="color:var(--blue);margin-right:6px">DAY 7</span> 強みは本物 <span class="ev rct">d=0.4-0.6</span></summary>
+<summary><span style="color:var(--blue);margin-right:6px">DAY 7</span> 強みは本物 <span class="ev rct">d=0.4-0.6</span> <span style="background:rgba(245,158,11,0.15);color:var(--amber);padding:2px 8px;border-radius:4px;font-size:10px;font-weight:600">🔓 Projects + Focus アンロック</span></summary>
 <div class="acc-body">
 <h5>心理教育</h5>
-<ul><li>ADHDの10の強み（2025 Psychological Medicine研究）</li><li>「スーパーパワーの罠」: 強みと課題の両方に誠実に</li><li>セルフコンパッション（＝自分を責めるのではなく、親友にかけるような言葉を自分にもかけること）の科学: 自己批判はモチベーションではない</li><li>失敗のリフレーミング: 「何が悪い？」→「何を学んだ？」</li></ul>
+<ul><li>ADHDの10の強み（2025 Psychological Medicine研究）</li><li>「スーパーパワーの罠」: 強みと課題の両方に誠実に</li><li>セルフコンパッション（＝自分を責めるのではなく、親友にかけるような言葉を自分にもかけること）の科学: 自己批判はモチベーションではない</li><li>失敗のリフレーミング: 「何が悪い？」→「何を学んだ？」</li><li style="color:var(--cyan)"><strong>🆕 強み × プロジェクト</strong>: Organize（整理 = AIが自動でタスクをプロジェクト単位にグルーピングするステップ）の概念導入。自分の強みに紐づくプロジェクト一覧 = 「自分は何に取り組んでいるのか」の俯瞰</li></ul>
 <h5>コアワーク</h5>
-<ul><li>強みカードソート（ADHD 10強み + VIA強み抜粋）</li><li>バディフィードバック: 「あなたにはこの強みが見えます。なぜなら...」</li><li>セルフコンパッションレター: 親友に書くように自分に手紙</li></ul>
+<ul><li>強みカードソート（ADHD 10強み + VIA強み抜粋）</li><li>バディフィードバック: 「あなたにはこの強みが見えます。なぜなら...」</li><li>セルフコンパッションレター: 親友に書くように自分に手紙</li><li style="color:var(--cyan)"><strong>🆕 Projects View 初体験</strong>: 新たにアンロックされたProjects画面で、自分のタスクが強みにどう紐づいているかを確認</li><li style="color:var(--cyan)"><strong>🆕 Focus Mode 初体験</strong>: Engage（実行 = 今やるべきことに集中するステップ）のツール。90分フォーカスタイマーで「過集中をコントロールする」体験</li></ul>
 <h5>セルフマニュアル</h5>
-<ul><li>Ch.7「私の強みインベントリ」（トップ5強み、エビデンス、活用法）</li></ul>
+<ul><li>Ch.7「私の強みインベントリ」（トップ5強み、エビデンス、活用法、<span style="color:var(--cyan)">強み×プロジェクトマッピング</span>）</li></ul>
 </div>
 </details>
 
@@ -838,11 +838,11 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <summary><span style="color:var(--blue);margin-right:6px">DAY 8</span> セルフマニュアル完成</summary>
 <div class="acc-body">
 <h5>心理教育</h5>
-<ul><li>当事者研究（＝自分の困りごとを自分で研究する日本発のアプローチ。"患者"ではなく"自分の専門家"になる）</li><li>セルフコーチング: Zimmermanサイクル（＝計画→実行→振返りの自己改善ループ。PDCAのシンプル版）</li><li>「オーナーズマニュアル」: 自分の脳を操作する人に渡す説明書</li><li>ADHDの季節性: 戦略はアップデートが必要。それが普通。</li></ul>
+<ul><li>当事者研究（＝自分の困りごとを自分で研究する日本発のアプローチ。"患者"ではなく"自分の専門家"になる）</li><li>セルフコーチング: Zimmermanサイクル（＝計画→実行→振返りの自己改善ループ。PDCAのシンプル版）</li><li>「オーナーズマニュアル」: 自分の脳を操作する人に渡す説明書</li><li>ADHDの季節性: 戦略はアップデートが必要。それが普通。</li><li style="color:var(--cyan)"><strong>🆕 GTDシステム全体像の振り返り</strong>: 100日間で段階的に構築した「外部脳」= Capture → Clarify → Organize → Reflect → Engage の全ステップが、卒業後も自走できる体制として機能することを確認</li></ul>
 <h5>コアワーク</h5>
-<ul><li>セルフマニュアルの全章レビュー＆完成（ペア編集）</li><li>「エレベーターピッチ」練習: 自分のADHDを2分で説明</li><li>「次の100日」プランを、学んだ全ツールで設計</li></ul>
+<ul><li>セルフマニュアルの全章レビュー＆完成（ペア編集）</li><li>「エレベーターピッチ」練習: 自分のADHDを2分で説明</li><li>「次の100日」プランを、学んだ全ツールで設計</li><li style="color:var(--cyan)"><strong>🆕 「外部脳」卒業後メンテナンス計画</strong>: アプリの継続利用方法、MVR（ミニレビュー）の習慣維持、コーチなしでの自走体制を設計</li></ul>
 <h5>セルフマニュアル</h5>
-<ul><li>Ch.8「私の運用マニュアル」（サマリーカード、90日プラン、更新スケジュール）</li></ul>
+<ul><li>Ch.8「私の運用マニュアル」（サマリーカード、90日プラン、更新スケジュール、<span style="color:var(--cyan)">GTD自走メンテナンスプラン</span>）</li></ul>
 </div>
 </details>
 
@@ -940,6 +940,7 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <tr><td class="t-name">セルフマニュアル</td><td class="t-good">★ 自作</td><td>ADHDセルフマニュアルビルダー（Web App）</td><td>¥0（Supabase無料枠）</td></tr>
 <tr><td class="t-name">週次チェック</td><td class="t-good">★ 自作</td><td>パルスチェック（フォーム+ダッシュボード）</td><td>¥0</td></tr>
 <tr><td class="t-name">リマインダー</td><td class="t-good">★ 自作</td><td>ナッジBot（LINE公式アカウント）</td><td>¥0</td></tr>
+<tr><td class="t-name" style="color:var(--blue);font-weight:700">GTD実行支援</td><td class="t-good">★ 自作</td><td><strong>才能解放AIコーチ</strong>（PWA — GTD Inbox + Today + AIレビュー）</td><td>¥0（Supabase無料枠）</td></tr>
 <tr><td class="t-name">ビデオ通話</td><td>既存</td><td>Zoom Pro</td><td>¥2,000/月</td></tr>
 <tr><td class="t-name">コミュニティ</td><td>既存</td><td>LINEオープンチャット（無料）</td><td>¥0</td></tr>
 <tr><td class="t-name">予約管理</td><td>既存</td><td>Calendly（無料枠）</td><td>¥0</td></tr>
@@ -950,11 +951,71 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 
 <div class="sowhat">
 <div class="sowhat-label">作らないもの（ADHD創業者への自戒）</div>
-<p><strong>ネイティブモバイルアプリ</strong>: Web Appで十分。iOS/Androidは月単位の浪費。<br>
-<strong>AIコーチングチャットボット</strong>: AIコーチはTier 4（未検証）。人間の接続がこのサービスの価値。<br>
+<p><strong>ネイティブモバイルアプリ</strong>: PWA（Web App）で十分。iOS/Androidストアは月単位の浪費。<br>
+<strong>AIが人間コーチを「置き換える」チャットボット</strong>: 人間の接続がこのサービスのコア価値。AIはGTDの認知負荷を代行する「補助ツール」として使う（才能解放AIコーチ）。<br>
 <strong>LMS（学習管理システム）</strong>: Google Drive + Zoom録画で足りる。<br>
 <strong>動画プラットフォーム</strong>: Zoomで完結。<br>
 <strong>バディマッチングアルゴリズム</strong>: 6-8人なら5分で手動ペアリング。</p>
+</div>
+
+<!-- SEC 8B: 才能解放AIコーチ アプリ設計 -->
+<div style="margin-top:32px;padding:24px;background:linear-gradient(135deg,rgba(74,125,255,0.06),rgba(34,211,238,0.06));border:1px solid rgba(74,125,255,0.2);border-radius:12px">
+<h3 style="margin:0 0 4px;font-size:17px;background:var(--grad-hero);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">才能解放AIコーチ — GTD × ADHD実行支援アプリ</h3>
+<p style="font-size:12px;color:var(--text-dim);margin:0 0 16px">PWA（Progressive Web App） | SvelteKit + Supabase + AI（Claude/Gemini）| 段階アンロック方式</p>
+
+<h4 style="margin:20px 0 8px;font-size:14px;color:var(--cyan)">GTDとは？ — 5ステップの概要</h4>
+<p style="font-size:13px;color:var(--text-dim);margin:0 0 12px"><strong>GTD（Getting Things Done）</strong>= 頭の中のモヤモヤを全部外に出して、信頼できるシステムに預けるメソッド。ADHDの「ワーキングメモリ不足」に直接効く。</p>
+
+<table class="tbl">
+<thead><tr><th>ステップ</th><th>意味</th><th>ADHD適性</th><th>アプリでの実現</th></tr></thead>
+<tbody>
+<tr><td class="t-name">① Capture<br><span style="font-size:10px;color:var(--text-dim)">（収集）</span></td><td>頭に浮かんだこと全部を外に出す</td><td class="t-good" style="font-weight:700">★★★ 最高</td><td>1タップ / 音声でInboxにぶちこむ。脳のRAMを空ける = 不安解消</td></tr>
+<tr><td class="t-name">② Clarify<br><span style="font-size:10px;color:var(--text-dim)">（処理）</span></td><td>「これ何？次にやることは？」を判断</td><td class="t-warn">★★ AI代行</td><td>AIが9カテゴリに自動分類。ユーザーは「OK」タップのみ</td></tr>
+<tr><td class="t-name">③ Organize<br><span style="font-size:10px;color:var(--text-dim)">（整理）</span></td><td>カテゴリ分け、プロジェクト管理</td><td>★ 最小限</td><td>AIが自動グルーピング。Today View = 3-5タスクだけ表示</td></tr>
+<tr><td class="t-name">④ Reflect<br><span style="font-size:10px;color:var(--text-dim)">（振り返り）</span></td><td>週に1回、全体を見渡す</td><td class="t-good" style="font-weight:700">★★★ 最高価値</td><td>AIチャット型15分ミニレビュー（質問に答えるだけで完了）</td></tr>
+<tr><td class="t-name">⑤ Engage<br><span style="font-size:10px;color:var(--text-dim)">（実行）</span></td><td>今やるべきことをやる</td><td class="t-warn">★★ 着手支援</td><td>Next Actionボタン + フォーカスモード（90分タイマー）</td></tr>
+</tbody>
+</table>
+
+<div class="note" style="margin:16px 0">
+<div class="note-label">なぜGTDがADHDに効くのか</div>
+<p style="font-size:13px">ADHDの脳は<strong>「RAM（ワーキングメモリ）が少ないPC」</strong>。未完了タスクが頭に残り続ける（Zeigarnik効果）→ 常にRAMを消費 → 不安・注意散漫。Captureで「外部HDD」に保存 → RAMが空く → 不安が消える → 集中できる。Barkleyの外部化モデルが科学的根拠。<br><span style="color:var(--text-muted);font-size:11px">※ 詳細リサーチ: <a href="https://github.com/mizukara-corp/raftel_gcp/blob/main/output/adhd-research/gtd-adhd-research.md" style="color:var(--cyan)">GTD × ADHD統合リサーチレポート</a></span></p>
+</div>
+
+<h4 style="margin:20px 0 8px;font-size:14px;color:var(--cyan)">画面構成 × アンロックスケジュール</h4>
+<table class="tbl">
+<thead><tr><th>画面</th><th>GTDステップ</th><th>アンロック</th><th>概要</th></tr></thead>
+<tbody>
+<tr><td class="t-name">📥 Inbox</td><td>① Capture<br>+ ② Clarify</td><td class="t-good">W1〜</td><td>1タップ / 音声で何でもぶちこむ箱。W5からAI自動分類ON</td></tr>
+<tr><td class="t-name">🏠 Today</td><td>③ Organize<br>+ ⑤ Engage</td><td class="t-good">W1〜</td><td>今日の3-5タスク + WM解放スコア + Next Actionボタン</td></tr>
+<tr><td class="t-name">🤖 AIチャット</td><td>④ Reflect<br>+ コーチング</td><td class="t-good">W1〜</td><td>日常の相談。W5からミニレビュー機能ON</td></tr>
+<tr><td class="t-name">📂 Projects</td><td>③ Organize</td><td style="color:var(--amber)">W9 🔓</td><td>AIグルーピング + コンテキストフィルタ。強みに紐づくプロジェクト一覧</td></tr>
+<tr><td class="t-name">🎯 Focus</td><td>⑤ Engage</td><td style="color:var(--amber)">W9 🔓</td><td>90分タイマー + 通知ブロック + もくもく会連携</td></tr>
+</tbody>
+</table>
+
+<div class="insight" style="margin:16px 0">
+<div class="insight-label">ハイブリッドA+ 方式 — 挫折リスク最小、到達点最大</div>
+<p style="font-size:13px"><strong>初期は3画面だけ見せ（シンプル）、W5とW9で新機能を「アンロック」する。</strong><br>
+ADHDアプリの77%は3日以内に放棄される。段階アンロックは①認知負荷の最小化 ②ノベルティ（新しさ）によるドーパミン維持 ③飽き防止を同時に実現。<br>
+<strong>「見た目はシンプル、中身はフル装備」の準備を最初からしておく。</strong></p>
+</div>
+
+<h4 style="margin:20px 0 8px;font-size:14px;color:var(--cyan)">アプリ × プログラム4層の連携</h4>
+<table class="tbl">
+<thead><tr><th>プログラム層</th><th>アプリの役割</th><th>GTDステップ</th></tr></thead>
+<tbody>
+<tr><td class="t-name">DAY講義</td><td>GTD概念の<strong>教育</strong> → アプリで即実践</td><td>DAY1: Capture導入 / DAY5: Clarify+MVR導入 / DAY7: Projects導入</td></tr>
+<tr><td class="t-name">パーソナル</td><td><strong>個別チューニング</strong>（冒頭10分でアプリデータを一緒にレビュー）</td><td>④ Reflect（コーチと一緒にMVR）</td></tr>
+<tr><td class="t-name">グループ</td><td><strong>社会的レビュー</strong>（みんなのWM解放スコアを共有）</td><td>④ Reflect（グループMVR体験）</td></tr>
+<tr><td class="t-name">もくもく会</td><td><strong>Engage環境</strong>（Focus Modeでボディダブリング）</td><td>⑤ Engage（BD × Focus Mode）</td></tr>
+</tbody>
+</table>
+
+<div class="mvp-callout">
+<div class="mvp-callout-label">技術スタック</div>
+<p>フロントエンド: SvelteKit + Capacitor（PWA） / バックエンド: Supabase（認証+DB+ストレージ） / AI: Claude or Gemini Flash（分類+チャット） / デプロイ: Vercel / 開発: Claude Code / <strong>ADHD UX 6原則</strong>: 15秒ルール、選択肢3-4個上限、マイクロゴール、0-Guilt通知、1タップ応答、90分ウルトラディアンリズム</p>
+</div>
 </div>
 </div>
 
@@ -1164,7 +1225,7 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <thead><tr><th>リスク</th><th>確率</th><th>影響</th><th>緩和策</th></tr></thead>
 <tbody>
 <tr><td class="t-name">両者のEF同時崩壊</td><td class="t-warn">中-高</td><td class="t-bad">高</td><td>各Act間に1週間バッファ。DAY講義を事前録画（バックアップ）。「緊急非同期週」プロトコル</td></tr>
-<tr><td class="t-name">ツール開発にハイパーフォーカス</td><td class="t-bad">高</td><td class="t-warn">中</td><td>期間中のツール開発は<strong>週4h上限</strong>。「人と過ごした時間 > ツールの時間」を週次で確認</td></tr>
+<tr><td class="t-name">ツール開発にハイパーフォーカス</td><td class="t-bad">高</td><td class="t-warn">中</td><td>才能解放AIコーチがMVPコアツールに昇格。<strong>0期でMVP版を完成させ、期間中は改善のみ（週4h上限）</strong>。新機能追加は1期終了後。「人と過ごした時間 > ツールの時間」を週次で確認</td></tr>
 <tr><td class="t-name">感情的バーンアウト</td><td class="t-warn">中-高</td><td class="t-bad">高</td><td>1日3セッション上限。自分たちもセルフコンパッション実践。月1回の外部スーパービジョン</td></tr>
 <tr><td class="t-name">創業者間コンフリクト</td><td class="t-warn">低-中</td><td class="t-bad">致命的</td><td>創業者契約（役割・報酬・退出条件）を1期開講前に締結。3ヶ月トライアル期間</td></tr>
 <tr><td class="t-name">参加者のメンタル危機</td><td class="t-warn">中</td><td class="t-bad">高</td><td>スクリーニング（PHQ-9/GAD-7）。スコープ合意書。医療機関紹介先2-3件確保</td></tr>
@@ -1190,7 +1251,7 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <div class="phase-policy">1期開講前に完了すべきこと</div>
 <div class="phase-items">
 <div class="phase-item"><span class="pi-dot a"></span><strong>W-12〜-9:</strong> 創業者契約締結 / 8 DAY講義アウトライン完成 / LINEオープンチャット開設 / TikTok・YouTube・noteコンテンツ開始 / 無料ボディダブリング開始</div>
-<div class="phase-item"><span class="pi-dot c"></span><strong>W-8〜-5:</strong> セルフマニュアルビルダーMVP開発（2-3日） / パルスチェック構築（1日） / ナッジBot構築（1-2日） / 8 DAYスライド全完成 / スクリーニングフォーム / 参加者契約書</div>
+<div class="phase-item"><span class="pi-dot c"></span><strong>W-8〜-5:</strong> セルフマニュアルビルダーMVP開発（2-3日） / パルスチェック構築（1日） / ナッジBot構築（1-2日） / <strong style="color:var(--blue)">才能解放AIコーチMVP開発（初期3画面: Inbox+Today+AIチャット）</strong> / 8 DAYスライド全完成 / スクリーニングフォーム / 参加者契約書</div>
 <div class="phase-item"><span class="pi-dot g"></span><strong>W-4〜-1:</strong> 1期応募開始 / ディスカバリーコール / 6-8名受入 / ウェルカムキット送付 / バディペアリング / DAY1ドライラン / Stripe決済設定 / 医療機関紹介先確保</div>
 </div>
 </div>
@@ -1205,6 +1266,7 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 <div class="phase-item"><span class="pi-dot g"></span><strong>仮説4:</strong> セルフマニュアルは価値を感じてもらえるか？ → 完成率、NPS（＝「友達に薦めたいか？」を0-10点で聞く満足度指標）、推薦意向</div>
 <div class="phase-item"><span class="pi-dot g"></span><strong>仮説5:</strong> ¥300,000-400,000は適正価格か？ → ディスカバリーコール転換率、知覚価値アンケート</div>
 <div class="phase-item"><span class="pi-dot g"></span><strong>仮説6:</strong> 2人体制は持続可能か？ → 創業者のバーンアウトレベル（週次自己評価）、実働時間</div>
+<div class="phase-item"><span class="pi-dot g"></span><strong>仮説7:</strong> 才能解放AIコーチ（GTD Inbox）はWM解放・不安軽減に貢献するか？ → 週次Capture数、MVR実施率、主観的WM解放スコア</div>
 </div>
 </div>
 
@@ -1242,7 +1304,7 @@ details.sci-card[open] .sci-header{background:var(--bg-raised);border-bottom:1px
 
 <div class="footer">
 ADHD特化コーチング — MVPパイロット設計書 v1.1<br>
-<span>Updated: 2026-02-28 | Base: <a href="adhd-service-design.html" style="color:var(--cyan)">理想形設計書v1</a> + <a href="adhd-careerspi-ronten.html" style="color:var(--cyan)">論点整理v1</a> | Research Themes A-H | 科学的前提・スコープマトリクス追加</span>
+<span>Updated: 2026-03-01 | Base: <a href="adhd-service-design.html" style="color:var(--cyan)">理想形設計書v1</a> + <a href="adhd-careerspi-ronten.html" style="color:var(--cyan)">論点整理v1</a> | Research Themes A-H | 科学的前提・スコープマトリクス追加 | GTD × 才能解放AIコーチ統合</span>
 <br><a href="adhd-doc-inventory.html" style="color:var(--cyan)">&#128196; ドキュメント準備マップ</a>
 </div>
 
