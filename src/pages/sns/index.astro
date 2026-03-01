@@ -13,11 +13,11 @@ const strategyDocs = allEntries.filter((e) =>
 );
 
 const platformLabels: Record<string, { label: string; icon: string; color: string }> = {
-  tiktok:   { label: 'TikTok',   icon: '\u{1F3AC}', color: '#ff0050' },
-  youtube:  { label: 'YouTube',  icon: '\u{1F4F9}', color: '#ff0000' },
-  x:        { label: 'X',        icon: '\u{1F426}', color: '#1da1f2' },
-  note:     { label: 'note',     icon: '\u{270D}\u{FE0F}', color: '#41c9b4' },
-  instagram:{ label: 'Instagram',icon: '\u{1F4F7}', color: '#e1306c' },
+  tiktok:   { label: 'TikTok',   icon: '🎬', color: '#ff0050' },
+  youtube:  { label: 'YouTube',  icon: '📹', color: '#ff0000' },
+  x:        { label: 'X',        icon: '🐦', color: '#1da1f2' },
+  note:     { label: 'note',     icon: '✍️', color: '#41c9b4' },
+  instagram:{ label: 'Instagram',icon: '📷', color: '#e1306c' },
 };
 
 // Build platform stats
@@ -33,10 +33,10 @@ const platforms = Object.entries(platformLabels).map(([key, meta]) => {
 }).filter((p) => p.total > 0 || ['tiktok', 'youtube', 'x', 'note'].includes(p.key));
 
 const categoryLabels: Record<string, string> = {
-  strategy: '\u6226\u7565',
-  benchmark: '\u30D9\u30F3\u30C1\u30DE\u30FC\u30AF',
-  'content-plan': '\u30B3\u30F3\u30C6\u30F3\u30C4\u4F01\u753B',
-  report: '\u30EC\u30DD\u30FC\u30C8',
+  strategy: '戦略',
+  benchmark: 'ベンチマーク',
+  'content-plan': 'コンテンツ企画',
+  report: 'レポート',
 };
 
 const platformPillLabels: Record<string, string> = {
@@ -45,18 +45,18 @@ const platformPillLabels: Record<string, string> = {
 };
 ---
 
-<BaseLayout title="SNS \u30B3\u30F3\u30C6\u30F3\u30C4\u30CF\u30D6">
-  <a href={base} class="back-link">&larr; \u30DB\u30FC\u30E0</a>
+<BaseLayout title="SNS コンテンツハブ">
+  <a href={base} class="back-link">&larr; ホーム</a>
 
   <header class="page-header">
     <div class="badge" style="color: #ff6b6b;">SNS</div>
-    <h1>SNS \u30B3\u30F3\u30C6\u30F3\u30C4\u30CF\u30D6</h1>
-    <p class="page-desc">\u5404\u5A92\u4F53\u306E\u8A2D\u8A08\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u3068\u6295\u7A3F\u30ED\u30B0\u3092\u4E00\u5143\u7BA1\u7406</p>
+    <h1>SNS コンテンツハブ</h1>
+    <p class="page-desc">各媒体の設計ドキュメントと投稿ログを一元管理</p>
   </header>
 
   <!-- Platform Cards -->
   <section class="platform-section">
-    <div class="section-label">\u30D7\u30E9\u30C3\u30C8\u30D5\u30A9\u30FC\u30E0</div>
+    <div class="section-label">プラットフォーム</div>
     <div class="platform-grid">
       {platforms.map((p) => (
         <a href={`${base}/sns/${p.key}/`} class="platform-card">
@@ -64,12 +64,12 @@ const platformPillLabels: Record<string, string> = {
           <div class="platform-info">
             <span class="platform-name" style={`color: ${p.color}`}>{p.label}</span>
             <div class="platform-stats">
-              <span class="stat">{p.posts.length} \u6295\u7A3F</span>
-              {p.guides.length > 0 && <span class="stat">{p.guides.length} \u8A2D\u8A08</span>}
+              <span class="stat">{p.posts.length} 投稿</span>
+              {p.guides.length > 0 && <span class="stat">{p.guides.length} 設計</span>}
             </div>
             {p.latestPost && (
               <span class="latest-post">
-                \u6700\u65B0: {p.latestPost.data.date.toISOString().slice(0, 10)}
+                最新: {p.latestPost.data.date.toISOString().slice(0, 10)}
               </span>
             )}
           </div>
@@ -82,7 +82,7 @@ const platformPillLabels: Record<string, string> = {
   <!-- Strategy Documents -->
   {strategyDocs.length > 0 && (
     <section class="strategy-section">
-      <div class="section-label">\u6A2A\u65AD\u6226\u7565\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8</div>
+      <div class="section-label">横断戦略ドキュメント</div>
       <div class="article-list">
         {strategyDocs.map((entry) => {
           const mat = maturityConfig[entry.data.maturity as keyof typeof maturityConfig];

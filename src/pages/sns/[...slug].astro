@@ -10,16 +10,16 @@ const platformLabels: Record<string, string> = {
 };
 
 const categoryLabels: Record<string, string> = {
-  strategy: '\u6226\u7565', platform: '\u30D7\u30E9\u30C3\u30C8\u30D5\u30A9\u30FC\u30E0',
-  'content-plan': '\u30B3\u30F3\u30C6\u30F3\u30C4\u4F01\u753B', benchmark: '\u30D9\u30F3\u30C1\u30DE\u30FC\u30AF',
-  report: '\u30EC\u30DD\u30FC\u30C8', post: '\u6295\u7A3F',
+  strategy: '戦略', platform: 'プラットフォーム',
+  'content-plan': 'コンテンツ企画', benchmark: 'ベンチマーク',
+  report: 'レポート', post: '投稿',
 };
 
 const postStatusLabels: Record<string, string> = {
-  idea: '\u{1F4A1} \u30A2\u30A4\u30C7\u30A2', concept: '\u{1F4DD} \u30B3\u30F3\u30BB\u30D7\u30C8',
-  scripted: '\u{1F4DC} \u53F0\u672C\u6E08', recorded: '\u{1F3A4} \u53CE\u9332\u6E08',
-  edited: '\u{1F3AC} \u7DE8\u96C6\u6E08', published: '\u2705 \u516C\u958B\u6E08',
-  analyzed: '\u{1F4CA} \u5206\u6790\u6E08',
+  idea: '💡 アイデア', concept: '📝 コンセプト',
+  scripted: '📜 台本済', recorded: '🎤 収録済',
+  edited: '🎬 編集済', published: '✅ 公開済',
+  analyzed: '📊 分析済',
 };
 
 export async function getStaticPaths() {
@@ -41,8 +41,8 @@ const isPost = entry.data.category === 'post';
 // Back link: if in a platform subdirectory, go to platform hub
 const slugParts = entry.id.replace(/\.md$/, '').split('/');
 const backLink = slugParts.length > 1
-  ? { url: `${base}/sns/${slugParts[0]}/`, label: `${platformLabels[slugParts[0]] || slugParts[0]} \u30CF\u30D6` }
-  : { url: `${base}/sns/`, label: 'SNS\u30CF\u30D6' };
+  ? { url: `${base}/sns/${slugParts[0]}/`, label: `${platformLabels[slugParts[0]] || slugParts[0]} ハブ` }
+  : { url: `${base}/sns/`, label: 'SNSハブ' };
 
 // TOC: h2 headings only (for strategy docs)
 const tocItems = headings.filter((h) => h.depth === 2);
@@ -53,10 +53,10 @@ let currentGroup: TocGroup | null = null;
 
 for (const item of tocItems) {
   const num = item.text.match(/^(\d+)/)?.[1];
-  const tierLabel = num && parseInt(num) <= 3 ? '\u57FA\u76E4\u5206\u6790'
-    : num && parseInt(num) <= 6 ? '\u6226\u8853\u8A2D\u8A08'
-    : num && parseInt(num) <= 9 ? '\u5FDC\u7528\u6226\u7565'
-    : '\u5B9F\u884C\u7BA1\u7406';
+  const tierLabel = num && parseInt(num) <= 3 ? '基盤分析'
+    : num && parseInt(num) <= 6 ? '戦術設計'
+    : num && parseInt(num) <= 9 ? '応用戦略'
+    : '実行管理';
 
   if (!currentGroup || currentGroup.tier !== tierLabel) {
     currentGroup = { tier: tierLabel, items: [] };
@@ -137,25 +137,25 @@ const showToc = !isPost && tocItems.length > 3;
           )}
           {entry.data.postStatus && (
             <div class="post-meta-item">
-              <span class="post-meta-label">\u30B9\u30C6\u30FC\u30BF\u30B9</span>
+              <span class="post-meta-label">ステータス</span>
               <span class="post-meta-value">{postStatusLabels[entry.data.postStatus] || entry.data.postStatus}</span>
             </div>
           )}
           {entry.data.hookType && (
             <div class="post-meta-item">
-              <span class="post-meta-label">\u30D5\u30C3\u30AF\u578B</span>
+              <span class="post-meta-label">フック型</span>
               <span class="post-meta-value">{entry.data.hookType}</span>
             </div>
           )}
           {entry.data.hookScore != null && (
             <div class="post-meta-item">
-              <span class="post-meta-label">\u30B9\u30B3\u30A2</span>
+              <span class="post-meta-label">スコア</span>
               <span class="post-meta-value mono">{entry.data.hookScore}/30</span>
             </div>
           )}
           {entry.data.contentType && (
             <div class="post-meta-item">
-              <span class="post-meta-label">\u30BF\u30A4\u30D7</span>
+              <span class="post-meta-label">タイプ</span>
               <span class="post-meta-value">{entry.data.contentType}</span>
             </div>
           )}

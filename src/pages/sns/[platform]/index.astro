@@ -6,21 +6,21 @@ import { maturityConfig } from '../../../data/taxonomy';
 const base = import.meta.env.BASE_URL;
 
 const platformMeta: Record<string, { label: string; icon: string; color: string }> = {
-  tiktok:    { label: 'TikTok',    icon: '\u{1F3AC}', color: '#ff0050' },
-  youtube:   { label: 'YouTube',   icon: '\u{1F4F9}', color: '#ff0000' },
-  x:         { label: 'X',         icon: '\u{1F426}', color: '#1da1f2' },
-  note:      { label: 'note',      icon: '\u{270D}\u{FE0F}', color: '#41c9b4' },
-  instagram: { label: 'Instagram', icon: '\u{1F4F7}', color: '#e1306c' },
+  tiktok:    { label: 'TikTok',    icon: '🎬', color: '#ff0050' },
+  youtube:   { label: 'YouTube',   icon: '📹', color: '#ff0000' },
+  x:         { label: 'X',         icon: '🐦', color: '#1da1f2' },
+  note:      { label: 'note',      icon: '✍️', color: '#41c9b4' },
+  instagram: { label: 'Instagram', icon: '📷', color: '#e1306c' },
 };
 
 const postStatusConfig: Record<string, { label: string; color: string }> = {
-  idea:      { label: '\u{1F4A1} \u30A2\u30A4\u30C7\u30A2', color: 'var(--amber)' },
-  concept:   { label: '\u{1F4DD} \u30B3\u30F3\u30BB\u30D7\u30C8', color: 'var(--purple)' },
-  scripted:  { label: '\u{1F4DC} \u53F0\u672C\u6E08', color: 'var(--cyan)' },
-  recorded:  { label: '\u{1F3A4} \u53CE\u9332\u6E08', color: '#22d3ee' },
-  edited:    { label: '\u{1F3AC} \u7DE8\u96C6\u6E08', color: '#4a7dff' },
-  published: { label: '\u2705 \u516C\u958B\u6E08', color: 'var(--green)' },
-  analyzed:  { label: '\u{1F4CA} \u5206\u6790\u6E08', color: '#34d399' },
+  idea:      { label: '💡 アイデア', color: 'var(--amber)' },
+  concept:   { label: '📝 コンセプト', color: 'var(--purple)' },
+  scripted:  { label: '📜 台本済', color: 'var(--cyan)' },
+  recorded:  { label: '🎤 収録済', color: '#22d3ee' },
+  edited:    { label: '🎬 編集済', color: '#4a7dff' },
+  published: { label: '✅ 公開済', color: 'var(--green)' },
+  analyzed:  { label: '📊 分析済', color: '#34d399' },
 };
 
 export async function getStaticPaths() {
@@ -53,14 +53,14 @@ const statusCounts = posts.reduce((acc, p) => {
 ---
 
 <BaseLayout title={`${meta.label} | SNS`}>
-  <a href={`${base}/sns/`} class="back-link">&larr; SNS\u30CF\u30D6</a>
+  <a href={`${base}/sns/`} class="back-link">&larr; SNSハブ</a>
 
   <header class="page-header">
     <span class="platform-icon">{meta.icon}</span>
     <h1 style={`color: ${meta.color}`}>{meta.label}</h1>
     <div class="stats-row">
-      <span class="stat-pill">{posts.length} \u6295\u7A3F</span>
-      {guides.length > 0 && <span class="stat-pill">{guides.length} \u8A2D\u8A08</span>}
+      <span class="stat-pill">{posts.length} 投稿</span>
+      {guides.length > 0 && <span class="stat-pill">{guides.length} 設計</span>}
       {Object.entries(statusCounts).map(([status, count]) => {
         const cfg = postStatusConfig[status];
         return cfg ? (
@@ -75,7 +75,7 @@ const statusCounts = posts.reduce((acc, p) => {
   <!-- Design / Strategy Section -->
   {guides.length > 0 && (
     <section class="section">
-      <div class="section-label">\u8A2D\u8A08\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8</div>
+      <div class="section-label">設計ドキュメント</div>
       <div class="article-list">
         {guides.map((entry) => {
           const mat = maturityConfig[entry.data.maturity as keyof typeof maturityConfig];
@@ -94,16 +94,16 @@ const statusCounts = posts.reduce((acc, p) => {
 
   <!-- Posts Section -->
   <section class="section">
-    <div class="section-label">\u6295\u7A3F\u30ED\u30B0</div>
+    <div class="section-label">投稿ログ</div>
     {posts.length > 0 ? (
       <div class="post-table">
         <div class="table-header">
           <span class="col-id">ID</span>
-          <span class="col-title">\u30BF\u30A4\u30C8\u30EB</span>
-          <span class="col-status">\u30B9\u30C6\u30FC\u30BF\u30B9</span>
-          <span class="col-hook">\u30D5\u30C3\u30AF\u578B</span>
-          <span class="col-score">\u30B9\u30B3\u30A2</span>
-          <span class="col-date">\u65E5\u4ED8</span>
+          <span class="col-title">タイトル</span>
+          <span class="col-status">ステータス</span>
+          <span class="col-hook">フック型</span>
+          <span class="col-score">スコア</span>
+          <span class="col-date">日付</span>
         </div>
         {posts.map((entry) => {
           const slug = entry.id.replace(/\.md$/, '');
@@ -126,7 +126,7 @@ const statusCounts = posts.reduce((acc, p) => {
       </div>
     ) : (
       <div class="empty-msg">
-        <p>\u307E\u3060\u6295\u7A3F\u304C\u3042\u308A\u307E\u305B\u3093\u3002</p>
+        <p>まだ投稿がありません。</p>
       </div>
     )}
   </section>
