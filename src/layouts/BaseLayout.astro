@@ -33,7 +33,7 @@ const currentPath = Astro.url.pathname;
         <a href={base} class:list={[{ active: currentPath === base || currentPath === base + '/' }]}>ホーム</a>
         <a href={`${base}/research/`} class:list={[{ active: currentPath.startsWith(`${base}/research`) }]}>リサーチ</a>
         <a href={`${base}/meetings/`} class:list={[{ active: currentPath.startsWith(`${base}/meetings`) }]}>議事録</a>
-        <a href={`${base}/sns-strategy/`} class:list={[{ active: currentPath.startsWith(`${base}/sns-strategy`) }]}>SNS戦略</a>
+        <a href={`${base}/sns/`} class:list={[{ active: currentPath.startsWith(`${base}/sns`) }]}>SNS</a>
         <a href={`${base}/tags/`} class:list={[{ active: currentPath.startsWith(`${base}/tags`) }]}>タグ</a>
       </div>
     </div>

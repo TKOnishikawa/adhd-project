@@ -2,7 +2,7 @@
 import { getCollection } from 'astro:content';
 
 const base = import.meta.env.BASE_URL;
-const entries = (await getCollection('sns-strategy', ({ data }) => !data.draft))
+const entries = (await getCollection('sns', ({ data }) => !data.draft))
   .sort((a, b) => b.data.date.getTime() - a.data.date.getTime())
   .slice(0, 5);
 
@@ -21,13 +21,13 @@ const platformLabels: Record<string, string> = {
   <div class="section-eyebrow" style="color: #ff6b6b;">SNS Strategy</div>
   <div class="preview-header">
     <h2 class="preview-title">SNS戦略</h2>
-    <a href={`${base}/sns-strategy/`} class="view-all">全一覧 &rarr;</a>
+    <a href={`${base}/sns/`} class="view-all">全一覧 &rarr;</a>
   </div>
 
   {entries.length > 0 ? (
     <div class="entry-list">
       {entries.map((entry) => (
-        <a href={`${base}/sns-strategy/${entry.id.replace(/\.md$/, '')}/`} class="entry-item">
+        <a href={`${base}/sns/${entry.id.replace(/\.md$/, '')}/`} class="entry-item">
           <span class="entry-date mono">{entry.data.date.toISOString().slice(0, 10)}</span>
           <span class="entry-title">{entry.data.title}</span>
           <span class="entry-platforms">
@@ -40,7 +40,7 @@ const platformLabels: Record<string, string> = {
     </div>
   ) : (
     <div class="empty-msg">
-      <p>SNS戦略ドキュメントはまだありません。<a href={`${base}/sns-strategy/`}>一覧ページへ</a></p>
+      <p>SNS戦略ドキュメントはまだありません。<a href={`${base}/sns/`}>一覧ページへ</a></p>
     </div>
   )}
 </section>

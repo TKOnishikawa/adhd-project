@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { maturityConfig } from '../../data/taxonomy';
+
+const base = import.meta.env.BASE_URL;
+const allEntries = (await getCollection('sns', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Separate strategy docs from platform/post content
+const strategyDocs = allEntries.filter((e) =>
+  ['strategy', 'benchmark', 'content-plan', 'report'].includes(e.data.category)
+);
+
+const platformLabels: Record<string, { label: string; icon: string; color: string }> = {
+  tiktok:   { label: 'TikTok',   icon: '\u{1F3AC}', color: '#ff0050' },
+  youtube:  { label: 'YouTube',  icon: '\u{1F4F9}', color: '#ff0000' },
+  x:        { label: 'X',        icon: '\u{1F426}', color: '#1da1f2' },
+  note:     { label: 'note',     icon: '\u{270D}\u{FE0F}', color: '#41c9b4' },
+  instagram:{ label: 'Instagram',icon: '\u{1F4F7}', color: '#e1306c' },
+};
+
+// Build platform stats
+const platforms = Object.entries(platformLabels).map(([key, meta]) => {
+  const posts = allEntries.filter(
+    (e) => e.data.category === 'post' && e.data.platforms.includes(key as any)
+  );
+  const guides = allEntries.filter(
+    (e) => e.data.category === 'platform' && e.data.platforms.includes(key as any)
+  );
+  const latestPost = posts[0];
+  return { key, ...meta, posts, guides, latestPost, total: posts.length + guides.length };
+}).filter((p) => p.total > 0 || ['tiktok', 'youtube', 'x', 'note'].includes(p.key));
+
+const categoryLabels: Record<string, string> = {
+  strategy: '\u6226\u7565',
+  benchmark: '\u30D9\u30F3\u30C1\u30DE\u30FC\u30AF',
+  'content-plan': '\u30B3\u30F3\u30C6\u30F3\u30C4\u4F01\u753B',
+  report: '\u30EC\u30DD\u30FC\u30C8',
+};
+
+const platformPillLabels: Record<string, string> = {
+  x: 'X', note: 'note', instagram: 'IG', youtube: 'YT',
+  tiktok: 'TikTok', discord: 'Discord', line: 'LINE',
+};
+---
+
+<BaseLayout title="SNS \u30B3\u30F3\u30C6\u30F3\u30C4\u30CF\u30D6">
+  <a href={base} class="back-link">&larr; \u30DB\u30FC\u30E0</a>
+
+  <header class="page-header">
+    <div class="badge" style="color: #ff6b6b;">SNS</div>
+    <h1>SNS \u30B3\u30F3\u30C6\u30F3\u30C4\u30CF\u30D6</h1>
+    <p class="page-desc">\u5404\u5A92\u4F53\u306E\u8A2D\u8A08\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8\u3068\u6295\u7A3F\u30ED\u30B0\u3092\u4E00\u5143\u7BA1\u7406</p>
+  </header>
+
+  <!-- Platform Cards -->
+  <section class="platform-section">
+    <div class="section-label">\u30D7\u30E9\u30C3\u30C8\u30D5\u30A9\u30FC\u30E0</div>
+    <div class="platform-grid">
+      {platforms.map((p) => (
+        <a href={`${base}/sns/${p.key}/`} class="platform-card">
+          <div class="platform-icon">{p.icon}</div>
+          <div class="platform-info">
+            <span class="platform-name" style={`color: ${p.color}`}>{p.label}</span>
+            <div class="platform-stats">
+              <span class="stat">{p.posts.length} \u6295\u7A3F</span>
+              {p.guides.length > 0 && <span class="stat">{p.guides.length} \u8A2D\u8A08</span>}
+            </div>
+            {p.latestPost && (
+              <span class="latest-post">
+                \u6700\u65B0: {p.latestPost.data.date.toISOString().slice(0, 10)}
+              </span>
+            )}
+          </div>
+          <span class="arrow">&rarr;</span>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Strategy Documents -->
+  {strategyDocs.length > 0 && (
+    <section class="strategy-section">
+      <div class="section-label">\u6A2A\u65AD\u6226\u7565\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8</div>
+      <div class="article-list">
+        {strategyDocs.map((entry) => {
+          const mat = maturityConfig[entry.data.maturity as keyof typeof maturityConfig];
+          const slug = entry.id.replace(/\.md$/, '');
+          return (
+            <a href={`${base}/sns/${slug}/`} class="article-row">
+              <span class="article-date mono">{entry.data.date.toISOString().slice(0, 10)}</span>
+              <span class="article-title">{entry.data.title}</span>
+              <span class="category-pill">{categoryLabels[entry.data.category] || entry.data.category}</span>
+              <span class="platform-tags">
+                {entry.data.platforms.map((p: string) => (
+                  <span class="platform-pill">{platformPillLabels[p] || p}</span>
+                ))}
+              </span>
+              {mat && <span class={`maturity-badge ${entry.data.maturity}`}>{mat.label}</span>}
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text-dim); padding: 8px 0; transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--cyan); }
+
+  .page-header {
+    text-align: center; padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border); margin-bottom: 40px;
+  }
+  .page-header h1 { margin: 12px 0 8px; }
+  .page-desc { color: var(--text-muted); font-size: 14px; }
+
+  .section-label {
+    font-size: 13px; font-weight: 700; color: #ff6b6b;
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 16px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .platform-section { margin-bottom: 48px; }
+
+  .platform-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px;
+  }
+
+  .platform-card {
+    display: flex; align-items: center; gap: 16px;
+    padding: 20px; background: var(--bg-surface);
+    border: 1px solid var(--border); border-radius: 12px;
+    color: var(--text); text-decoration: none; transition: all 0.15s;
+  }
+  .platform-card:hover {
+    border-color: var(--border-hover); background: var(--bg-raised);
+    transform: translateY(-2px); box-shadow: var(--shadow-sm);
+  }
+
+  .platform-icon { font-size: 32px; flex-shrink: 0; }
+  .platform-info { flex: 1; }
+  .platform-name { font-size: 18px; font-weight: 700; }
+  .platform-stats { display: flex; gap: 12px; margin-top: 4px; }
+  .stat { font-size: 12px; color: var(--text-muted); font-family: var(--font-mono); }
+  .latest-post { font-size: 11px; color: var(--text-dim); display: block; margin-top: 4px; }
+  .arrow { color: var(--text-dim); font-size: 18px; }
+
+  .strategy-section { margin-bottom: 48px; }
+
+  .article-list { display: flex; flex-direction: column; gap: 2px; }
+  .article-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 16px; background: var(--bg-surface);
+    border: 1px solid transparent; border-radius: 8px;
+    color: var(--text); text-decoration: none; transition: all 0.15s;
+  }
+  .article-row:hover { border-color: var(--border-hover); background: var(--bg-raised); }
+  .article-date { font-size: 12px; color: var(--text-muted); min-width: 90px; }
+  .article-title { font-size: 14px; font-weight: 500; flex: 1; }
+
+  .category-pill {
+    font-size: 10px; font-weight: 600; padding: 2px 8px; border-radius: 4px;
+    background: rgba(255, 107, 107, 0.1); color: #ff6b6b;
+  }
+  .platform-tags { display: flex; gap: 4px; flex-shrink: 0; }
+  .platform-pill {
+    font-size: 10px; font-weight: 600; padding: 2px 6px; border-radius: 4px;
+    background: rgba(34, 211, 238, 0.1); color: var(--cyan);
+  }
+  .maturity-badge {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 8px;
+  }
+  .maturity-badge.published { color: var(--green); background: rgba(52, 211, 153, 0.1); }
+  .maturity-badge.draft { color: var(--cyan); background: rgba(34, 211, 238, 0.1); }
+  .maturity-badge.memo { color: var(--purple); background: rgba(167, 139, 250, 0.1); }
+  .maturity-badge.seed { color: var(--amber); background: rgba(245, 158, 11, 0.1); }
+
+  @media (max-width: 600px) {
+    .platform-grid { grid-template-columns: 1fr; }
+    .article-row { flex-wrap: wrap; gap: 8px; }
+    .article-date { min-width: auto; }
+    .platform-tags { order: 3; width: 100%; }
+  }
+</style>

@@ -2,7 +2,7 @@
 title: ""
 description: ""
 date: {{DATE}}
-category: "strategy"  # strategy, platform, content-plan, benchmark, report
+category: "strategy"  # strategy, platform, content-plan, benchmark, report, post
 platforms: []  # x, note, instagram, youtube, tiktok, discord, line
 tags: []
 relatedThemes: []  # A, B, C, D, E, F, G, H (optional)

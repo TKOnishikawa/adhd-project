@@ -10,7 +10,7 @@ const research = await getCollection('research', ({ data }) => !data.draft);
 const meetings = await getCollection('meetings', ({ data }) => !data.draft);
 const references = await getCollection('references', ({ data }) => !data.draft);
 const notes = await getCollection('notes', ({ data }) => !data.draft);
-const snsStrategy = await getCollection('sns-strategy', ({ data }) => !data.draft);
+const sns = await getCollection('sns', ({ data }) => !data.draft);
 
 type TimelineItem = {
   date: Date;
@@ -46,11 +46,11 @@ const items: TimelineItem[] = [
     title: n.data.title,
     href: `${base}/notes/${n.id.replace(/\.md$/, '')}/`,
   })),
-  ...snsStrategy.map((s) => ({
+  ...sns.map((s) => ({
     date: s.data.date,
-    type: 'snsStrategy' as const,
+    type: 'sns' as const,
     title: s.data.title,
-    href: `${base}/sns-strategy/${s.id.replace(/\.md$/, '')}/`,
+    href: `${base}/sns/${s.id.replace(/\.md$/, '')}/`,
   })),
 ];
 

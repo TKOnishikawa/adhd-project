@@ -1,0 +1,307 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import '../../styles/article.css';
+import { getCollection } from 'astro:content';
+import { maturityConfig } from '../../data/taxonomy';
+
+const platformLabels: Record<string, string> = {
+  x: 'X (Twitter)', note: 'note', instagram: 'Instagram',
+  youtube: 'YouTube', tiktok: 'TikTok', discord: 'Discord', line: 'LINE',
+};
+
+const categoryLabels: Record<string, string> = {
+  strategy: '\u6226\u7565', platform: '\u30D7\u30E9\u30C3\u30C8\u30D5\u30A9\u30FC\u30E0',
+  'content-plan': '\u30B3\u30F3\u30C6\u30F3\u30C4\u4F01\u753B', benchmark: '\u30D9\u30F3\u30C1\u30DE\u30FC\u30AF',
+  report: '\u30EC\u30DD\u30FC\u30C8', post: '\u6295\u7A3F',
+};
+
+const postStatusLabels: Record<string, string> = {
+  idea: '\u{1F4A1} \u30A2\u30A4\u30C7\u30A2', concept: '\u{1F4DD} \u30B3\u30F3\u30BB\u30D7\u30C8',
+  scripted: '\u{1F4DC} \u53F0\u672C\u6E08', recorded: '\u{1F3A4} \u53CE\u9332\u6E08',
+  edited: '\u{1F3AC} \u7DE8\u96C6\u6E08', published: '\u2705 \u516C\u958B\u6E08',
+  analyzed: '\u{1F4CA} \u5206\u6790\u6E08',
+};
+
+export async function getStaticPaths() {
+  const entries = await getCollection('sns');
+  return entries.map((entry) => ({
+    params: { slug: entry.id.replace(/\.md$/, '') },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content, headings } = await entry.render();
+const base = import.meta.env.BASE_URL;
+
+const mat = maturityConfig[entry.data.maturity as keyof typeof maturityConfig];
+const formattedDate = entry.data.date.toISOString().slice(0, 10);
+const isPost = entry.data.category === 'post';
+
+// Back link: if in a platform subdirectory, go to platform hub
+const slugParts = entry.id.replace(/\.md$/, '').split('/');
+const backLink = slugParts.length > 1
+  ? { url: `${base}/sns/${slugParts[0]}/`, label: `${platformLabels[slugParts[0]] || slugParts[0]} \u30CF\u30D6` }
+  : { url: `${base}/sns/`, label: 'SNS\u30CF\u30D6' };
+
+// TOC: h2 headings only (for strategy docs)
+const tocItems = headings.filter((h) => h.depth === 2);
+
+type TocGroup = { tier: string; items: typeof tocItems };
+const tocGroups: TocGroup[] = [];
+let currentGroup: TocGroup | null = null;
+
+for (const item of tocItems) {
+  const num = item.text.match(/^(\d+)/)?.[1];
+  const tierLabel = num && parseInt(num) <= 3 ? '\u57FA\u76E4\u5206\u6790'
+    : num && parseInt(num) <= 6 ? '\u6226\u8853\u8A2D\u8A08'
+    : num && parseInt(num) <= 9 ? '\u5FDC\u7528\u6226\u7565'
+    : '\u5B9F\u884C\u7BA1\u7406';
+
+  if (!currentGroup || currentGroup.tier !== tierLabel) {
+    currentGroup = { tier: tierLabel, items: [] };
+    tocGroups.push(currentGroup);
+  }
+  currentGroup.items.push(item);
+}
+
+const showToc = !isPost && tocItems.length > 3;
+---
+
+<BaseLayout title={entry.data.title} description={entry.data.description}>
+  <div class="progress-bar" id="progress-bar"></div>
+
+  <a href={backLink.url} class="back-link">&larr; {backLink.label}</a>
+
+  <div class={`page-layout ${showToc ? 'has-toc' : ''}`}>
+    {showToc && (
+      <nav class="toc-sidebar">
+        <h3 class="toc-heading">Contents</h3>
+        {tocGroups.map((group) => (
+          <>
+            <div class="toc-tier">{group.tier}</div>
+            {group.items.map((item) => {
+              const num = item.text.match(/^(\d+)/)?.[1] || '';
+              const label = item.text.replace(/^\d+\.\s*/, '');
+              return (
+                <a href={`#${item.slug}`} class="toc-link">
+                  {num && <span class="toc-num">{num.padStart(2, '0')}</span>}
+                  <span>{label}</span>
+                </a>
+              );
+            })}
+          </>
+        ))}
+      </nav>
+    )}
+
+    <div class="article-main">
+      <header class="article-header">
+        <h1>{entry.data.title}</h1>
+        <div class="article-meta">
+          <span class="mono">{formattedDate}</span>
+          {mat && <span class={`maturity-badge ${entry.data.maturity}`}>{mat.label}</span>}
+        </div>
+        {entry.data.tags.length > 0 && (
+          <div class="article-tags">
+            {entry.data.tags.map((tag: string) => (
+              <a href={`${base}/tags/${tag}/`} class="tag">{tag}</a>
+            ))}
+          </div>
+        )}
+      </header>
+
+      <!-- Meta bar -->
+      <div class="meta-bar">
+        <span class="meta-label">Category:</span>
+        <span class="category-tag">{categoryLabels[entry.data.category] || entry.data.category}</span>
+        {entry.data.platforms.length > 0 && (
+          <>
+            <span class="meta-divider">|</span>
+            <span class="meta-label">Platforms:</span>
+            {entry.data.platforms.map((p: string) => (
+              <span class="platform-tag">{platformLabels[p] || p}</span>
+            ))}
+          </>
+        )}
+      </div>
+
+      <!-- Post-specific meta -->
+      {isPost && (
+        <div class="post-meta-bar">
+          {entry.data.postId && (
+            <div class="post-meta-item">
+              <span class="post-meta-label">ID</span>
+              <span class="post-meta-value mono">{entry.data.postId}</span>
+            </div>
+          )}
+          {entry.data.postStatus && (
+            <div class="post-meta-item">
+              <span class="post-meta-label">\u30B9\u30C6\u30FC\u30BF\u30B9</span>
+              <span class="post-meta-value">{postStatusLabels[entry.data.postStatus] || entry.data.postStatus}</span>
+            </div>
+          )}
+          {entry.data.hookType && (
+            <div class="post-meta-item">
+              <span class="post-meta-label">\u30D5\u30C3\u30AF\u578B</span>
+              <span class="post-meta-value">{entry.data.hookType}</span>
+            </div>
+          )}
+          {entry.data.hookScore != null && (
+            <div class="post-meta-item">
+              <span class="post-meta-label">\u30B9\u30B3\u30A2</span>
+              <span class="post-meta-value mono">{entry.data.hookScore}/30</span>
+            </div>
+          )}
+          {entry.data.contentType && (
+            <div class="post-meta-item">
+              <span class="post-meta-label">\u30BF\u30A4\u30D7</span>
+              <span class="post-meta-value">{entry.data.contentType}</span>
+            </div>
+          )}
+          {entry.data.perceptionPhase && (
+            <div class="post-meta-item">
+              <span class="post-meta-label">Phase</span>
+              <span class="post-meta-value">{entry.data.perceptionPhase}</span>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div class="article-body">
+        <Content />
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  // Progress bar
+  const bar = document.getElementById('progress-bar');
+  if (bar) {
+    window.addEventListener('scroll', () => {
+      const h = document.documentElement;
+      const pct = (h.scrollTop / (h.scrollHeight - h.clientHeight)) * 100;
+      bar.style.width = pct + '%';
+    });
+  }
+
+  // Active TOC highlighting
+  const tocLinks = document.querySelectorAll('.toc-link');
+  const sections = Array.from(tocLinks).map((link) => {
+    const id = link.getAttribute('href')?.slice(1);
+    return id ? document.getElementById(id) : null;
+  }).filter(Boolean);
+
+  function updateActiveToc() {
+    let current = '';
+    for (const section of sections) {
+      if (section && section.getBoundingClientRect().top <= 100) {
+        current = section.id;
+      }
+    }
+    tocLinks.forEach((link) => {
+      const href = link.getAttribute('href')?.slice(1);
+      link.classList.toggle('active', href === current);
+    });
+  }
+
+  window.addEventListener('scroll', updateActiveToc, { passive: true });
+  updateActiveToc();
+</script>
+
+<style>
+  .page-layout { display: flex; gap: 32px; align-items: flex-start; }
+  .page-layout:not(.has-toc) { display: block; }
+
+  .toc-sidebar {
+    position: sticky; top: 80px; width: 240px; flex-shrink: 0;
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px;
+    max-height: calc(100vh - 100px); overflow-y: auto;
+  }
+  .toc-heading {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    text-transform: uppercase; color: var(--text-dim);
+    margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  }
+  .toc-tier {
+    font-size: 10px; font-weight: 700; letter-spacing: 2px;
+    text-transform: uppercase; color: #ff6b6b;
+    margin-top: 12px; margin-bottom: 4px; padding-top: 8px;
+    border-top: 1px solid var(--border);
+  }
+  .toc-tier:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+  .toc-link {
+    display: flex; align-items: baseline; gap: 8px;
+    padding: 5px 8px; border-radius: 6px; font-size: 12px;
+    color: var(--text-dim); text-decoration: none; line-height: 1.4;
+    transition: all 0.15s;
+  }
+  .toc-link:hover { color: var(--cyan); background: rgba(34, 211, 238, 0.05); }
+  .toc-link.active { color: var(--cyan); background: rgba(34, 211, 238, 0.08); }
+  .toc-num {
+    font-family: var(--font-mono); font-size: 11px; font-weight: 600;
+    color: rgba(255, 107, 107, 0.6); min-width: 18px; flex-shrink: 0;
+  }
+  .toc-link.active .toc-num { color: #ff6b6b; }
+
+  .toc-sidebar::-webkit-scrollbar { width: 4px; }
+  .toc-sidebar::-webkit-scrollbar-track { background: transparent; }
+  .toc-sidebar::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+
+  .article-main { flex: 1; min-width: 0; }
+
+  .meta-bar {
+    display: flex; align-items: center; flex-wrap: wrap; gap: 8px;
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 12px 16px; margin-bottom: 16px; font-size: 13px;
+  }
+  .meta-label {
+    font-weight: 700; color: #ff6b6b; font-size: 11px;
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .meta-divider { color: var(--text-muted); }
+  .category-tag {
+    background: rgba(255, 107, 107, 0.1); color: #ff6b6b;
+    padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  }
+  .platform-tag {
+    background: rgba(34, 211, 238, 0.1); color: var(--cyan);
+    padding: 2px 8px; border-radius: 6px; font-size: 12px; font-weight: 600;
+  }
+
+  /* Post-specific meta bar */
+  .post-meta-bar {
+    display: flex; flex-wrap: wrap; gap: 12px;
+    background: var(--bg-surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 16px; margin-bottom: 32px;
+  }
+  .post-meta-item {
+    display: flex; flex-direction: column; gap: 2px;
+    padding-right: 16px; border-right: 1px solid var(--border);
+  }
+  .post-meta-item:last-child { border-right: none; padding-right: 0; }
+  .post-meta-label {
+    font-size: 10px; font-weight: 700; color: var(--text-dim);
+    letter-spacing: 1px; text-transform: uppercase;
+  }
+  .post-meta-value { font-size: 14px; font-weight: 600; }
+
+  @media (max-width: 960px) {
+    .page-layout { flex-direction: column; }
+    .toc-sidebar {
+      position: static; width: 100%; max-height: none;
+      display: flex; flex-wrap: wrap; gap: 4px; align-items: center;
+    }
+    .toc-heading { width: 100%; margin-bottom: 8px; }
+    .toc-tier { width: 100%; margin-top: 8px; }
+    .toc-link { padding: 4px 8px; font-size: 11px; }
+  }
+  @media (max-width: 600px) {
+    .toc-sidebar { display: none; }
+    .post-meta-bar { flex-direction: column; gap: 8px; }
+    .post-meta-item { border-right: none; padding-right: 0; border-bottom: 1px solid var(--border); padding-bottom: 8px; }
+    .post-meta-item:last-child { border-bottom: none; padding-bottom: 0; }
+  }
+</style>

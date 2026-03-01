@@ -6,7 +6,7 @@ const research = await getCollection('research', ({ data }) => !data.draft);
 const meetings = await getCollection('meetings', ({ data }) => !data.draft);
 const references = await getCollection('references', ({ data }) => !data.draft);
 const notes = await getCollection('notes', ({ data }) => !data.draft);
-const snsStrategy = await getCollection('sns-strategy', ({ data }) => !data.draft);
+const sns = await getCollection('sns', ({ data }) => !data.draft);
 
 const base = import.meta.env.BASE_URL;
 
@@ -14,7 +14,7 @@ const stats = [
   { num: themeIds.length, label: 'テーマ', color: 'blue', href: `${base}/` },
   { num: research.length, label: 'リサーチ', color: 'green', href: `${base}/research/` },
   { num: meetings.length, label: '議事録', color: 'amber', href: `${base}/meetings/` },
-  { num: snsStrategy.length, label: 'SNS戦略', color: 'red', href: `${base}/sns-strategy/` },
+  { num: sns.length, label: 'SNS', color: 'red', href: `${base}/sns/` },
   { num: references.length + notes.length, label: '参照・ノート', color: 'purple', href: `${base}/tags/` },
 ];
 ---

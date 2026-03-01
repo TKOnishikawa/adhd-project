@@ -1,0 +1,223 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+import { maturityConfig } from '../../../data/taxonomy';
+
+const base = import.meta.env.BASE_URL;
+
+const platformMeta: Record<string, { label: string; icon: string; color: string }> = {
+  tiktok:    { label: 'TikTok',    icon: '\u{1F3AC}', color: '#ff0050' },
+  youtube:   { label: 'YouTube',   icon: '\u{1F4F9}', color: '#ff0000' },
+  x:         { label: 'X',         icon: '\u{1F426}', color: '#1da1f2' },
+  note:      { label: 'note',      icon: '\u{270D}\u{FE0F}', color: '#41c9b4' },
+  instagram: { label: 'Instagram', icon: '\u{1F4F7}', color: '#e1306c' },
+};
+
+const postStatusConfig: Record<string, { label: string; color: string }> = {
+  idea:      { label: '\u{1F4A1} \u30A2\u30A4\u30C7\u30A2', color: 'var(--amber)' },
+  concept:   { label: '\u{1F4DD} \u30B3\u30F3\u30BB\u30D7\u30C8', color: 'var(--purple)' },
+  scripted:  { label: '\u{1F4DC} \u53F0\u672C\u6E08', color: 'var(--cyan)' },
+  recorded:  { label: '\u{1F3A4} \u53CE\u9332\u6E08', color: '#22d3ee' },
+  edited:    { label: '\u{1F3AC} \u7DE8\u96C6\u6E08', color: '#4a7dff' },
+  published: { label: '\u2705 \u516C\u958B\u6E08', color: 'var(--green)' },
+  analyzed:  { label: '\u{1F4CA} \u5206\u6790\u6E08', color: '#34d399' },
+};
+
+export async function getStaticPaths() {
+  const platforms = ['tiktok', 'youtube', 'x', 'note', 'instagram'];
+  return platforms.map((platform) => ({
+    params: { platform },
+  }));
+}
+
+const { platform } = Astro.params;
+const meta = platformMeta[platform] || { label: platform, icon: '', color: '#fff' };
+
+const allEntries = (await getCollection('sns', ({ data }) => !data.draft))
+  .sort((a, b) => b.data.date.getTime() - a.data.date.getTime());
+
+// Filter entries for this platform
+const platformEntries = allEntries.filter((e) =>
+  e.data.platforms.includes(platform as any)
+);
+
+const guides = platformEntries.filter((e) => e.data.category === 'platform');
+const posts = platformEntries.filter((e) => e.data.category === 'post');
+
+// Status breakdown
+const statusCounts = posts.reduce((acc, p) => {
+  const s = p.data.postStatus || 'idea';
+  acc[s] = (acc[s] || 0) + 1;
+  return acc;
+}, {} as Record<string, number>);
+---
+
+<BaseLayout title={`${meta.label} | SNS`}>
+  <a href={`${base}/sns/`} class="back-link">&larr; SNS\u30CF\u30D6</a>
+
+  <header class="page-header">
+    <span class="platform-icon">{meta.icon}</span>
+    <h1 style={`color: ${meta.color}`}>{meta.label}</h1>
+    <div class="stats-row">
+      <span class="stat-pill">{posts.length} \u6295\u7A3F</span>
+      {guides.length > 0 && <span class="stat-pill">{guides.length} \u8A2D\u8A08</span>}
+      {Object.entries(statusCounts).map(([status, count]) => {
+        const cfg = postStatusConfig[status];
+        return cfg ? (
+          <span class="stat-pill status" style={`color: ${cfg.color}`}>
+            {cfg.label} {count}
+          </span>
+        ) : null;
+      })}
+    </div>
+  </header>
+
+  <!-- Design / Strategy Section -->
+  {guides.length > 0 && (
+    <section class="section">
+      <div class="section-label">\u8A2D\u8A08\u30C9\u30AD\u30E5\u30E1\u30F3\u30C8</div>
+      <div class="article-list">
+        {guides.map((entry) => {
+          const mat = maturityConfig[entry.data.maturity as keyof typeof maturityConfig];
+          const slug = entry.id.replace(/\.md$/, '');
+          return (
+            <a href={`${base}/sns/${slug}/`} class="article-row">
+              <span class="article-date mono">{entry.data.date.toISOString().slice(0, 10)}</span>
+              <span class="article-title">{entry.data.title}</span>
+              {mat && <span class={`maturity-badge ${entry.data.maturity}`}>{mat.label}</span>}
+            </a>
+          );
+        })}
+      </div>
+    </section>
+  )}
+
+  <!-- Posts Section -->
+  <section class="section">
+    <div class="section-label">\u6295\u7A3F\u30ED\u30B0</div>
+    {posts.length > 0 ? (
+      <div class="post-table">
+        <div class="table-header">
+          <span class="col-id">ID</span>
+          <span class="col-title">\u30BF\u30A4\u30C8\u30EB</span>
+          <span class="col-status">\u30B9\u30C6\u30FC\u30BF\u30B9</span>
+          <span class="col-hook">\u30D5\u30C3\u30AF\u578B</span>
+          <span class="col-score">\u30B9\u30B3\u30A2</span>
+          <span class="col-date">\u65E5\u4ED8</span>
+        </div>
+        {posts.map((entry) => {
+          const slug = entry.id.replace(/\.md$/, '');
+          const status = postStatusConfig[entry.data.postStatus || 'idea'];
+          return (
+            <a href={`${base}/sns/${slug}/`} class="post-row">
+              <span class="col-id mono">{entry.data.postId || '-'}</span>
+              <span class="col-title">{entry.data.title}</span>
+              <span class="col-status" style={status ? `color: ${status.color}` : ''}>
+                {status?.label || entry.data.postStatus || '-'}
+              </span>
+              <span class="col-hook">{entry.data.hookType || '-'}</span>
+              <span class="col-score mono">
+                {entry.data.hookScore != null ? `${entry.data.hookScore}/30` : '-'}
+              </span>
+              <span class="col-date mono">{entry.data.date.toISOString().slice(0, 10)}</span>
+            </a>
+          );
+        })}
+      </div>
+    ) : (
+      <div class="empty-msg">
+        <p>\u307E\u3060\u6295\u7A3F\u304C\u3042\u308A\u307E\u305B\u3093\u3002</p>
+      </div>
+    )}
+  </section>
+</BaseLayout>
+
+<style>
+  .back-link {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 13px; color: var(--text-dim); padding: 8px 0; transition: color 0.15s;
+  }
+  .back-link:hover { color: var(--cyan); }
+
+  .page-header {
+    text-align: center; padding: 40px 0 32px;
+    border-bottom: 1px solid var(--border); margin-bottom: 40px;
+  }
+  .platform-icon { font-size: 48px; }
+  .page-header h1 { margin: 8px 0 12px; font-size: 36px; }
+
+  .stats-row {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 8px;
+  }
+  .stat-pill {
+    font-size: 12px; font-weight: 600; padding: 4px 12px; border-radius: 12px;
+    background: var(--bg-surface); border: 1px solid var(--border);
+    color: var(--text-muted); font-family: var(--font-mono);
+  }
+  .stat-pill.status { background: transparent; border: none; }
+
+  .section { margin-bottom: 40px; }
+
+  .section-label {
+    font-size: 13px; font-weight: 700; color: #ff6b6b;
+    letter-spacing: 2px; text-transform: uppercase;
+    margin-bottom: 12px; padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .article-list { display: flex; flex-direction: column; gap: 2px; }
+  .article-row {
+    display: flex; align-items: center; gap: 16px;
+    padding: 12px 16px; background: var(--bg-surface);
+    border: 1px solid transparent; border-radius: 8px;
+    color: var(--text); text-decoration: none; transition: all 0.15s;
+  }
+  .article-row:hover { border-color: var(--border-hover); background: var(--bg-raised); }
+  .article-date { font-size: 12px; color: var(--text-muted); min-width: 90px; }
+  .article-title { font-size: 14px; font-weight: 500; flex: 1; }
+
+  .maturity-badge {
+    font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 8px;
+  }
+  .maturity-badge.published { color: var(--green); background: rgba(52, 211, 153, 0.1); }
+  .maturity-badge.draft { color: var(--cyan); background: rgba(34, 211, 238, 0.1); }
+  .maturity-badge.memo { color: var(--purple); background: rgba(167, 139, 250, 0.1); }
+  .maturity-badge.seed { color: var(--amber); background: rgba(245, 158, 11, 0.1); }
+
+  /* Post table */
+  .post-table { display: flex; flex-direction: column; gap: 2px; }
+  .table-header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 16px; font-size: 11px; font-weight: 700;
+    color: var(--text-dim); letter-spacing: 1px; text-transform: uppercase;
+    border-bottom: 1px solid var(--border);
+  }
+  .post-row {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 16px; background: var(--bg-surface);
+    border: 1px solid transparent; border-radius: 8px;
+    color: var(--text); text-decoration: none; transition: all 0.15s;
+  }
+  .post-row:hover { border-color: var(--border-hover); background: var(--bg-raised); }
+
+  .col-id { width: 70px; font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
+  .col-title { flex: 1; font-size: 14px; font-weight: 500; }
+  .col-status { width: 110px; font-size: 12px; flex-shrink: 0; }
+  .col-hook { width: 80px; font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
+  .col-score { width: 50px; font-size: 12px; color: var(--text-muted); flex-shrink: 0; text-align: right; }
+  .col-date { width: 90px; font-size: 12px; color: var(--text-muted); flex-shrink: 0; }
+
+  .empty-msg {
+    text-align: center; padding: 32px 20px;
+    background: var(--bg-surface); border-radius: 12px;
+    color: var(--text-dim); font-size: 14px;
+  }
+
+  @media (max-width: 768px) {
+    .table-header { display: none; }
+    .post-row { flex-wrap: wrap; gap: 4px; }
+    .col-id { width: auto; }
+    .col-status { width: auto; }
+    .col-hook, .col-score, .col-date { display: none; }
+  }
+</style>

@@ -70,8 +70,8 @@ const references = defineCollection({
   }),
 });
 
-// === SNS Strategy ===
-const snsStrategy = defineCollection({
+// === SNS (strategy + platform guides + posts) ===
+const sns = defineCollection({
   type: 'content',
   schema: z.object({
     title: z.string(),
@@ -84,6 +84,7 @@ const snsStrategy = defineCollection({
       'content-plan',
       'benchmark',
       'report',
+      'post',
     ]).default('strategy'),
     platforms: z.array(z.enum([
       'x', 'note', 'instagram', 'youtube', 'youtube-short', 'tiktok', 'discord', 'line'
@@ -92,6 +93,16 @@ const snsStrategy = defineCollection({
     maturity: z.enum(['seed', 'memo', 'draft', 'published']).default('seed'),
     summary: z.string().optional(),
     draft: z.boolean().default(false),
+
+    // Post-specific fields (optional)
+    postId: z.string().optional(),
+    postStatus: z.enum([
+      'idea', 'concept', 'scripted', 'recorded', 'edited', 'published', 'analyzed',
+    ]).optional(),
+    hookType: z.string().optional(),
+    hookScore: z.number().optional(),
+    contentType: z.string().optional(),
+    perceptionPhase: z.string().optional(),
   }),
 });
 
@@ -109,4 +120,4 @@ const notes = defineCollection({
   }),
 });
 
-export const collections = { research, meetings, references, notes, 'sns-strategy': snsStrategy };
+export const collections = { research, meetings, references, notes, sns };
